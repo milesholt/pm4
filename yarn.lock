@@ -1313,6 +1313,11 @@
     "@babel/helper-validator-identifier" "^7.22.5"
     "to-fast-properties" "^2.0.0"
 
+"@capacitor-firebase/authentication@^5.0.1":
+  "integrity" "sha512-fef6W6M2yz5xPW+Zp9HTF+6u3xVWCM30dqo/F6OGvi9/vxQhZ+lLoS7xnNyOhgI68+YWRjV1PU03RYhqygPGuA=="
+  "resolved" "https://registry.npmjs.org/@capacitor-firebase/authentication/-/authentication-5.0.1.tgz"
+  "version" "5.0.1"
+
 "@capacitor/android@^5.1.0":
   "integrity" "sha512-gtJWhu+vFnYo4o4XxBYqaP0mPOgwjJucjlhpWovbKEtb4AgsKyPLrLaVM4U6j1QizIR23carA2hddUSNm/LSTA=="
   "resolved" "https://registry.npmjs.org/@capacitor/android/-/android-5.1.0.tgz"
