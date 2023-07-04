@@ -57,7 +57,7 @@ async signInWithEmailPassword(email:string,password:string){
 	return new Promise<any>((resolve,reject) => {
 		const auth = getAuth();
 		const options = { email : email, password: password }
-		await FirebaseAuthentication.signInWithEmailAndPassword(options)
+		FirebaseAuthentication.signInWithEmailAndPassword(options)
   		.then((userCredential) => {
     	// Signed in 
     	//const user = userCredential.user;
@@ -73,15 +73,39 @@ async signInWithEmailPassword(email:string,password:string){
 	});
 }
 
+
+/*
+async doLogin(email: string, password: string) {
+    return new Promise<any>((resolve,reject) => {
+      
+      this.afAuth
+      .signInWithEmailAndPassword(email, password)
+      .then((result) => {
+        this.SetUserData(result.user);
+        this.afAuth.authState.subscribe((user) => {
+          if (user) {
+            resolve(result)
+            //this.router.navigate(['dashboard']);
+            
+          }
+        });
+      })
+      .catch((error) => {
+          window.alert(error.message);
+          reject(error)
+      });
+      
+      })
+  }
+*/
+
 async signInWithFacebook() {
   // 1. Create credentials on the native layer
-  const result = await FirebaseAuthentication.signInWithFacebook();
+  /*const result = await FirebaseAuthentication.signInWithFacebook();
   // 2. Sign in on the web layer using the access token
-  const credential = FacebookAuthProvider.credential(
-    result.credential?.accessToken,
-  );
+  const credential = FacebookAuthProvider.credential(result.credential?.accessToken);
   const auth = getAuth();
-  await signInWithCredential(auth, credential);
+  await signInWithCredential(auth, credential);*/
 };
 
 async signInWithGoogle() {
