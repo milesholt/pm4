@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!--
+<div class="displayTable">
+  <div class="displayTableCell">
+    <div class="authBlock">
+      <h3>Login</h3>
+      <div class="formGroup">
+        <input type="text" class="formControl" placeholder="Username" #userName required>
+      </div>
+      <div class="formGroup">
+        <input type="password" class="formControl" placeholder="Password" #userPassword required>
+      </div>
+      
+      <div class="formGroup">
+        <input type="button" class="btn btnPrimary" value="Log in" (click)="authService.SignIn(userName.value, userPassword.value)">
+      </div>
+      <div class="formGroup">
+        <span class="or"><span class="orInner">Or</span></span>
+      </div>
+      
+      <div class="formGroup">
+        <button type="button" class="btn googleBtn" (click)="authService.GoogleAuth()">
+          <i class="fab fa-google-plus-g"></i>
+          Log in with Google
+        </button>
+      </div>
+      <div class="forgotPassword">
+        <span routerLink="/forgot-password">Forgot Password?</span>
+      </div>
+    </div>
+    <div class="redirectToLogin">
+      <span>Don't have an account?<span class="redirect" routerLink="/register"> Sign Up</span></span>
+    </div>
+  </div>
+</div>
+-->
+
+
+<ion-content padding>
+
+
+  <form class="form" [formGroup]="loginForm" (ngSubmit)="emailLogin(loginForm.value)">
+
+    <ion-item>
+      <ion-label floating>Email</ion-label>
+      <ion-input type="text" formControlName="email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
+
+    <ion-button full class="submit-button" type="submit">
+      Login
+    </ion-button>
+    
+
+  </form>
+  
+  
+  <!-- Social Login -->
+  
+   <ion-item>
+      <label>Or sign in with </label>
+      
+      <ion-buttons>
+      
+      <ion-button (click)="authService.GoogleAuth()">
+          <ion-icon slot="start" name="logo-google"></ion-icon> Google
+      </ion-button>
+      
+      
+      <ion-button (click)="socialLogin('Facebook')">
+          <ion-icon slot="start" name="logo-facebook"></ion-icon> Facebook
+      </ion-button>
+      
+      
+      </ion-buttons>
+      
+     
+    </ion-item>
+    
+    
+    <!-- Other Options -->
+    
+    <div class="options-wrap">
+    
+     <div class="option forgot-password">
+      Forgot Password? <a routerLink="/forgot-password">Click here</a>
+      </div>
+    <br>
+    <div class="option no-account">
+      No account yet? <a routerLink="/register">Sign Up</a>
+    </div>
+    <br>
+   
+    </div>
+    
+    <!-- Error -->
+    
+    <div class="error-wrap">
+       <label class="error-message">{{errorMessage}}</label>
+    </div>
+ 
+    
+      
+<!--
+<ion-button full type="submit" class="primary facebook-button" (click)="socialLogin('Facebook')">Facebook Login</ion-button><br />
+<ion-button full type="submit" class="google-button"  (click)="socialLogin('Google')">Google Login</ion-button>
+-->
+
+
+</ion-content>
