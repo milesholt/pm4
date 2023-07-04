@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-//import { User } from '../../../shared/user';
+import { User } from '../../../shared/user';
 //import * as auth from 'firebase/auth';
 
 import { environment } from '../../../../../environments/environment';
@@ -22,6 +22,7 @@ import {
   //OAuthProvider,
   //PhoneAuthProvider,
   signInWithCredential,
+  signInWithEmailAndPassword,
   //EmailAuthProvider,
   signOut,
 } from 'firebase/auth';
@@ -31,7 +32,8 @@ import { Router } from '@angular/router';
 @Injectable({ 
   providedIn: 'root',
 })
-export class AuthCapacitorService {
+export class AuthService {
+userData: any; // Save logged in user data
 constructor(
     public router: Router,
     public ngZone: NgZone // NgZone service to remove outside scope warning
@@ -50,6 +52,26 @@ constructor(
   		}
 	};
 
+
+async signInWithEmailPassword(email:string,password:string){
+	return new Promise<any>((resolve,reject) => {
+		const auth = getAuth();
+		const options = { email : email, password: password }
+		await FirebaseAuthentication.signInWithEmailAndPassword(options)
+  		.then((userCredential) => {
+    	// Signed in 
+    	//const user = userCredential.user;
+    	this.SetUserData(userCredential.user);
+    		resolve(userCredential);
+    	// ...
+  		})
+  		.catch((error) => {
+    		//const errorCode = error.code;
+    		//const errorMessage = error.message;
+    		reject(error);
+  		});
+	});
+}
 
 async signInWithFacebook() {
   // 1. Create credentials on the native layer
@@ -70,6 +92,25 @@ async signInWithGoogle() {
   const auth = getAuth();
   await signInWithCredential(auth, credential);
 };
+
+/* Setting up user data when sign in with username/password, 
+  sign up with username/password and sign in with social auth  
+  provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
+  SetUserData(user: any) {
+    /*const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+      `users/${user.uid}`
+    );*/
+    const userData: User = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      emailVerified: user.emailVerified,
+    };
+    /*return userRef.set(userData, {
+      merge: true,
+    });*/
+  }
 
 async signOut() {
   // 1. Sign out on the native layer

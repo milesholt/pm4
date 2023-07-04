@@ -17,7 +17,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 
 //Auth service
-import { AuthService } from "./services/external/firebase/AuthService/auth.service";
+import { AuthService } from "./services/external/firebase/AuthService/auth.capacitor.service";
 
 
 @NgModule({
