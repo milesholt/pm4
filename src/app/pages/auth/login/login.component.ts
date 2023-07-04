@@ -45,7 +45,7 @@ export class LoginComponent  implements OnInit {
   }
 
   emailLogin(fields:any){
-    this.service.auth.doLogin(fields.email, fields.password)
+    this.service.auth.signInWithEmailPassword(fields.email, fields.password)
     .then((res:any) => {
       this.handleLogin(res);  
     }, (err:any) => {
