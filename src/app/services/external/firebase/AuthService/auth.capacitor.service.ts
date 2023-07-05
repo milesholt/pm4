@@ -61,7 +61,7 @@ async signInWithEmailPassword(email:string,password:string){
   		.then((userCredential) => {
     	// Signed in 
     	//const user = userCredential.user;
-    	this.SetUserData(userCredential.user);
+    	this.setUserData(userCredential.user);
     		resolve(userCredential);
     	// ...
   		})
@@ -101,7 +101,7 @@ async signInWithGoogle() {
 /* Setting up user data when sign in with username/password, 
   sign up with username/password and sign in with social auth  
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
-  SetUserData(user: any) {
+  setUserData(user: any) {
     /*const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `users/${user.uid}`
     );*/
@@ -119,13 +119,13 @@ async signInWithGoogle() {
   
   
   // Sign up with email/password
-  async SignUp(email: string, password: string) {
+  async signUp(email: string, password: string) {
   	const options = { email:email, password:password }
     return await FirebaseAuthentication
       .createUserWithEmailAndPassword(options)
       .then((result) => {
-        this.SendVerificationMail();
-        this.SetUserData(result.user);
+        this.sendVerificationMail();
+        this.setUserData(result.user);
       })
       .catch((error:any) => {
         window.alert(error.message);
@@ -134,7 +134,7 @@ async signInWithGoogle() {
   
   
   // Send email verfificaiton when new user sign up
-  async SendVerificationMail() {
+  async sendVerificationMail() {
     return await FirebaseAuthentication.getCurrentUser()
       .then((u: any) => u.sendEmailVerification())
       .then(() => {
@@ -144,7 +144,7 @@ async signInWithGoogle() {
   
   
   // Reset Forggot password
-  async ForgotPassword(passwordResetEmail: string) {
+  async forgotPassword(passwordResetEmail: string) {
   	const options = {email: passwordResetEmail}
     return FirebaseAuthentication
       .sendPasswordResetEmail(options)

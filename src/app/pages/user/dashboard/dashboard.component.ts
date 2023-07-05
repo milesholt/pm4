@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from "../../../services/external/firebase/AuthService/auth.service";
+import { CoreService } from '../../../services/core.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,7 +9,7 @@ import { AuthService } from "../../../services/external/firebase/AuthService/aut
 export class DashboardComponent  implements OnInit {
 
   constructor(
-    public authService: AuthService
+    public service: CoreService
   ) { }
 
   ngOnInit() {}
