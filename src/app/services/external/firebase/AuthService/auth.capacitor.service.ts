@@ -74,31 +74,6 @@ async signInWithEmailPassword(email:string,password:string){
 }
 
 
-/*
-async doLogin(email: string, password: string) {
-    return new Promise<any>((resolve,reject) => {
-      
-      this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.SetUserData(result.user);
-        this.afAuth.authState.subscribe((user) => {
-          if (user) {
-            resolve(result)
-            //this.router.navigate(['dashboard']);
-            
-          }
-        });
-      })
-      .catch((error) => {
-          window.alert(error.message);
-          reject(error)
-      });
-      
-      })
-  }
-*/
-
 async signInWithFacebook() {
   // 1. Create credentials on the native layer
   /*const result = await FirebaseAuthentication.signInWithFacebook();
@@ -109,12 +84,18 @@ async signInWithFacebook() {
 };
 
 async signInWithGoogle() {
-  // 1. Create credentials on the native layer
-  const result = await FirebaseAuthentication.signInWithGoogle();
-  // 2. Sign in on the web layer using the id token
-  const credential = GoogleAuthProvider.credential(result.credential?.idToken);
-  const auth = getAuth();
-  await signInWithCredential(auth, credential);
+	  
+  	// 1. Create credentials on the native layer
+  	const result = await FirebaseAuthentication.signInWithGoogle();
+  	// 2. Sign in on the web layer using the id token
+  	const credential = GoogleAuthProvider.credential(result.credential?.idToken);
+  	const auth = getAuth();
+  	await signInWithCredential(auth, credential).then((userCredential) => {
+  		return userCredential;
+  	}).catch((error)=>{
+  		return error;
+  	});
+  
 };
 
 /* Setting up user data when sign in with username/password, 
@@ -134,6 +115,52 @@ async signInWithGoogle() {
     /*return userRef.set(userData, {
       merge: true,
     });*/
+  }
+  
+  
+  // Sign up with email/password
+  async SignUp(email: string, password: string) {
+  	const options = { email:email, password:password }
+    return await FirebaseAuthentication
+      .createUserWithEmailAndPassword(options)
+      .then((result) => {
+        this.SendVerificationMail();
+        this.SetUserData(result.user);
+      })
+      .catch((error:any) => {
+        window.alert(error.message);
+      });
+  }
+  
+  
+  // Send email verfificaiton when new user sign up
+  async SendVerificationMail() {
+    return await FirebaseAuthentication.getCurrentUser()
+      .then((u: any) => u.sendEmailVerification())
+      .then(() => {
+        this.router.navigate(['verify-email']);
+      });
+  }
+  
+  
+  // Reset Forggot password
+  async ForgotPassword(passwordResetEmail: string) {
+  	const options = {email: passwordResetEmail}
+    return FirebaseAuthentication
+      .sendPasswordResetEmail(options)
+      .then(() => {
+        window.alert('Password reset email sent, check your inbox.');
+      })
+      .catch((error) => {
+        window.alert(error);
+      });
+  }
+  
+  
+  // Returns true when user is looged in and email is verified
+  get isLoggedIn(): boolean {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user !== null && user.emailVerified !== false ? true : false;
   }
 
 async signOut() {

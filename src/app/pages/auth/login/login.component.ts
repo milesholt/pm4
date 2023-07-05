@@ -56,7 +56,7 @@ export class LoginComponent  implements OnInit {
   }
 
   socialLogin(social:string = ''){
-    eval('this.service.auth.do' + social + 'Login()')
+    eval('this.service.auth.signInWith' + social + '()')
     .then((res:any) => {
       this.handleLogin(res);
     }, (err:any) => {
