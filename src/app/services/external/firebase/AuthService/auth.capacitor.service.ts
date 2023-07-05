@@ -38,10 +38,39 @@ constructor(
     public router: Router,
     public ngZone: NgZone // NgZone service to remove outside scope warning
   ) {
+	
+	this.runAuth();
+    	
+  }
+  
+  
+  async runAuth(){
+  	
+  	//Initialise firebase app with config
 	const firebaseConfig = environment.firebase;
 	initializeApp(firebaseConfig);
+	
+	//Initialise firebase auth service, detect if native or not using capacitor check
+	const auth = await this.getFirebaseAuth();
+    
+    //After device check and auth initialised, check for user using authState
+    auth.onAuthStateChanged((user:any) => {
+      if (user) {
+      	//If user is logged in, add to localStorage (this might already be done by Capacitor)
+        this.userData = user;
+        localStorage.setItem('user', JSON.stringify(this.userData));
+        JSON.parse(localStorage.getItem('user')!);
+      } else {
+      	//Otherwise clear userData
+        localStorage.setItem('user', 'null');
+        JSON.parse(localStorage.getItem('user')!);
+      }
+    });
+  	
   }
 
+	
+	//makes sure user is signed in next time app is run
 	async getFirebaseAuth(){
   		if (Capacitor.isNativePlatform()) {
     		return initializeAuth(getApp(), {
@@ -163,7 +192,8 @@ async signInWithGoogle() {
     return user !== null && user.emailVerified !== false ? true : false;
   }
 
-async signOut() {
+async SignOut() {
+  console.log('signing out');
   // 1. Sign out on the native layer
   await FirebaseAuthentication.signOut();
   // 1. Sign out on the web layer

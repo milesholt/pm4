@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 import { AuthService } from "../../../services/external/firebase/AuthService/auth.service";
@@ -28,7 +29,9 @@ export class LoginComponent  implements OnInit {
     public authService: AuthService,
     public formBuilder: FormBuilder,
     public service: CoreService,
-    public navCtrl: NavController
+    public navCtrl: NavController,
+    public router: Router,
+    public lib: Library
   ) { }
 
   ngOnInit() {
@@ -44,8 +47,8 @@ export class LoginComponent  implements OnInit {
      this.navCtrl.navigateForward('/register');
   }
 
-  emailLogin(fields:any){
-    this.service.auth.signInWithEmailPassword(fields.email, fields.password)
+  async emailLogin(fields:any){
+    await this.service.auth.signInWithEmailPassword(fields.email, fields.password)
     .then((res:any) => {
       this.handleLogin(res);  
     }, (err:any) => {
@@ -70,7 +73,12 @@ export class LoginComponent  implements OnInit {
     //Check if new user, user permissions, if user verified
     //res.user.isEmailVerified
     //res.additionalUserInfo.isNewUser
-    this.navCtrl.navigateForward('/dashboard');
+    
+    //To do: timeout is needed otherwise the next time after logging in, it fails to navigate
+    setTimeout(()=>{
+      this.router.navigate(['dashboard']);
+    },);
+    
   }
 
 
