@@ -97,15 +97,22 @@ export class AuthService {
   async signInWithFacebook() {
     // 1. Create credentials on the native layer
     const result: any = await FirebaseAuthentication.signInWithFacebook();
+    console.log('Facebook auth..');
+    console.log(result);
     //const res: any = result !== undefined ? result : '';
     // 2. Sign in on the web layer using the access token
     const credential = FacebookAuthProvider.credential(
       result.credential?.accessToken
     );
+    console.log('Facebook credential');
+    console.log(credential);
+
     const auth = getAuth();
     await signInWithCredential(auth, credential)
-      .then((userCredential) => {
-        return userCredential;
+      .then((response) => {
+        console.log('success, user credential:');
+        console.log(response.user);
+        return 'success';
       })
       .catch((error) => {
         return error;
@@ -122,6 +129,7 @@ export class AuthService {
     const auth = getAuth();
     await signInWithCredential(auth, credential)
       .then((userCredential) => {
+        console.log(userCredential);
         return userCredential;
       })
       .catch((error) => {
