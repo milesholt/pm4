@@ -103,7 +103,13 @@ export class AuthService {
       result.credential?.accessToken
     );
     const auth = getAuth();
-    await signInWithCredential(auth, credential);
+    await signInWithCredential(auth, credential)
+      .then((userCredential) => {
+        return userCredential;
+      })
+      .catch((error) => {
+        return error;
+      });
   }
 
   async signInWithGoogle() {
