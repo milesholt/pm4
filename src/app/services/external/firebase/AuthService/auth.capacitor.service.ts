@@ -108,11 +108,11 @@ export class AuthService {
     console.log(credential);
 
     const auth = getAuth();
-    await signInWithCredential(auth, credential)
-      .then((response) => {
+    return await signInWithCredential(auth, credential)
+      .then((userCredential) => {
         console.log('success, user credential:');
-        console.log(response.user);
-        return 'success';
+        this.setUserData(result.user);
+        return userCredential;
       })
       .catch((error) => {
         return error;
@@ -122,13 +122,17 @@ export class AuthService {
   async signInWithGoogle() {
     // 1. Create credentials on the native layer
     const result = await FirebaseAuthentication.signInWithGoogle();
+    console.log('result:');
+    console.log(result);
     // 2. Sign in on the web layer using the id token
     const credential = GoogleAuthProvider.credential(
       result.credential?.idToken
     );
     const auth = getAuth();
-    await signInWithCredential(auth, credential)
+    return await signInWithCredential(auth, credential)
       .then((userCredential) => {
+        this.setUserData(result.user);
+        console.log('user signed in:');
         console.log(userCredential);
         return userCredential;
       })
@@ -193,7 +197,8 @@ export class AuthService {
   // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
-    return user !== null && user.emailVerified !== false ? true : false;
+    //return user !== null && user.emailVerified !== false ? true : false;
+    return user !== null ? true : false;
   }
 
   async SignOut() {

@@ -63,18 +63,30 @@ export class LoginComponent implements OnInit {
       await this.service.auth.signInWithFacebook().then(
         (res: any) => {
           console.log('result from Facebook Auth:');
-          setTimeout(() => {
-            console.log(res);
-            this.handleLogin(res);
-          });
+
+          console.log(res);
+          //this.navCtrl.navigateForward('/register');
+          this.handleLogin(res);
         },
         (err: any) => {
           this.errorMessage = err.message;
         }
       );
     } else {
-      eval('this.service.auth.signInWith' + social + '()').then(
+      // eval('this.service.auth.signInWith' + social + '()').then(
+      //   (res: any) => {
+      //     this.handleLogin(res);
+      //   },
+      //   (err: any) => {
+      //     this.errorMessage = err.message;
+      //   }
+      // );
+
+      await this.service.auth.signInWithGoogle().then(
         (res: any) => {
+          console.log('result from Google Auth:');
+
+          console.log(res);
           this.handleLogin(res);
         },
         (err: any) => {
@@ -94,7 +106,8 @@ export class LoginComponent implements OnInit {
 
     //To do: timeout is needed otherwise the next time after logging in, it fails to navigate
     setTimeout(() => {
-      //this.router.navigate(['dashboard']);
+      console.log('redirecting...');
+      this.router.navigate(['dashboard']);
     });
   }
 }
