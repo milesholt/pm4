@@ -41,6 +41,14 @@
       "name": "lint",
       "command": "yarn lint",
       "runAtStart": false
+    },
+    "ng generate component pages/shop/shop.component.ts": {
+      "name": "ng generate component pages/shop/shop.component.ts",
+      "command": "ng generate component pages/shop/shop.component.ts"
+    },
+    "npm install -g node-fetch@2.6.1": {
+      "name": "npm install -g node-fetch@2.6.1",
+      "command": "npm install -g node-fetch@2.6.1"
     }
   }
 }

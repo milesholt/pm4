@@ -16,6 +16,7 @@ import { AuthService } from './external/firebase/AuthService/auth.capacitor.serv
 //import { UserService } from './external/firebase/UserService/user.service';
 //import { DatabaseService } from './external/firebase/DatabaseService/database.service';
 //import { NotificationServiceExt } from './external/firebase/NotificationService/notification.service';
+import { ShopService } from './external/printful/ShopService/shop.service';
 
 
 /*
@@ -38,7 +39,7 @@ export { ModalService }
 
 @Injectable()
 export class CoreService {
-  constructor(public auth: AuthService){
+  constructor(public auth: AuthService, public shop: ShopService){
   }
 }
 
