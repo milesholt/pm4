@@ -36,6 +36,7 @@
     "ionicons": "^7.0.0",
     "printful-js": "^1.0.3",
     "rxjs": "~7.8.0",
+    "shopify-buy": "^2.21.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
   },
