@@ -20,7 +20,7 @@ export class ShopService {
     });
 
     // Fetch all products in your shop
-    client.product.fetchAll().then((products) => {
+    client.product.fetchAll().then((products: any) => {
       // Do something with the products
       console.log(products);
     });
