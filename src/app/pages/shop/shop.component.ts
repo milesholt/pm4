@@ -10,13 +10,20 @@ import { Router } from '@angular/router';
   providers: [CoreService, Library],
 })
 export class ShopComponent implements OnInit {
-  constructor(public service: CoreService, public router: Router) {}
+  products: any;
+  constructor(
+    public service: CoreService,
+    public router: Router,
+  ) {}
 
   ngOnInit() {
     this.test();
   }
 
   test() {
-    console.log(this.service.shop);
+    this.service.shop.getProducts(this.service.shop.client).then((products) => {
+      console.log(products);
+      this.products = products;
+    });
   }
 }
