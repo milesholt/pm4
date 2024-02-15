@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 //import { Http, Headers } from "@angular/http";
 //import { Observable } from 'rxjs/Rx';
 //import { Definitions } from '../app.definitions';
@@ -16,8 +16,8 @@ import { AuthService } from './external/firebase/AuthService/auth.capacitor.serv
 //import { UserService } from './external/firebase/UserService/user.service';
 //import { DatabaseService } from './external/firebase/DatabaseService/database.service';
 //import { NotificationServiceExt } from './external/firebase/NotificationService/notification.service';
-import { ShopService } from './external/printful/ShopService/shop.service';
-
+//import { ShopService } from './external/printful/ShopService/shop.service';
+import { ShopService } from './external/shopify/ShopService/shop.service';
 
 /*
 @Injectable()
@@ -36,12 +36,12 @@ export class CoreService {
 export { ModalService }
 */
 
-
 @Injectable()
 export class CoreService {
-  constructor(public auth: AuthService, public shop: ShopService){
-  }
+  constructor(
+    public auth: AuthService,
+    public shop: ShopService,
+  ) {}
 }
 
-export { }
-
+export {};
