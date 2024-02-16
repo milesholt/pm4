@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class ShopService {
   userData: any; // Save logged in user data
   client: any;
+  cart: any;
   constructor(
     public router: Router,
     public ngZone: NgZone, // NgZone service to remove outside scope warning
@@ -31,5 +32,26 @@ export class ShopService {
   async getProducts(client: any) {
     const products = await client.product.fetchAll();
     return products;
+  }
+
+  async createCheckout() {
+    const checkout = await this.client.checkout.create();
+    return checkout.id;
+  }
+
+  async addToCart(product: any) {
+    const checkoutId = !this.client.checkout.id
+      ? await this.createCheckout()
+      : this.client.checkout.id;
+
+    this.cart = await this.client.checkout.addLineItems(checkoutId, [
+      {
+        variantId: product.variants[0].id,
+        quantity: 1,
+      },
+    ]);
+    console.log(this.cart);
+
+    return this.cart;
   }
 }

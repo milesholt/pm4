@@ -8,7 +8,9 @@
   <p>Shop items go here..</p>
 
   <ion-list *ngFor="let product of products">
-    <ion-item>{{product.title}}</ion-item>
+    <ion-item>{{product.title}}
+      <ion-button (click)="service.shop.addToCart(product)">Add to cart</ion-button>
+    </ion-item>
   </ion-list>
 
 </ion-content>
