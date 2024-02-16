@@ -39,6 +39,10 @@ export class ShopService {
     return checkout.id;
   }
 
+  async openCheckout() {
+    window.open(this.cart.webUrl);
+  }
+
   async addToCart(product: any) {
     const checkoutId = !this.client.checkout.id
       ? await this.createCheckout()
