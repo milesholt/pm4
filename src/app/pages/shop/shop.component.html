@@ -3,14 +3,24 @@
     <ion-title>Shop</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content>
 
-  <p>Shop items go here..</p>
-
+<ion-content *ngIf="service.shop.checkoutComplete == null">
+  <p>Shop items go here</p>
   <ion-list *ngFor="let product of products">
     <ion-item>{{product.title}}
       <ion-button (click)="service.shop.addToCart(product)">Add to cart</ion-button>
     </ion-item>
   </ion-list>
+</ion-content>
 
+<ion-content *ngIf="service.shop.checkoutComplete == true">
+  <h1>Order success!</h1>
+  <p>Your order number is <strong>{{service.shop.checkout.order.orderNumber}}</strong>, please keep this for your records.</p>
+  <ion-button (click)="service.shop.checkoutComplete = null">Continue</ion-button>
+</ion-content>
+
+<ion-content *ngIf="service.shop.checkoutComplete == false">
+  <h1>Order cancelled</h1>
+  <p>Your order was cancelled due to a declined transaction or gateway failure.</p>
+  <ion-button (click)="service.shop.checkoutComplete = null">Continue</ion-button>
 </ion-content>

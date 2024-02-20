@@ -10,6 +10,9 @@ export class ShopService {
   userData: any; // Save logged in user data
   client: any;
   cart: any;
+  checkout: any;
+  checkoutComplete: any = null;
+
   constructor(
     public router: Router,
     public ngZone: NgZone, // NgZone service to remove outside scope warning
@@ -35,12 +38,13 @@ export class ShopService {
   }
 
   async createCheckout() {
-    const checkout = await this.client.checkout.create();
-    return checkout.id;
+    this.checkout = await this.client.checkout.create();
+    localStorage.setItem('checkoutId', this.checkout.id);
+    return this.checkout.id;
   }
 
   async openCheckout() {
-    window.open(this.cart.webUrl, '_blank');
+    window.open(this.cart.webUrl, '_self');
   }
 
   async addToCart(product: any) {
@@ -57,18 +61,13 @@ export class ShopService {
     console.log(this.cart);
 
     this.openCheckout();
-
-    setTimeout(() => {
-      this.fetchCheckout(checkoutId);
-    }, 1000);
-
-    return this.cart;
+    //return this.cart;
   }
 
   async fetchCheckout(checkoutId: any) {
     console.log('fetching checkout');
-    const checkout = await this.client.checkout.fetch(checkoutId);
-    console.log(checkout);
-    return checkout;
+    this.checkout = await this.client.checkout.fetch(checkoutId);
+    console.log(this.checkout);
+    return this.checkout;
   }
 }

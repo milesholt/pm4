@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CoreService } from '../../services/core.service';
 import { Library } from '../../app.library';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-shop.component.ts',
@@ -14,10 +14,24 @@ export class ShopComponent implements OnInit {
   constructor(
     public service: CoreService,
     public router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
     this.test();
+    this.checkReturn();
+  }
+
+  async checkReturn() {
+    if (this.router.url.indexOf('?return') > -1) {
+      const checkoutId = localStorage.getItem('checkoutId');
+      if (checkoutId === null || checkoutId === undefined)
+        this.router.navigate(['/shop']);
+      const checkout = await this.service.shop.fetchCheckout(checkoutId);
+      this.service.shop.checkoutComplete = false;
+      if (checkout.completedAt !== null)
+        this.service.shop.checkoutComplete = true;
+    }
   }
 
   test() {
