@@ -19,10 +19,16 @@ export class ShopService {
   ) {
     console.log('shop service');
     // Initializing a client to return content in the store's primary language
-    this.client = Client.buildClient({
+    /*this.client = Client.buildClient({
       domain: 'quickstart-5ff0e693.myshopify.com',
       storefrontAccessToken: 'b5f247a5b7594e3cb01d84ae0c5b33d3',
       apiVersion: '2020-07',
+    });*/
+
+    this.client = Client.buildClient({
+      domain: '448c6a-3.myshopify.com',
+      storefrontAccessToken: '911fbc2ed8e032001c7c6ac7e493a57d',
+      apiVersion: '2023-10',
     });
 
     /* // Fetch all products in your shop

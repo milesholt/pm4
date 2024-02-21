@@ -11,6 +11,7 @@ import { VerifyEmailComponent } from './pages/auth/verify-email/verify-email.com
 
 //Shop Components
 import { ShopComponent } from './pages/shop/shop.component';
+import { ProductComponent } from './pages/shop/product/product.component';
 
 // route guard
 import { AuthGuard } from './services/shared/guard/auth.guard';
@@ -33,7 +34,7 @@ const routes: Routes = [
     component: RegisterComponent,
     loadChildren: () =>
       import('./pages/auth/register/register.module').then(
-        (m) => m.RegisterModule
+        (m) => m.RegisterModule,
       ),
   },
   {
@@ -41,7 +42,7 @@ const routes: Routes = [
     component: DashboardComponent,
     loadChildren: () =>
       import('./pages/user/dashboard/dashboard.module').then(
-        (m) => m.DashboardModule
+        (m) => m.DashboardModule,
       ),
     canActivate: [AuthGuard],
   },
@@ -50,7 +51,7 @@ const routes: Routes = [
     component: ForgotPasswordComponent,
     loadChildren: () =>
       import('./pages/auth/forgot-password/forgot-password.module').then(
-        (m) => m.ForgotPasswordModule
+        (m) => m.ForgotPasswordModule,
       ),
   },
   {
@@ -58,7 +59,7 @@ const routes: Routes = [
     component: VerifyEmailComponent,
     loadChildren: () =>
       import('./pages/auth/verify-email/verify-email.module').then(
-        (m) => m.VerifyEmailModule
+        (m) => m.VerifyEmailModule,
       ),
   },
   {
@@ -66,6 +67,14 @@ const routes: Routes = [
     component: ShopComponent,
     loadChildren: () =>
       import('./pages/shop/shop.module').then((m) => m.ShopModule),
+  },
+  {
+    path: 'shop/product/:id',
+    component: ProductComponent,
+    loadChildren: () =>
+      import('./pages/shop/product/product.module').then(
+        (m) => m.ProductModule,
+      ),
   },
 ];
 @NgModule({
