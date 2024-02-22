@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CoreService } from '../../services/core.service';
 import { Library } from '../../app.library';
 import { Router, ActivatedRoute } from '@angular/router';
+//import { ProductComponent } from './product/product.component';
 
 @Component({
   selector: 'app-shop.component.ts',
@@ -15,6 +16,8 @@ export class ShopComponent implements OnInit {
     public service: CoreService,
     public router: Router,
     private route: ActivatedRoute,
+    public library: Library,
+    //public productComponent: ProductComponent,
   ) {}
 
   ngOnInit() {

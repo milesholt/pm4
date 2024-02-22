@@ -1,1 +1,20 @@
-<p>Product page</p>
+<ion-content ion-padding [fullscreen]="true">
+     
+    <img src="{{product.variants[0].image.src}}" class="product-image" width="100%" height="auto" />
+    
+    <h1>{{product.title}}</h1>
+  
+    <div class="product-price">{{product.variants[0].price.amount}} {{ product.variants[0].price.currencyCode }}</div>  
+      
+    <div class="product-type">{{product.productType}}</div>
+    <ion-button (click)="service.shop.addToCart(product)">Add to cart</ion-button>
+ 
+    <div class="product-description" [innerHtml]="product.descriptionHtml"></div>
+
+</ion-content>
+
+<!--
+<pre>
+{{product | json }}
+</pre>
+-->

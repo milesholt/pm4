@@ -69,7 +69,7 @@ const routes: Routes = [
       import('./pages/shop/shop.module').then((m) => m.ShopModule),
   },
   {
-    path: 'shop/product/:id',
+    path: 'shop/product/:alias',
     component: ProductComponent,
     loadChildren: () =>
       import('./pages/shop/product/product.module').then(
