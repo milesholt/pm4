@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
+//This had no effect and only works in child component and module
+//import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
@@ -20,6 +22,7 @@ import { environment } from '../environments/environment';
 import { AuthService } from './services/external/firebase/AuthService/auth.capacitor.service';
 
 @NgModule({
+  //schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [AppComponent],
   imports: [
     BrowserModule,

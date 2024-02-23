@@ -1,6 +1,12 @@
 <ion-content ion-padding [fullscreen]="true">
-     
-    <img src="{{product.variants[0].image.src}}" class="product-image" width="100%" height="auto" />
+ 
+    <swiper-container [pagination]="true" [zoom]="true">
+        <swiper-slide *ngFor="let image of product.images; index as imgidx">
+            <swiper-zoom-container>
+                <img src="{{product.images[imgidx].src}}" class="product-image" width="100%" height="auto" />
+            </swiper-zoom-container>
+        </swiper-slide>
+    </swiper-container>
     
     <h1>{{product.title}}</h1>
   

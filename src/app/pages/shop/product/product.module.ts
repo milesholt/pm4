@@ -6,7 +6,10 @@ import { FormsModule } from '@angular/forms';
 
 import { ProductComponent } from './product.component';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [IonicModule, CommonModule, FormsModule, RouterLinkWithHref],
   declarations: [ProductComponent],
 })

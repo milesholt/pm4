@@ -3,6 +3,9 @@ import { CoreService } from '../../../services/core.service';
 import { Library } from '../../../app.library';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { register } from 'swiper/element/bundle';
+register();
+
 @Component({
   selector: 'app-product.component.ts',
   templateUrl: './product.component.html',
@@ -15,6 +18,10 @@ export class ProductComponent implements OnInit {
   id: any = null;
   alias: string = '';
   idx: number = 0;
+  slideOpts = {
+    initialSlide: 1,
+    speed: 400,
+  };
 
   constructor(
     public router: Router,
