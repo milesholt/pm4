@@ -1,13 +1,21 @@
 <ion-content ion-padding [fullscreen]="true">
- 
-    <swiper-container [pagination]="true" [zoom]="true">
-        <swiper-slide *ngFor="let image of product.images; index as imgidx">
-            <swiper-zoom-container>
-                <img src="{{product.images[imgidx].src}}" class="product-image" width="100%" height="auto" />
-            </swiper-zoom-container>
+  
+    <!--Image Slider-->
+    <swiper-container init="false">
+        <swiper-slide *ngFor="let image of product.images; index as imgidx"> 
+            <div class="swiper-zoom-container">   
+                <img src="{{product.images[imgidx].src}}" class="product-image" width="100%" height="auto" />   
+            </div>    
+        </swiper-slide>
+    </swiper-container>
+    <!--Image Slideer Thumbnails-->
+    <swiper-container class="thumbs-swiper" [slidesPerView]="5">
+        <swiper-slide *ngFor="let image of product.images; index as imgidx">    
+                <img src="{{product.images[imgidx].src}}" class="product-image" width="100%" height="auto" />       
         </swiper-slide>
     </swiper-container>
     
+
     <h1>{{product.title}}</h1>
   
     <div class="product-price">{{product.variants[0].price.amount}} {{ product.variants[0].price.currencyCode }}</div>  
@@ -15,7 +23,7 @@
     <div class="product-type">{{product.productType}}</div>
     <ion-button (click)="service.shop.addToCart(product)">Add to cart</ion-button>
  
-    <div class="product-description" [innerHtml]="product.descriptionHtml"></div>
+    <div class="product-description" [innerHtml]="service.shop.formatDesc(product.descriptionHtml)"></div>
 
 </ion-content>
 

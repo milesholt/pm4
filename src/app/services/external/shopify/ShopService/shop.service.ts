@@ -70,6 +70,24 @@ export class ShopService {
     //return this.cart;
   }
 
+  async formatDesc(desc: any) {
+    //return desc.replace(/(<([^>]+)>)/gi, '');
+    //add class if there is an image
+    /*desc.querySelectorAll('img').forEach((img: any) => {
+      var iconPath = 'https://supliful.s3.amazonaws.com/categories/images';
+      if (img.src.includes(iconPath)) img.classList.add('icon');
+    });*/
+    //return new Promise((resolve) => desc);
+    /*desc = desc.replace(
+      'src="https://supliful.s3.amazonaws.com/categories/images/',
+      'class="icon" src="https://supliful.s3.amazonaws.com/categories/images',
+    );
+    console.log(desc);
+    return desc;*/
+
+    return desc;
+  }
+
   async fetchCheckout(checkoutId: any) {
     console.log('fetching checkout');
     this.checkout = await this.client.checkout.fetch(checkoutId);

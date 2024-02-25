@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CoreService } from '../../../services/core.service';
 import { Library } from '../../../app.library';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -18,10 +18,6 @@ export class ProductComponent implements OnInit {
   id: any = null;
   alias: string = '';
   idx: number = 0;
-  slideOpts = {
-    initialSlide: 1,
-    speed: 400,
-  };
 
   constructor(
     public router: Router,
@@ -34,6 +30,7 @@ export class ProductComponent implements OnInit {
     await this.getAlias();
     await this.getProducts();
     await this.getProduct();
+    await this.iniSlider();
   }
 
   async getAlias() {
@@ -51,5 +48,36 @@ export class ProductComponent implements OnInit {
     if (idx !== -1) this.idx = idx;
     this.id = this.products[this.idx].id;
     this.product = this.products[this.idx];
+  }
+
+  async iniSlider() {
+    // swiper element
+    const swiperEl = <any>document.querySelector('swiper-container');
+
+    // swiper parameters
+    const swiperParams = {
+      slidesPerView: 1,
+      zoom: {
+        maxRatio: 5,
+        minRatio: 1,
+        toggle: true,
+      },
+      navigation: true,
+      /*pagination: {
+        clickable: true,
+      },*/
+      thumbs: {
+        swiper: '.thumbs-swiper',
+      },
+      on: {
+        init() {},
+      },
+    };
+
+    // now we need to assign all parameters to Swiper element
+    Object.assign(swiperEl, swiperParams);
+
+    // and now initialize it
+    swiperEl.initialize();
   }
 }
