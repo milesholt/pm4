@@ -8,9 +8,12 @@ import { ProductComponent } from './product.component';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
+//Pipes
+import { SafeHtmlPipe } from '../../../pipes/safeHtml.pipe';
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [IonicModule, CommonModule, FormsModule, RouterLinkWithHref],
-  declarations: [ProductComponent],
+  declarations: [ProductComponent, SafeHtmlPipe],
 })
 export class ProductModule {}

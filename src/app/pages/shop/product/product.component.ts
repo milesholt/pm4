@@ -1,4 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Input,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { CoreService } from '../../../services/core.service';
 import { Library } from '../../../app.library';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -15,15 +23,20 @@ register();
 export class ProductComponent implements OnInit {
   products: any;
   product: any;
+  //productDesc: any = 'test';
   id: any = null;
   alias: string = '';
   idx: number = 0;
+
+  @Input() productDesc: string = 'test';
 
   constructor(
     public router: Router,
     private route: ActivatedRoute,
     public library: Library,
     public service: CoreService,
+    private changeDetectorRef: ChangeDetectorRef,
+    // public safeHtml: SafeHtmlPipe,
   ) {}
 
   async ngOnInit() {
@@ -47,7 +60,20 @@ export class ProductComponent implements OnInit {
     const idx = this.library.getArrayIndex(this.products, this.alias, 'handle');
     if (idx !== -1) this.idx = idx;
     this.id = this.products[this.idx].id;
-    this.product = this.products[this.idx];
+    //let prod = await this.service.shop.formatDesc(this.product);
+    // console.log('prod:');
+    //console.log(prod);
+    this.product = await this.service.shop.getProduct(this.products, this.idx);
+    //this.product = await this.service.shop.formatDesc(this.product);
+
+    /* setTimeout(async () => {
+      this.productDesc = await this.service.shop
+        .formatDesc(this.product)
+        .then((res) => {
+          return res;
+        });
+      this.changeDetectorRef.detectChanges();
+    });*/
   }
 
   async iniSlider() {

@@ -21,6 +21,9 @@ import { environment } from '../environments/environment';
 //Auth service
 import { AuthService } from './services/external/firebase/AuthService/auth.capacitor.service';
 
+//Pipes
+//import { SafeHtmlPipe } from './pipes/safeHtml.pipe';
+
 @NgModule({
   //schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [AppComponent],
@@ -34,10 +37,12 @@ import { AuthService } from './services/external/firebase/AuthService/auth.capac
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
+    //SafeHtmlPipe,
   ],
   providers: [
     Library,
     AuthService,
+    //SafeHtmlPipe,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent],

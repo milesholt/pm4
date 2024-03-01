@@ -43,6 +43,30 @@ export class ShopService {
     return products;
   }
 
+  async getProduct(products: any, idx: number = 0) {
+    let product = products[idx];
+
+    /*let desc = new DOMParser().parseFromString(
+      product.descriptionHtml,
+      'text/html',
+    );
+    let imgs = desc.querySelectorAll('img');
+
+    desc.querySelectorAll('img').forEach((img: any) => {
+      var iconPath = 'https://supliful.s3.amazonaws.com/categories/images';
+      if (img.src.includes(iconPath)) {
+        img.classList.add('icon');
+      }
+    });*/
+
+    //product.descriptionHtml = desc.body.innerHTML;
+    // products[idx].descriptionHtml = 'test';
+
+    product.descriptionFormatted = await this.formatDesc(product);
+
+    return product;
+  }
+
   async createCheckout() {
     this.checkout = await this.client.checkout.create();
     localStorage.setItem('checkoutId', this.checkout.id);
@@ -70,13 +94,31 @@ export class ShopService {
     //return this.cart;
   }
 
-  async formatDesc(desc: any) {
+  async formatDesc(product: any) {
+    console.log('formatting..');
     //return desc.replace(/(<([^>]+)>)/gi, '');
     //add class if there is an image
-    /*desc.querySelectorAll('img').forEach((img: any) => {
+    let desc = new DOMParser().parseFromString(
+      product.descriptionHtml,
+      'text/html',
+    );
+
+    let imgs = desc.querySelectorAll('img');
+
+    console.log(imgs.length);
+    desc.querySelectorAll('img').forEach((img: any) => {
       var iconPath = 'https://supliful.s3.amazonaws.com/categories/images';
-      if (img.src.includes(iconPath)) img.classList.add('icon');
-    });*/
+      if (img.src.includes(iconPath)) {
+        console.log('adding class');
+        img.classList.add('icon');
+      }
+    });
+
+    console.log('desc:');
+    console.log(desc.body.innerHTML);
+
+    //product.descriptionHtml = desc.body.innerHTML;
+
     //return new Promise((resolve) => desc);
     /*desc = desc.replace(
       'src="https://supliful.s3.amazonaws.com/categories/images/',
@@ -85,7 +127,14 @@ export class ShopService {
     console.log(desc);
     return desc;*/
 
-    return desc;
+    /*
+    return new Promise((resolve) => {
+      console.log(desc);
+      resolve(desc);   
+    });
+    */
+    return desc.body.innerHTML;
+    //return product.descriptionHtml;
   }
 
   async fetchCheckout(checkoutId: any) {
