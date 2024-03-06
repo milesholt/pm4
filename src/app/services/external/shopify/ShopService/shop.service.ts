@@ -43,27 +43,23 @@ export class ShopService {
     return products;
   }
 
-  async getProduct(products: any, idx: number = 0) {
-    let product = products[idx];
+  async getProduct(products: any, idx: number = 0, product: any = {}) {
+    let p = products[idx];
+    console.log(p);
 
-    /*let desc = new DOMParser().parseFromString(
-      product.descriptionHtml,
-      'text/html',
-    );
-    let imgs = desc.querySelectorAll('img');
-
-    desc.querySelectorAll('img').forEach((img: any) => {
-      var iconPath = 'https://supliful.s3.amazonaws.com/categories/images';
-      if (img.src.includes(iconPath)) {
-        img.classList.add('icon');
-      }
-    });*/
-
-    //product.descriptionHtml = desc.body.innerHTML;
-    // products[idx].descriptionHtml = 'test';
-
-    product.descriptionFormatted = await this.formatDesc(product);
-
+    product.id = p.id;
+    product.featuredImage = p.featuredImage;
+    product.description = await this.formatDesc(p);
+    product.images = p.images;
+    product.title = p.title;
+    product.price = p.variants[0].price.amount;
+    product.currency = p.variants[0].price.currencyCode;
+    product.variants = p.variants;
+    product.alias = p.handle;
+    //product.tags = p.tags ? p.tags : null;
+    //product.meta.title = p.seo.title ? p.seo.title : null;
+    //product.meta.description = p.seo.description ? p.seo.description : null;
+    product.productType = p.productType;
     return product;
   }
 
@@ -95,7 +91,6 @@ export class ShopService {
   }
 
   async formatDesc(product: any) {
-    console.log('formatting..');
     //return desc.replace(/(<([^>]+)>)/gi, '');
     //add class if there is an image
     let desc = new DOMParser().parseFromString(
@@ -105,17 +100,12 @@ export class ShopService {
 
     let imgs = desc.querySelectorAll('img');
 
-    console.log(imgs.length);
     desc.querySelectorAll('img').forEach((img: any) => {
       var iconPath = 'https://supliful.s3.amazonaws.com/categories/images';
       if (img.src.includes(iconPath)) {
-        console.log('adding class');
         img.classList.add('icon');
       }
     });
-
-    console.log('desc:');
-    console.log(desc.body.innerHTML);
 
     //product.descriptionHtml = desc.body.innerHTML;
 

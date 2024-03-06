@@ -12,6 +12,7 @@ import { VerifyEmailComponent } from './pages/auth/verify-email/verify-email.com
 //Shop Components
 import { ShopComponent } from './pages/shop/shop.component';
 import { ProductComponent } from './pages/shop/product/product.component';
+import { CartShopComponent } from './pages/shop/cart/cart.shop.component';
 
 // route guard
 import { AuthGuard } from './services/shared/guard/auth.guard';
@@ -67,6 +68,14 @@ const routes: Routes = [
     component: ShopComponent,
     loadChildren: () =>
       import('./pages/shop/shop.module').then((m) => m.ShopModule),
+  },
+  {
+    path: 'cart',
+    component: CartShopComponent,
+    loadChildren: () =>
+      import('./pages/shop/cart/cart.shop.module').then(
+        (m) => m.CartShopModule,
+      ),
   },
   {
     path: 'shop/product/:alias',

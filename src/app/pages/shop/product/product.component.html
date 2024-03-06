@@ -13,19 +13,17 @@
         <swiper-slide *ngFor="let image of product.images; index as imgidx">    
                 <img src="{{product.images[imgidx].src}}" class="product-image" width="100%" height="auto" />       
         </swiper-slide>
-    </swiper-container>
-    
+    </swiper-container>  
 
     <h1>{{product.title}}</h1>
-  
-    <div class="product-price">{{product.variants[0].price.amount}} {{ product.variants[0].price.currencyCode }}</div>  
+
+
+    <div class="product-price">{{product.price}} {{ product.currency }}</div>  
       
     <div class="product-type">{{product.productType}}</div>
     <ion-button (click)="service.shop.addToCart(product)">Add to cart</ion-button>
  
-   <div class="product-description" [innerHtml]="product.descriptionFormatted | safeHtml"></div>
-
-    {{product | json}}
+   <div class="product-description" [innerHtml]="product.description | safeHtml"></div>
 
 </ion-content>
 

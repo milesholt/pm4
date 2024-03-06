@@ -22,7 +22,21 @@ register();
 })
 export class ProductComponent implements OnInit {
   products: any;
-  product: any;
+  product: any = {
+    id: null,
+    title: null,
+    description: null,
+    meta: null,
+    tags: null,
+    alias: null,
+    images: [],
+    productType: null,
+    featuredImage: null,
+    price: 0,
+    currency: null,
+    url: null,
+    variants: [],
+  };
   //productDesc: any = 'test';
   id: any = null;
   alias: string = '';
@@ -60,20 +74,11 @@ export class ProductComponent implements OnInit {
     const idx = this.library.getArrayIndex(this.products, this.alias, 'handle');
     if (idx !== -1) this.idx = idx;
     this.id = this.products[this.idx].id;
-    //let prod = await this.service.shop.formatDesc(this.product);
-    // console.log('prod:');
-    //console.log(prod);
-    this.product = await this.service.shop.getProduct(this.products, this.idx);
-    //this.product = await this.service.shop.formatDesc(this.product);
-
-    /* setTimeout(async () => {
-      this.productDesc = await this.service.shop
-        .formatDesc(this.product)
-        .then((res) => {
-          return res;
-        });
-      this.changeDetectorRef.detectChanges();
-    });*/
+    this.product = await this.service.shop.getProduct(
+      this.products,
+      this.idx,
+      this.product,
+    );
   }
 
   async iniSlider() {
