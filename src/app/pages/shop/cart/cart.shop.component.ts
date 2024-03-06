@@ -19,6 +19,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class CartShopComponent implements OnInit {
   products: any;
+  cart: any;
   constructor(
     public service: CoreService,
     public router: Router,
@@ -26,5 +27,11 @@ export class CartShopComponent implements OnInit {
     public library: Library,
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getCart();
+  }
+
+  async getCart() {
+    this.cart = await this.service.shop.getCart();
+  }
 }

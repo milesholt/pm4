@@ -22,6 +22,8 @@
       
     <div class="product-type">{{product.productType}}</div>
     <ion-button (click)="service.shop.addToCart(product)">Add to cart</ion-button>
+
+    {{service.shop.cart | json}}
  
    <div class="product-description" [innerHtml]="product.description | safeHtml"></div>
 

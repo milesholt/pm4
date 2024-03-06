@@ -2,6 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { User } from '../../../shared/user';
 import Client from 'shopify-buy';
 import { Router } from '@angular/router';
+import { Library } from '../../../../app.library';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,7 @@ export class ShopService {
   checkoutComplete: any = null;
 
   constructor(
+    public library: Library,
     public router: Router,
     public ngZone: NgZone, // NgZone service to remove outside scope warning
   ) {
@@ -86,8 +88,20 @@ export class ShopService {
     ]);
     console.log(this.cart);
 
-    this.openCheckout();
-    //return this.cart;
+    localStorage.setItem('cart', this.cart);
+
+    //this.openCheckout();
+    return this.cart;
+  }
+
+  async getCart() {
+    this.cart = await this.client.checkout.fetch();
+    //if cart is empty
+    if (!this.cart || this.library.isEmpty(this.cart)) {
+      this.cart = localStorage.getItem('cart');
+    }
+    alert(this.cart);
+    return this.cart;
   }
 
   async formatDesc(product: any) {
