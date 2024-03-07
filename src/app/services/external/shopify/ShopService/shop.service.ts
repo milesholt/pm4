@@ -94,14 +94,42 @@ export class ShopService {
     return this.cart;
   }
 
+  async testItem(q: any) {
+    let qq = q as HTMLInputElement;
+    alert(qq.value);
+  }
+
+  async updateItem(item: any, quantity: any) {
+    const q = quantity as HTMLInputElement;
+    const checkoutId = !this.client.checkout.id
+      ? localStorage.getItem('checkoutId')
+      : this.client.checkout.id;
+
+    const lineItemsToUpdate = [{ id: item.id, quantity: parseInt(q.value) }];
+
+    this.cart = await this.client.checkout
+      .updateLineItems(checkoutId, lineItemsToUpdate)
+      .then((cart: any) => {
+        localStorage.setItem('cart', cart);
+        return cart;
+      })
+      .catch((error: any) => {
+        alert(error);
+      });
+  }
+
   async getCart() {
-    this.cart = await this.client.checkout.fetch();
+    const checkoutId = localStorage.getItem('checkoutId');
+    /*await this.client.checkout.fetch(checkoutId).then((cart: any) => {
+      this.cart = cart;
+    });*/
+    this.cart = await this.client.checkout.fetch(checkoutId);
+    return this.cart;
     //if cart is empty
-    if (!this.cart || this.library.isEmpty(this.cart)) {
+    /*if (!this.cart || this.library.isEmpty(this.cart)) {
       this.cart = localStorage.getItem('cart');
     }
-    alert(this.cart);
-    return this.cart;
+    return this.cart;*/
   }
 
   async formatDesc(product: any) {

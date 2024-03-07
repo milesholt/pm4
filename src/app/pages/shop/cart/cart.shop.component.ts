@@ -10,6 +10,7 @@ import {
 import { CoreService } from '../../../services/core.service';
 import { Library } from '../../../app.library';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-cart.shop.component.ts',
@@ -20,6 +21,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class CartShopComponent implements OnInit {
   products: any;
   cart: any;
+  //quantity: number;
   constructor(
     public service: CoreService,
     public router: Router,
@@ -32,6 +34,11 @@ export class CartShopComponent implements OnInit {
   }
 
   async getCart() {
+    this.cart = await this.service.shop.getCart();
+  }
+
+  async updateItem(it: any, e: any) {
+    this.cart = await this.service.shop.updateItem(it, e);
     this.cart = await this.service.shop.getCart();
   }
 }

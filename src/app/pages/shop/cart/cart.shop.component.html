@@ -4,8 +4,24 @@
     </ion-toolbar>
   </ion-header>
   
-  <ion-content>
+  <ion-content [fullscreen]="true">
       Details:
 
-      {{cart}}
+     <pre> {{cart.lineItems.length | json }}</pre>
+
+    <ion-list>
+       <ion-item *ngFor="let it of cart.lineItems; index as idx">
+        {{it.title}} - {{it.variant.price.amount}} {{it.variant.price.currencyCode}}
+        {{it.quantity}}
+          <ion-button>+</ion-button>
+          <ion-input type="number" [value]="it.quantity" (change)="updateItem( it, $event.target );" min="1" max="30" placeholder="1"></ion-input>
+          <ion-button>-</ion-button>
+        
+       </ion-item>
+     </ion-list>
+
+     <p>Subtotal: {{cart.paymentDue.amount}} {{cart.paymentDue.currencyCode}}</p>
+
+     <ion-button (click)="service.shop.openCheckout()">Continue to Checkout</ion-button>
+
   </ion-content>
