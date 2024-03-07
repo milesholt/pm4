@@ -20,7 +20,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class CartShopComponent implements OnInit {
   products: any;
-  cart: any;
+  //cart: any;
   //quantity: number;
   constructor(
     public service: CoreService,
@@ -34,11 +34,18 @@ export class CartShopComponent implements OnInit {
   }
 
   async getCart() {
-    this.cart = await this.service.shop.getCart();
+    await this.service.shop.getCart();
   }
 
-  async updateItem(it: any, e: any) {
-    this.cart = await this.service.shop.updateItem(it, e);
-    this.cart = await this.service.shop.getCart();
+  async updateItem(item: any, event: any) {
+    await this.service.shop.updateItem(item, event);
+  }
+
+  async addQuantity(item: any) {
+    item.value = item.value < item.max ? item.value + 1 : item.max;
+  }
+
+  async minusQuantity(item: any) {
+    item.value = item.value > 1 ? item.value - 1 : 1;
   }
 }

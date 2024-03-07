@@ -7,20 +7,20 @@
   <ion-content [fullscreen]="true">
       Details:
 
-     <pre> {{cart.lineItems.length | json }}</pre>
+     <pre> {{service.shop.cart.lineItems.length | json }}</pre>
 
     <ion-list>
-       <ion-item *ngFor="let it of cart.lineItems; index as idx">
+       <ion-item *ngFor="let it of service.shop.cart.lineItems; index as idx">
         {{it.title}} - {{it.variant.price.amount}} {{it.variant.price.currencyCode}}
         {{it.quantity}}
-          <ion-button>+</ion-button>
-          <ion-input type="number" [value]="it.quantity" (change)="updateItem( it, $event.target );" min="1" max="30" placeholder="1"></ion-input>
-          <ion-button>-</ion-button>
+          <ion-button (click)="minusQuantity(itemQuantity)">-</ion-button>
+          <ion-input readonly type="number" #itemQuantity [(ngModel)]="it.quantity" [value]="it.quantity" (ionChange)="updateItem( it, $event.target );" min="1" max="5" placeholder="1"></ion-input>
+          <ion-button (click)="addQuantity(itemQuantity)">+</ion-button>
         
        </ion-item>
      </ion-list>
 
-     <p>Subtotal: {{cart.paymentDue.amount}} {{cart.paymentDue.currencyCode}}</p>
+     <p>Subtotal: {{service.shop.cart.paymentDue.amount}} {{service.shop.cart.paymentDue.currencyCode}}</p>
 
      <ion-button (click)="service.shop.openCheckout()">Continue to Checkout</ion-button>
 
