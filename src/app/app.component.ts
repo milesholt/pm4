@@ -14,5 +14,29 @@ register();
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+  activePageTitle = 'Shop';
+  activeIndex = 0;
+  Pages = [
+    {
+      title: 'Shop',
+      url: '/shop',
+      icon: 'storefront',
+    },
+    {
+      title: 'Cart',
+      url: '/cart',
+      icon: 'cart',
+    },
+    {
+      title: 'Login',
+      url: '/login',
+      icon: 'person',
+    },
+    {
+      title: 'Register',
+      url: '/register',
+      icon: 'person',
+    },
+  ];
   constructor() {}
 }

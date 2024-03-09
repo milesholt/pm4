@@ -66,6 +66,7 @@ export class ShopService {
   }
 
   async createCheckout() {
+    alert('create checkout');
     this.checkout = await this.client.checkout.create();
     localStorage.setItem('checkoutId', this.checkout.id);
     return this.checkout.id;
@@ -75,11 +76,12 @@ export class ShopService {
     window.open(this.cart.webUrl, '_self');
   }
 
-  async addToCart(product: any) {
-    const checkoutId = !this.client.checkout.id
-      ? await this.createCheckout()
-      : this.client.checkout.id;
+  async getCheckoutId() {
+    return localStorage.getItem('checkoutId') ?? (await this.createCheckout());
+  }
 
+  async addToCart(product: any) {
+    const checkoutId = await this.getCheckoutId();
     this.cart = await this.client.checkout.addLineItems(checkoutId, [
       {
         variantId: product.variants[0].id,
@@ -101,9 +103,7 @@ export class ShopService {
 
   async updateItem(item: any, quantity: any) {
     const q = quantity as HTMLInputElement;
-    const checkoutId = !this.client.checkout.id
-      ? localStorage.getItem('checkoutId')
-      : this.client.checkout.id;
+    const checkoutId = await this.getCheckoutId();
 
     const lineItemsToUpdate = [{ id: item.id, quantity: parseInt(q.value) }];
 
@@ -118,8 +118,23 @@ export class ShopService {
       });
   }
 
+  async removeItem(item: any) {
+    const checkoutId = await this.getCheckoutId();
+
+    this.cart = await this.client.checkout
+      .removeLineItems(checkoutId, [item.id])
+      .then((cart: any) => {
+        localStorage.setItem('cart', cart);
+        return cart;
+      })
+      .catch((error: any) => {
+        alert(error);
+      });
+  }
+
   async getCart() {
-    const checkoutId = localStorage.getItem('checkoutId');
+    const checkoutId = await this.getCheckoutId();
+
     /*await this.client.checkout.fetch(checkoutId).then((cart: any) => {
       this.cart = cart;
     });*/

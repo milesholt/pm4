@@ -1,3 +1,35 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+
+  <ion-menu contentId="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Menu Content</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list>
+      <ion-menu-toggle auto-hide="false" *ngFor="let page of Pages; let i = index">
+        <ion-item (click)="activeIndex = i; activePageTitle = page.title" routerDirection="root" [routerLink]="[page.url]" lines="none"
+          detail="false" [class.selected]="activeIndex == i">
+          <ion-icon slot="start" [ios]="page.icon + '-outline'" [md]="page.icon + '-sharp'"></ion-icon>
+          <ion-label>{{ page.title }}</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <div class="ion-page">
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>App Title</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+      <ion-router-outlet id="main-content"></ion-router-outlet>
+
+ </div>
 </ion-app>

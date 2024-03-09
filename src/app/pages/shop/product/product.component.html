@@ -1,3 +1,12 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>  
+      <ion-title>Product</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
 <ion-content ion-padding [fullscreen]="true">
   
     <!--Image Slider-->
@@ -23,8 +32,6 @@
     <div class="product-type">{{product.productType}}</div>
     <ion-button (click)="service.shop.addToCart(product)">Add to cart</ion-button>
 
-    {{service.shop.cart | json}}
- 
    <div class="product-description" [innerHtml]="product.description | safeHtml"></div>
 
 </ion-content>

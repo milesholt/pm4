@@ -41,6 +41,10 @@ export class CartShopComponent implements OnInit {
     await this.service.shop.updateItem(item, event);
   }
 
+  async removeItem(item: any) {
+    await this.service.shop.removeItem(item);
+  }
+
   async addQuantity(item: any, input: any) {
     input.value = input.value < input.max ? input.value + 1 : input.max;
     await this.updateItem(item, input);
