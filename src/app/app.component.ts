@@ -28,11 +28,11 @@ export class AppComponent implements OnInit {
       url: '/shop',
       icon: 'storefront',
     },
-    {
+    /*{
       title: 'Cart',
       url: '/cart',
       icon: 'cart',
-    },
+    },*/
     {
       title: 'Login',
       url: '/login',
