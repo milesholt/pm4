@@ -3,6 +3,7 @@ import { User } from '../../../shared/user';
 import Client from 'shopify-buy';
 import { Router } from '@angular/router';
 import { Library } from '../../../../app.library';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,8 @@ export class ShopService {
   cart: any;
   checkout: any;
   checkoutComplete: any = null;
+  private cartSubject = new BehaviorSubject<any>(null);
+  cart$ = this.cartSubject.asObservable();
 
   constructor(
     public library: Library,
@@ -80,6 +83,14 @@ export class ShopService {
     return localStorage.getItem('checkoutId') ?? (await this.createCheckout());
   }
 
+  cartUpdated(): Observable<boolean> {
+    return this.cart.asObservable();
+  }
+
+  updateCart(cart: any) {
+    this.cartSubject.next(cart);
+  }
+
   async addToCart(product: any) {
     const checkoutId = await this.getCheckoutId();
     this.cart = await this.client.checkout.addLineItems(checkoutId, [
@@ -91,6 +102,8 @@ export class ShopService {
     console.log(this.cart);
 
     localStorage.setItem('cart', this.cart);
+
+    this.updateCart(this.cart);
 
     //this.openCheckout();
     return this.cart;
@@ -111,6 +124,7 @@ export class ShopService {
       .updateLineItems(checkoutId, lineItemsToUpdate)
       .then((cart: any) => {
         localStorage.setItem('cart', cart);
+        this.updateCart(cart);
         return cart;
       })
       .catch((error: any) => {
@@ -125,6 +139,7 @@ export class ShopService {
       .removeLineItems(checkoutId, [item.id])
       .then((cart: any) => {
         localStorage.setItem('cart', cart);
+        this.updateCart(cart);
         return cart;
       })
       .catch((error: any) => {
@@ -139,6 +154,7 @@ export class ShopService {
       this.cart = cart;
     });*/
     this.cart = await this.client.checkout.fetch(checkoutId);
+    this.updateCart(this.cart);
     return this.cart;
     //if cart is empty
     /*if (!this.cart || this.library.isEmpty(this.cart)) {

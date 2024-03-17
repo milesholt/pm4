@@ -21,6 +21,9 @@ import { environment } from '../environments/environment';
 //Auth service
 import { AuthService } from './services/external/firebase/AuthService/auth.capacitor.service';
 
+//Cart
+import { CartShopModule } from './pages/shop/cart/cart.shop.module';
+
 //Pipes
 //import { SafeHtmlPipe } from './pipes/safeHtml.pipe';
 
@@ -37,6 +40,7 @@ import { AuthService } from './services/external/firebase/AuthService/auth.capac
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
+    CartShopModule,
     //SafeHtmlPipe,
   ],
   providers: [

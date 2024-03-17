@@ -9,5 +9,6 @@ import { CartShopComponent } from './cart.shop.component';
 @NgModule({
   imports: [IonicModule, CommonModule, FormsModule, RouterLinkWithHref],
   declarations: [CartShopComponent],
+  exports: [CartShopComponent],
 })
 export class CartShopModule {}

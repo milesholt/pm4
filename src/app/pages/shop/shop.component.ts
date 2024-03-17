@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 //import { ProductComponent } from './product/product.component';
 
 @Component({
-  selector: 'app-shop.component.ts',
+  selector: 'app-shop',
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.scss'],
   providers: [CoreService, Library],

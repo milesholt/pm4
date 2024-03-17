@@ -15,7 +15,7 @@ import { register } from 'swiper/element/bundle';
 register();
 
 @Component({
-  selector: 'app-product.component.ts',
+  selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
   providers: [CoreService, Library],

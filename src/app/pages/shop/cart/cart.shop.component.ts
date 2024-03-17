@@ -13,7 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-cart.shop.component.ts',
+  selector: 'app-shop-cart',
   templateUrl: './cart.shop.component.html',
   styleUrls: ['./cart.shop.component.scss'],
   providers: [CoreService, Library],
