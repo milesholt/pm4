@@ -26,15 +26,17 @@
 
     <h1>{{product.title}}</h1>
 
-    <input type="text" #testInput value="hello" />
-    
-
     <div class="product-price">{{product.price}} {{ product.currency }}</div>  
       
     <div class="product-type">{{product.productType}}</div>
     
     <ion-button (click)="toggleAddToCart(product)">{{cartLabel}}</ion-button>
-    <ion-button (click)="cartTest(product)">Test</ion-button>
+    
+    <div *ngIf="cartItem !== false">
+      <ion-button (click)="minusQuantity(itemQuantity)">-</ion-button>
+      <ion-input class="quantityInput" width="30" readonly type="number" #itemQuantity [(ngModel)]="cartItem.quantity" [value]="cartItem.quantity" (ionChange)="updateItem( cartItem, $event.target );" min="1" max="5" placeholder="1"></ion-input>
+      <ion-button (click)="addQuantity(itemQuantity)">+</ion-button>
+    </div>
     
     <div class="product-description" [innerHtml]="product.description | safeHtml"></div>
 
@@ -45,4 +47,3 @@
 {{product | json }}
 </pre>
 -->
-<app-shop-cart #cartComponent></app-shop-cart>

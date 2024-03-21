@@ -19,9 +19,6 @@ import { AlertController } from '@ionic/angular';
   providers: [CoreService, Library],
 })
 export class CartShopComponent implements OnInit {
-  // @ViewChild('itemQuantity') itemQuantity!: ElementRef;
-  @ViewChild('testInput', { static: true }) input!: ElementRef;
-
   products: any;
   //cart: any;
   //quantity: number;
@@ -31,17 +28,11 @@ export class CartShopComponent implements OnInit {
     private route: ActivatedRoute,
     public library: Library,
     private elementRef: ElementRef<HTMLElement>,
-    // private itemQuantity: ElementRef<HTMLInputElement>,
   ) {}
 
   ngOnInit() {
     const element = this.elementRef.nativeElement;
     this.getCart();
-  }
-
-  ngAfterViewInit() {
-    // this.input is NOW valid !!
-    console.log(this.input);
   }
 
   async getCart() {
@@ -54,12 +45,6 @@ export class CartShopComponent implements OnInit {
 
   async removeItem(item: any) {
     await this.service.shop.removeItem(item);
-  }
-
-  test(product: any) {
-    //const element = this.itemQuantity.nativeElement;
-    console.log('test');
-    console.log(this.input);
   }
 
   async addQuantity(item: any, input: any) {

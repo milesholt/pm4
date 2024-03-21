@@ -49,9 +49,6 @@ export class ProductComponent implements OnInit {
   idx: number = 0;
 
   @Input() productDesc: string = 'test';
-  @ViewChild('cartComponent', { read: ElementRef<HTMLElement> })
-  childElementRef!: ElementRef<HTMLElement>;
-  @ViewChild('testInput') test!: ElementRef;
 
   constructor(
     public router: Router,
@@ -77,32 +74,34 @@ export class ProductComponent implements OnInit {
 
   async toggleAddToCart(product: any) {
     console.log(product);
-    if ((await this.isCartItem()) !== false) {
+    //this.cartItem = await this.isCartItem();
+
+    if (this.cartItem !== false) {
       this.cartLabel = this.addCartItemLabel;
-      this.service.shop.removeItem(this.cartItem);
+      await this.service.shop.removeItem(this.cartItem);
     } else {
       this.cartLabel = this.removeCartItemLabel;
-      this.service.shop.addToCart(product);
+      await this.service.shop.addToCart(product);
     }
+    this.cartItem = await this.isCartItem();
   }
 
   async isCartItem() {
-    this.cartItem = await this.service.shop.findInCart(this.product);
-    console.log(this.cartItem);
-    return this.cartItem;
+    return this.service.shop.findInCart(this.product);
   }
 
-  async cartTest(product: any) {
-    const item = this.cartItem;
-    //const quantityEl = this.cartComp.itemQuantity.nativeElement;
-    //alert(quantityEl);
-    //this.cartComp.test(product);
-    this.test.nativeElement.value = 'test2';
-    const element =
-      this.childElementRef.nativeElement.getElementsByClassName(
-        'quantityInput',
-      );
-    console.log(element);
+  async updateItem(item: any, event: any) {
+    await this.service.shop.updateItem(item, event);
+  }
+
+  async addQuantity(input: any) {
+    input.value = input.value < input.max ? input.value + 1 : input.max;
+    await this.updateItem(this.cartItem, input);
+  }
+
+  async minusQuantity(input: any) {
+    input.value = input.value > 1 ? input.value - 1 : 1;
+    await this.updateItem(this.cartItem, input);
   }
 
   async getAlias() {
