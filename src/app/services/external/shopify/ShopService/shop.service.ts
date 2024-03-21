@@ -132,8 +132,23 @@ export class ShopService {
       });
   }
 
+  async findInCart(product: any) {
+    const checkoutId = await this.getCheckoutId();
+    //console.log(product);
+    for (let i = 0; i < this.cart.lineItems.length; i++) {
+      //console.log(this.cart.lineItems[i]);
+      if (this.cart.lineItems[i].variant.id == product.variants[0].id) {
+        return this.cart.lineItems[i];
+      }
+    }
+    return false;
+  }
+
   async removeItem(item: any) {
     const checkoutId = await this.getCheckoutId();
+
+    console.log(item);
+    console.log(this.cart.lineItems);
 
     this.cart = await this.client.checkout
       .removeLineItems(checkoutId, [item.id])

@@ -26,13 +26,17 @@
 
     <h1>{{product.title}}</h1>
 
+    <input type="text" #testInput value="hello" />
+    
 
     <div class="product-price">{{product.price}} {{ product.currency }}</div>  
       
     <div class="product-type">{{product.productType}}</div>
-    <ion-button (click)="service.shop.addToCart(product)">Add to cart</ion-button>
-
-   <div class="product-description" [innerHtml]="product.description | safeHtml"></div>
+    
+    <ion-button (click)="toggleAddToCart(product)">{{cartLabel}}</ion-button>
+    <ion-button (click)="cartTest(product)">Test</ion-button>
+    
+    <div class="product-description" [innerHtml]="product.description | safeHtml"></div>
 
 </ion-content>
 
@@ -41,3 +45,4 @@
 {{product | json }}
 </pre>
 -->
+<app-shop-cart #cartComponent></app-shop-cart>

@@ -8,6 +8,7 @@ import {
   ElementRef,
 } from '@angular/core';
 import { CoreService } from '../../../services/core.service';
+import { CartShopComponent } from '../cart/cart.shop.component';
 import { Library } from '../../../app.library';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -18,7 +19,7 @@ register();
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
-  providers: [CoreService, Library],
+  providers: [CoreService, Library, CartShopComponent],
 })
 export class ProductComponent implements OnInit {
   products: any;
@@ -37,12 +38,20 @@ export class ProductComponent implements OnInit {
     url: null,
     variants: [],
   };
+  cartLabel: string = '';
+  cartItem: any;
+  removeCartItemLabel: string = 'Remove from cart';
+  addCartItemLabel: string = 'Add to cart';
+
   //productDesc: any = 'test';
   id: any = null;
   alias: string = '';
   idx: number = 0;
 
   @Input() productDesc: string = 'test';
+  @ViewChild('cartComponent', { read: ElementRef<HTMLElement> })
+  childElementRef!: ElementRef<HTMLElement>;
+  @ViewChild('testInput') test!: ElementRef;
 
   constructor(
     public router: Router,
@@ -51,6 +60,7 @@ export class ProductComponent implements OnInit {
     public service: CoreService,
     private changeDetectorRef: ChangeDetectorRef,
     // public safeHtml: SafeHtmlPipe,
+    private cartComp: CartShopComponent,
   ) {}
 
   async ngOnInit() {
@@ -58,6 +68,41 @@ export class ProductComponent implements OnInit {
     await this.getProducts();
     await this.getProduct();
     await this.iniSlider();
+    this.cartItem = await this.service.shop.findInCart(this.product);
+    this.cartLabel =
+      this.cartItem !== false
+        ? this.removeCartItemLabel
+        : this.addCartItemLabel;
+  }
+
+  async toggleAddToCart(product: any) {
+    console.log(product);
+    if ((await this.isCartItem()) !== false) {
+      this.cartLabel = this.addCartItemLabel;
+      this.service.shop.removeItem(this.cartItem);
+    } else {
+      this.cartLabel = this.removeCartItemLabel;
+      this.service.shop.addToCart(product);
+    }
+  }
+
+  async isCartItem() {
+    this.cartItem = await this.service.shop.findInCart(this.product);
+    console.log(this.cartItem);
+    return this.cartItem;
+  }
+
+  async cartTest(product: any) {
+    const item = this.cartItem;
+    //const quantityEl = this.cartComp.itemQuantity.nativeElement;
+    //alert(quantityEl);
+    //this.cartComp.test(product);
+    this.test.nativeElement.value = 'test2';
+    const element =
+      this.childElementRef.nativeElement.getElementsByClassName(
+        'quantityInput',
+      );
+    console.log(element);
   }
 
   async getAlias() {
