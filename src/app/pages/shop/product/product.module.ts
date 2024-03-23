@@ -10,6 +10,7 @@ import { ProductComponent } from './product.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { QuantityShopModule } from '../cart/components/quantity/quantity.shop.module';
+import { CartButtonShopModule } from '../cart/components/cartbutton/cartbutton.shop.module';
 
 //Pipes
 import { SafeHtmlPipe } from '../../../pipes/safeHtml.pipe';
@@ -22,6 +23,7 @@ import { SafeHtmlPipe } from '../../../pipes/safeHtml.pipe';
     FormsModule,
     RouterLinkWithHref,
     QuantityShopModule,
+    CartButtonShopModule,
   ],
   declarations: [ProductComponent, SafeHtmlPipe],
 })

@@ -30,7 +30,7 @@
       
     <div class="product-type">{{product.productType}}</div>
     
-    <ion-button (click)="toggleAddToCart(product)">{{cartLabel}}</ion-button>
+    <app-cartbutton-shop-comp [item]="product"></app-cartbutton-shop-comp>
     
     <!--<div *ngIf="cartItem !== false">
       <ion-button (click)="minusQuantity(itemQuantity)">-</ion-button>
