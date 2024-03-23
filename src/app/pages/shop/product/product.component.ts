@@ -9,8 +9,12 @@ import {
 } from '@angular/core';
 import { CoreService } from '../../../services/core.service';
 import { CartShopComponent } from '../cart/cart.shop.component';
+//import { QuantityShopComponent } from '../cart/components/quantity/quantity.shop.component';
+
 import { Library } from '../../../app.library';
 import { Router, ActivatedRoute } from '@angular/router';
+
+import { Subscription } from 'rxjs';
 
 import { register } from 'swiper/element/bundle';
 register();
@@ -42,6 +46,7 @@ export class ProductComponent implements OnInit {
   cartItem: any;
   removeCartItemLabel: string = 'Remove from cart';
   addCartItemLabel: string = 'Add to cart';
+  cartSubscription: Subscription;
 
   //productDesc: any = 'test';
   id: any = null;
@@ -58,7 +63,15 @@ export class ProductComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     // public safeHtml: SafeHtmlPipe,
     private cartComp: CartShopComponent,
-  ) {}
+    //private quantityComp: QuantityShopComponent,
+  ) {
+    this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
+      // Update another variable based on the cart change
+      // For example:
+      await this.getProduct();
+      this.cartItem = await this.service.shop.findInCart(this.product);
+    });
+  }
 
   async ngOnInit() {
     await this.getAlias();
@@ -90,6 +103,7 @@ export class ProductComponent implements OnInit {
     return this.service.shop.findInCart(this.product);
   }
 
+  /*
   async updateItem(item: any, event: any) {
     await this.service.shop.updateItem(item, event);
   }
@@ -102,7 +116,7 @@ export class ProductComponent implements OnInit {
   async minusQuantity(input: any) {
     input.value = input.value > 1 ? input.value - 1 : 1;
     await this.updateItem(this.cartItem, input);
-  }
+  }*/
 
   async getAlias() {
     this.alias = String(this.route.snapshot.paramMap.get('alias'));

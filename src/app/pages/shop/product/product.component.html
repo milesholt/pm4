@@ -32,11 +32,12 @@
     
     <ion-button (click)="toggleAddToCart(product)">{{cartLabel}}</ion-button>
     
-    <div *ngIf="cartItem !== false">
+    <!--<div *ngIf="cartItem !== false">
       <ion-button (click)="minusQuantity(itemQuantity)">-</ion-button>
       <ion-input class="quantityInput" width="30" readonly type="number" #itemQuantity [(ngModel)]="cartItem.quantity" [value]="cartItem.quantity" (ionChange)="updateItem( cartItem, $event.target );" min="1" max="5" placeholder="1"></ion-input>
       <ion-button (click)="addQuantity(itemQuantity)">+</ion-button>
-    </div>
+    </div>-->
+    <app-quantity-shop-comp [item]="cartItem"></app-quantity-shop-comp>
     
     <div class="product-description" [innerHtml]="product.description | safeHtml"></div>
 

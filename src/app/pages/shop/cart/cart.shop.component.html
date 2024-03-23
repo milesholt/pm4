@@ -5,6 +5,7 @@
   </ion-header>
   
   <ion-content [fullscreen]="true">
+    
      <!-- Details:
      <pre> {{service.shop.cart.lineItems.length | json }}</pre>-->
       <p *ngIf="service.shop.cart.lineItems.length == 0"> Your cart is empty.</p>
@@ -13,9 +14,13 @@
           <ion-item *ngFor="let it of service.shop.cart.lineItems; index as idx">
             {{it.title}} - {{it.variant.price.amount}} {{it.variant.price.currencyCode}}
           
-              <ion-button (click)="minusQuantity(it, itemQuantity)">-</ion-button>
+              <!--<ion-button (click)="minusQuantity(it, itemQuantity)">-</ion-button>
               <ion-input class="quantityInput" width="30" readonly type="number" #itemQuantity [(ngModel)]="it.quantity" [value]="it.quantity" (ionChange)="updateItem( it, $event.target );" min="1" max="5" placeholder="1"></ion-input>
               <ion-button (click)="addQuantity(it, itemQuantity)">+</ion-button>
+              -->
+              <app-quantity-shop-comp [item]="it"></app-quantity-shop-comp>
+    
+
               <ion-button (click)="removeItem(it)">X</ion-button>
 
           </ion-item>
