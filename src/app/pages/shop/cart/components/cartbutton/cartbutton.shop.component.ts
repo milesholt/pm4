@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 export class CartButtonShopComponent implements OnInit {
   @Input() item: any;
 
-  cartLabel: string = '';
+  cartLabel: any = '';
   cartItem: any;
   removeCartItemLabel: string = 'Remove from cart';
   addCartItemLabel: string = 'Add to cart';
@@ -33,31 +33,31 @@ export class CartButtonShopComponent implements OnInit {
     public lib: Library,
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
-      this.cartItem = await this.service.shop.findInCart(this.item);
-      
-      this.cartLabel =
-        this.cartItem !== false
-          ? this.removeCartItemLabel
-          : this.addCartItemLabel;
+      await this.getCartItem();
     });
   }
 
-  ngOnInit() {}
+  async ngOnInit() {}
 
-  async toggleAddToCart(product: any) {
-    console.log(product);
-    //this.cartItem = await this.isCartItem();
-    if (this.cartItem !== false) {
-      this.cartLabel = this.addCartItemLabel;
-      await this.service.shop.removeItem(this.cartItem);
-    } else {
-      this.cartLabel = this.removeCartItemLabel;
-      await this.service.shop.addToCart(product);
-    }
-    //this.cartItem = await this.isCartItem();
+  async ngAfterViewInit() {
+    await this.getCartItem();
   }
 
-  async isCartItem() {
-    return this.service.shop.findInCart(this.item);
+  async getCartItem() {
+    this.cartItem = await this.service.shop.findInCart(this.item);
+    this.cartLabel =
+      this.cartItem !== false
+        ? this.removeCartItemLabel
+        : this.addCartItemLabel;
+    return this.cartItem;
+  }
+
+  async toggleAddToCart(product: any) {
+    if (this.cartItem !== false) {
+      await this.service.shop.removeItem(this.cartItem);
+    } else {
+      await this.service.shop.addToCart(product);
+    }
+    await this.getCartItem();
   }
 }
