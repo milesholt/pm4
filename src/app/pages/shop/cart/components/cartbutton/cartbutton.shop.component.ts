@@ -45,6 +45,7 @@ export class CartButtonShopComponent implements OnInit {
 
   async getCartItem() {
     this.cartItem = await this.service.shop.findInCart(this.item);
+    alert(JSON.stringify(this.cartItem));
     this.cartLabel =
       this.cartItem !== false
         ? this.removeCartItemLabel

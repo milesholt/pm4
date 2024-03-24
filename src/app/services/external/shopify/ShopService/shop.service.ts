@@ -135,6 +135,8 @@ export class ShopService {
   async findInCart(product: any) {
     const checkoutId = await this.getCheckoutId();
     //console.log(product);
+    if (this.cart.lineItems.length === 0) return false;
+
     for (let i = 0; i < this.cart.lineItems.length; i++) {
       //console.log(this.cart.lineItems[i]);
       if (this.cart.lineItems[i].variant.id == product.variants[0].id) {
@@ -179,7 +181,7 @@ export class ShopService {
   }
 
   async isCartEmpty() {
-    if (!this.cart || this.library.isEmpty(this.cart)) return true;
+    if (this.cart.lineItems.length == 0) return true;
     return false;
   }
 
