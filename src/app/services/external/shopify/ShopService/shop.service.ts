@@ -178,6 +178,11 @@ export class ShopService {
     return this.cart;*/
   }
 
+  async isCartEmpty() {
+    if (!this.cart || this.library.isEmpty(this.cart)) return true;
+    return false;
+  }
+
   async formatDesc(product: any) {
     //return desc.replace(/(<([^>]+)>)/gi, '');
     //add class if there is an image

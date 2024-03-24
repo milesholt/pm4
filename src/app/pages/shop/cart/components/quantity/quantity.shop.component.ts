@@ -7,6 +7,8 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Library } from '../../../../../app.library';
 import { CoreService } from '../../../../../services/core.service';
 
+import { Subscription } from 'rxjs';
+
 @Component({
   //standalone: true,
   selector: 'app-quantity-shop-comp',
@@ -16,20 +18,30 @@ import { CoreService } from '../../../../../services/core.service';
   //imports:[IonicModule]
 })
 export class QuantityShopComponent implements OnInit {
-  
   @Input() item: any;
+  cartSubscription: Subscription;
+  isCartEmpty: boolean = true;
 
   constructor(
     public service: CoreService,
     public navCtrl: NavController,
     public router: Router,
     public lib: Library,
-  ) {}
+  ) {
+    this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
+      this.isCartEmpty = await this.service.shop.isCartEmpty();
+    });
+  }
 
   ngOnInit() {}
 
   async updateItem(item: any, event: any) {
     await this.service.shop.updateItem(item, event);
+    this.isCartEmpty = await this.service.shop.isCartEmpty();
+  }
+
+  async getCartItem() {
+    return await this.service.shop.findInCart(this.item);
   }
 
   async addQuantity(item: any, input: any) {
