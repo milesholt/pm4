@@ -44,8 +44,10 @@ export class CartButtonShopComponent implements OnInit {
   }
 
   async getCartItem() {
+    // await this.service.shop.getCart();
     this.cartItem = await this.service.shop.findInCart(this.item);
-    alert(JSON.stringify(this.cartItem));
+    alert(this.cartItem);
+
     this.cartLabel =
       this.cartItem !== false
         ? this.removeCartItemLabel
@@ -59,6 +61,6 @@ export class CartButtonShopComponent implements OnInit {
     } else {
       await this.service.shop.addToCart(product);
     }
-    await this.getCartItem();
+    //await this.getCartItem();
   }
 }

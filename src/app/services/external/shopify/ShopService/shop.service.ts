@@ -88,6 +88,7 @@ export class ShopService {
   }
 
   updateCart(cart: any) {
+    localStorage.setItem('cart', this.cart);
     this.cartSubject.next(cart);
   }
 
@@ -99,13 +100,7 @@ export class ShopService {
         quantity: 1,
       },
     ]);
-    console.log(this.cart);
-
-    localStorage.setItem('cart', this.cart);
-
     this.updateCart(this.cart);
-
-    //this.openCheckout();
     return this.cart;
   }
 
@@ -117,19 +112,16 @@ export class ShopService {
   async updateItem(item: any, quantity: any) {
     const q = quantity as HTMLInputElement;
     const checkoutId = await this.getCheckoutId();
-
     const lineItemsToUpdate = [{ id: item.id, quantity: parseInt(q.value) }];
-
     this.cart = await this.client.checkout
       .updateLineItems(checkoutId, lineItemsToUpdate)
       .then((cart: any) => {
-        localStorage.setItem('cart', cart);
-        this.updateCart(cart);
         return cart;
       })
       .catch((error: any) => {
         alert(error);
       });
+    this.updateCart(this.cart);
   }
 
   async findInCart(product: any) {
@@ -148,20 +140,15 @@ export class ShopService {
 
   async removeItem(item: any) {
     const checkoutId = await this.getCheckoutId();
-
-    console.log(item);
-    console.log(this.cart.lineItems);
-
     this.cart = await this.client.checkout
       .removeLineItems(checkoutId, [item.id])
       .then((cart: any) => {
-        localStorage.setItem('cart', cart);
-        this.updateCart(cart);
         return cart;
       })
       .catch((error: any) => {
         alert(error);
       });
+    this.updateCart(this.cart);
   }
 
   async getCart() {
