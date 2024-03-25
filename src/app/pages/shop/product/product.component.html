@@ -7,10 +7,10 @@
     </ion-toolbar>
   </ion-header>
 
-<ion-content ion-padding [fullscreen]="true">
+<ion-content *ngIf="product.id !== null" #mainContent ion-padding [fullscreen]="true">
   
     <!--Image Slider-->
-    <swiper-container class="main-swiper" init="false" >
+    <swiper-container #mainSwiper class="main-swiper" init="false" >
         <swiper-slide *ngFor="let image of product.images; index as imgidx"> 
             <div class="swiper-zoom-container">   
                 <img src="{{product.images[imgidx].src}}" class="product-image" width="100%" height="auto" />   

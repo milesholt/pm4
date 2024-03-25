@@ -43,6 +43,7 @@ export class ProductComponent implements OnInit {
   idx: number = 0;
   cartIdx: number = -1;
 
+  @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
   @Input() productDesc: string = 'test';
 
   constructor(
@@ -56,8 +57,9 @@ export class ProductComponent implements OnInit {
     await this.getAlias();
     await this.getProducts();
     await this.getProduct();
-    await this.iniSlider();
   }
+
+  async ngAfterViewInit() {}
 
   async getAlias() {
     this.alias = String(this.route.snapshot.paramMap.get('alias'));
@@ -77,6 +79,12 @@ export class ProductComponent implements OnInit {
       .getProduct(this.products, this.idx, this.product)
       .then(async (product) => {
         await this.getCartIdx();
+        setTimeout(() => {
+          if (this.mainSwiper) {
+            this.iniSlider();
+          }
+        });
+
         return product;
       });
   }
@@ -91,7 +99,8 @@ export class ProductComponent implements OnInit {
 
   async iniSlider() {
     // swiper element
-    const swiperEl = <any>document.querySelector('.main-swiper');
+    //const swiperEl = <any>document.querySelector('.main-swiper');
+    const swiperEl = this.mainSwiper.nativeElement;
 
     // swiper parameters
     const swiperParams = {
