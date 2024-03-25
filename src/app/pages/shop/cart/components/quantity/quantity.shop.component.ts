@@ -18,9 +18,11 @@ import { Subscription } from 'rxjs';
   //imports:[IonicModule]
 })
 export class QuantityShopComponent implements OnInit {
-  @Input() item: any;
+  @Input() item: any = false;
+  @Input() product: any;
+  @Input() itemidx: number = -1;
+
   cartSubscription: Subscription;
-  isCartEmpty: boolean = true;
 
   constructor(
     public service: CoreService,
@@ -28,29 +30,42 @@ export class QuantityShopComponent implements OnInit {
     public router: Router,
     public lib: Library,
   ) {
-    this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
-      this.isCartEmpty = await this.service.shop.isCartEmpty();
+    this.cartSubscription = this.service.shop.cart$.subscribe((cart) => {
+      this.item = cart.lineItems[this.itemidx];
     });
   }
 
-  ngOnInit() {}
+  /* ngOnInit() {
+    this.cartSubscription = this.service.shop.cart.item$.subscribe(cart:any => {
+      this.item = cart.lineItems[this.itemidx];
+    });
+  }*/
 
-  async updateItem(item: any, event: any) {
-    await this.service.shop.updateItem(item, event);
-    this.isCartEmpty = await this.service.shop.isCartEmpty();
+  ngOnDestroy() {
+    this.cartSubscription.unsubscribe();
+  }
+
+  async ngOnInit() {
+    this.item = this.service.shop.cart.lineItems[this.itemidx];
+  }
+
+  async ngAfterViewInit() {
+    if (!this.item) await this.getCartItem();
   }
 
   async getCartItem() {
-    return await this.service.shop.findInCart(this.item);
+    this.item = this.service.shop.cart.lineItems[this.itemidx];
   }
 
   async addQuantity(item: any, input: any) {
     input.value = input.value < input.max ? input.value + 1 : input.max;
-    await this.updateItem(item, input);
+    this.service.shop.activeProduct = this.product;
+    await this.service.shop.updateItem(this.item, input);
   }
 
   async minusQuantity(item: any, input: any) {
     input.value = input.value > 1 ? input.value - 1 : 1;
-    await this.updateItem(item, input);
+    this.service.shop.activeProduct = this.product;
+    await this.service.shop.updateItem(this.item, input);
   }
 }

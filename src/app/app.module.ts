@@ -23,7 +23,7 @@ import { AuthService } from './services/external/firebase/AuthService/auth.capac
 
 //Cart
 import { CartShopModule } from './pages/shop/cart/cart.shop.module';
-//import { QuantityShopModule } from './pages/shop/cart/components/quantity/quantity.shop.module';
+import { QuantityShopModule } from './pages/shop/cart/components/quantity/quantity.shop.module';
 
 //Pipes
 //import { SafeHtmlPipe } from './pipes/safeHtml.pipe';

@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs';
   //imports:[IonicModule]
 })
 export class CartButtonShopComponent implements OnInit {
-  @Input() item: any;
+  @Input() product: any;
 
   cartLabel: any = '';
   cartItem: any;
@@ -37,6 +37,10 @@ export class CartButtonShopComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.cartSubscription.unsubscribe();
+  }
+
   async ngOnInit() {}
 
   async ngAfterViewInit() {
@@ -44,10 +48,7 @@ export class CartButtonShopComponent implements OnInit {
   }
 
   async getCartItem() {
-    // await this.service.shop.getCart();
-    this.cartItem = await this.service.shop.findInCart(this.item);
-    alert(this.cartItem);
-
+    this.cartItem = await this.service.shop.findInCart(this.product);
     this.cartLabel =
       this.cartItem !== false
         ? this.removeCartItemLabel

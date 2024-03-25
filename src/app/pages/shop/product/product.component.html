@@ -7,7 +7,7 @@
     </ion-toolbar>
   </ion-header>
 
-<ion-content ion-padding [fullscreen]="true">
+<ion-content *ngIf="product.id !== null" ion-padding [fullscreen]="true">
   
     <!--Image Slider-->
     <swiper-container init="false">
@@ -29,15 +29,10 @@
     <div class="product-price">{{product.price}} {{ product.currency }}</div>  
       
     <div class="product-type">{{product.productType}}</div>
-    
-    <app-cartbutton-shop-comp [item]="product"></app-cartbutton-shop-comp>
-    
-    <!--<div *ngIf="cartItem !== false">
-      <ion-button (click)="minusQuantity(itemQuantity)">-</ion-button>
-      <ion-input class="quantityInput" width="30" readonly type="number" #itemQuantity [(ngModel)]="cartItem.quantity" [value]="cartItem.quantity" (ionChange)="updateItem( cartItem, $event.target );" min="1" max="5" placeholder="1"></ion-input>
-      <ion-button (click)="addQuantity(itemQuantity)">+</ion-button>
-    </div>-->
-    <app-quantity-shop-comp [item]="cartItem"></app-quantity-shop-comp>
+ 
+    <app-cartbutton-shop-comp [product]="product"></app-cartbutton-shop-comp>
+
+    <app-quantity-shop-comp [itemidx]="cartIdx" [product]="product"></app-quantity-shop-comp>
     
     <div class="product-description" [innerHtml]="product.description | safeHtml"></div>
 

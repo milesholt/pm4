@@ -8,13 +8,8 @@ import {
   ElementRef,
 } from '@angular/core';
 import { CoreService } from '../../../services/core.service';
-import { CartShopComponent } from '../cart/cart.shop.component';
-//import { QuantityShopComponent } from '../cart/components/quantity/quantity.shop.component';
-
 import { Library } from '../../../app.library';
 import { Router, ActivatedRoute } from '@angular/router';
-
-import { Subscription } from 'rxjs';
 
 import { register } from 'swiper/element/bundle';
 register();
@@ -23,7 +18,7 @@ register();
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
-  providers: [CoreService, Library, CartShopComponent],
+  providers: [CoreService, Library],
 })
 export class ProductComponent implements OnInit {
   products: any;
@@ -42,16 +37,11 @@ export class ProductComponent implements OnInit {
     url: null,
     variants: [],
   };
-  cartLabel: string = '';
-  cartItem: any;
-  removeCartItemLabel: string = 'Remove from cart';
-  addCartItemLabel: string = 'Add to cart';
-  cartSubscription: Subscription;
-
   //productDesc: any = 'test';
   id: any = null;
   alias: string = '';
   idx: number = 0;
+  cartIdx: number = -1;
 
   @Input() productDesc: string = 'test';
 
@@ -60,63 +50,14 @@ export class ProductComponent implements OnInit {
     private route: ActivatedRoute,
     public library: Library,
     public service: CoreService,
-    private changeDetectorRef: ChangeDetectorRef,
-    // public safeHtml: SafeHtmlPipe,
-    private cartComp: CartShopComponent,
-    //private quantityComp: QuantityShopComponent,
-  ) {
-    this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
-      // Update another variable based on the cart change
-      // For example:
-      await this.getProduct();
-      this.cartItem = await this.service.shop.findInCart(this.product);
-    });
-  }
+  ) {}
 
   async ngOnInit() {
     await this.getAlias();
     await this.getProducts();
     await this.getProduct();
     await this.iniSlider();
-    this.cartItem = await this.service.shop.findInCart(this.product);
-    this.cartLabel =
-      this.cartItem !== false
-        ? this.removeCartItemLabel
-        : this.addCartItemLabel;
   }
-
-  async toggleAddToCart(product: any) {
-    console.log(product);
-    //this.cartItem = await this.isCartItem();
-
-    if (this.cartItem !== false) {
-      this.cartLabel = this.addCartItemLabel;
-      await this.service.shop.removeItem(this.cartItem);
-    } else {
-      this.cartLabel = this.removeCartItemLabel;
-      await this.service.shop.addToCart(product);
-    }
-    this.cartItem = await this.isCartItem();
-  }
-
-  async isCartItem() {
-    return this.service.shop.findInCart(this.product);
-  }
-
-  /*
-  async updateItem(item: any, event: any) {
-    await this.service.shop.updateItem(item, event);
-  }
-
-  async addQuantity(input: any) {
-    input.value = input.value < input.max ? input.value + 1 : input.max;
-    await this.updateItem(this.cartItem, input);
-  }
-
-  async minusQuantity(input: any) {
-    input.value = input.value > 1 ? input.value - 1 : 1;
-    await this.updateItem(this.cartItem, input);
-  }*/
 
   async getAlias() {
     this.alias = String(this.route.snapshot.paramMap.get('alias'));
@@ -132,11 +73,20 @@ export class ProductComponent implements OnInit {
     const idx = this.library.getArrayIndex(this.products, this.alias, 'handle');
     if (idx !== -1) this.idx = idx;
     this.id = this.products[this.idx].id;
-    this.product = await this.service.shop.getProduct(
-      this.products,
-      this.idx,
-      this.product,
-    );
+    this.product = await this.service.shop
+      .getProduct(this.products, this.idx, this.product)
+      .then(async (product) => {
+        await this.getCartIdx();
+        return product;
+      });
+  }
+
+  async getCartIdx() {
+    this.cartIdx = await this.service.shop
+      .getCartIdx(this.product)
+      .then((idx) => {
+        return idx;
+      });
   }
 
   async iniSlider() {

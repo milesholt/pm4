@@ -16,6 +16,7 @@ export class ShopService {
   checkoutComplete: any = null;
   private cartSubject = new BehaviorSubject<any>(null);
   cart$ = this.cartSubject.asObservable();
+  activeProduct: any = null;
 
   constructor(
     public library: Library,
@@ -126,16 +127,31 @@ export class ShopService {
 
   async findInCart(product: any) {
     const checkoutId = await this.getCheckoutId();
-    //console.log(product);
-    if (this.cart.lineItems.length === 0) return false;
 
+    //alert(JSON.stringify(product));
+    //alert('product id: ' + product.variants[0].id);
+    if (this.cart.lineItems.length === 0) {
+      return false;
+    }
     for (let i = 0; i < this.cart.lineItems.length; i++) {
-      //console.log(this.cart.lineItems[i]);
+      //alert('cart id: ' + this.cart.lineItems[i].variant.id);
       if (this.cart.lineItems[i].variant.id == product.variants[0].id) {
+        //alert('match');
         return this.cart.lineItems[i];
       }
     }
+    //alert('Nothing');
     return false;
+  }
+
+  async getCartIdx(product: any) {
+    let idx = -1;
+    for (let i = 0; i < this.cart.lineItems.length; i++) {
+      if (this.cart.lineItems[i].variant.id == product.variants[0].id) {
+        idx = i;
+      }
+    }
+    return idx;
   }
 
   async removeItem(item: any) {

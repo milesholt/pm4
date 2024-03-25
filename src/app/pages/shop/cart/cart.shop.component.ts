@@ -12,14 +12,27 @@ import { Library } from '../../../app.library';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
+//import { CartButtonShopComponent } from './components/cartbutton/cartbutton.shop.component';
+import { QuantityShopComponent } from './components/quantity/quantity.shop.component';
+
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-shop-cart',
   templateUrl: './cart.shop.component.html',
   styleUrls: ['./cart.shop.component.scss'],
-  providers: [CoreService, Library],
+  providers: [
+    CoreService,
+    Library,
+    //QuantityShopComponent,
+    //CartButtonShopComponent,
+  ],
 })
 export class CartShopComponent implements OnInit {
+  @ViewChild(QuantityShopComponent) quantityComp!: QuantityShopComponent;
+
   products: any;
+  //cartSubscription: Subscription;
   //cart: any;
   //quantity: number;
   constructor(
@@ -27,8 +40,17 @@ export class CartShopComponent implements OnInit {
     public router: Router,
     private route: ActivatedRoute,
     public library: Library,
+    //public cartButtonComp: CartButtonShopComponent,
+    //public quantityComp: QuantityShopComponent,
     private elementRef: ElementRef<HTMLElement>,
-  ) {}
+  ) {
+    /*this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
+      //alert(this.service.shop.activeProduct);
+      await this.quantityComp.getCartItem();
+      //this.quantityComp.item.quantity = 0;
+      //await this.cartButtonComp.getCartItem();
+    });*/
+  }
 
   ngOnInit() {
     const element = this.elementRef.nativeElement;
