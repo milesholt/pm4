@@ -70,7 +70,6 @@ export class ShopService {
   }
 
   async createCheckout() {
-    alert('create checkout');
     this.checkout = await this.client.checkout.create();
     localStorage.setItem('checkoutId', this.checkout.id);
     return this.checkout.id;
@@ -127,20 +126,14 @@ export class ShopService {
 
   async findInCart(product: any) {
     const checkoutId = await this.getCheckoutId();
-
-    //alert(JSON.stringify(product));
-    //alert('product id: ' + product.variants[0].id);
     if (this.cart.lineItems.length === 0) {
       return false;
     }
     for (let i = 0; i < this.cart.lineItems.length; i++) {
-      //alert('cart id: ' + this.cart.lineItems[i].variant.id);
       if (this.cart.lineItems[i].variant.id == product.variants[0].id) {
-        //alert('match');
         return this.cart.lineItems[i];
       }
     }
-    //alert('Nothing');
     return false;
   }
 
@@ -169,18 +162,9 @@ export class ShopService {
 
   async getCart() {
     const checkoutId = await this.getCheckoutId();
-
-    /*await this.client.checkout.fetch(checkoutId).then((cart: any) => {
-      this.cart = cart;
-    });*/
     this.cart = await this.client.checkout.fetch(checkoutId);
     this.updateCart(this.cart);
     return this.cart;
-    //if cart is empty
-    /*if (!this.cart || this.library.isEmpty(this.cart)) {
-      this.cart = localStorage.getItem('cart');
-    }
-    return this.cart;*/
   }
 
   async isCartEmpty() {

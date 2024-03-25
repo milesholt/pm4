@@ -91,7 +91,7 @@ export class ProductComponent implements OnInit {
 
   async iniSlider() {
     // swiper element
-    const swiperEl = <any>document.querySelector('swiper-container');
+    const swiperEl = <any>document.querySelector('.main-swiper');
 
     // swiper parameters
     const swiperParams = {
