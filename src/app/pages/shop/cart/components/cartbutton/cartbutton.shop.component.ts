@@ -1,4 +1,4 @@
-import { Input, Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit, ChangeDetectorRef } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -31,6 +31,7 @@ export class CartButtonShopComponent implements OnInit {
     public navCtrl: NavController,
     public router: Router,
     public lib: Library,
+    public changeDet: ChangeDetectorRef,
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
       await this.getCartItem();
@@ -62,6 +63,8 @@ export class CartButtonShopComponent implements OnInit {
     } else {
       await this.service.shop.addToCart(product);
     }
+    this.changeDet.detectChanges();
+    //await this.service.shop.getCart();
     //await this.getCartItem();
   }
 }

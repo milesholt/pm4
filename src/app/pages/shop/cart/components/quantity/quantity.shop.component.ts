@@ -1,4 +1,4 @@
-import { Input, Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit, ChangeDetectorRef } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -29,25 +29,19 @@ export class QuantityShopComponent implements OnInit {
     public navCtrl: NavController,
     public router: Router,
     public lib: Library,
+    public changeDet: ChangeDetectorRef,
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe((cart) => {
       this.item = cart.lineItems[this.itemidx];
+      if (this.itemidx == -1) this.getCartIdx();
     });
   }
-
-  /* ngOnInit() {
-    this.cartSubscription = this.service.shop.cart.item$.subscribe(cart:any => {
-      this.item = cart.lineItems[this.itemidx];
-    });
-  }*/
 
   ngOnDestroy() {
     this.cartSubscription.unsubscribe();
   }
 
-  async ngOnInit() {
-    this.item = this.service.shop.cart.lineItems[this.itemidx];
-  }
+  async ngOnInit() {}
 
   async ngAfterViewInit() {
     if (!this.item) await this.getCartItem();
@@ -57,15 +51,30 @@ export class QuantityShopComponent implements OnInit {
     this.item = this.service.shop.cart.lineItems[this.itemidx];
   }
 
-  async addQuantity(item: any, input: any) {
-    input.value = input.value < input.max ? input.value + 1 : input.max;
-    this.service.shop.activeProduct = this.product;
-    await this.service.shop.updateItem(this.item, input);
+  async getCartIdx() {
+    this.itemidx = await this.service.shop.getCartIdx(this.product);
   }
 
-  async minusQuantity(item: any, input: any) {
-    input.value = input.value > 1 ? input.value - 1 : 1;
-    this.service.shop.activeProduct = this.product;
-    await this.service.shop.updateItem(this.item, input);
+  async addQuantity(input: any) {
+    if (input.value == '') input.value = 1;
+    input.value =
+      parseInt(input.value) < parseInt(input.max)
+        ? parseInt(input.value) + 1
+        : input.max;
+    await this.service.shop.updateItem(this.itemidx, input);
   }
+
+  async minusQuantity(input: any) {
+    input.value = input.value > 1 ? input.value - 1 : 1;
+    await this.service.shop.updateItem(this.itemidx, input);
+  }
+
+  // Use a getter function to check if lineItem is truthy
+  get isCartItem(): boolean {
+    return this.itemidx !== -1; //
+  }
+
+  /*isCartItem() {
+    return !!this.item;
+  }*/
 }

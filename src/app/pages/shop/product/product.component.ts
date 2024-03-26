@@ -44,7 +44,7 @@ export class ProductComponent implements OnInit {
   cartIdx: number = -1;
 
   @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
-  @Input() productDesc: string = 'test';
+  @Input() productDesc: string = '';
 
   constructor(
     public router: Router,

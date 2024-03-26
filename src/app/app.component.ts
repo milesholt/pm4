@@ -3,6 +3,7 @@ import { CoreService } from './services/core.service';
 import { Library } from './app.library';
 import { Subscription } from 'rxjs';
 
+import { CartShopComponent } from './pages/shop/cart/cart.shop.component';
 //import { SafeHtmlPipe } from './pipes/safeHtml.pipe';
 
 //This only worked if in child component
@@ -20,6 +21,7 @@ register();
 export class AppComponent implements OnInit {
   activePageTitle = 'Shop';
   activeIndex = 0;
+  cart: any;
   cartLength: number = 0;
   cartSubscription: Subscription;
   Pages = [
@@ -47,20 +49,19 @@ export class AppComponent implements OnInit {
   constructor(
     public library: Library,
     public service: CoreService,
+    //public cartComp: CartShopComponent,
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe((cart) => {
-      // Update another variable based on the cart change
-      // For example:
       this.cartLength = cart.lineItems.length;
+      //this.cart.lineItems = cart.lineItems;
     });
   }
 
-  ngOnInit() {
-    this.cartLength = this.service.shop.cart.length;
-    //if cart length changed
-    this.service.shop.cartUpdated().subscribe(() => {
-      alert('cart updated');
-      this.cartLength = this.service.shop.cart.length;
-    });
+  ngOnInit() {}
+
+  ngAfterViewInit() {
+    if (this.service.shop.cart.lineItems) {
+      this.cartLength = this.service.shop.cart.lineItems.length;
+    }
   }
 }

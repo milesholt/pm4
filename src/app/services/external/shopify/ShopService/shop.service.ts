@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, ChangeDetectorRef } from '@angular/core';
 import { User } from '../../../shared/user';
 import Client from 'shopify-buy';
 import { Router } from '@angular/router';
@@ -12,16 +12,19 @@ export class ShopService {
   userData: any; // Save logged in user data
   client: any;
   cart: any;
+  test: any = 'abc';
   checkout: any;
   checkoutComplete: any = null;
   private cartSubject = new BehaviorSubject<any>(null);
   cart$ = this.cartSubject.asObservable();
+  test$ = this.cartSubject.asObservable();
   activeProduct: any = null;
 
   constructor(
     public library: Library,
     public router: Router,
     public ngZone: NgZone, // NgZone service to remove outside scope warning
+    //public changeDet: ChangeDetectorRef,
   ) {
     console.log('shop service');
     // Initializing a client to return content in the store's primary language
@@ -88,20 +91,30 @@ export class ShopService {
   }
 
   updateCart(cart: any) {
-    localStorage.setItem('cart', this.cart);
+    this.cart = cart;
+    localStorage.setItem('cart', cart);
     this.cartSubject.next(cart);
+    //this.changeDet.detectChanges();
   }
 
   async addToCart(product: any) {
     const checkoutId = await this.getCheckoutId();
-    this.cart = await this.client.checkout.addLineItems(checkoutId, [
-      {
-        variantId: product.variants[0].id,
-        quantity: 1,
-      },
-    ]);
-    this.updateCart(this.cart);
-    return this.cart;
+    this.cart = await this.client.checkout
+      .addLineItems(checkoutId, [
+        {
+          variantId: product.variants[0].id,
+          quantity: 1,
+        },
+      ])
+      .then((cart: any) => {
+        this.updateCart(cart);
+        return cart;
+      })
+      .catch((error: any) => {
+        alert(error);
+      });
+    //this.test = 'addtocart';
+    //alert(this.test);
   }
 
   async testItem(q: any) {
@@ -109,19 +122,20 @@ export class ShopService {
     alert(qq.value);
   }
 
-  async updateItem(item: any, quantity: any) {
+  async updateItem(itemidx: any, quantity: any) {
     const q = quantity as HTMLInputElement;
     const checkoutId = await this.getCheckoutId();
+    const item = this.cart.lineItems[itemidx];
     const lineItemsToUpdate = [{ id: item.id, quantity: parseInt(q.value) }];
     this.cart = await this.client.checkout
       .updateLineItems(checkoutId, lineItemsToUpdate)
       .then((cart: any) => {
+        this.updateCart(cart);
         return cart;
       })
       .catch((error: any) => {
         alert(error);
       });
-    this.updateCart(this.cart);
   }
 
   async findInCart(product: any) {
@@ -144,6 +158,7 @@ export class ShopService {
         idx = i;
       }
     }
+    //if (idx == -1 && this.cart.lineItems) idx = this.cart.lineItems.length;
     return idx;
   }
 
@@ -163,7 +178,7 @@ export class ShopService {
   async getCart() {
     const checkoutId = await this.getCheckoutId();
     this.cart = await this.client.checkout.fetch(checkoutId);
-    this.updateCart(this.cart);
+    //this.updateCart(this.cart);
     return this.cart;
   }
 
