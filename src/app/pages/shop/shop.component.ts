@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CoreService } from '../../services/core.service';
 import { Library } from '../../app.library';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -17,6 +17,7 @@ export class ShopComponent implements OnInit {
     public router: Router,
     private route: ActivatedRoute,
     public library: Library,
+    private cdr: ChangeDetectorRef,
     //public productComponent: ProductComponent,
   ) {}
 
@@ -35,6 +36,13 @@ export class ShopComponent implements OnInit {
       if (checkout.completedAt !== null)
         this.service.shop.checkoutComplete = true;
     }
+  }
+
+  async handleSearchCallback(results: any) {
+    console.log(results);
+    //if (results == null) this.test();
+    this.products = results;
+    this.cdr.detectChanges();
   }
 
   test() {

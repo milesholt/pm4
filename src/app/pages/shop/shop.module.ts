@@ -6,8 +6,16 @@ import { FormsModule } from '@angular/forms';
 
 import { ShopComponent } from './shop.component';
 
+import { SearchShopModule } from './components/search/search.shop.module';
+
 @NgModule({
-  imports: [IonicModule, CommonModule, FormsModule, RouterLinkWithHref],
+  imports: [
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    RouterLinkWithHref,
+    SearchShopModule,
+  ],
   declarations: [ShopComponent],
 })
 export class ShopModule {}
