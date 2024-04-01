@@ -12,7 +12,6 @@
 <!--search component-->
 <app-search-shop-comp [feed]="products" (searchChange)="handleSearchCallback($event)"></app-search-shop-comp>
 
-  <p>Shop items go here</p>
   <ion-grid [fixed]="true">
     <ion-row>
       <ion-col size="6" size-sm="3" [(ngModel)]="products" *ngFor="let product of products; index as idx">

@@ -1,9 +1,5 @@
-<p>Search Here</p>
-
 <ion-item>
-  <ion-input type="text" [(ngModel)]="search" (keyup.enter)="beginSearch($event)"></ion-input>
+  <ion-input type="text" [(ngModel)]="search" (keyup.enter)="beginSearch($event)" placeholder="Search here..."></ion-input>
 </ion-item>
 
-
-
-{{search}}
+{{searchMessage}}

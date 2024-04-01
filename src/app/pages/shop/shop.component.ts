@@ -12,6 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class ShopComponent implements OnInit {
   products: any;
+
   constructor(
     public service: CoreService,
     public router: Router,
@@ -40,7 +41,7 @@ export class ShopComponent implements OnInit {
 
   async handleSearchCallback(results: any) {
     console.log(results);
-    //if (results == null) this.test();
+    if (results.length === 0) this.test();
     this.products = results;
     this.cdr.detectChanges();
   }

@@ -16,7 +16,9 @@ import { CoreService } from '../../../../services/core.service';
   //imports:[IonicModule]
 })
 export class SearchShopComponent implements OnInit {
-  public search: string = 'test';
+  public search: string = '';
+  public searchMessage: string = '';
+
   @Input() feed: any = [];
   @Output() searchChange = new EventEmitter<any>();
 
@@ -31,14 +33,20 @@ export class SearchShopComponent implements OnInit {
 
   beginSearch(event: any) {
     const lowerKeyword = this.search.toLowerCase();
-    this.feed = this.feed.filter(
+    /*this.feed = this.feed.filter(
       (item: any) =>
         item.title.toLowerCase().includes(lowerKeyword) ||
         item.description.toLowerCase().includes(lowerKeyword) ||
         item.tags.some((tag: any) => tag.toLowerCase().includes(lowerKeyword)),
-    );
-    alert(this.feed);
+    );*/ //
 
+    this.feed = this.feed.filter(
+      (item: any) =>
+        item.title.toLowerCase().includes(lowerKeyword) ||
+        item.description.toLowerCase().includes(lowerKeyword),
+    );
+    if (this.feed.length === 0) this.searchMessage = 'No items found';
+    else this.searchMessage = '';
     this.searchChange.emit(this.feed);
   }
 }
