@@ -45,8 +45,13 @@ export class SearchShopComponent implements OnInit {
         item.title.toLowerCase().includes(lowerKeyword) ||
         item.description.toLowerCase().includes(lowerKeyword),
     );
-    if (this.feed.length === 0) this.searchMessage = 'No items found';
+    if (this.feed.length === 0 && lowerKeyword !== '')
+      this.searchMessage = 'No items found';
     else this.searchMessage = '';
-    this.searchChange.emit(this.feed);
+    let searchData = {
+      keyword: this.search,
+      results: this.feed,
+    };
+    this.searchChange.emit(searchData);
   }
 }

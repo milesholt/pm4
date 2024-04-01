@@ -39,9 +39,12 @@ export class ShopComponent implements OnInit {
     }
   }
 
-  async handleSearchCallback(results: any) {
+  async handleSearchCallback(searchData: any) {
+    const results = searchData.results;
+    const keyword = searchData.keyword;
+
     console.log(results);
-    if (results.length === 0) this.test();
+    if (keyword == '') this.test();
     this.products = results;
     this.cdr.detectChanges();
   }
