@@ -2,6 +2,7 @@ import { OnInit, ViewChild, Component } from '@angular/core';
 import { CoreService } from './services/core.service';
 import { Library } from './app.library';
 import { Subscription } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { CartShopComponent } from './pages/shop/cart/cart.shop.component';
 //import { SafeHtmlPipe } from './pipes/safeHtml.pipe';
@@ -49,6 +50,7 @@ export class AppComponent implements OnInit {
   constructor(
     public library: Library,
     public service: CoreService,
+    public router: Router,
     //public cartComp: CartShopComponent,
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe((cart) => {
@@ -57,7 +59,13 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    //
+  }
+
+  getSearchParams(category: string): any {
+    return { search: category };
+  }
 
   ngAfterViewInit() {
     if (this.service.shop.cart.lineItems) {

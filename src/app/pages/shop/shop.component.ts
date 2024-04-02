@@ -11,7 +11,8 @@ import { Router, ActivatedRoute } from '@angular/router';
   providers: [CoreService, Library],
 })
 export class ShopComponent implements OnInit {
-  products: any;
+  products: any = [];
+  filterProducts: any = [];
 
   constructor(
     public service: CoreService,
@@ -45,7 +46,7 @@ export class ShopComponent implements OnInit {
 
     console.log(results);
     if (keyword == '') this.test();
-    this.products = results;
+    this.filterProducts = results;
     this.cdr.detectChanges();
   }
 
@@ -53,6 +54,7 @@ export class ShopComponent implements OnInit {
     this.service.shop.getProducts(this.service.shop.client).then((products) => {
       console.log(products);
       this.products = products;
+      this.filterProducts = products;
     });
   }
 }
