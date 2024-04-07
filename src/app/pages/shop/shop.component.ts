@@ -50,6 +50,15 @@ export class ShopComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
+  async handleFilterCallback(filterData: any) {
+    //const results = filterData.results;
+    //const filter = filterData.filter;
+
+    //if (filter == '') this.test();
+    //this.filterProducts = results;
+    this.cdr.detectChanges();
+  }
+
   test() {
     this.service.shop.getProducts(this.service.shop.client).then((products) => {
       console.log(products);

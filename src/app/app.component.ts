@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
     //
   }
 
-  getSearchParams(category: string): any {
+  getSearchParams(category: string | boolean): any {
     return { search: category };
   }
 

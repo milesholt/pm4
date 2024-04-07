@@ -37,8 +37,10 @@ export class SearchShopComponent implements OnInit {
 
   async checkQuery() {
     this.route.queryParams.subscribe((params) => {
-      if (params['search']) {
-        this.search = params['search'];
+      const query = params['search'];
+      if (query) {
+        this.search = query == 'false' ? '' : query;
+
         setTimeout(async () => {
           await this.beginSearch();
         }, 1000);
@@ -56,6 +58,7 @@ export class SearchShopComponent implements OnInit {
   }
 
   async beginSearch(event: any = null) {
+    if (this.search == 'false') this.search = '';
     const lowerKeyword = this.search.toLowerCase();
     /*this.feed = this.feed.filter(
       (item: any) =>
@@ -69,9 +72,13 @@ export class SearchShopComponent implements OnInit {
         item.title.toLowerCase().includes(lowerKeyword) ||
         item.description.toLowerCase().includes(lowerKeyword),
     );
-    if (this.feedFilter.length === 0 && lowerKeyword !== '')
-      this.searchMessage = 'No items found';
-    else this.searchMessage = '';
+    /* if (
+      this.feedFilter.length === 0 &&
+      lowerKeyword !== '' &&
+      lowerKeyword !== 'false'
+    )*/
+    //this.searchMessage = 'No items found';
+    //else this.searchMessage = '';
     let searchData = {
       keyword: this.search,
       results: this.feedFilter,

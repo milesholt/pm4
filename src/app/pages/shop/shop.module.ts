@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ShopComponent } from './shop.component';
 
 import { SearchShopModule } from './components/search/search.shop.module';
+import { FilterShopModule } from './components/filter/filter.shop.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { SearchShopModule } from './components/search/search.shop.module';
     FormsModule,
     RouterLinkWithHref,
     SearchShopModule,
+    FilterShopModule,
   ],
   declarations: [ShopComponent],
 })
