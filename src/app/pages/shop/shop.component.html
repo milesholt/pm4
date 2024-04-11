@@ -7,6 +7,16 @@
   </ion-toolbar>
 </ion-header>
 
+<!--Hero Slider-->
+
+<!--
+<div *ngFor="let hero of heroSlides">
+  <div *ngIf="checkSlider(hero)">  
+</div>
+</div>
+-->
+
+
 <ion-content *ngIf="service.shop.checkoutComplete == null">
 
 <!--search component-->
@@ -15,6 +25,16 @@
 <app-filter-shop-comp [feed]="filterProducts" (filterChange)="handleFilterCallback($event)"></app-filter-shop-comp>
  
 <div class="no-products" *ngIf="filterProducts.length == 0"><p>No products found, please try another search.</p></div>
+
+<!--
+<div *ngIf="heroSlides[filterCategory]">
+  <swiper-container #mainSwiper class="main-swiper" init="false" >
+    <swiper-slide *ngFor="let slide of heroSlides[filterCategory].slides; index as imgidx"> 
+            <img src="{{slide.image}}" class="hero-image" width="100%" height="auto" />   
+    </swiper-slide>
+  </swiper-container>
+  </div>
+-->
 
 <ion-grid [fixed]="true">
     <ion-row>
