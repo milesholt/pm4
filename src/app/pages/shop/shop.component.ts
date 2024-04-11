@@ -31,9 +31,9 @@ export class ShopComponent implements OnInit {
         {
           title: 'Fungi',
           description: 'Discover the power of mushrooms',
-          //image:'https://cdn.shopify.com/s/files/1/0815/3694/2417/products/1707134754929-generated-label-image-0.jpg?v=170802151',
           image:
-            'https://www.pexels.com/photo/close-up-photo-of-white-mushrooms-1643416/',
+            'https://cdn.shopify.com/s/files/1/0815/3694/2417/products/1707134754929-generated-label-image-0.jpg?v=170802151',
+          //image:'https://www.pexels.com/photo/close-up-photo-of-white-mushrooms-1643416/',
         },
       ],
     },
