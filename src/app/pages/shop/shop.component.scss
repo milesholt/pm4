@@ -1,3 +1,66 @@
 .no-products {
   padding: 20px;
 }
+
+.slide-content {
+  position: absolute;
+  margin: 0 auto;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 20px;
+}
+
+.main-slide {
+  display: flex;
+  justify-content: center; // Horizontally center
+  align-items: center; // Vertically center
+  width: 100%; // Example width
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%; // Adjust as needed
+  // other row styles...
+
+  &:nth-child(even) {
+    flex-direction: row-reverse;
+    .col {
+      // Adjust styles for reversed columns
+    }
+  }
+
+  .col {
+    flex: 1 50%; // Adjust as needed
+    // other column styles...
+  }
+
+  .col-image img {
+    vertical-align: top;
+  }
+
+  .col-image {
+    width: 50%;
+  }
+  .col-content {
+    padding: 20px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; // Horizontally center the content
+    align-items: center; // Vertically center the content
+  }
+
+  @media screen and (max-width: 400px) {
+    flex-direction: column; // Stack columns underneath each other for mobile devices
+    &:nth-child(even) {
+      flex-direction: column;
+    }
+    .col {
+      width: 100%;
+    }
+    .col-content {
+      text-align: center;
+    }
+  }
+}

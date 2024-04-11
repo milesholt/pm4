@@ -28,9 +28,12 @@
 
 
 <div *ngIf="heroSlides[filterCategory]">
-  
   <swiper-container #mainSwiper class="main-swiper" init="false" >
-    <swiper-slide *ngFor="let slide of heroSlides[filterCategory].slides; index as imgidx"> 
+    <swiper-slide class="main-slide" *ngFor="let slide of heroSlides[filterCategory].slides; index as imgidx"> 
+            <div class="slide-content">
+              <h1>{{slide.title}}</h1>
+              <p>{{slide.description}}</p>
+            </div>
             <img src="{{slide.image}}" class="hero-image" width="100%" height="auto" />   
     </swiper-slide>
   </swiper-container>
@@ -57,6 +60,23 @@
     </ion-col>
   </ion-row>
   </ion-grid>
+
+
+
+<div *ngIf="heroSlides[filterCategory]">
+  <div class="row" *ngFor="let page of heroSlides[filterCategory].content; index as idx">
+    <div class="col col-image">
+      <img src="{{page.image}}"  />
+    </div>
+    <div class="col col-content">
+      <div class="col-wrap">
+        <h2>{{page.title}}</h2>
+        <div [innerHtml]="page.content"></div>
+      </div>
+    </div>   
+  </div>
+</div>
+
 </ion-content>
 
 <ion-content *ngIf="service.shop.checkoutComplete == true">

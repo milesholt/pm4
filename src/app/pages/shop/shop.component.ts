@@ -36,6 +36,20 @@ export class ShopComponent implements OnInit {
           //image:'https://www.pexels.com/photo/close-up-photo-of-white-mushrooms-1643416/',
         },
       ],
+      content: [
+        {
+          title: 'Some content 1',
+          content: '<p>Html content goes here<p>',
+          image:
+            'https://cdn.shopify.com/s/files/1/0815/3694/2417/products/1707134754929-generated-label-image-0.jpg?v=170802151',
+        },
+        {
+          title: 'Some content 2',
+          content: '<p>Html content goes here2<p>',
+          image:
+            'https://cdn.shopify.com/s/files/1/0815/3694/2417/products/1707134754929-generated-label-image-0.jpg?v=170802151',
+        },
+      ],
     },
   };
 
