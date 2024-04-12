@@ -50,11 +50,18 @@ export class ShopComponent implements OnInit {
             'https://cdn.shopify.com/s/files/1/0815/3694/2417/products/1707134754929-generated-label-image-0.jpg?v=170802151',
         },
       ],
+      questions: [
+        {
+          title: 'What are the health benefits of Mushrooms?',
+          content:
+            'Reduces inflammation, improves cognitivity and stimulates the creation of brain cells, improves metabolism.',
+        },
+      ],
     },
   };
 
   @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
-
+  //
   constructor(
     public service: CoreService,
     public router: Router,

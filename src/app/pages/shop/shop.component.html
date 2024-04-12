@@ -64,6 +64,7 @@
 
 
 <div *ngIf="heroSlides[filterCategory]">
+  <!-- Additional Content -->
   <div class="row" *ngFor="let page of heroSlides[filterCategory].content; index as idx">
     <div class="col col-image">
       <img src="{{page.image}}"  />
@@ -75,6 +76,77 @@
       </div>
     </div>   
   </div>
+
+  <!-- FAQ -->
+<h2>Frequently Asked Questions</h2>
+<p>Below are list of questions that are popular from existing customers</p>
+
+  <ion-accordion-group>
+    
+    <ion-accordion *ngFor="let question of heroSlides[filterCategory].questions">
+      <ion-item slot="header" color="light">
+        <ion-label>{{question.title}}</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        {{question.content}}
+      </div>
+    </ion-accordion>
+
+
+    <ion-accordion value="second">
+      <ion-item slot="header" color="light">
+        <ion-label>If I'm not satisfied with the product, can I return it?</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        Some answer goes here.
+      </div>
+    </ion-accordion>
+    <ion-accordion value="third">
+      <ion-item slot="header" color="light">
+        <ion-label>Are there any precautions I should take when taking supplements?</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        Some answer goes here.
+      </div>
+    </ion-accordion>
+    <ion-accordion value="fourth">
+      <ion-item slot="header" color="light">
+        <ion-label>When should I except to receive my order?</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        Some answer goes here.
+      </div>
+    </ion-accordion>
+    <ion-accordion value="fourth">
+      <ion-item slot="header" color="light">
+        <ion-label>Who can I contact if I don't receive my order</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        Some answer goes here.
+      </div>
+    </ion-accordion>
+    <ion-accordion value="fourth">
+      <ion-item slot="header" color="light">
+        <ion-label>Can I track my order?</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        Some answer goes here.
+      </div>
+    </ion-accordion>
+    <ion-accordion value="fourth">
+      <ion-item slot="header" color="light">
+        <ion-label>Who do I contact about this product?</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        Some answer goes here.
+      </div>
+    </ion-accordion>
+    
+  </ion-accordion-group>
+
+
+  <br><br><br><br>
+
 </div>
 
 </ion-content>
