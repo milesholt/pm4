@@ -109,6 +109,18 @@ export class Library {
     return event.target.localName;
   }
 
+  //get target (should work for all browsers)
+  getTarget(obj: any) {
+    var targ;
+    var e = obj;
+    if (e.target) targ = e.target;
+    else if (e.srcElement) targ = e.srcElement;
+    if (targ.nodeType == 3)
+      // defeat Safari bug
+      targ = targ.parentNode;
+    return targ;
+  }
+
   getArrayIndex(array: any = [], value: any, key: any = null) {
     /*if (key === null) {
       if (this.isObject(array)) return Object.keys(array).indexOf(value);

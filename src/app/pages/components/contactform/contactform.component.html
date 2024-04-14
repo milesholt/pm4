@@ -1,0 +1,129 @@
+<!--<div #f class="{{el.classes}}" >
+    <form *ngIf="!sent" (ngSubmit)="onSubmit(el.action,$event)" class="{{el.boxclasses}}" autocomplete="off" role="presentation">
+      <div *ngIf="f.classList.contains('twocol')">
+          <div class="col1 form-cols">
+            <div *ngFor="let field of el.fields; let idx = index" class="form-group" [ngClass]="field.classes.indexOf('col1') !== -1 ? 'col1' : ''" #fld>
+              <div *ngIf="fld.classList.contains('col1')">
+                <ng-container *ngTemplateOutlet="fields;context:{field:field}"></ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col2 form-cols">
+            <div *ngFor="let field of el.fields; let idx = index" class="form-group" [ngClass]="field.classes.indexOf('col2') !== -1 ? 'col2' : ''" #fld>
+              <div *ngIf="fld.classList.contains('col2')">
+                  <ng-container *ngTemplateOutlet="fields;context:{field:field}"></ng-container>
+              </div>
+            </div>
+          </div>
+          <div *ngFor="let field of el.fields; let idx = index" class="form-group"  [ngClass]="field.classes.indexOf('nocol') !== -1 ? 'nocol' : ''" #fld>
+          <div *ngIf="fld.classList.contains('nocol')">
+            <ng-container *ngTemplateOutlet="fields;context:{field:field}"></ng-container>
+          </div>
+          </div>
+      </div>
+      <div *ngIf="!f.classList.contains('twocol')">
+        <div *ngFor="let field of el.fields; let idx = index" class="form-group">
+          <ng-container *ngTemplateOutlet="fields;context:{field:field}"></ng-container>
+        </div>
+      </div>
+    </form>
+  
+    <p *ngIf="sent == 'true'">
+      Thank you for your enquiry, we'll be in touch shortly.
+    </p>
+    <p *ngIf="sent == 'false'">
+      Sorry there was a problem sending your enquiry, please try again.
+    </p>
+  </div>-->
+
+  
+  <!-- <form (ngSubmit)="onSubmit('submitcontact',$event,el.link)" class="" autocomplete="off" role="presentation">
+    <div *ngIf="sent == ''">
+      <h3 class="text-secondary bold formheading">Let's talk more...</h3>
+    <input type="text" value="" autocomplete="" class="form-control" id="fld-name" name="name" required placeholder="Full Name" class="placeholder-primary" (keyup)="doForm($event.target.value,'name')" >
+    <input type="text" value="" autocomplete="" class="form-control" id="fld-email" name="email" required placeholder="Email Address" class="placeholder-primary" (keyup)="doForm($event.target.value,'email')" >
+    <input type="text" value="" autocomplete="" class="form-control" id="fld-phone" name="phone" placeholder="Telephone Number" class="placeholder-primary" (keyup)="doForm($event.target.value,'phone')" >
+    <button type="submit" class="cta form-control btn rel" id="fld-submit" name="Submit" onclick="return gtag_report_conversion(window.location.href)">Submit ></button>
+    </div>
+    <div *ngIf="sent == 'true'">
+      <h3 class="text-secondary bold formheading">Thank you</h3>
+      <p>We will respond to your enquiry shortly.</p>
+    </div>
+    <div *ngIf="sent == 'false'">
+      <p>Sorry there was a problem sending the message.</p>
+    </div>
+  </form> -->
+  
+  
+  <!--
+  <ng-template #fields let-field="field">
+    <div *ngIf="field.prefix !== ''">
+     <br /> <p style="font-size:12px;">{{field.prefix}}</p>
+    </div>
+    <div [ngSwitch]="field.type">
+      <div *ngSwitchCase="'text'">
+        <label for="{{field.name}}">
+          <input type="text" value="{{field.value }}" autocomplete="{{field.autocomplete ? field.autocomplete : 'true'}}" onpaste="return false;" class="form-control" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary {{field.classes}}"  (keyup)="doForm($event,field.key)" (change)="doForm($event,field.key)" (click)="doForm($event,field.key)" >
+          
+         </label>
+      </div>
+      <div *ngSwitchCase="'textarea'">
+         <label for="{{field.name}}"><textarea class="form-control" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary {{field.classes}}" [(ngModel)]="form[field.key]" (keyup)="doForm($event,field.key)" (change)="doForm($event,field.key)" (click)="doForm($event,field.key)"></textarea></label>
+      </div>
+  
+      <div *ngSwitchCase="'select'">
+         <label for="{{field.name}}">
+             <select class="form-control" id="fld-{{field.name | alias}}" [attr.name]="field.name" [required]="field.required" class="placeholder-primary {{field.classes}}" [(ngModel)]="form[field.key]"  (ngModelChange)="doForm($event,field.key)">
+               <option [value]="undefined" hidden disabled>{{field.placeholder}}</option>
+               <ng-container *ngFor="let opt of field.value | format : 'json'">
+                 <optgroup *ngIf="opt.sublist" label="{{opt.name}}">
+                  {{opt.name}}
+                  <option *ngFor="let subopt of opt.sublist">
+                    {{subopt.name}}
+                  </option>
+                 </optgroup>
+                 <option *ngIf="!opt.sublist">
+                   {{opt.name}}
+                 </option>
+               </ng-container>
+             </select>
+         </label>
+      </div>
+      <div *ngSwitchCase="'number'">
+         <label for="{{field.name}}"><input type="number" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary" [(ngModel)]="form[field.key]"></label>
+      </div>
+      <div *ngSwitchCase="'email'">
+         <label for="{{field.name}}"><input type="email" class="form-control {{field.classes}}" onpaste="return false;" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary" [(ngModel)]="form[field.key]"></label>
+     </div>
+      <div *ngSwitchCase="'tel'">
+         <label for="{{field.name}}"><input type="tel" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary" [(ngModel)]="form[field.key]"></label>
+      </div>
+      <div *ngSwitchCase="'date'">
+        <label for="{{field.name}}"><input type="date" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="text-primary" [(ngModel)]="form[field.key]"></label>
+      </div>
+      <div *ngSwitchCase="'time'">
+        <label for="{{field.name}}"><input type="time" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="text-primary" [(ngModel)]="form[field.key]"></label>
+      </div>
+      <div *ngSwitchCase="'checkbox'">
+        <label for="{{field.name}}"><input type="checkbox" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" name="{{field.name}}"></label><p class="checkbox-label">{{field.value}}</p>
+      </div>
+      <div *ngSwitchCase="'submit'">
+        <button type="submit" class="form-control btn rel {{field.classes}}" [ngClass]="canSubmit ? '' : 'cta-disabled'" id="fld-{{field.name | alias}}" name="{{field.name}}">{{field.value}}</button>
+      </div>
+      <div *ngSwitchCase="'hidden'">
+        <input type="hidden" class="form-control btn rel {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" />
+  
+       <div *ngIf="field.name == 'address-finder'" class="">
+           <comp-addressfinder (callback)="fillAddress($event)" [form]="form"></comp-addressfinder>
+        </div>
+  
+      </div>
+      
+      <div *ngSwitchCase="'recaptcha'" class="{{field.classes}}">
+        <re-captcha (resolved)="handleCorrectCaptcha($event)" siteKey="6LfA0DcUAAAAAAvH9jHrtpvWebFikY5hdnUDYtLD"></re-captcha>
+     </div>
+   </div>
+   <div *ngIf="field.suffix !== ''">
+     <p style="font-size:12px;">{{field.suffix}}</p>
+   </div>
+  </ng-template>-->

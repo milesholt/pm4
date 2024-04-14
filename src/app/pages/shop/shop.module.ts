@@ -11,6 +11,8 @@ import { ShopComponent } from './shop.component';
 import { SearchShopModule } from './components/search/search.shop.module';
 import { FilterShopModule } from './components/filter/filter.shop.module';
 
+import { ContactFormModule } from '../components/contactform/contactform.module';
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -20,6 +22,7 @@ import { FilterShopModule } from './components/filter/filter.shop.module';
     RouterLinkWithHref,
     SearchShopModule,
     FilterShopModule,
+    ContactFormModule,
   ],
   declarations: [ShopComponent],
 })
