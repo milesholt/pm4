@@ -22,11 +22,27 @@ import {
   //imports:[IonicModule]
 })
 export class ContactFormComponent implements OnInit {
-  @Input() el: any;
+  @Input() el: any = {
+    classes: 'nocol',
+    fields: [
+      {
+        key: 'name',
+        name: 'Your Name',
+        placeholder: 'Enter your name',
+        value: '',
+        type: 'text',
+        classes: 'nocol',
+        required: true,
+        autocomplete: true,
+        prefix: '',
+        suffix: '',
+      },
+    ],
+  };
   @Output() callback = new EventEmitter();
 
   form: any = {};
-  sent: string = '';
+  sent: boolean | null = null;
   data: any;
   url: string = window.location.href;
   canSubmit: boolean = false;
@@ -38,7 +54,7 @@ export class ContactFormComponent implements OnInit {
     public navCtrl: NavController,
     public router: Router,
     public lib: Library,
-    private http: HttpClient,
+    //private http: HttpClient,
   ) {}
 
   ngOnInit() {}
@@ -118,7 +134,7 @@ export class ContactFormComponent implements OnInit {
           return false;
         }
 
-        new Promise((resolve) => {
+        /*new Promise((resolve) => {
           this.http
             .post('assets/mail/' + mailpath, creds, httpOptions)
             .subscribe(
@@ -132,11 +148,12 @@ export class ContactFormComponent implements OnInit {
               (err) => this.responseFail(err),
               () => console.log('Post request complete'),
             );
-        });
+        });*/
+
         params = { alias: 'contact', action: 'contactform', event: event };
         this.emit(params);
 
-        return this.sent == 'true';
+        return this.sent;
         break;
       default:
         return true;
@@ -190,7 +207,7 @@ export class ContactFormComponent implements OnInit {
   }
 
   responseFail(err: any) {
-    this.sent = 'false';
+    this.sent = false;
     console.log(err);
   }
 

@@ -1,5 +1,6 @@
-<!--<div #f class="{{el.classes}}" >
-    <form *ngIf="!sent" (ngSubmit)="onSubmit(el.action,$event)" class="{{el.boxclasses}}" autocomplete="off" role="presentation">
+
+<div #f class="{{el.classes}}" >
+    <form *ngIf="sent == null" (ngSubmit)="onSubmit(el.action,$event)" class="{{el.boxclasses}}" autocomplete="off" role="presentation">
       <div *ngIf="f.classList.contains('twocol')">
           <div class="col1 form-cols">
             <div *ngFor="let field of el.fields; let idx = index" class="form-group" [ngClass]="field.classes.indexOf('col1') !== -1 ? 'col1' : ''" #fld>
@@ -28,13 +29,13 @@
       </div>
     </form>
   
-    <p *ngIf="sent == 'true'">
+    <p *ngIf="sent == true">
       Thank you for your enquiry, we'll be in touch shortly.
     </p>
-    <p *ngIf="sent == 'false'">
+    <p *ngIf="sent == false">
       Sorry there was a problem sending your enquiry, please try again.
     </p>
-  </div>-->
+  </div>
 
   
   <!-- <form (ngSubmit)="onSubmit('submitcontact',$event,el.link)" class="" autocomplete="off" role="presentation">
@@ -55,7 +56,7 @@
   </form> -->
   
   
-  <!--
+  
   <ng-template #fields let-field="field">
     <div *ngIf="field.prefix !== ''">
      <br /> <p style="font-size:12px;">{{field.prefix}}</p>
@@ -71,7 +72,7 @@
          <label for="{{field.name}}"><textarea class="form-control" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary {{field.classes}}" [(ngModel)]="form[field.key]" (keyup)="doForm($event,field.key)" (change)="doForm($event,field.key)" (click)="doForm($event,field.key)"></textarea></label>
       </div>
   
-      <div *ngSwitchCase="'select'">
+     <!-- <div *ngSwitchCase="'select'">
          <label for="{{field.name}}">
              <select class="form-control" id="fld-{{field.name | alias}}" [attr.name]="field.name" [required]="field.required" class="placeholder-primary {{field.classes}}" [(ngModel)]="form[field.key]"  (ngModelChange)="doForm($event,field.key)">
                <option [value]="undefined" hidden disabled>{{field.placeholder}}</option>
@@ -88,7 +89,8 @@
                </ng-container>
              </select>
          </label>
-      </div>
+      </div>-->
+
       <div *ngSwitchCase="'number'">
          <label for="{{field.name}}"><input type="number" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary" [(ngModel)]="form[field.key]"></label>
       </div>
@@ -113,17 +115,17 @@
       <div *ngSwitchCase="'hidden'">
         <input type="hidden" class="form-control btn rel {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" />
   
-       <div *ngIf="field.name == 'address-finder'" class="">
+      <!-- <div *ngIf="field.name == 'address-finder'" class="">
            <comp-addressfinder (callback)="fillAddress($event)" [form]="form"></comp-addressfinder>
-        </div>
+        </div>-->
   
       </div>
       
-      <div *ngSwitchCase="'recaptcha'" class="{{field.classes}}">
+     <!-- <div *ngSwitchCase="'recaptcha'" class="{{field.classes}}">
         <re-captcha (resolved)="handleCorrectCaptcha($event)" siteKey="6LfA0DcUAAAAAAvH9jHrtpvWebFikY5hdnUDYtLD"></re-captcha>
-     </div>
+     </div>-->
    </div>
    <div *ngIf="field.suffix !== ''">
      <p style="font-size:12px;">{{field.suffix}}</p>
    </div>
-  </ng-template>-->
+  </ng-template>

@@ -61,7 +61,7 @@ export class ShopComponent implements OnInit {
   };
 
   @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
-  //
+
   constructor(
     public service: CoreService,
     public router: Router,
