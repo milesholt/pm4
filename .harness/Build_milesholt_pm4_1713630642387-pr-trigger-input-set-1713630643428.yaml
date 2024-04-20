@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_milesholt_pm4_1713630642387-pr-trigger-input-set
+  identifier: Build_milesholt_pm4_1713630642387prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_milesholt_pm4_1713630642387
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
