@@ -1,4 +1,3 @@
-
 <div #f class="{{el.classes}}" >
     <form *ngIf="sent == null" (ngSubmit)="onSubmit(el.action,$event)" class="{{el.boxclasses}}" autocomplete="off" role="presentation">
       <div *ngIf="f.classList.contains('twocol')">
@@ -61,70 +60,77 @@
     <div *ngIf="field.prefix !== ''">
      <br /> <p style="font-size:12px;">{{field.prefix}}</p>
     </div>
-    <div [ngSwitch]="field.type">
-      <div *ngSwitchCase="'text'">
-        <label for="{{field.name}}">
-          <input type="text" value="{{field.value }}" autocomplete="{{field.autocomplete ? field.autocomplete : 'true'}}" onpaste="return false;" class="form-control" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary {{field.classes}}"  (keyup)="doForm($event,field.key)" (change)="doForm($event,field.key)" (click)="doForm($event,field.key)" >
+    <ion-list [ngSwitch]="field.type">
+      <ion-item *ngSwitchCase="'text'">
+        
+          <ion-input label="{{field.name}}" type="text" value="{{field.value }}" autocomplete="{{field.autocomplete ? field.autocomplete : 'true'}}" onpaste="return false;" class="form-control" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary {{field.classes}}"  (keyup)="doForm($event,field.key)" (change)="doForm($event,field.key)" (click)="doForm($event,field.key)" ></ion-input>
           
-         </label>
-      </div>
-      <div *ngSwitchCase="'textarea'">
-         <label for="{{field.name}}"><textarea class="form-control" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary {{field.classes}}" [(ngModel)]="form[field.key]" (keyup)="doForm($event,field.key)" (change)="doForm($event,field.key)" (click)="doForm($event,field.key)"></textarea></label>
-      </div>
+      </ion-item>
+      <ion-item *ngSwitchCase="'textarea'">
+         <ion-textarea label="{{field.name}}" class="form-control" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary {{field.classes}}" [(ngModel)]="form[field.key]" (keyup)="doForm($event,field.key)" (change)="doForm($event,field.key)" (click)="doForm($event,field.key)" [counter]="field.counter"
+         maxlength="{{field.maxlength}}" [autoGrow]="field.autogrow"></ion-textarea>
+      </ion-item>
   
-     <!-- <div *ngSwitchCase="'select'">
-         <label for="{{field.name}}">
-             <select class="form-control" id="fld-{{field.name | alias}}" [attr.name]="field.name" [required]="field.required" class="placeholder-primary {{field.classes}}" [(ngModel)]="form[field.key]"  (ngModelChange)="doForm($event,field.key)">
-               <option [value]="undefined" hidden disabled>{{field.placeholder}}</option>
-               <ng-container *ngFor="let opt of field.value | format : 'json'">
-                 <optgroup *ngIf="opt.sublist" label="{{opt.name}}">
+      <ion-item *ngSwitchCase="'select'">
+               <ion-select label="{{field.name}}" value="{{field.value}}" class="form-control" id="fld-{{field.name | alias}}" [attr.name]="field.name" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary {{field.classes}}" [(ngModel)]="form[field.key] ?  form[field.key] : field.value"  (ngModelChange)="doForm($event,field.key)">
+                      
+                <ion-select-option *ngFor="let opt of field.options" [value]="opt.value">
+                  {{opt.label}}
+                </ion-select-option>
+
+              
+               <!--<ng-container *ngFor="let opt of field.options | format : 'json'">
+                
+                <optgroup *ngIf="opt.sublist" label="{{opt.name}}">
                   {{opt.name}}
                   <option *ngFor="let subopt of opt.sublist">
                     {{subopt.name}}
                   </option>
                  </optgroup>
-                 <option *ngIf="!opt.sublist">
-                   {{opt.name}}
-                 </option>
-               </ng-container>
-             </select>
-         </label>
-      </div>-->
 
-      <div *ngSwitchCase="'number'">
-         <label for="{{field.name}}"><input type="number" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary" [(ngModel)]="form[field.key]"></label>
-      </div>
-      <div *ngSwitchCase="'email'">
-         <label for="{{field.name}}"><input type="email" class="form-control {{field.classes}}" onpaste="return false;" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary" [(ngModel)]="form[field.key]"></label>
-     </div>
-      <div *ngSwitchCase="'tel'">
-         <label for="{{field.name}}"><input type="tel" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary" [(ngModel)]="form[field.key]"></label>
-      </div>
-      <div *ngSwitchCase="'date'">
-        <label for="{{field.name}}"><input type="date" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="text-primary" [(ngModel)]="form[field.key]"></label>
-      </div>
-      <div *ngSwitchCase="'time'">
-        <label for="{{field.name}}"><input type="time" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="text-primary" [(ngModel)]="form[field.key]"></label>
-      </div>
-      <div *ngSwitchCase="'checkbox'">
-        <label for="{{field.name}}"><input type="checkbox" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" name="{{field.name}}"></label><p class="checkbox-label">{{field.value}}</p>
-      </div>
-      <div *ngSwitchCase="'submit'">
-        <button type="submit" class="form-control btn rel {{field.classes}}" [ngClass]="canSubmit ? '' : 'cta-disabled'" id="fld-{{field.name | alias}}" name="{{field.name}}">{{field.value}}</button>
-      </div>
-      <div *ngSwitchCase="'hidden'">
-        <input type="hidden" class="form-control btn rel {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" />
+                 <ion-select-option *ngIf="!opt.sublist">
+                   {{opt.value}}
+                 </ion-select-option>
+               </ng-container>-->
+
+             </ion-select>
+         
+            </ion-item>
+
+      <ion-item *ngSwitchCase="'number'">
+         <ion-input label="{{field.name}}" type="number" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary" [(ngModel)]="form[field.key]"></ion-input>
+      </ion-item>
+      <ion-item *ngSwitchCase="'email'">
+         <ion-input label="{{field.name}}" type="email" class="form-control {{field.classes}}" onpaste="return false;" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary" [(ngModel)]="form[field.key]"></ion-input>
+      </ion-item>
+      <ion-item *ngSwitchCase="'tel'">
+         <ion-input label="{{field.name}}" type="tel" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary" [(ngModel)]="form[field.key]"></ion-input>
+      </ion-item>
+      <ion-item *ngSwitchCase="'date'">
+        <ion-input label="{{field.name}}" type="date" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="text-primary" [(ngModel)]="form[field.key]"></ion-input>
+      </ion-item>
+      <ion-item *ngSwitchCase="'time'">
+        <ion-input label="{{field.name}}" type="time" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="text-primary" [(ngModel)]="form[field.key]"></ion-input>
+      </ion-item>
+      <ion-item *ngSwitchCase="'checkbox'">
+        <ion-input label="{{field.name}}" type="checkbox" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" name="{{field.name}}"></ion-input><p class="checkbox-label">{{field.value}}</p>
+      </ion-item>
+      <ion-item *ngSwitchCase="'submit'">
+        <ion-button type="submit" class="form-control btn rel {{field.classes}}" [ngClass]="canSubmit ? '' : 'cta-disabled'" id="fld-{{field.name | alias}}">{{field.name}}</ion-button>
+      </ion-item>
+      <ion-item *ngSwitchCase="'hidden'">
+        <ion-input type="hidden" class="form-control btn rel {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" ></ion-input>
   
       <!-- <div *ngIf="field.name == 'address-finder'" class="">
            <comp-addressfinder (callback)="fillAddress($event)" [form]="form"></comp-addressfinder>
         </div>-->
   
-      </div>
+      </ion-item>
       
      <!-- <div *ngSwitchCase="'recaptcha'" class="{{field.classes}}">
         <re-captcha (resolved)="handleCorrectCaptcha($event)" siteKey="6LfA0DcUAAAAAAvH9jHrtpvWebFikY5hdnUDYtLD"></re-captcha>
      </div>-->
-   </div>
+    </ion-list>
    <div *ngIf="field.suffix !== ''">
      <p style="font-size:12px;">{{field.suffix}}</p>
    </div>

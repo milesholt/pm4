@@ -63,7 +63,7 @@
 
 
 
-<div *ngIf="heroSlides[filterCategory]">
+<div *ngIf="heroSlides[filterCategory]" style="padding-bottom:100px">
   <!-- Additional Content -->
   <div class="row" *ngFor="let page of heroSlides[filterCategory].content; index as idx">
     <div class="col col-image">
@@ -117,7 +117,7 @@
         Some answer goes here.
       </div>
     </ion-accordion>
-    <ion-accordion value="fourth">
+    <ion-accordion value="fifth">
       <ion-item slot="header" color="light">
         <ion-label>Who can I contact if I don't receive my order</ion-label>
       </ion-item>
@@ -125,7 +125,7 @@
         Some answer goes here.
       </div>
     </ion-accordion>
-    <ion-accordion value="fourth">
+    <ion-accordion value="sixth">
       <ion-item slot="header" color="light">
         <ion-label>Can I track my order?</ion-label>
       </ion-item>
@@ -133,7 +133,7 @@
         Some answer goes here.
       </div>
     </ion-accordion>
-    <ion-accordion value="fourth">
+    <ion-accordion value="seventh">
       <ion-item slot="header" color="light">
         <ion-label>Who do I contact about this product?</ion-label>
       </ion-item>
@@ -144,12 +144,11 @@
     
   </ion-accordion-group>
 
-
-  <br><br><br><br>
-
   <!-- filter component-->
+  <h2>Get In Touch</h2>
   <app-contactform-comp></app-contactform-comp>
 
+  <br><br><br><br>
 
 </div>
 
