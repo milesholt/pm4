@@ -8,6 +8,9 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { ShopComponent } from './shop.component';
 
+import { FeedModule } from '../components/feed/feed.module';
+import { SliderModule } from '../components/slider/slider.module';
+
 import { SearchShopModule } from './components/search/search.shop.module';
 import { FilterShopModule } from './components/filter/filter.shop.module';
 
@@ -23,6 +26,8 @@ import { ContactFormModule } from '../components/contactform/contactform.module'
     SearchShopModule,
     FilterShopModule,
     ContactFormModule,
+    FeedModule,
+    SliderModule,
   ],
   declarations: [ShopComponent],
 })
