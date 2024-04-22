@@ -11,6 +11,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { QuantityShopModule } from '../cart/components/quantity/quantity.shop.module';
 import { CartButtonShopModule } from '../cart/components/cartbutton/cartbutton.shop.module';
+import { SliderModule } from '../../components/slider/slider.module';
 
 //Pipes
 import { SafeHtmlPipe } from '../../../pipes/safeHtml.pipe';
@@ -24,6 +25,7 @@ import { SafeHtmlPipe } from '../../../pipes/safeHtml.pipe';
     RouterLinkWithHref,
     QuantityShopModule,
     CartButtonShopModule,
+    SliderModule,
   ],
   declarations: [ProductComponent, SafeHtmlPipe],
 })

@@ -1,11 +1,17 @@
-<!--<p>Slider</p>
-
 <swiper-container #mainSwiper class="swiper" init="false" >
   <swiper-slide class="main-slide" *ngFor="let slide of slides; index as imgidx"> 
-          <div *ngIf="slide.title && slide.description" class="slide-content">
+    <div class="swiper-zoom-container">     
+      <div *ngIf="slide.title && slide.description" class="slide-content">
             <h1>{{slide.title}}</h1>
             <p>{{slide.description}}</p>
-          </div>
-          <img src="{{slide.image}}" class="slide-image" width="100%" height="auto" />   
+          </div>   
+          <img src="{{ slide[slideSuffix] }}" class="slide-image" width="100%" height="auto" />   
+      </div>
   </swiper-slide>
-</swiper-container>-->
+</swiper-container>
+
+<swiper-container *ngIf="!!thumbs" class="thumbs-swiper" [slidesPerView]="thumbs">
+  <swiper-slide *ngFor="let thumb of slides; index as imgidx">    
+          <img src="{{ thumb[slideSuffix] }}" class="thumb-image" width="100%" height="auto" />       
+  </swiper-slide>
+</swiper-container>

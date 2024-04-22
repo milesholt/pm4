@@ -2,21 +2,6 @@
   padding: 20px;
 }
 
-.slide-content {
-  position: absolute;
-  margin: 0 auto;
-  text-align: center;
-  background: rgba(0, 0, 0, 0.4);
-  padding: 20px;
-}
-
-.main-slide {
-  display: flex;
-  justify-content: center; // Horizontally center
-  align-items: center; // Vertically center
-  width: 100%; // Example width
-}
-
 .row {
   display: flex;
   flex-wrap: wrap;

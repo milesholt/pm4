@@ -29,6 +29,14 @@ register();
 export class SliderComponent implements OnInit {
   @Input() config: any = {};
   @Input() slides: any = [];
+
+  @Input() slidesPerView: number = 1;
+  @Input() navigation: boolean = false;
+  @Input() thumbs: number | boolean = false;
+  @Input() zoom: boolean = false;
+  @Input() init: boolean = true;
+  @Input() slideSuffix: string = '';
+
   @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
 
   constructor(
@@ -49,19 +57,29 @@ export class SliderComponent implements OnInit {
   }
 
   async iniSlider() {
+    var zoomParams =
+      this.zoom == true
+        ? {
+            maxRatio: 5,
+            minRatio: 1,
+            toggle: true,
+          }
+        : false;
+
     // swiper element
     //const swiperEl = <any>document.querySelector('.main-swiper');
     const swiperEl = this.mainSwiper.nativeElement;
     // swiper parameters
     const swiperParams = {
-      slidesPerView: 1,
-      navigation: false,
+      slidesPerView: this.slidesPerView,
+      navigation: this.navigation,
       /*pagination: {
         clickable: true,
       },*/
-      /*thumbs: {
+      zoom: zoomParams,
+      thumbs: {
         swiper: '.thumbs-swiper',
-      },*/
+      },
       on: {
         init() {},
       },

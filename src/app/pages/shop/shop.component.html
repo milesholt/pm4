@@ -16,7 +16,6 @@
 </div>
 -->
 
-
 <ion-content *ngIf="service.shop.checkoutComplete == null">
 
 <!--search component-->
@@ -26,44 +25,33 @@
  
 <div class="no-products" *ngIf="filterProducts.length == 0"><p>No products found, please try another search.</p></div>
 
-
 <div *ngIf="heroSlides[filterCategory]">
-  <!--<app-slider-comp [slides]="heroSlides[filterCategory].slides"></app-slider-comp>-->
-  <swiper-container #mainSwiper class="main-swiper" init="false" >
-    <swiper-slide class="main-slide" *ngFor="let slide of heroSlides[filterCategory].slides; index as imgidx"> 
-            <div class="slide-content">
-              <h1>{{slide.title}}</h1>
-              <p>{{slide.description}}</p>
-            </div>
-            <img src="{{slide.image}}" class="hero-image" width="100%" height="auto" />   
-    </swiper-slide>
-  </swiper-container>
-  </div>
+  <app-slider-comp 
+      [slides]="heroSlides[filterCategory].slides"
+      [slidesPerView]="1"
+      [slideSuffix]="'image'"
+      [navigation]="false"
+      >
+  </app-slider-comp>
+</div>
 
 <!--<app-feed-comp [feedData]="products"></app-feed-comp>-->
 
 <ion-grid [fixed]="true">
     <ion-row>
-      <ion-col size="6" size-sm="3" [(ngModel)]="products" *ngFor="let product of filterProducts; index as idx">
-
-        
+      <ion-col size="6" size-sm="3" [(ngModel)]="products" *ngFor="let product of filterProducts; index as idx">  
       
-     <img src="{{product.variants[0].image.src}}" class="product-image" width="100%" height="auto" />
-
-      
-      <h4><a routerLink="./product/{{product.handle}}">{{product.title}}</a></h4>
-
-      
-      <div class="product-price">{{product.variants[0].price.amount}} {{ product.variants[0].price.currencyCode }}</div>
+      <img src="{{product.variants[0].image.src}}" class="product-image" width="100%" height="auto" />
     
-      
+      <h4><a routerLink="./product/{{product.handle}}">{{product.title}}</a></h4>
+    
+      <div class="product-price">{{product.variants[0].price.amount}} {{ product.variants[0].price.currencyCode }}</div>
+        
       <div class="product-type">{{product.productType}}</div>
       <!--<ion-button (click)="service.shop.addToCart(product)">Add to cart</ion-button>-->
     </ion-col>
   </ion-row>
   </ion-grid>
-
-
 
 <div *ngIf="heroSlides[filterCategory]" style="padding-bottom:100px">
   <!-- Additional Content -->

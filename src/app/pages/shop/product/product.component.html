@@ -10,20 +10,17 @@
 <ion-content *ngIf="product.id !== null" #mainContent ion-padding [fullscreen]="true">
   
     <!--Image Slider-->
-    <swiper-container #mainSwiper class="main-swiper" init="false" >
-        <swiper-slide *ngFor="let image of product.images; index as imgidx"> 
-            <div class="swiper-zoom-container">   
-                <img src="{{product.images[imgidx].src}}" class="product-image" width="100%" height="auto" />   
-            </div>    
-        </swiper-slide>
-    </swiper-container>
-    <!--Image Slideer Thumbnails-->
-    <swiper-container class="thumbs-swiper" [slidesPerView]="5">
-        <swiper-slide *ngFor="let image of product.images; index as imgidx">    
-                <img src="{{product.images[imgidx].src}}" class="product-image" width="100%" height="auto" />       
-        </swiper-slide>
-    </swiper-container>
-
+    <app-slider-comp 
+      [slides]="product.images"
+      [slideSuffix]="'src'"
+      [slidesPerView]="1"
+      [navigation]="false"
+      [thumbs]="5"
+      [init]="false"
+      [zoom]="true"
+      >
+    </app-slider-comp>
+  
     <h1>{{product.title}}</h1>
 
     <div class="product-price">{{product.price}} {{ product.currency }}</div>  
