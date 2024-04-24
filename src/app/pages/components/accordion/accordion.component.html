@@ -1,0 +1,62 @@
+<ion-accordion-group>
+    
+  <ion-accordion *ngFor="let item of list">
+    <ion-item slot="header" color="light">
+      <ion-label>{{item.title}}</ion-label>
+    </ion-item>
+    <div class="ion-padding" slot="content">
+      {{item.content}}
+    </div>
+  </ion-accordion>
+
+
+  <ion-accordion value="second">
+    <ion-item slot="header" color="light">
+      <ion-label>If I'm not satisfied with the product, can I return it?</ion-label>
+    </ion-item>
+    <div class="ion-padding" slot="content">
+      Some answer goes here.
+    </div>
+  </ion-accordion>
+  <ion-accordion value="third">
+    <ion-item slot="header" color="light">
+      <ion-label>Are there any precautions I should take when taking supplements?</ion-label>
+    </ion-item>
+    <div class="ion-padding" slot="content">
+      Some answer goes here.
+    </div>
+  </ion-accordion>
+  <ion-accordion value="fourth">
+    <ion-item slot="header" color="light">
+      <ion-label>When should I except to receive my order?</ion-label>
+    </ion-item>
+    <div class="ion-padding" slot="content">
+      Some answer goes here.
+    </div>
+  </ion-accordion>
+  <ion-accordion value="fifth">
+    <ion-item slot="header" color="light">
+      <ion-label>Who can I contact if I don't receive my order</ion-label>
+    </ion-item>
+    <div class="ion-padding" slot="content">
+      Some answer goes here.
+    </div>
+  </ion-accordion>
+  <ion-accordion value="sixth">
+    <ion-item slot="header" color="light">
+      <ion-label>Can I track my order?</ion-label>
+    </ion-item>
+    <div class="ion-padding" slot="content">
+      Some answer goes here.
+    </div>
+  </ion-accordion>
+  <ion-accordion value="seventh">
+    <ion-item slot="header" color="light">
+      <ion-label>Who do I contact about this product?</ion-label>
+    </ion-item>
+    <div class="ion-padding" slot="content">
+      Some answer goes here.
+    </div>
+  </ion-accordion>
+  
+</ion-accordion-group>
