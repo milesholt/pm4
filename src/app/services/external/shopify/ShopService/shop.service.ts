@@ -169,7 +169,7 @@ export class ShopService {
   }
 
   getCartIdx(product: any = false) {
-    let idx = -1;
+    let idx = 0;
     if (!!product) {
       if (!this.library.isEmpty(this.cart)) {
         for (let i = 0; i < this.cart.lineItems.length; i++) {
@@ -231,10 +231,13 @@ export class ShopService {
     }
   }
 
-  //TO DO: This function is not necessary
   isCartEmpty(): boolean {
-    if (this.library.isEmpty(this.cart)) return true;
-    return false;
+    if (!this.library.isEmpty(this.cart)) {
+      if (this.cart.lineItems.length > 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
   async formatDesc(product: any) {

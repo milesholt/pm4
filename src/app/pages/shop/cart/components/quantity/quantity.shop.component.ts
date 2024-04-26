@@ -32,7 +32,7 @@ export class QuantityShopComponent implements OnInit {
     public changeDet: ChangeDetectorRef,
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe((cart) => {
-      if (!this.lib.isEmpty(cart)) {
+      if (!this.service.shop.isCartEmpty()) {
         this.item = cart.lineItems[this.itemidx];
         if (this.itemidx == -1) this.getCartIdx();
       }
@@ -50,7 +50,7 @@ export class QuantityShopComponent implements OnInit {
   }
 
   async getCartItem() {
-    if (!this.lib.isEmpty(this.service.shop.cart))
+    if (!this.service.shop.isCartEmpty())
       this.item = this.service.shop.cart.lineItems[this.itemidx];
   }
 

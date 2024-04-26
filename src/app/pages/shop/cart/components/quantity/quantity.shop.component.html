@@ -1,5 +1,7 @@
-<div *ngIf="!lib.isEmpty(service.shop.cart)">
+<div *ngIf="service.shop.isCartEmpty() === false">
 <ion-button (click)="minusQuantity(itemQuantity)">-</ion-button>
-<ion-input class="quantityInput" width="30" readonly type="number" #itemQuantity [(ngModel)]="service.shop.cart.lineItems[itemidx].quantity" [value]="service.shop.cart.lineItems[itemidx].quantity" min="1" max="5" placeholder="1"></ion-input>
+<!--<ion-input class="quantityInput" width="30" readonly type="number" #itemQuantity [(ngModel)]="service.shop.cart.lineItems[itemidx].quantity" [value]="service.shop.cart.lineItems[itemidx].quantity" min="1" max="5" placeholder="1"></ion-input>-->
+<ion-input class="quantityInput" width="30" readonly type="number" #itemQuantity [value]="service.shop.cart.lineItems[itemidx].quantity" min="1" max="5" placeholder="1"></ion-input>
+
 <ion-button (click)="addQuantity(itemQuantity)">+</ion-button>
 </div>          

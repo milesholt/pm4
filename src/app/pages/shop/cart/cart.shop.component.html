@@ -4,12 +4,12 @@
     </ion-toolbar>
   </ion-header>
   
-  <ion-content [fullscreen]="true">
+  <ion-content [fullscreen]="true" *ngIf="!library.isEmpty(service.shop.cart)">
     
-      <p *ngIf="library.isEmpty(service.shop.cart)">
+      <p *ngIf="!service.shop.cart.lineItems.length">
          Your cart is empty.
       </p>
-      <div *ngIf="!library.isEmpty(service.shop.cart)">
+      <div *ngIf="service.shop.cart.lineItems.length">
         <ion-list>
           <ion-item *ngFor="let it of service.shop.cart.lineItems; index as idx">
             {{it.title}} - {{it.variant.price.amount}} {{it.variant.price.currencyCode}}
