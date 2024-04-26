@@ -14,7 +14,6 @@
   <ion-row>
   <ion-col size="12" size-lg="7" size-xl="9">
     
-    <!--Image Slider-->
    <app-slider-comp id="slider"
       [slides]="product.images"
       [slideSuffix]="'src'"
@@ -36,18 +35,16 @@
  
     <app-cartbutton-shop-comp [product]="product"></app-cartbutton-shop-comp>
     
-    
     <app-quantity-shop-comp [itemidx]="cartIdx" [product]="product"></app-quantity-shop-comp>
     
-
     <div class="product-description" [innerHtml]="product.description | safeHtml"></div>
 
   </ion-col>
 </ion-row>
 </ion-grid>
 
-
 </ion-content>
+
 
 <!--
 <pre>

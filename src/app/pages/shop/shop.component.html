@@ -28,8 +28,8 @@
 <!--<app-feed-comp [feedData]="products"></app-feed-comp>-->
 
 <ion-grid [fixed]="true">
-    <ion-row>
-      <ion-col size="6" size-sm="3" [(ngModel)]="products" *ngFor="let product of filterProducts; index as idx">  
+    <ion-row >
+      <ion-col size="6" size-sm="3" *ngFor="let product of filterProducts; index as idx">  
       
       <img src="{{product.variants[0].image.src}}" class="product-image" width="100%" height="auto" />
     
@@ -38,10 +38,10 @@
       <div class="product-price">{{product.variants[0].price.amount}} {{ product.variants[0].price.currencyCode }}</div>
         
       <div class="product-type">{{product.productType}}</div>
-      <!--<ion-button (click)="service.shop.addToCart(product)">Add to cart</ion-button>-->
-    </ion-col>
+     </ion-col>
   </ion-row>
   </ion-grid>
+
 
 <div *ngIf="heroSlides[filterCategory]" style="padding-bottom:100px">
   <!-- Additional Content -->

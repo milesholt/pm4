@@ -11,9 +11,6 @@ import { CoreService } from '../../../services/core.service';
 import { Library } from '../../../app.library';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { register } from 'swiper/element/bundle';
-register();
-
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
@@ -43,7 +40,6 @@ export class ProductComponent implements OnInit {
   idx: number = 0;
   cartIdx: number = -1;
 
-  @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
   @Input() productDesc: string = '';
 
   constructor(
@@ -78,54 +74,17 @@ export class ProductComponent implements OnInit {
     this.product = await this.service.shop
       .getProduct(this.products, this.idx, this.product)
       .then(async (product) => {
-        await this.getCartIdx();
-        setTimeout(() => {
-          if (this.mainSwiper) {
-            this.iniSlider();
-          }
-        });
-
+        await this.getCartIdx(product);
         return product;
       });
   }
 
-  async getCartIdx() {
-    this.cartIdx = await this.service.shop
+  getCartIdx(product: any = false) {
+    /*this.cartIdx = await this.service.shop
       .getCartIdx(this.product)
       .then((idx) => {
         return idx;
-      });
-  }
-
-  async iniSlider() {
-    // swiper element
-    //const swiperEl = <any>document.querySelector('.main-swiper');
-    const swiperEl = this.mainSwiper.nativeElement;
-
-    // swiper parameters
-    const swiperParams = {
-      slidesPerView: 1,
-      zoom: {
-        maxRatio: 5,
-        minRatio: 1,
-        toggle: true,
-      },
-      navigation: true,
-      /*pagination: {
-        clickable: true,
-      },*/
-      thumbs: {
-        swiper: '.thumbs-swiper',
-      },
-      on: {
-        init() {},
-      },
-    };
-
-    // now we need to assign all parameters to Swiper element
-    Object.assign(swiperEl, swiperParams);
-
-    // and now initialize it
-    swiperEl.initialize();
+      });*/
+    this.cartIdx = this.service.shop.getCartIdx(product);
   }
 }

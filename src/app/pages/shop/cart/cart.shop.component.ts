@@ -22,7 +22,7 @@ import { Subscription } from 'rxjs';
 export class CartShopComponent implements OnInit {
   products: any;
   test: string = 'a';
-  cartSubscription: Subscription;
+  //cartSubscription: Subscription;
   cartLength: number = 0;
   //changeDet: any;
   @Input() cart: any;
@@ -35,18 +35,18 @@ export class CartShopComponent implements OnInit {
     public changeDet: ChangeDetectorRef,
     private elementRef: ElementRef<HTMLElement>,
   ) {
-    this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
+    /*this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
       this.changeDet.detectChanges();
-    });
+    });*/
   }
 
   ngOnDestroy() {
-    this.cartSubscription.unsubscribe();
+    //this.cartSubscription.unsubscribe();
   }
 
   ngOnInit() {
     const element = this.elementRef.nativeElement;
-    this.service.shop.getCart();
+    //this.service.shop.getCart();
   }
 
   async ngAfterContentInit() {}

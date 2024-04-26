@@ -14,15 +14,23 @@ import { ShopComponent } from './pages/shop/shop.component';
 import { ProductComponent } from './pages/shop/product/product.component';
 import { CartShopComponent } from './pages/shop/cart/cart.shop.component';
 
+import { TestComponent } from './pages/test/test.component';
+
 // route guard
 import { AuthGuard } from './services/shared/guard/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/login',
+    redirectTo: '/test',
     pathMatch: 'full',
     //loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },
+  {
+    path: 'test',
+    component: TestComponent,
+    loadChildren: () =>
+      import('./pages/test/test.module').then((m) => m.TestModule),
   },
   {
     path: 'login',

@@ -48,13 +48,13 @@ export class AppComponent implements OnInit {
     },
   ];
   constructor(
-    public lib: Library,
+    public library: Library,
     public service: CoreService,
     public router: Router,
     //public cartComp: CartShopComponent,
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe((cart) => {
-      this.cartLength = this.service.shop.getCartLength();
+      this.cartLength = cart.lineItems.length;
     });
   }
 
@@ -67,6 +67,8 @@ export class AppComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.cartLength = this.service.shop.getCartLength();
+    if (this.service.shop.cart.lineItems) {
+      this.cartLength = this.service.shop.cart.lineItems.length;
+    }
   }
 }

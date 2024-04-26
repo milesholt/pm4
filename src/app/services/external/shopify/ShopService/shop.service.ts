@@ -26,7 +26,6 @@ export class ShopService {
     public ngZone: NgZone, // NgZone service to remove outside scope warning
     //public changeDet: ChangeDetectorRef,
   ) {
-    console.log('shop service');
     // Initializing a client to return content in the store's primary language
     /*this.client = Client.buildClient({
       domain: 'quickstart-5ff0e693.myshopify.com',
@@ -99,6 +98,21 @@ export class ShopService {
 
   async addToCart(product: any) {
     const checkoutId = await this.getCheckoutId();
+    /*this.cart = await this.client.checkout
+      .addLineItems(checkoutId, [
+        {
+          variantId: product.variants[0].id,
+          quantity: 1,
+        },
+      ])
+      .then((cart: any) => {
+        this.updateCart(cart);
+        return cart;
+      })
+      .catch((error: any) => {
+        alert(error);
+      });*/
+
     this.cart = await this.client.checkout
       .addLineItems(checkoutId, [
         {
@@ -113,6 +127,7 @@ export class ShopService {
       .catch((error: any) => {
         alert(error);
       });
+
     //this.test = 'addtocart';
     //alert(this.test);
   }
@@ -140,39 +155,65 @@ export class ShopService {
 
   async findInCart(product: any) {
     const checkoutId = await this.getCheckoutId();
-    if (this.cart.lineItems.length === 0) {
-      return false;
-    }
-    for (let i = 0; i < this.cart.lineItems.length; i++) {
-      if (this.cart.lineItems[i].variant.id == product.variants[0].id) {
-        return this.cart.lineItems[i];
+    if (!this.library.isEmpty(this.cart)) {
+      if (this.cart.lineItems.length === 0) {
+        return false;
+      }
+      for (let i = 0; i < this.cart.lineItems.length; i++) {
+        if (this.cart.lineItems[i].variant.id == product.variants[0].id) {
+          return this.cart.lineItems[i];
+        }
       }
     }
     return false;
   }
 
-  async getCartIdx(product: any) {
+  getCartIdx(product: any = false) {
     let idx = -1;
-    for (let i = 0; i < this.cart.lineItems.length; i++) {
-      if (this.cart.lineItems[i].variant.id == product.variants[0].id) {
-        idx = i;
+    if (!!product) {
+      if (!this.library.isEmpty(this.cart)) {
+        for (let i = 0; i < this.cart.lineItems.length; i++) {
+          //console.log(this.cart.lineItems[i].variant.id);
+          if (this.cart.lineItems[i].variant.id == product.variants[0].id) {
+            idx = i;
+          }
+        }
       }
     }
     //if (idx == -1 && this.cart.lineItems) idx = this.cart.lineItems.length;
     return idx;
   }
 
-  async removeItem(item: any) {
-    const checkoutId = await this.getCheckoutId();
-    this.cart = await this.client.checkout
+  async removeItem(item: any = false) {
+    let checkoutId = false;
+    checkoutId = await this.getCheckoutId();
+    /*this.cart = await this.client.checkout
       .removeLineItems(checkoutId, [item.id])
       .then((cart: any) => {
         return cart;
       })
       .catch((error: any) => {
         alert(error);
-      });
-    this.updateCart(this.cart);
+      });*/
+
+    if (!!checkoutId && !!item) {
+      /*this.cart = await this.client.checkout.removeLineItems(checkoutId, [
+        item.id,
+      ]);*/
+      await this.client.checkout
+        .removeLineItems(checkoutId, [item.id])
+        .then((cart: any) => {
+          this.updateCart(cart);
+          //this.cart = cart;
+        })
+        .catch((error: any) => {
+          alert(error);
+        });
+
+      //this.updateCart(this.cart);
+    }
+
+    //
   }
 
   async getCart() {
@@ -182,8 +223,17 @@ export class ShopService {
     return this.cart;
   }
 
-  async isCartEmpty() {
-    if (this.cart.lineItems.length == 0) return true;
+  getCartLength(): number {
+    if (!this.library.isEmpty(this.cart)) {
+      return this.cart.lineItems.length;
+    } else {
+      return 0;
+    }
+  }
+
+  //TO DO: This function is not necessary
+  isCartEmpty(): boolean {
+    if (this.library.isEmpty(this.cart)) return true;
     return false;
   }
 

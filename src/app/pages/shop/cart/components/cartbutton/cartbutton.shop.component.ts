@@ -34,7 +34,8 @@ export class CartButtonShopComponent implements OnInit {
     public changeDet: ChangeDetectorRef,
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
-      await this.getCartItem();
+      //if (!this.lib.isEmpty(cart)) await this.getCartItem();
+      console.log(cart);
     });
   }
 

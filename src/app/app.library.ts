@@ -40,7 +40,7 @@ export class Library {
   }
 
   //returns if object is empty, the one above is 10 times slower if there are properties
-  isEmpty(obj: any) {
+  isEmpty(obj: any): boolean {
     for (var prop in obj) {
       if (obj.hasOwnProperty(prop)) return false;
     }

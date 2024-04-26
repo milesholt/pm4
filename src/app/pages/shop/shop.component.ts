@@ -95,71 +95,19 @@ export class ShopComponent implements OnInit {
     const keyword = searchData.keyword;
     this.filterCategory = searchData.keyword;
 
-    console.log(results);
     if (keyword == '') this.test();
     this.filterProducts = results;
     this.cdr.detectChanges();
-    setTimeout(() => {
-      if (this.mainSwiper) {
-        this.checkSlider();
-      }
-    });
   }
 
   async handleFilterCallback(filterData: any) {
-    //const results = filterData.results;
-    //const filter = filterData.filter;
-
-    //if (filter == '') this.test();
-    //this.filterProducts = results;
     this.cdr.detectChanges();
   }
 
   test() {
     this.service.shop.getProducts(this.service.shop.client).then((products) => {
-      console.log(products);
       this.products = products;
       this.filterProducts = products;
-      setTimeout(() => {
-        if (this.mainSwiper) {
-          this.checkSlider();
-        }
-      });
     });
-  }
-
-  async checkSlider() {
-    if (Object.keys(this.heroSlides).includes(this.filterCategory)) {
-      //alert('here');
-      //await this.iniSlider();
-      await this.iniSlider();
-      //
-    }
-  }
-
-  async iniSlider() {
-    // swiper element
-    //const swiperEl = <any>document.querySelector('.main-swiper');
-    const swiperEl = this.mainSwiper.nativeElement;
-    // swiper parameters
-    const swiperParams = {
-      slidesPerView: 1,
-      navigation: false,
-      /*pagination: {
-        clickable: true,
-      },*/
-      /*thumbs: {
-        swiper: '.thumbs-swiper',
-      },*/
-      on: {
-        init() {},
-      },
-    };
-
-    // now we need to assign all parameters to Swiper element
-    Object.assign(swiperEl, swiperParams);
-
-    // and now initialize it
-    swiperEl.initialize();
   }
 }
