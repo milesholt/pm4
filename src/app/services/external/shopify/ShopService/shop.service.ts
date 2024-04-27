@@ -154,15 +154,17 @@ export class ShopService {
       });
   }
 
-  async findInCart(product: any) {
+  async findInCart(product: any = false) {
     const checkoutId = await this.getCheckoutId();
-    if (!this.isCartEmpty()) {
-      if (this.cart.lineItems.length === 0) {
-        return false;
-      }
-      for (let i = 0; i < this.cart.lineItems.length; i++) {
-        if (this.cart.lineItems[i].variant.id == product.variants[0].id) {
-          return this.cart.lineItems[i];
+    if (product) {
+      if (!this.isCartEmpty()) {
+        if (this.cart.lineItems.length === 0) {
+          return false;
+        }
+        for (let i = 0; i < this.cart.lineItems.length; i++) {
+          if (this.cart.lineItems[i].variant.id == product.variants[0].id) {
+            return this.cart.lineItems[i];
+          }
         }
       }
     }

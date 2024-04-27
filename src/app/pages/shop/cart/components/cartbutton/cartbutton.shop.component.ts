@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs';
   //imports:[IonicModule]
 })
 export class CartButtonShopComponent implements OnInit {
-  @Input() product: any;
+  @Input() product: any = false;
 
   cartLabel: any = '';
   cartItem: any;
@@ -34,11 +34,7 @@ export class CartButtonShopComponent implements OnInit {
     public changeDet: ChangeDetectorRef,
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
-      // if (!this.service.shop.isCartEmpty()) {
-
-      // }
       await this.getCartItem();
-      //console.log(cart);
     });
   }
 
