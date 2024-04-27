@@ -34,7 +34,10 @@ export class CartButtonShopComponent implements OnInit {
     public changeDet: ChangeDetectorRef,
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
-      if (!this.lib.isEmpty(cart)) await this.getCartItem();
+      // if (!this.service.shop.isCartEmpty()) {
+
+      // }
+      await this.getCartItem();
       //console.log(cart);
     });
   }
@@ -58,11 +61,11 @@ export class CartButtonShopComponent implements OnInit {
     return this.cartItem;
   }
 
-  async toggleAddToCart(product: any) {
+  toggleAddToCart(product: any) {
     if (this.cartItem !== false) {
-      await this.service.shop.removeItem(this.cartItem);
+      this.service.shop.removeItem(this.cartItem);
     } else {
-      await this.service.shop.addToCart(product);
+      this.service.shop.addToCart(product);
     }
     this.changeDet.detectChanges();
     //await this.service.shop.getCart();

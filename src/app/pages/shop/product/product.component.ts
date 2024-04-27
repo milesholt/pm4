@@ -38,7 +38,7 @@ export class ProductComponent implements OnInit {
   id: any = null;
   alias: string = '';
   idx: number = 0;
-  cartIdx: number = -1;
+  cartIdx: number | boolean = false;
 
   @Input() productDesc: string = '';
 
@@ -79,12 +79,12 @@ export class ProductComponent implements OnInit {
       });
   }
 
-  getCartIdx(product: any = false) {
+  async getCartIdx(product: any = false) {
     /*this.cartIdx = await this.service.shop
       .getCartIdx(this.product)
       .then((idx) => {
         return idx;
       });*/
-    this.cartIdx = this.service.shop.getCartIdx(product);
+    this.cartIdx = await this.service.shop.getCartIdx(product);
   }
 }

@@ -97,22 +97,8 @@ export class ShopService {
   }
 
   async addToCart(product: any) {
+    //console.log(product);
     const checkoutId = await this.getCheckoutId();
-    /*this.cart = await this.client.checkout
-      .addLineItems(checkoutId, [
-        {
-          variantId: product.variants[0].id,
-          quantity: 1,
-        },
-      ])
-      .then((cart: any) => {
-        this.updateCart(cart);
-        return cart;
-      })
-      .catch((error: any) => {
-        alert(error);
-      });*/
-
     this.cart = await this.client.checkout
       .addLineItems(checkoutId, [
         {
@@ -127,6 +113,21 @@ export class ShopService {
       .catch((error: any) => {
         alert(error);
       });
+
+    /*this.client.checkout
+      .addLineItems(checkoutId, [
+        {
+          variantId: product.variants[0].id,
+          quantity: 1,
+        },
+      ])
+      .then((cart: any) => {
+        this.updateCart(cart);
+        //return cart;
+      })
+      .catch((error: any) => {
+        alert(error);
+      });*/
 
     //this.test = 'addtocart';
     //alert(this.test);
@@ -155,7 +156,7 @@ export class ShopService {
 
   async findInCart(product: any) {
     const checkoutId = await this.getCheckoutId();
-    if (!this.library.isEmpty(this.cart)) {
+    if (!this.isCartEmpty()) {
       if (this.cart.lineItems.length === 0) {
         return false;
       }
@@ -169,17 +170,21 @@ export class ShopService {
   }
 
   getCartIdx(product: any = false) {
-    let idx = 0;
-    if (!!product) {
-      if (!this.library.isEmpty(this.cart)) {
+    let idx: boolean | number = false;
+    if (product) {
+      if (!this.isCartEmpty()) {
         for (let i = 0; i < this.cart.lineItems.length; i++) {
           //console.log(this.cart.lineItems[i].variant.id);
           if (this.cart.lineItems[i].variant.id == product.variants[0].id) {
+            console.log('match');
             idx = i;
           }
         }
       }
     }
+
+    //console.log(product);
+    //console.log('getCartidx:' + idx);
     //if (idx == -1 && this.cart.lineItems) idx = this.cart.lineItems.length;
     return idx;
   }
@@ -224,7 +229,7 @@ export class ShopService {
   }
 
   getCartLength(): number {
-    if (!this.library.isEmpty(this.cart)) {
+    if (!this.isCartEmpty()) {
       return this.cart.lineItems.length;
     } else {
       return 0;

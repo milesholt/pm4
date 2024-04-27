@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
     //public cartComp: CartShopComponent,
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe((cart) => {
-      //this.cartLength = this.service.shop.getCartLength();
+      this.cartLength = this.service.shop.getCartLength();
     });
   }
 
