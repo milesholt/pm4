@@ -53,7 +53,6 @@ export class ShopService {
 
   async getProduct(products: any, idx: number = 0, product: any = {}) {
     let p = products[idx];
-    console.log(p);
 
     product.id = p.id;
     product.featuredImage = p.featuredImage;

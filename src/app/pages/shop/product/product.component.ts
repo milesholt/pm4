@@ -87,11 +87,6 @@ export class ProductComponent implements OnInit {
   }
 
   async getCartIdx(product: any = false) {
-    /*this.cartIdx = await this.service.shop
-      .getCartIdx(this.product)
-      .then((idx) => {
-        return idx;
-      });*/
     this.cartIdx = await this.service.shop.getCartIdx(product);
   }
 }
