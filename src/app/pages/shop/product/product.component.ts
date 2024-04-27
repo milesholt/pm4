@@ -11,6 +11,8 @@ import { CoreService } from '../../../services/core.service';
 import { Library } from '../../../app.library';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
@@ -39,6 +41,7 @@ export class ProductComponent implements OnInit {
   alias: string = '';
   idx: number = 0;
   cartIdx: number | boolean = false;
+  cartSubscription: Subscription;
 
   @Input() productDesc: string = '';
 
@@ -47,7 +50,15 @@ export class ProductComponent implements OnInit {
     private route: ActivatedRoute,
     public library: Library,
     public service: CoreService,
-  ) {}
+  ) {
+    this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
+      // if (!this.service.shop.isCartEmpty()) {
+
+      // }
+      await this.getCartIdx(this.product);
+      //console.log(cart);
+    });
+  }
 
   async ngOnInit() {
     await this.getAlias();

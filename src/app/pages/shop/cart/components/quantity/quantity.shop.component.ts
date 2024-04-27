@@ -43,6 +43,7 @@ export class QuantityShopComponent implements OnInit {
       ) {
         //await this.getCartIdx();
         this.itemidx = await this.service.shop.getCartIdx(this.product);
+        console.log(this.itemidx);
       }
     });
   }
