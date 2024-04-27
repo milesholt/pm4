@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
   providers: [CoreService, Library],
 })
 export class ProductComponent implements OnInit {
-  products: any;
+  products: any = [];
   product: any = {
     id: null,
     title: null,
@@ -52,11 +52,7 @@ export class ProductComponent implements OnInit {
     public service: CoreService,
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
-      // if (!this.service.shop.isCartEmpty()) {
-
-      // }
-      await this.getCartIdx(this.product);
-      //console.log(cart);
+      if (this.products.length) await this.getProduct();
     });
   }
 

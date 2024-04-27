@@ -32,18 +32,12 @@ export class QuantityShopComponent implements OnInit {
     public changeDet: ChangeDetectorRef,
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
-      //if (!this.service.shop.isCartEmpty() && !!this.product && !this.itemidx) {
-      //await this.getCartIdx();
-      //this.itemidx = await this.service.shop.getCartIdx(this.product);
-      //}
       if (
         !this.service.shop.isCartEmpty() &&
         !!this.product &&
         this.itemidx === false
       ) {
-        //await this.getCartIdx();
         this.itemidx = await this.service.shop.getCartIdx(this.product);
-        console.log(this.itemidx);
       }
     });
   }
@@ -55,42 +49,10 @@ export class QuantityShopComponent implements OnInit {
   async ngOnInit() {}
 
   async ngAfterViewInit() {
-    //console.log('loading quantity - afterview');
-    //if (!this.item) await this.getCartItem();
-    //if (this.itemidx == -1) {
-    //await this.getCartIdx();
-    //}
-    /*if (!this.service.shop.isCartEmpty() && !!this.product && !this.itemidx) {
-      await this.getCartIdx();
-    }*/
-
-    if (
-      !this.service.shop.isCartEmpty() &&
-      !!this.product &&
-      this.itemidx === false
-    ) {
-      //await this.getCartIdx();
-      //this.itemidx = await this.service.shop.getCartIdx(this.product);
-    }
-  }
-
-  async getCartItem() {
-    /* if (!this.service.shop.isCartEmpty())
-      if (!!this.itemidx)
-        this.item = this.service.shop.cart.lineItems[this.itemidx];*/
   }
 
   async getCartIdx() {
-    //if (this.itemidx === false) {
-    /*this.itemidx = await this.service.shop
-        .getCartIdx(this.product)
-        .then((idx: any) => {
-          return idx;
-        });*/
-    //console.log(this.product);
-    //console.log(this.product);
     this.itemidx = await this.service.shop.getCartIdx(this.product);
-    // }
   }
 
   async addQuantity(input: any) {
@@ -112,7 +74,4 @@ export class QuantityShopComponent implements OnInit {
     return this.itemidx !== false; //
   }
 
-  /*isCartItem() {
-    return !!this.item;
-  }*/
 }

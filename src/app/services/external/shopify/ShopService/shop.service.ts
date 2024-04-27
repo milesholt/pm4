@@ -176,7 +176,6 @@ export class ShopService {
         for (let i = 0; i < this.cart.lineItems.length; i++) {
           //console.log(this.cart.lineItems[i].variant.id);
           if (this.cart.lineItems[i].variant.id == product.variants[0].id) {
-            console.log('match');
             idx = i;
           }
         }

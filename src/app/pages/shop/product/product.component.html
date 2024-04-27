@@ -34,10 +34,9 @@
     <div class="product-type">{{product.productType}}</div>
  
     <app-cartbutton-shop-comp [product]="product"></app-cartbutton-shop-comp>
-    {{cartIdx}}
-    <div *ngIf="!!cartIdx">
+    
     <app-quantity-shop-comp [itemidx]="cartIdx" [product]="product"></app-quantity-shop-comp>
-    </div>
+    
     <div class="product-description" [innerHtml]="product.description | safeHtml"></div>
 
   </ion-col>
