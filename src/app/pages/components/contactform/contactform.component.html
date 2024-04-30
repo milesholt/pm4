@@ -66,7 +66,7 @@
           <ion-input label="{{field.name}}" type="text" value="{{field.value }}" autocomplete="{{field.autocomplete ? field.autocomplete : 'true'}}" onpaste="return false;" class="form-control" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary {{field.classes}}"  (keyup)="doForm($event,field.key)" (change)="doForm($event,field.key)" (click)="doForm($event,field.key)" ></ion-input>
           
       </ion-item>
-      <ion-item *ngSwitchCase="'textarea'">
+      <ion-item *ngSwitchCase="'textarea'" lines="none">
          <ion-textarea label="{{field.name}}" class="form-control" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary {{field.classes}}" [(ngModel)]="form[field.key]" (keyup)="doForm($event,field.key)" (change)="doForm($event,field.key)" (click)="doForm($event,field.key)" [counter]="field.counter"
          maxlength="{{field.maxlength}}" [autoGrow]="field.autogrow"></ion-textarea>
       </ion-item>
@@ -115,7 +115,7 @@
       <ion-item *ngSwitchCase="'checkbox'">
         <ion-input label="{{field.name}}" type="checkbox" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" name="{{field.name}}"></ion-input><p class="checkbox-label">{{field.value}}</p>
       </ion-item>
-      <ion-item *ngSwitchCase="'submit'">
+      <ion-item *ngSwitchCase="'submit'" lines="none">
         <ion-button type="submit" class="form-control btn rel {{field.classes}}" [ngClass]="canSubmit ? '' : 'cta-disabled'" id="fld-{{field.name | alias}}">{{field.name}}</ion-button>
       </ion-item>
       <ion-item *ngSwitchCase="'hidden'">

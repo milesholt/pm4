@@ -25,6 +25,8 @@ import { AuthService } from './services/external/firebase/AuthService/auth.capac
 import { CartShopModule } from './pages/shop/cart/cart.shop.module';
 import { QuantityShopModule } from './pages/shop/cart/components/quantity/quantity.shop.module';
 
+import { FooterModule } from './pages/components/footer/footer.module';
+
 //Pipes
 //import { SafeHtmlPipe } from './pipes/safeHtml.pipe';
 
@@ -42,6 +44,7 @@ import { QuantityShopModule } from './pages/shop/cart/components/quantity/quanti
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     CartShopModule,
+    FooterModule,
     //QuantityShopModule,
     //SafeHtmlPipe,
   ],

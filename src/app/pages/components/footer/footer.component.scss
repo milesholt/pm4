@@ -1,0 +1,26 @@
+#copyright-notice {
+  padding: 40px 0px;
+  border-top: solid 1px white;
+  width: 100%;
+  display: table;
+  margin-top: 40px;
+}
+
+#footer {
+  margin-top: 50px !important;
+  display: table !important;
+  position: relative !important;
+  height: 500px;
+  width: 100%;
+  background: black;
+  * {
+    color: white;
+  }
+}
+
+#footer-wrap {
+  position: absolute;
+  bottom: 50px;
+  padding: 20px;
+  width: 100%;
+}

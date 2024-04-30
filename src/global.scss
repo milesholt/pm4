@@ -16,7 +16,7 @@
 @import "@ionic/angular/css/normalize.css";
 @import "@ionic/angular/css/structure.css";
 @import "@ionic/angular/css/typography.css";
-@import '@ionic/angular/css/display.css';
+@import "@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "@ionic/angular/css/padding.css";
@@ -24,3 +24,68 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+/* Global Theme Overide */
+
+/* Main Colours */
+
+:root {
+  --ion-background-color: white;
+  --ion-color-text: black;
+  --ion-item-color: black;
+  --ion-toolbar-color: black;
+  --ion-color-primary: black;
+}
+
+/*Headings */
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  > a {
+    text-decoration: none;
+    font-weight: normal;
+  }
+}
+
+h1 {
+}
+
+h2 {
+  padding: 40px 0px;
+}
+
+h3 {
+}
+
+h4 {
+}
+
+/* Spacing */
+
+.container {
+  padding: 20px;
+}
+
+/* Buttons */
+
+ion-button {
+  --background: black;
+  --background-hover: #333;
+  --color: white;
+  --border-radius: 0;
+  --padding: 50px !important;
+  min-width: 150px;
+  max-width: 300px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  min-height: 50px;
+}
+
+/* Main Content */
+
+ion-content {
+  --padding-bottom: 0px !important;
+}

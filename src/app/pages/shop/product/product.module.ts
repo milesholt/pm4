@@ -12,6 +12,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { QuantityShopModule } from '../cart/components/quantity/quantity.shop.module';
 import { CartButtonShopModule } from '../cart/components/cartbutton/cartbutton.shop.module';
 import { SliderModule } from '../../components/slider/slider.module';
+import { FooterModule } from '../../components/footer/footer.module';
 
 //Pipes
 import { SafeHtmlPipe } from '../../../pipes/safeHtml.pipe';
@@ -26,6 +27,7 @@ import { SafeHtmlPipe } from '../../../pipes/safeHtml.pipe';
     QuantityShopModule,
     CartButtonShopModule,
     SliderModule,
+    FooterModule
   ],
   declarations: [ProductComponent, SafeHtmlPipe],
 })

@@ -17,6 +17,8 @@ import { FilterShopModule } from './components/filter/filter.shop.module';
 import { ContactFormModule } from '../components/contactform/contactform.module';
 import { AccordionModule } from '../components/accordion/accordion.module';
 
+import { FooterModule } from '../components/footer/footer.module';
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -30,6 +32,7 @@ import { AccordionModule } from '../components/accordion/accordion.module';
     FeedModule,
     SliderModule,
     AccordionModule,
+    FooterModule,
   ],
   declarations: [ShopComponent],
 })
