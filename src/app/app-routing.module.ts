@@ -22,7 +22,7 @@ import { AuthGuard } from './services/shared/guard/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/test',
+    redirectTo: '/shop',
     pathMatch: 'full',
     //loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
