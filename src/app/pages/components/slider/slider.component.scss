@@ -12,3 +12,27 @@
   align-items: center; // Vertically center
   width: 100%; // Example width
 }
+
+.main-slide img {
+  object-fit: contain;
+  height: 100%;
+  max-width: 70%;
+}
+
+#mainSlider {
+  height: 70%;
+}
+
+#thumbsSlider {
+  height: 30%;
+}
+
+@media (max-width: 992px) {
+  .main-slide img {
+    max-width: 100%;
+  }
+
+  #mainSlider {
+    height: auto;
+  }
+}

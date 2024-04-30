@@ -2,5 +2,38 @@
   top: 0px;
   display: block;
   position: sticky;
-  height: 100vh;
+  /* height: 100vh;*/
+  height: 100%;
+}
+
+@media (max-width: 992px) {
+  #slider {
+    height: auto;
+  }
+}
+
+.product-content {
+  padding-bottom: 40px;
+  padding-top: 40px;
+}
+
+@media (min-width: 992px) {
+  /*ion-grid {
+    height: 100vh;
+    overflow: hidden;
+  }*/
+
+  .product-images {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+}
+
+ion-row {
+  height: 100%;
+}
+
+ion-col {
+  height: 100%;
 }
