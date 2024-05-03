@@ -23,6 +23,7 @@ export class ShopComponent implements OnInit {
   products: any = [];
   filterProducts: any = [];
   filterCategory: string = 'all';
+  featuredProducts: any = [];
 
   heroSlides: any = {
     Mushroom: {
@@ -57,6 +58,11 @@ export class ShopComponent implements OnInit {
             'Reduces inflammation, improves cognitivity and stimulates the creation of brain cells, improves metabolism.',
         },
       ],
+      featuredProducts: [
+        'gid://shopify/Product/8945628414289',
+        'gid://shopify/Product/8945648959825',
+        'gid://shopify/Product/8959035638097',
+      ],
     },
   };
 
@@ -90,6 +96,16 @@ export class ShopComponent implements OnInit {
     }
   }
 
+  async doFeatured() {
+    if (this.filterCategory !== 'all') {
+      const cat = this.heroSlides[this.filterCategory];
+
+      this.featuredProducts = await this.products.filter((product: any) =>
+        cat.featuredProducts.includes(product.id),
+      );
+    }
+  }
+
   async handleSearchCallback(searchData: any) {
     const results = searchData.results;
     const keyword = searchData.keyword;
@@ -97,6 +113,7 @@ export class ShopComponent implements OnInit {
 
     if (keyword == '') this.test();
     this.filterProducts = results;
+    this.doFeatured();
     this.cdr.detectChanges();
   }
 

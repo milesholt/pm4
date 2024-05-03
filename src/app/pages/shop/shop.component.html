@@ -57,6 +57,23 @@
     </div>   
   </div>
 
+  <!-- Featured-->
+  <div *ngIf="heroSlides[filterCategory]">
+
+    <h2>Bestsellers</h2>
+
+    <app-slider-comp 
+        [slides]="featuredProducts"
+        [slidesPerView]="2"
+        [slideSuffix]="'image'"
+        [navigation]="true"
+        [type]="'listing'"
+        [details]="['price']"
+        >
+    </app-slider-comp>
+  </div>
+  
+
   <!-- FAQ -->
 <h2>Frequently Asked Questions</h2>
 <p>Below are list of questions that are popular from existing customers</p>

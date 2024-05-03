@@ -10,7 +10,7 @@ import { SliderComponent } from './slider.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [IonicModule, CommonModule, FormsModule, RouterLinkWithHref],
   declarations: [SliderComponent],
   exports: [SliderComponent],
 })

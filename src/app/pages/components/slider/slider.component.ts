@@ -36,6 +36,7 @@ export class SliderComponent implements OnInit {
   @Input() zoom: boolean = false;
   @Input() init: boolean = true;
   @Input() slideSuffix: string = '';
+  @Input() type: string | boolean = false;
 
   @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
 

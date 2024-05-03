@@ -37,6 +37,16 @@
   --ion-color-primary: black;
 }
 
+/* Body, HTML */
+
+body,
+body * {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
 /*Headings */
 
 h1,
@@ -61,6 +71,7 @@ h3 {
 }
 
 h4 {
+  font-size: 1rem;
 }
 
 /* Spacing */
