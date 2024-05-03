@@ -55,7 +55,7 @@
 <h2>Related Products </h2>
 <ion-grid [fixed]="true">
   <ion-row >
-    <ion-col routerLink="/shop/product/{{product.handle}}" size="6" size-sm="3" *ngFor="let product of relatedProducts; index as idx">  
+    <ion-col [routerLink]="['/shop/product/'+product.handle]" [queryParams]="{filterCategory: filterCategory}" size="6" size-sm="3" *ngFor="let product of relatedProducts; index as idx">  
     
     <img src="{{product.variants[0].image.src}}" class="product-image" width="100%" height="auto" />
   
@@ -67,7 +67,7 @@
    </ion-col>
 </ion-row>
 </ion-grid>
-</div>
+</div>  
 
 
 <app-footer></app-footer>

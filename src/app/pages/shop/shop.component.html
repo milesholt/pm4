@@ -28,12 +28,12 @@
 <!--<app-feed-comp [feedData]="products"></app-feed-comp>-->
 
 <ion-grid [fixed]="true" id="productsGrid">
-    <ion-row >
-      <ion-col size="6" size-sm="3" *ngFor="let product of filterProducts; index as idx">  
+    <ion-row>
+      <ion-col [routerLink]="['./product/'+product.handle]" [queryParams]="{ 'filterCategory' : filterCategory}" size="6" size-sm="3" *ngFor="let product of filterProducts; index as idx">  
       
       <img src="{{product.variants[0].image.src}}" class="product-image" width="100%" height="auto" />
     
-      <h4><a [routerLink]="['./product/'+product.handle]" [queryParams]="{ 'filterCategory' : filterCategory}">{{product.title}}</a></h4>
+      <h4>{{product.title}}</h4>
     
       <div class="product-price">{{product.variants[0].price.amount}} {{ product.variants[0].price.currencyCode }}</div>
         
@@ -87,6 +87,9 @@
   <br><br><br><br>
 
 </div>
+
+<a [routerLink]="['/shipping-policy']">Shipping Policy</a>
+
 
 <app-footer></app-footer>
 

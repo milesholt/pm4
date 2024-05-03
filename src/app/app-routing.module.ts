@@ -16,6 +16,8 @@ import { CartShopComponent } from './pages/shop/cart/cart.shop.component';
 
 import { TestComponent } from './pages/test/test.component';
 
+import { ContentComponent } from './pages/shop/content/content.component';
+
 // route guard
 import { AuthGuard } from './services/shared/guard/auth.guard';
 
@@ -91,6 +93,14 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/shop/product/product.module').then(
         (m) => m.ProductModule,
+      ),
+  },
+  {
+    path: 'shipping-policy',
+    component: ContentComponent,
+    loadChildren: () =>
+      import('./pages/shop/content/content.module').then(
+        (m) => m.ContentModule,
       ),
   },
 ];
