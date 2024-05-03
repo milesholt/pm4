@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 //import { Http, Headers } from "@angular/http";
+import { HttpClient } from '@angular/common/http';
 //import { Observable } from 'rxjs/Rx';
 //import { Definitions } from '../app.definitions';
 //import { Library } from '../app.library';
@@ -7,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 
 //connect to internal services
+import { HttpService } from './internal/HttpService/http.service';
 //import { ToastService } from './internal/ToastService/toast.service';
 //import { ModalService } from './internal/ModalService/modal.service';
 //import { NotificationService } from './internal/NotificationService/notification.service';
@@ -41,6 +43,7 @@ export class CoreService {
   constructor(
     public auth: AuthService,
     public shop: ShopService,
+    public http: HttpService,
   ) {}
 }
 

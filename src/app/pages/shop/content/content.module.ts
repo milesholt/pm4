@@ -10,9 +10,18 @@ import { FooterModule } from '../../components/footer/footer.module';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [IonicModule, CommonModule, FormsModule, FooterModule, RouterModule],
+  imports: [
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    FooterModule,
+    RouterModule,
+    HttpClientModule,
+  ],
   declarations: [ContentComponent],
   exports: [ContentComponent],
 })

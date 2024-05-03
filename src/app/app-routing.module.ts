@@ -103,6 +103,30 @@ const routes: Routes = [
         (m) => m.ContentModule,
       ),
   },
+  {
+    path: 'privacy-policy',
+    component: ContentComponent,
+    loadChildren: () =>
+      import('./pages/shop/content/content.module').then(
+        (m) => m.ContentModule,
+      ),
+  },
+  {
+    path: 'refund-policy',
+    component: ContentComponent,
+    loadChildren: () =>
+      import('./pages/shop/content/content.module').then(
+        (m) => m.ContentModule,
+      ),
+  },
+  {
+    path: 'terms-and-conditions',
+    component: ContentComponent,
+    loadChildren: () =>
+      import('./pages/shop/content/content.module').then(
+        (m) => m.ContentModule,
+      ),
+  },
 ];
 @NgModule({
   imports: [
