@@ -27,13 +27,13 @@
 
 <!--<app-feed-comp [feedData]="products"></app-feed-comp>-->
 
-<ion-grid [fixed]="true">
+<ion-grid [fixed]="true" id="productsGrid">
     <ion-row >
       <ion-col size="6" size-sm="3" *ngFor="let product of filterProducts; index as idx">  
       
       <img src="{{product.variants[0].image.src}}" class="product-image" width="100%" height="auto" />
     
-      <h4><a routerLink="./product/{{product.handle}}">{{product.title}}</a></h4>
+      <h4><a [routerLink]="['./product/'+product.handle]" [queryParams]="{ 'filterCategory' : filterCategory}">{{product.title}}</a></h4>
     
       <div class="product-price">{{product.variants[0].price.amount}} {{ product.variants[0].price.currencyCode }}</div>
         
@@ -43,7 +43,7 @@
   </ion-grid>
 
 
-<div *ngIf="heroSlides[filterCategory]" class="container" style="padding-bottom:100px">
+<div *ngIf="heroSlides[filterCategory]" class="container">
   <!-- Additional Content -->
   <div class="row" *ngFor="let page of heroSlides[filterCategory].content; index as idx">
     <div class="col col-image">

@@ -21,6 +21,7 @@ import { Subscription } from 'rxjs';
 })
 export class ProductComponent implements OnInit {
   products: any = [];
+  relatedProducts: any = [];
   product: any = {
     id: null,
     title: null,
@@ -42,6 +43,7 @@ export class ProductComponent implements OnInit {
   idx: number = 0;
   cartIdx: number | boolean = false;
   cartSubscription: Subscription;
+  filterCategory: any = false;
 
   @Input() productDesc: string = '';
 
@@ -54,12 +56,15 @@ export class ProductComponent implements OnInit {
     this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
       if (this.products.length) await this.getProduct();
     });
+    this.filterCategory =
+      this.route.snapshot.queryParamMap.get('filterCategory');
   }
 
   async ngOnInit() {
     await this.getAlias();
     await this.getProducts();
     await this.getProduct();
+    await this.getRelatedProducts();
   }
 
   async ngAfterViewInit() {}
@@ -72,6 +77,17 @@ export class ProductComponent implements OnInit {
     this.products = await this.service.shop.getProducts(
       this.service.shop.client,
     );
+  }
+
+  async getRelatedProducts() {
+    const limitCount = 4;
+    this.relatedProducts = this.products
+      .filter(
+        (product: any) =>
+          product.productType == this.product.productType &&
+          product.id !== this.product.id,
+      )
+      .slice(0, limitCount);
   }
 
   async getProduct() {

@@ -2,6 +2,12 @@
   padding: 20px;
 }
 
+/*Add spacing to element before footer */
+ion-content ::ng-deep > *:nth-last-child(2) {
+  /* Styles for the child before the last */
+  padding-bottom: 60px;
+}
+
 .row {
   display: flex;
   flex-wrap: wrap;

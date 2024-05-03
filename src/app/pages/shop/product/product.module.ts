@@ -1,5 +1,5 @@
 import { IonicModule } from '@ionic/angular';
-import { RouterLinkWithHref } from '@angular/router';
+import { RouterLinkWithHref, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -24,10 +24,11 @@ import { SafeHtmlPipe } from '../../../pipes/safeHtml.pipe';
     CommonModule,
     FormsModule,
     RouterLinkWithHref,
+    RouterModule,
     QuantityShopModule,
     CartButtonShopModule,
     SliderModule,
-    FooterModule
+    FooterModule,
   ],
   declarations: [ProductComponent, SafeHtmlPipe],
 })

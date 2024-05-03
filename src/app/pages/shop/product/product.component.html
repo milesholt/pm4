@@ -10,6 +10,13 @@
   
 <ion-content *ngIf="product.id !== null" #mainContent ion-padding [fullscreen]="true">
  
+<div id="breadCrumbs">
+  <span class="crumb" [routerLink]="['/shop']" [queryParams]="{search: ' ' }">Shop</span>
+  <span class="crumb" [routerLink]="['/shop']" [queryParams]="{search: product.productType }">{{product.productType}}</span>
+  <span *ngIf="!!filterCategory && filterCategory !== product.productType" class="crumb" [routerLink]="['/shop']" [queryParams]="{search: filterCategory }">{{filterCategory}}</span>
+  <span class="crumb">{{product.title}}</span>
+</div>
+
 <ion-grid>
   <ion-row>
   <ion-col size="12" size-lg="7" size-xl="9" class="product-images">
@@ -42,6 +49,25 @@
   </ion-col>
 </ion-row>
 </ion-grid>
+
+<!--Related Products-->
+<div *ngIf="relatedProducts.length" id="relatedProducts">
+<h2>Related Products </h2>
+<ion-grid [fixed]="true">
+  <ion-row >
+    <ion-col routerLink="/shop/product/{{product.handle}}" size="6" size-sm="3" *ngFor="let product of relatedProducts; index as idx">  
+    
+    <img src="{{product.variants[0].image.src}}" class="product-image" width="100%" height="auto" />
+  
+    <h4>{{product.title}}</h4>
+  
+    <div class="product-price">{{product.variants[0].price.amount}} {{ product.variants[0].price.currencyCode }}</div>
+      
+    <div class="product-type">{{product.productType}}</div>
+   </ion-col>
+</ion-row>
+</ion-grid>
+</div>
 
 
 <app-footer></app-footer>

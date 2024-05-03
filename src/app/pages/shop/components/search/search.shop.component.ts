@@ -70,7 +70,8 @@ export class SearchShopComponent implements OnInit {
     this.feedFilter = this.feed.filter(
       (item: any) =>
         item.title.toLowerCase().includes(lowerKeyword) ||
-        item.description.toLowerCase().includes(lowerKeyword),
+        item.description.toLowerCase().includes(lowerKeyword) ||
+        item.productType! == this.search,
     );
     /* if (
       this.feedFilter.length === 0 &&

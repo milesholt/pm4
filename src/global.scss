@@ -95,6 +95,11 @@ ion-button {
   min-height: 50px;
 }
 
+/*Slider */
+swiper-container {
+  --swiper-navigation-color: var(--ion-color-primary);
+}
+
 /* Main Content */
 
 ion-content {
