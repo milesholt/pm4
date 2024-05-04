@@ -48,8 +48,7 @@ export class QuantityShopComponent implements OnInit {
 
   async ngOnInit() {}
 
-  async ngAfterViewInit() {
-  }
+  async ngAfterViewInit() {}
 
   async getCartIdx() {
     this.itemidx = await this.service.shop.getCartIdx(this.product);
@@ -73,5 +72,4 @@ export class QuantityShopComponent implements OnInit {
   get isCartItem(): boolean {
     return this.itemidx !== false; //
   }
-
 }

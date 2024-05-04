@@ -1,0 +1,35 @@
+// parent-component.scss
+
+ion-button {
+  height: 100%;
+  width: 50px;
+  min-height: auto;
+  min-width: auto;
+  display: inline-block;
+  padding: 0px;
+  margin: 0px;
+  flex: 1;
+  --border-radius: 0px;
+}
+
+.quantity-container {
+  display: flex;
+  flex-direction: row;
+  max-width: 150px;
+  justify-content: center;
+  align-content: center;
+  height: 50px;
+  border: solid 1px black;
+  overflow: hidden;
+}
+
+ion-input {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+  flex: 1;
+  height: 100%;
+  width: 50px;
+  border: none;
+  outline: none;
+}

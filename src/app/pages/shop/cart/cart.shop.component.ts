@@ -10,6 +10,7 @@ import {
 import { CoreService } from '../../../services/core.service';
 import { Library } from '../../../app.library';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MenuController } from '@ionic/angular';
 
 import { Subscription } from 'rxjs';
 
@@ -34,6 +35,7 @@ export class CartShopComponent implements OnInit {
     public library: Library,
     public changeDet: ChangeDetectorRef,
     private elementRef: ElementRef<HTMLElement>,
+    private menuController: MenuController,
   ) {
     /*this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
       this.changeDet.detectChanges();
@@ -47,6 +49,11 @@ export class CartShopComponent implements OnInit {
   ngOnInit() {
     const element = this.elementRef.nativeElement;
     //this.service.shop.getCart();
+  }
+
+  navigateToProductPage(product: any) {
+    this.router.navigateByUrl(`/shop/product/${product.handle}`);
+    this.menuController.close('cart');
   }
 
   async ngAfterContentInit() {}

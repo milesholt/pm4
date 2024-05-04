@@ -12,11 +12,26 @@
       <div *ngIf="service.shop.cart.lineItems.length">
         <ion-list>
           <ion-item *ngFor="let it of service.shop.cart.lineItems; index as idx">
-            {{it.title}} - {{it.variant.price.amount}} {{it.variant.price.currencyCode}}
+
+            <div class="ion-content">
             
-              <app-quantity-shop-comp [itemidx]="idx" [product]="it"></app-quantity-shop-comp>
-  
-              <ion-button (click)="service.shop.removeItem(it)">X</ion-button>
+              <div class="item-title">
+                <a (click)="navigateToProductPage(it.variant.product)">{{it.title}}</a> -<br>{{it.variant.price.amount}} {{it.variant.price.currencyCode}}
+              </div>
+            
+
+            <!--<div class="item-title" (click)="testLink()">
+              Title
+            </div>-->
+            
+              <div class="item-options">
+                 
+                <app-quantity-shop-comp [itemidx]="idx" [product]="it"></app-quantity-shop-comp>
+                <ion-button (click)="service.shop.removeItem(it)">X</ion-button>
+                
+              </div>
+
+            </div>
 
           </ion-item>
         </ion-list>

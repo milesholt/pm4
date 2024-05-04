@@ -89,7 +89,8 @@ ion-button {
   --background: black;
   --background-hover: #333;
   --color: white;
-  --border-radius: 0;
+  --border-radius: 0px;
+  border-radius: 0px;
   --padding: 50px !important;
   min-width: 150px;
   max-width: 300px;
