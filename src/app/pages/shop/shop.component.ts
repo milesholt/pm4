@@ -37,14 +37,60 @@ export class ShopComponent implements OnInit {
       ],
       content: [
         {
-          title: 'Some content 1',
-          content: '<p>Html content goes here<p>',
-          image: 'http://obscura.solutions/assets/images/cordyceps.webp',
+          title: 'Unlock Your Health Potential with Mushroom Supplements',
+          content:
+            '<p>Mushrooms have been revered for centuries for their powerful health benefits. Discover the transformative effects of mushroom supplements and elevate your well-being naturally.</p>',
+          template: 'col-1',
         },
         {
-          title: 'Some content 2',
-          content: '<p>Html content goes here2<p>',
+          title: 'Experience the Power of Nature',
+          content:
+            "<p>Harness the ancient wisdom of mushrooms to supercharge your health journey. Our premium mushroom supplements are meticulously crafted to deliver potent benefits straight from nature's pharmacy.<p>",
+          image: 'http://obscura.solutions/assets/images/cordyceps.webp',
+          template: 'col-2',
+        },
+        {
+          title: "Discover Nature's Secret",
+          content:
+            '<p>Delve into the world of medicinal mushrooms and unlock a treasure trove of wellness. From boosting cognitive function to enhancing immune support, these extraordinary fungi offer a holistic approach to vitality.<p>',
           image: 'http://obscura.solutions/assets/images/reishi_mushroom.webp',
+          template: 'col-2',
+        },
+        {
+          title: 'Why Fungi',
+          content: [
+            {
+              title: 'Immune Support',
+              subtitle: 'Enhanced Immunity',
+              content:
+                "<p>Strengthen your body's defenses and ward off illness with mushroom supplements, rich in beta-glucans and antioxidants that fortify the immune system.</p>",
+              image:
+                'http://obscura.solutions/assets/images/reishi_mushroom.webp',
+            },
+            {
+              title: 'Cognitive Enhancement',
+              subtitle: 'Brain Health',
+              content:
+                "<p>Boost mental clarity and support brain health with mushroom extracts like Lion's Mane, renowned for promoting neural growth and memory function.</p>",
+              image:
+                'http://obscura.solutions/assets/images/reishi_mushroom.webp',
+            },
+            {
+              title: 'Sustainable Energy',
+              subtitle: 'Energy & Vitality',
+              content:
+                '<p>Experience sustained energy levels and vitality with Cordyceps mushroom, an adaptogen that enhances endurance and oxygen utilization in the body.</p>',
+              image:
+                'http://obscura.solutions/assets/images/reishi_mushroom.webp',
+            },
+          ],
+          template: 'col-3',
+        },
+        {
+          title: 'Some content 4',
+          content: '<p>Html content goes here4<p>',
+          image: 'http://obscura.solutions/assets/images/reishi_mushroom.webp',
+          template: 'col-4',
         },
       ],
       questions: [
@@ -61,6 +107,8 @@ export class ShopComponent implements OnInit {
       ],
     },
   };
+
+  //
 
   @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
 

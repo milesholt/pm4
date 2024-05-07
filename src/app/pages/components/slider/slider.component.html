@@ -4,7 +4,7 @@
       <div *ngIf="slide.title && slide.description" class="slide-content">
             <h1>{{slide.title}}</h1>
             <p>{{slide.description}}</p>
-            <div *ngIf="!!cta"><a (click)="doCTA()">{{cta.label}}</a></div>
+            <div *ngIf="!!cta"><ion-button (click)="doCTA()">{{cta.label}}</ion-button></div>
           </div>   
           <img src="{{ slide[slideSuffix] }}" class="slide-image" width="100%" height="auto" />   
       </div>
