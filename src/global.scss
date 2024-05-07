@@ -8,6 +8,8 @@
  * For more information on global stylesheets, visit the documentation:
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
+//@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
@@ -45,6 +47,7 @@ body * {
   -moz-user-select: text;
   -ms-user-select: text;
   user-select: text;
+  font-family: "Albert Sans", sans-serif;
 }
 
 /*Headings */
@@ -54,6 +57,7 @@ h2,
 h3,
 h4,
 h5 {
+  font-family: "Albert Sans", sans-serif !important;
   > a {
     text-decoration: none;
     font-weight: normal;
@@ -63,17 +67,21 @@ h5 {
 h1 {
   padding: 40px 0px;
   font-size: 2rem;
+  font-weight: 800;
 }
 
 h2 {
   padding: 40px 0px;
   font-size: 1.5rem;
+  font-weight: 700;
 }
 
 h3 {
+  font-weight: 700;
 }
 
 h4 {
+  font-weight: 300;
   font-size: 1rem;
 }
 
@@ -97,6 +105,7 @@ ion-button {
   margin-top: 20px;
   margin-bottom: 20px;
   min-height: 50px;
+  font-weight: 700;
 }
 
 /*Slider */
@@ -108,4 +117,15 @@ swiper-container {
 
 ion-content {
   --padding-bottom: 0px !important;
+}
+
+/* Animations */
+
+.anim {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.anim.fade-in {
+  opacity: 1;
 }

@@ -4,6 +4,8 @@ import {
   OnInit,
   ChangeDetectorRef,
   ElementRef,
+  ViewChildren,
+  QueryList,
 } from '@angular/core';
 import { CoreService } from '../../services/core.service';
 import { Library } from '../../app.library';
@@ -24,6 +26,7 @@ export class ShopComponent implements OnInit {
   filterProducts: any = [];
   filterCategory: string = 'all';
   featuredProducts: any = [];
+  private observer: IntersectionObserver | undefined;
 
   heroSlides: any = {
     Mushroom: {
@@ -111,6 +114,7 @@ export class ShopComponent implements OnInit {
   //
 
   @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
+  @ViewChildren('item') items?: QueryList<ElementRef>;
 
   constructor(
     public service: CoreService,
@@ -118,6 +122,7 @@ export class ShopComponent implements OnInit {
     private route: ActivatedRoute,
     public library: Library,
     private cdr: ChangeDetectorRef,
+    private elementRef: ElementRef,
     //public productComponent: ProductComponent,
   ) {}
 
@@ -126,7 +131,41 @@ export class ShopComponent implements OnInit {
     this.checkReturn();
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit(): void {
+    this.initializeObserver();
+  }
+
+  ngAfterViewChecked(): void {
+    this.observeElements();
+  }
+
+  initializeObserver() {
+    this.observer = new IntersectionObserver(this.handleIntersect.bind(this), {
+      threshold: 0.5, // Trigger when 50% of the target is visible
+    });
+  }
+
+  observeElements() {
+    if (!this.observer) return;
+
+    const targetElements =
+      this.elementRef.nativeElement.querySelectorAll('.anim');
+    targetElements.forEach((element: any) => {
+      this.observer!.observe(element);
+    });
+  }
+
+  handleIntersect(entries: IntersectionObserverEntry[]) {
+    entries.forEach((entry) => {
+      if (entry.intersectionRatio >= 0.5) {
+        // Element is at least 50% visible
+        const targetElement = entry.target as HTMLElement;
+        targetElement.classList.add('fade-in');
+        console.log('Element is scrolled into view by 50% or more');
+        // Perform your desired actions here
+      }
+    });
+  }
 
   /*scrollToSection() {
     // Perform scrolling action to the desired section
