@@ -42,7 +42,7 @@ export class SearchShopComponent implements OnInit {
         this.search = query == 'false' ? '' : query;
 
         setTimeout(async () => {
-          await this.beginSearch();
+          await this.beginSearch(null, false);
         }, 1000);
       }
       // Call any method or perform any action based on the new searchQuery value
@@ -52,12 +52,12 @@ export class SearchShopComponent implements OnInit {
     if (query) {
       this.search = query;
       setTimeout(async () => {
-        await this.beginSearch();
+        await this.beginSearch(null, true);
       }, 1000);
     }
   }
 
-  async beginSearch(event: any = null) {
+  async beginSearch(event: any = null, clearSearch: boolean = false) {
     if (this.search == 'false') this.search = '';
     const lowerKeyword = this.search.toLowerCase();
     /*this.feed = this.feed.filter(
@@ -84,6 +84,7 @@ export class SearchShopComponent implements OnInit {
       keyword: this.search,
       results: this.feedFilter,
     };
+    if (clearSearch) this.search = '';
     this.searchChange.emit(searchData);
   }
 }

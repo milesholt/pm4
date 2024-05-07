@@ -23,6 +23,38 @@
   height: 70%;
 }
 
+/* Hero Sider Theme */
+#mainSlider.hero {
+  h1 {
+    font-size: 15vw;
+    color: white;
+  }
+
+  p {
+    color: white;
+    font-size: 3vw;
+  }
+  img.slide-image {
+    height: 100%;
+    object-fit: cover !important;
+    display: block;
+    max-width: 100%;
+    opacity: 0.8;
+  }
+
+  .slide-content {
+    background-color: rgba(0, 0, 0, 0);
+    z-index: 1;
+  }
+
+  .swiper-zoom-container {
+    max-height: 80vh;
+  }
+
+  overflow: hidden;
+  background-color: black;
+}
+
 #thumbsSlider {
   height: 30%;
 }

@@ -8,10 +8,6 @@
 </ion-header>
 
 <ion-content *ngIf="service.shop.checkoutComplete == null">
-<!--search component-->
-<app-search-shop-comp [feed]="products" (searchChange)="handleSearchCallback($event)"></app-search-shop-comp>
-<!-- filter component-->
-<app-filter-shop-comp [feed]="filterProducts" (filterChange)="handleFilterCallback($event)"></app-filter-shop-comp>
  
 <div class="no-products" *ngIf="filterProducts.length == 0"><p>No products found, please try another search.</p></div>
 
@@ -21,9 +17,17 @@
       [slidesPerView]="1"
       [slideSuffix]="'image'"
       [navigation]="false"
+      [classes]="'hero'"
+      [cta]="{'label': 'Shop Now', 'anchor': '#searchBar'}"
       >
   </app-slider-comp>
 </div>
+
+<!--search component-->
+<app-search-shop-comp id="searchBar" [feed]="products" (searchChange)="handleSearchCallback($event)"></app-search-shop-comp>
+<!-- filter component-->
+<app-filter-shop-comp [feed]="filterProducts" (filterChange)="handleFilterCallback($event)"></app-filter-shop-comp>
+
 
 <!--<app-feed-comp [feedData]="products"></app-feed-comp>-->
 
@@ -87,9 +91,6 @@
   <br><br><br><br>
 
 </div>
-
-<a [routerLink]="['/shipping-policy']">Shipping Policy</a>
-
 
 <app-footer></app-footer>
 

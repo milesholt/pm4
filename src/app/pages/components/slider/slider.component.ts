@@ -37,6 +37,8 @@ export class SliderComponent implements OnInit {
   @Input() init: boolean = true;
   @Input() slideSuffix: string = '';
   @Input() type: string | boolean = false;
+  @Input() classes: string | boolean = false;
+  @Input() cta: any = false;
 
   @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
 
@@ -48,6 +50,19 @@ export class SliderComponent implements OnInit {
   ) {}
 
   ngOnInit() {}
+
+  doCTA() {
+    // Perform scrolling action to the desired section
+    if (this.cta.anchor) {
+      const sectionElement = document.querySelectorAll(this.cta.anchor)[0];
+      if (sectionElement) {
+        sectionElement.scrollIntoView({ behavior: 'smooth' });
+        /*const offset = 50;
+        const offsetPosition = sectionElement.offsetTop - offset;
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });*/
+      }
+    }
+  }
 
   ngAfterViewInit() {
     setTimeout(() => {

@@ -1,22 +1,23 @@
-<swiper-container *ngIf="!type" #mainSwiper id="mainSlider" class="swiper" init="false" >
+<swiper-container *ngIf="!type" #mainSwiper id="mainSlider" class="swiper {{classes}}" init="false" >
   <swiper-slide class="main-slide" *ngFor="let slide of slides; index as imgidx"> 
     <div class="swiper-zoom-container">     
       <div *ngIf="slide.title && slide.description" class="slide-content">
             <h1>{{slide.title}}</h1>
             <p>{{slide.description}}</p>
+            <div *ngIf="!!cta"><a (click)="doCTA()">{{cta.label}}</a></div>
           </div>   
           <img src="{{ slide[slideSuffix] }}" class="slide-image" width="100%" height="auto" />   
       </div>
   </swiper-slide>
 </swiper-container>
 
-<swiper-container *ngIf="!!thumbs" id="thumbsSlider" class="thumbs-swiper" [navigation]="navigation" [slidesPerView]="thumbs">
+<swiper-container *ngIf="!!thumbs" id="thumbsSlider" class="thumbs-swiper {{classes}}" [navigation]="navigation" [slidesPerView]="thumbs">
   <swiper-slide *ngFor="let thumb of slides; index as imgidx">    
           <img src="{{ thumb[slideSuffix] }}" class="thumb-image" width="100%" height="auto" />       
   </swiper-slide>
 </swiper-container>
 
-<swiper-container *ngIf="type == 'listing'" id="listingSlider" class="listing-swiper" [navigation]="navigation" [slidesPerView]="slidesPerView">
+<swiper-container *ngIf="type == 'listing'" id="listingSlider" class="listing-swiper {{classes}}" [navigation]="navigation" [slidesPerView]="slidesPerView">
   <swiper-slide routerLink="./product/{{item.handle}}" *ngFor="let item of slides; index as imgidx">           
           <img src="{{ item.images[0].src }}" class="item-image" width="100%" height="auto" />       
           <h4>{{item.title}}</h4>

@@ -32,23 +32,19 @@ export class ShopComponent implements OnInit {
         {
           title: 'Fungi',
           description: 'Discover the power of mushrooms',
-          image:
-            'https://cdn.shopify.com/s/files/1/0815/3694/2417/products/1707134754929-generated-label-image-0.jpg?v=170802151',
-          //image:'https://www.pexels.com/photo/close-up-photo-of-white-mushrooms-1643416/',
+          image: 'http://obscura.solutions/assets/images/mushroom.webp',
         },
       ],
       content: [
         {
           title: 'Some content 1',
           content: '<p>Html content goes here<p>',
-          image:
-            'https://cdn.shopify.com/s/files/1/0815/3694/2417/products/1707134754929-generated-label-image-0.jpg?v=170802151',
+          image: 'http://obscura.solutions/assets/images/cordyceps.webp',
         },
         {
           title: 'Some content 2',
           content: '<p>Html content goes here2<p>',
-          image:
-            'https://cdn.shopify.com/s/files/1/0815/3694/2417/products/1707134754929-generated-label-image-0.jpg?v=170802151',
+          image: 'http://obscura.solutions/assets/images/reishi_mushroom.webp',
         },
       ],
       questions: [
@@ -83,6 +79,14 @@ export class ShopComponent implements OnInit {
   }
 
   ngAfterViewInit() {}
+
+  /*scrollToSection() {
+    // Perform scrolling action to the desired section
+    const sectionElement = document.getElementById('productsGrid');
+    if (sectionElement) {
+      sectionElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }*/
 
   async checkReturn() {
     if (this.router.url.indexOf('?return') > -1) {
