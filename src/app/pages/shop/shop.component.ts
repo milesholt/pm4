@@ -209,7 +209,7 @@ export class ShopComponent implements OnInit {
         // Element is at least 50% visible
         const targetElement = entry.target as HTMLElement;
         targetElement.classList.add('fade-in');
-        console.log('Element is scrolled into view by 50% or more');
+        console.log(targetElement);
         // Perform your desired actions here
       }
     });
