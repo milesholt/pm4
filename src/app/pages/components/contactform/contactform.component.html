@@ -74,7 +74,7 @@
       <ion-item *ngSwitchCase="'select'">
                <ion-select label="{{field.name}}" value="{{field.value}}" class="form-control" id="fld-{{field.name | alias}}" [attr.name]="field.name" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary {{field.classes}}" [(ngModel)]="form[field.key] ?  form[field.key] : field.value"  (ngModelChange)="doForm($event,field.key)">
                       
-                <ion-select-option *ngFor="let opt of field.options" [value]="opt.value">
+                <ion-select-option *ngFor="let opt of field.options" [value]="opt.label">
                   {{opt.label}}
                 </ion-select-option>
 
@@ -101,7 +101,7 @@
          <ion-input label="{{field.name}}" type="number" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary" [(ngModel)]="form[field.key]"></ion-input>
       </ion-item>
       <ion-item *ngSwitchCase="'email'">
-         <ion-input label="{{field.name}}" type="email" class="form-control {{field.classes}}" onpaste="return false;" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary" [(ngModel)]="form[field.key]"></ion-input>
+         <ion-input label="{{field.name}}" type="email" class="form-control {{field.classes}}" onpaste="return false;" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary" [(ngModel)]="form[field.key]" (keyup)="doForm($event,field.key)" ></ion-input>
       </ion-item>
       <ion-item *ngSwitchCase="'tel'">
          <ion-input label="{{field.name}}" type="tel" class="form-control {{field.classes}}" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary" [(ngModel)]="form[field.key]"></ion-input>

@@ -23,6 +23,7 @@ import {
 })
 export class ContactFormComponent implements OnInit {
   @Input() el: any = {
+    action: 'submitcontact',
     classes: 'nocol',
     fields: [
       {
@@ -62,8 +63,8 @@ export class ContactFormComponent implements OnInit {
         suffix: '',
       },
       {
-        key: 'select',
-        name: 'Select',
+        key: 'subject',
+        name: 'Subject',
         placeholder: 'Select an option',
         value: 'general',
         type: 'select',
@@ -152,6 +153,7 @@ export class ContactFormComponent implements OnInit {
   /* Contact functions  */
 
   onSubmit(action: any = false, event: any = false) {
+    console.log('submitting contact form');
     let target = this.lib.getTarget(event);
     let nofields = target.elements.length - 1;
     const httpOptions = {
@@ -252,13 +254,13 @@ export class ContactFormComponent implements OnInit {
     }
   }
 
-  doForm(e: any, k: any) {
-    //console.log(e);
-    e = e.trim();
+  doForm(e: any = '', k: any = false) {
+    e = typeof e === 'string' ? e : e.target.value;
+    if (k !== 'message') e = e.trim();
     if (k == 'email' || k == 'email2') e = e.toLowerCase();
     if (k == 'postcode') e = e.trim().toUpperCase();
-    this.form[k] = e;
-    //console.log(this.form);
+    if (!!k) this.form[k] = e;
+    // console.log(this.form);
   }
 
   emit(params: any) {
