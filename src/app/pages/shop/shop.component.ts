@@ -67,24 +67,72 @@ export class ShopComponent implements OnInit {
               subtitle: 'Enhanced Immunity',
               content:
                 "<p>Strengthen your body's defenses and ward off illness with mushroom supplements, rich in beta-glucans and antioxidants that fortify the immune system.</p>",
-              image:
-                'http://obscura.solutions/assets/images/reishi_mushroom.webp',
+              image: 'http://obscura.solutions/assets/icons/vitamin.png',
+              classes: 'icon',
             },
             {
               title: 'Cognitive Enhancement',
               subtitle: 'Brain Health',
               content:
                 "<p>Boost mental clarity and support brain health with mushroom extracts like Lion's Mane, renowned for promoting neural growth and memory function.</p>",
-              image:
-                'http://obscura.solutions/assets/images/reishi_mushroom.webp',
+              image: 'http://obscura.solutions/assets/icons/brain.png',
+              classes: 'icon',
             },
             {
-              title: 'Sustainable Energy',
+              title: 'Energy Boost',
               subtitle: 'Energy & Vitality',
               content:
                 '<p>Experience sustained energy levels and vitality with Cordyceps mushroom, an adaptogen that enhances endurance and oxygen utilization in the body.</p>',
-              image:
-                'http://obscura.solutions/assets/images/reishi_mushroom.webp',
+              image: 'http://obscura.solutions/assets/icons/energy.png',
+              classes: 'icon',
+            },
+            {
+              title: 'Anxiety Relief',
+              subtitle: '',
+              content:
+                '<p>Find relief from anxiety and stress with mushroom supplements, containing adaptogens that promote relaxation and emotional balance.</p>',
+              image: 'http://obscura.solutions/assets/icons/mental-health.png',
+              classes: 'icon',
+            },
+            {
+              title: 'Natural Anti-Depressant',
+              subtitle: '',
+              content:
+                '<p>Lift your spirits and combat depression naturally with mushroom extracts, known for their mood-regulating properties and serotonin support.</p>',
+              image: 'http://obscura.solutions/assets/icons/lotus.png',
+              classes: 'icon',
+            },
+            {
+              title: 'Fights Infection',
+              subtitle: '',
+              content:
+                "<p>Bolster your body's natural defenses and combat infections with mushroom extracts rich in immunomodulating compounds, offering protection against pathogens and toxins</p>",
+              image: 'http://obscura.solutions/assets/icons/infection.png',
+              classes: 'icon',
+            },
+            {
+              title: 'Antioxidant Power',
+              subtitle: '',
+              content:
+                '<p>Protect your cells from oxidative damage and premature aging with mushroom supplements rich in potent antioxidants, supporting overall health and longevity.</p>',
+              image: 'http://obscura.solutions/assets/icons/molecule.png',
+              classes: 'icon',
+            },
+            {
+              title: 'Anti-Inflammatory',
+              subtitle: '',
+              content:
+                '<p>Combat inflammation and promote joint health with mushroom extracts known for their anti-inflammatory properties, easing discomfort and promoting mobility.</p>',
+              image: 'http://obscura.solutions/assets/icons/inflammation.png',
+              classes: 'icon',
+            },
+            {
+              title: 'Cancer Prevention',
+              subtitle: '',
+              content:
+                "<p>Support your body's natural defense against cancer with mushroom supplements, containing bioactive compounds that inhibit tumor growth and boost immune surveillance.</p>",
+              image: 'http://obscura.solutions/assets/icons/cancer.png',
+              classes: 'icon',
             },
           ],
           template: 'col-3',
@@ -100,7 +148,7 @@ export class ShopComponent implements OnInit {
         {
           title: 'What are the health benefits of Mushrooms?',
           content:
-            'Reduces inflammation, improves cognitivity and stimulates the creation of brain cells, improves metabolism.',
+            "Mushrooms offer a myriad of health benefits, including immune support, cognitive enhancement, and antioxidant properties. Varieties like Lion's Mane promote brain health and focus, while Reishi and Cordyceps contribute to stress reduction and energy levels. Additionally, mushrooms contain bioactive compounds that may aid in combating inflammation, supporting heart health, and even potentially preventing certain types of cancer.",
         },
       ],
       featuredProducts: [

@@ -206,7 +206,7 @@ export class ContactFormComponent implements OnInit {
         let last = url.length - 1;
         let hash = window.location.hash;
         creds['campaign'] = url[last];
-        let mailpath = 'mailer.php';
+        let mailpath = 'assets/mail/mailer.php';
 
         if (!pass) {
           console.log('pass is false');
@@ -215,7 +215,7 @@ export class ContactFormComponent implements OnInit {
         }
 
         /*new Promise((resolve) => {
-          this.http
+          this.service.http.
             .post('assets/mail/' + mailpath, creds, httpOptions)
             .subscribe(
               (res) => {
@@ -229,6 +229,17 @@ export class ContactFormComponent implements OnInit {
               () => console.log('Post request complete'),
             );
         });*/
+
+        this.service.http.post(mailpath, params).subscribe(
+          (res: any) => {
+            console.log('Response:', res);
+            this.data = res;
+            this.sent = true;
+          },
+          (error: any) => {
+            console.error('Error:', error);
+          },
+        );
 
         params = { alias: 'contact', action: 'contactform', event: event };
         this.emit(params);
