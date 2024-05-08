@@ -98,7 +98,7 @@ export class ContactFormComponent implements OnInit {
         value: '',
         type: 'textarea',
         classes: 'nocol',
-        required: false,
+        required: true,
         autocomplete: true,
         prefix: '',
         suffix: '',
@@ -156,6 +156,10 @@ export class ContactFormComponent implements OnInit {
     console.log('submitting contact form');
     let target = this.lib.getTarget(event);
     let nofields = target.elements.length - 1;
+
+    // console.log('no of fields');
+    // console.log(nofields);
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -168,6 +172,8 @@ export class ContactFormComponent implements OnInit {
     //let required = ['name', 'firstname','surname','email','email2','address','postcode','phone', 'propertyno'];
     let params = {};
     var em: string = '';
+
+    //console.log(target.elements);
 
     switch (action) {
       case 'submitcontact':
@@ -183,15 +189,16 @@ export class ContactFormComponent implements OnInit {
               pass = false;
             }
 
-            if (el.value == '') {
-              alert('Required fields cannot be blank');
+            //Make sure message is not empty
+            if (el.name.toLowerCase() == 'message' && el.value.length == 0) {
+              alert('Message cannot be empty');
               pass = false;
               return false;
             }
 
-            //Make sure message is not empty
-            if (el.name == 'message' && el.value.length == 0) {
-              alert('Message cannot be empty');
+            if (el.value == '') {
+              alert('Required fields cannot be blank');
+              pass = false;
               return false;
             }
           }
@@ -273,7 +280,7 @@ export class ContactFormComponent implements OnInit {
     let check: string = '';
     //check input needs to be validated by matching the key with any of the validations
     validations.forEach((v) => {
-      if (validation.indexOf(v) !== -1) check = v;
+      if (validation.toLowerCase().indexOf(v) !== -1) check = v;
     });
     if (check !== '') {
       switch (check) {
