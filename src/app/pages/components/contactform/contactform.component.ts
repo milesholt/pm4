@@ -239,7 +239,7 @@ export class ContactFormComponent implements OnInit {
             );
         });*/
 
-        this.service.http.post(mailpath, params).subscribe(
+        this.service.http.post(mailpath, creds).subscribe(
           (res: any) => {
             console.log('Response:', res);
             this.data = res;
