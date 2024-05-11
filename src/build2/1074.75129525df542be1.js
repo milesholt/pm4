@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkapp=self.webpackChunkapp||[]).push([[1074],{1074:(r,n,a)=>{a.r(n),a.d(n,{DashboardModule:()=>D});var l=a(5548),s=a(6814),d=a(95),u=a(5879);let D=(()=>{class o{}return o.\u0275fac=function(M){return new(M||o)},o.\u0275mod=u.oAB({type:o}),o.\u0275inj=u.cJS({imports:[l.Pc,s.ez,d.u5]}),o})()}}]);
