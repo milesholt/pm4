@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
       url: '/cart',
       icon: 'cart',
     },*/
-    {
+    /*{
       title: 'Login',
       url: '/login',
       icon: 'person',
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
       title: 'Register',
       url: '/register',
       icon: 'person',
-    },
+    },*/
   ];
   constructor(
     public lib: Library,

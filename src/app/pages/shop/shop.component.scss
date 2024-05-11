@@ -119,13 +119,17 @@ ion-content ::ng-deep > *:nth-last-child(2) {
     align-items: center; // Vertically center the content
   }
 
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 576px) {
     flex-direction: column; // Stack columns underneath each other for mobile devices
     &:nth-child(even) {
       flex-direction: column;
     }
     .col {
-      width: 100%;
+      width: 100% !important;
+      flex: 1 100% !important;
+    }
+    .col-image {
+      width: 100% !important;
     }
     .col-content {
       text-align: center;
