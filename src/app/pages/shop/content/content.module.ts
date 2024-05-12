@@ -11,6 +11,7 @@ import { FooterModule } from '../../components/footer/footer.module';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { HttpClientModule } from '@angular/common/http';
+import { ContactFormModule } from '../../components/contactform/contactform.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -21,6 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
     FooterModule,
     RouterModule,
     HttpClientModule,
+    ContactFormModule,
   ],
   declarations: [ContentComponent],
   exports: [ContentComponent],

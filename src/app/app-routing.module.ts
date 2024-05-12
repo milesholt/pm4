@@ -127,6 +127,22 @@ const routes: Routes = [
         (m) => m.ContentModule,
       ),
   },
+  {
+    path: 'about-us',
+    component: ContentComponent,
+    loadChildren: () =>
+      import('./pages/shop/content/content.module').then(
+        (m) => m.ContentModule,
+      ),
+  },
+  {
+    path: 'contact-us',
+    component: ContentComponent,
+    loadChildren: () =>
+      import('./pages/shop/content/content.module').then(
+        (m) => m.ContentModule,
+      ),
+  },
 ];
 @NgModule({
   imports: [

@@ -58,6 +58,21 @@
           </ion-item-group>
         </div>    
         </ion-item>
+        
+        <!--
+          <a [routerLink]="['/about-us']">About Us</a><br>
+          <a [routerLink]="['/contact-us']">Contact Us</a><br>
+        -->
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="activePageTitle = 'About Us'" [routerLink]="['/about-us']" [class.selected]=""><ion-label>About Us</ion-label></ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="activePageTitle = 'Contact Us'" [routerLink]="['/contact-us']" [class.selected]=""><ion-label>Contact Us</ion-label></ion-item>
+          </ion-menu-toggle>
+      
+          
     </ion-list>
     </ion-content>
   </ion-menu>

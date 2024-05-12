@@ -25,22 +25,32 @@ export class ContentComponent implements OnInit {
     'shipping-policy': {
       title: 'Shipping Policy',
       alias: 'shipping-policy',
-      content: '',
+      components: [],
     },
     'refund-policy': {
       title: 'Refund Policy',
       alias: 'refund-policy',
-      content: '',
+      components: [],
     },
     'privacy-policy': {
       title: 'Privacy Policy',
       alias: 'privacy-policy',
-      content: 'Privacy Policy content',
+      components: [],
     },
     'terms-and-conditions': {
       title: 'Terms & Conditions',
       alias: 'terms-and-conditions',
-      content: 'Terms and conditions content',
+      components: [],
+    },
+    'about-us': {
+      title: 'About Us',
+      alias: 'about-us',
+      components: [],
+    },
+    'contact-us': {
+      title: 'Contact Us',
+      alias: 'contact-us',
+      components: ['app-contactform-comp'],
     },
   };
 

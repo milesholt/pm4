@@ -13,6 +13,10 @@
     <h1>{{pages[alias].title}}</h1>
     <div id="contentSection" [innerHtml]="pageContent"></div>
 
+    <div *ngIf="pages[alias].components.includes('app-contactform-comp')">
+      <app-contactform-comp></app-contactform-comp>
+    </div>
+
   </div>
   
   <app-footer></app-footer>

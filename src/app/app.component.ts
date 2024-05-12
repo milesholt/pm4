@@ -3,6 +3,7 @@ import { CoreService } from './services/core.service';
 import { Library } from './app.library';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
 
 import { CartShopComponent } from './pages/shop/cart/cart.shop.component';
 //import { SafeHtmlPipe } from './pipes/safeHtml.pipe';
@@ -32,6 +33,16 @@ export class AppComponent implements OnInit {
       icon: 'storefront',
     },
     /*{
+      title: 'About Us',
+      url: '/about-us',
+      icon: '',
+    },
+    {
+      title: 'Contact Us',
+      url: '/contact-us',
+      icon: '',
+    },*/
+    /*{
       title: 'Cart',
       url: '/cart',
       icon: 'cart',
@@ -51,6 +62,8 @@ export class AppComponent implements OnInit {
     public lib: Library,
     public service: CoreService,
     public router: Router,
+    private titleService: Title,
+    private meta: Meta,
     //public cartComp: CartShopComponent,
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe((cart) => {
@@ -59,7 +72,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    //
+    /*this.titleService.setTitle(this.activePageTitle);
+    this.meta.updateTag({ property: 'og:url', content: 'http://yoururl.com' });
+    this.meta.updateTag({
+      property: 'og:title',
+      content: this.activePageTitle,
+    });
+    this.meta.updateTag({ property: 'og:image', content: 'your image link' });
+    this.meta.updateTag({ property: 'og:description', content: 'description' });*/
   }
 
   getSearchParams(category: string | boolean): any {
