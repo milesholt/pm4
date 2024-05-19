@@ -59,20 +59,36 @@ export class SearchShopComponent implements OnInit {
 
   async beginSearch(event: any = null, clearSearch: boolean = false) {
     if (this.search == 'false') this.search = '';
-    const lowerKeyword = this.search.toLowerCase();
-    /*this.feed = this.feed.filter(
+    const keywords = this.search
+      .toLowerCase()
+      .split(' ')
+      .filter((keyword) => keyword);
+
+    if (keywords.length === 0) {
+      this.feedFilter = this.feed;
+    } else {
+      /*this.feed = this.feed.filter(
       (item: any) =>
         item.title.toLowerCase().includes(lowerKeyword) ||
         item.description.toLowerCase().includes(lowerKeyword) ||
         item.tags.some((tag: any) => tag.toLowerCase().includes(lowerKeyword)),
     );*/ //
 
-    this.feedFilter = this.feed.filter(
-      (item: any) =>
-        item.title.toLowerCase().includes(lowerKeyword) ||
-        item.description.toLowerCase().includes(lowerKeyword) ||
-        item.productType! == this.search,
-    );
+      this.feedFilter = this.feed.filter((item: any) => {
+        const title = item.title.toLowerCase();
+        const description = item.description.toLowerCase();
+        const productType = item.productType
+          ? item.productType.toLowerCase()
+          : '';
+
+        return keywords.every(
+          (keyword) =>
+            title.includes(keyword) ||
+            description.includes(keyword) ||
+            productType.includes(keyword),
+        );
+      });
+    }
     /* if (
       this.feedFilter.length === 0 &&
       lowerKeyword !== '' &&

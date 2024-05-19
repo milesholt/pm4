@@ -29,7 +29,7 @@ export class ShopComponent implements OnInit {
   private observer: IntersectionObserver | undefined;
 
   heroSlides: any = {
-    Mushroom: {
+    mushroom: {
       product: 'Mushroom',
       slides: [
         {
@@ -137,12 +137,6 @@ export class ShopComponent implements OnInit {
           ],
           template: 'col-3',
         },
-        {
-          title: 'Some content 4',
-          content: '<p>Html content goes here4<p>',
-          image: 'http://obscura.solutions/assets/images/reishi_mushroom.webp',
-          template: 'col-4',
-        },
       ],
       questions: [
         {
@@ -156,6 +150,200 @@ export class ShopComponent implements OnInit {
         'gid://shopify/Product/8945648959825',
         'gid://shopify/Product/8959035638097',
       ],
+    },
+    coffee: {
+      product: 'Product',
+      slides: [
+        {
+          title: '',
+          description: '',
+          image: 'http://obscura.solutions/assets/images/product.webp',
+        },
+      ],
+      content: [
+        {
+          title: '',
+          content: '',
+          template: 'col-1',
+        },
+        {
+          title: '',
+          content: '',
+          image: 'http://obscura.solutions/assets/image/product.webp',
+          template: 'col-2',
+        },
+        {
+          title: '',
+          content: '',
+          image: 'http://obscura.solutions/assets/image/product.webp',
+          template: 'col-2',
+        },
+        {
+          title: '',
+          content: [
+            {
+              title: '',
+              subtitle: '',
+              content: '',
+              classes: 'icon',
+            },
+          ],
+          template: 'col-3',
+        },
+      ],
+      questions: [
+        {
+          title: '',
+          content: '',
+        },
+      ],
+      featuredProducts: [],
+    },
+    'natural-supplements': {
+      product: 'Natural Supplements',
+      slides: [
+        {
+          title: 'Natural Supplements',
+          description: '',
+          image: 'http://obscura.solutions/assets/images/organic1.webp',
+        },
+      ],
+      content: [
+        {
+          title: 'All Natural for you',
+          content: '',
+          template: 'col-1',
+        },
+        {
+          title: '',
+          content: '',
+          image: 'http://obscura.solutions/assets/image/product.webp',
+          template: 'col-2',
+        },
+        {
+          title: '',
+          content: '',
+          image: 'http://obscura.solutions/assets/image/product.webp',
+          template: 'col-2',
+        },
+        {
+          title: '',
+          content: [
+            {
+              title: '',
+              subtitle: '',
+              content: '',
+              classes: 'icon',
+            },
+          ],
+          template: 'col-3',
+        },
+      ],
+      questions: [
+        {
+          title: '',
+          content: '',
+        },
+      ],
+      featuredProducts: [],
+    },
+
+    Ayurvedic: {
+      product: 'Ayurvedic',
+      slides: [
+        {
+          title: '',
+          description: '',
+          image: 'http://obscura.solutions/assets/images/product.webp',
+        },
+      ],
+      content: [
+        {
+          title: '',
+          content: '',
+          template: 'col-1',
+        },
+        {
+          title: '',
+          content: '',
+          image: 'http://obscura.solutions/assets/image/product.webp',
+          template: 'col-2',
+        },
+        {
+          title: '',
+          content: '',
+          image: 'http://obscura.solutions/assets/image/product.webp',
+          template: 'col-2',
+        },
+        {
+          title: '',
+          content: [
+            {
+              title: '',
+              subtitle: '',
+              content: '',
+              classes: 'icon',
+            },
+          ],
+          template: 'col-3',
+        },
+      ],
+      questions: [
+        {
+          title: '',
+          content: '',
+        },
+      ],
+      featuredProducts: [],
+    },
+
+    Product: {
+      product: 'Product',
+      slides: [
+        {
+          title: '',
+          description: '',
+          image: 'http://obscura.solutions/assets/images/product.webp',
+        },
+      ],
+      content: [
+        {
+          title: '',
+          content: '',
+          template: 'col-1',
+        },
+        {
+          title: '',
+          content: '',
+          image: 'http://obscura.solutions/assets/image/product.webp',
+          template: 'col-2',
+        },
+        {
+          title: '',
+          content: '',
+          image: 'http://obscura.solutions/assets/image/product.webp',
+          template: 'col-2',
+        },
+        {
+          title: '',
+          content: [
+            {
+              title: '',
+              subtitle: '',
+              content: '',
+              classes: 'icon',
+            },
+          ],
+          template: 'col-3',
+        },
+      ],
+      questions: [
+        {
+          title: '',
+          content: '',
+        },
+      ],
+      featuredProducts: [],
     },
   };
 
@@ -177,6 +365,7 @@ export class ShopComponent implements OnInit {
   ngOnInit() {
     this.test();
     this.checkReturn();
+    this.filterCategory = this.library.alias(this.filterCategory);
   }
 
   ngAfterViewInit(): void {
@@ -247,7 +436,7 @@ export class ShopComponent implements OnInit {
   async handleSearchCallback(searchData: any) {
     const results = searchData.results;
     const keyword = searchData.keyword;
-    this.filterCategory = searchData.keyword;
+    this.filterCategory = this.library.alias(searchData.keyword);
 
     if (keyword == '') this.test();
     this.filterProducts = results;

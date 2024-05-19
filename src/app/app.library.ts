@@ -9,6 +9,13 @@ export class Library {
     return 'test';
   }
 
+  alias(value: string) {
+    return value
+      .replace(/[^a-zA-Z ]/g, '')
+      .replace(/\s+/g, '-')
+      .toLowerCase();
+  }
+
   //prepare data that needs to be modified by user
   //converts data and binds it to structure in Definitions
   //any values that match keys are bound, otherwise value is blank
