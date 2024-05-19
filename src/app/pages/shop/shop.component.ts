@@ -203,36 +203,106 @@ export class ShopComponent implements OnInit {
       product: 'Natural Supplements',
       slides: [
         {
-          title: 'Natural Supplements',
-          description: '',
-          image: 'http://obscura.solutions/assets/images/organic1.webp',
+          title: 'Boost Your Health Naturally',
+          description:
+            'Discover the power of our natural Supplements to enhance your well-being.',
+          image: 'http://obscura.solutions/assets/images/generic1.webp',
         },
       ],
       content: [
         {
-          title: 'All Natural for you',
-          content: '',
+          title: 'Why Choose Our Natural Supplement?',
+          content:
+            "<p>Our Natural Supplement is crafted with the finest ingredients to provide you with optimal health benefits. It's time to embrace nature's goodness and support your body's natural functions.</p>",
           template: 'col-1',
         },
         {
-          title: '',
-          content: '',
-          image: 'http://obscura.solutions/assets/image/product.webp',
+          title: 'Pure Ingredients',
+          content:
+            '<p>We source only the highest quality natural ingredients, ensuring that you receive the purest and most effective supplement available.</p>',
+          image: 'http://obscura.solutions/assets/images/generic2.webp',
           template: 'col-2',
         },
         {
-          title: '',
-          content: '',
-          image: 'http://obscura.solutions/assets/image/product.webp',
+          title: 'Proven Benefits',
+          content:
+            '<p>Our supplement is backed by scientific research and proven to support various aspects of health, including immune function, energy levels, and overall vitality.</p>',
+          image: 'http://obscura.solutions/assets/images/organic1.webp',
           template: 'col-2',
         },
         {
-          title: '',
+          title: 'The Benefits',
           content: [
             {
-              title: '',
-              subtitle: '',
-              content: '',
+              title: 'Enhanced Immunity',
+              subtitle: 'Support Your Immune System',
+              content:
+                '<p>Natural supplements can bolster your immune system, helping you stay healthy and fight off illnesses more effectively.</p>',
+              image: 'http://obscura.solutions/assets/icons/immune.png',
+              classes: 'icon',
+            },
+            {
+              title: 'Increased Energy',
+              subtitle: 'Boost Your Vitality',
+              content:
+                '<p>Experience a natural increase in energy levels, allowing you to stay active and productive throughout the day.</p>',
+              image: 'http://obscura.solutions/assets/icons/energy.png',
+              classes: 'icon',
+            },
+            {
+              title: 'Improved Digestion',
+              subtitle: 'Support Digestive Health',
+              content:
+                '<p>Natural supplements can promote better digestion, reducing discomfort and improving nutrient absorption.</p>',
+              image: 'http://obscura.solutions/assets/icons/bacteria.png',
+              classes: 'icon',
+            },
+            {
+              title: 'Better Sleep',
+              subtitle: 'Restful Nights',
+              content:
+                "<p>Many natural supplements help regulate sleep patterns, ensuring you get a restful night's sleep and wake up refreshed.</p>",
+              image: 'http://obscura.solutions/assets/icons/yoga.png',
+              classes: 'icon',
+            },
+            {
+              title: 'Mental Clarity',
+              subtitle: 'Sharpen Your Mind',
+              content:
+                '<p>Support cognitive function and mental clarity with natural ingredients that enhance brain health.</p>',
+              image: 'http://obscura.solutions/assets/icons/mental-health.png',
+              classes: 'icon',
+            },
+            {
+              title: 'Healthy Skin',
+              subtitle: 'Radiant Complexion',
+              content:
+                '<p>Natural supplements can improve skin health, giving you a radiant and youthful complexion.</p>',
+              image: 'http://obscura.solutions/assets/icons/molecule.png',
+              classes: 'icon',
+            },
+            {
+              title: 'Stress Relief',
+              subtitle: 'Calm and Relaxation',
+              content:
+                '<p>Many natural supplements have calming properties that help reduce stress and promote relaxation.</p>',
+              image: 'http://obscura.solutions/assets/icons/lotus.png',
+              classes: 'icon',
+            },
+            {
+              title: 'Joint Health',
+              subtitle: 'Support Joint Function',
+              content:
+                '<p>Support joint health and reduce discomfort with natural supplements that promote flexibility and mobility.</p>',
+              image: 'http://obscura.solutions/assets/icons/neuron.png',
+              classes: 'icon',
+            },
+            {
+              title: 'Weight Management',
+              subtitle: 'Healthy Weight',
+              content:
+                '<p>Natural supplements can support your weight management goals, helping you maintain a healthy weight.</p>',
+              image: 'http://obscura.solutions/assets/icons/vitamin.png',
               classes: 'icon',
             },
           ],
@@ -241,13 +311,26 @@ export class ShopComponent implements OnInit {
       ],
       questions: [
         {
-          title: '',
-          content: '',
+          title: 'Are there any side effects?',
+          content:
+            'Our supplement is made from natural ingredients and is generally safe for most people. However, if you have any specific health concerns, please consult your doctor before use.',
+        },
+        {
+          title: 'Can I take this supplement with other medications?',
+          content:
+            'If you are currently taking any medications, we recommend consulting your healthcare provider before starting our supplement to ensure there are no potential interactions.',
+        },
+        {
+          title: 'Is the supplement suitable for vegetarians/vegans?',
+          content:
+            'Yes, our supplement is made with plant-based ingredients and is suitable for vegetarians and vegans.',
         },
       ],
-      featuredProducts: [],
+      featuredProducts: [
+        'gid://shopify/Product/8959021646161',
+        'gid://shopify/Product/8959048155473',
+      ],
     },
-
     Ayurvedic: {
       product: 'Ayurvedic',
       slides: [
@@ -331,6 +414,7 @@ export class ShopComponent implements OnInit {
               title: '',
               subtitle: '',
               content: '',
+              image: '',
               classes: 'icon',
             },
           ],
