@@ -2,7 +2,7 @@
   <swiper-slide class="main-slide" *ngFor="let slide of slides; index as imgidx"> 
     <div class="swiper-zoom-container">     
       <div *ngIf="slide.title || slide.description" class="slide-content">
-            <h1>{{slide.title}}</h1>
+            <h1 [ngClass]="setWordClass(slide.title)">{{slide.title}}</h1>
             <p>{{slide.description}}</p>
             <div *ngIf="!!cta"><ion-button (click)="doCTA()">{{cta.label}}</ion-button></div>
           </div>   

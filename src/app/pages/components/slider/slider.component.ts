@@ -107,4 +107,19 @@ export class SliderComponent implements OnInit {
     // and now initialize it
     swiperEl.initialize();
   }
+
+  setWordClass(string: string) {
+    const wordCount = string.split(/\s+/).length;
+    let wordClass = '';
+
+    if (wordCount <= 1) {
+      wordClass = 'one-word';
+    } else if (wordCount <= 5) {
+      wordClass = 'few-words';
+    } else {
+      wordClass = 'many-words';
+    }
+
+    return wordClass;
+  }
 }
