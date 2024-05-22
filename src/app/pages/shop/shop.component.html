@@ -8,8 +8,13 @@
 </ion-header>
 
 <ion-content *ngIf="service.shop.checkoutComplete == null">
- 
-<div class="no-products" *ngIf="filterProducts.length == 0"><p>No products found, please try another search.</p></div>
+
+
+<div class="no-products" *ngIf="filterProducts.length == 0 && !heroSlides[filterCategory]"><p>No products found, please try another search.</p></div>
+
+
+<div *ngIf="heroSlides[filterCategory]">
+
 
 <div *ngIf="heroSlides[filterCategory]">
   <app-slider-comp 
@@ -23,6 +28,7 @@
   </app-slider-comp>
 </div>
 
+
 <!--search component-->
 <app-search-shop-comp id="searchBar" [feed]="products" (searchChange)="handleSearchCallback($event)"></app-search-shop-comp>
 <!-- filter component-->
@@ -31,7 +37,8 @@
 
 <!--<app-feed-comp [feedData]="products"></app-feed-comp>-->
 
-<ion-grid [fixed]="true" id="productsGrid" class="anim" #item>
+
+<ion-grid *ngIf="filterProducts.length > 0" [fixed]="true" id="productsGrid" class="anim" #item>
     <ion-row>
       <ion-col [routerLink]="['./product/'+product.handle]" [queryParams]="{ 'filterCategory' : filterCategory}" size="6" size-sm="3" *ngFor="let product of filterProducts; index as idx">  
       
@@ -45,6 +52,10 @@
      </ion-col>
   </ion-row>
   </ion-grid>
+
+  <div *ngIf="filterProducts.length == 0" class="container">
+    <p>Sorry, all products are currently sold out. Please check back again soon.</p>
+  </div>
 
 
 <div *ngIf="heroSlides[filterCategory]" class="container">
@@ -77,7 +88,7 @@
   </div>
 
   <!-- Featured-->
-  <div *ngIf="heroSlides[filterCategory]">
+  <div *ngIf="heroSlides[filterCategory] && featuredProducts.length">
 
     <h2>Bestsellers</h2>
 
@@ -106,6 +117,8 @@
   <br><br><br><br>
 
 </div>
+</div>
+
 
 <app-footer></app-footer>
 

@@ -11,10 +11,12 @@ export class Library {
 
   alias(value: string) {
     return value
-      .replace(/[^a-zA-Z ]/g, '')
-      .replace(/\s+/g, '-')
-      .toLowerCase();
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-');
   }
+
+  //
 
   //prepare data that needs to be modified by user
   //converts data and binds it to structure in Definitions
