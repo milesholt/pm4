@@ -21,6 +21,8 @@ import { AuthService } from './external/firebase/AuthService/auth.capacitor.serv
 //import { ShopService } from './external/printful/ShopService/shop.service';
 import { ShopService } from './external/shopify/ShopService/shop.service';
 
+import { SeoService } from './internal/SeoService/seo.service';
+
 /*
 @Injectable()
 export class CoreService {
@@ -44,6 +46,7 @@ export class CoreService {
     public auth: AuthService,
     public shop: ShopService,
     public http: HttpService,
+    public seo: SeoService
   ) {}
 }
 

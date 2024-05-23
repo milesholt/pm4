@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title, Meta } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 //This had no effect and only works in child component and module
 //import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -53,6 +53,8 @@ import { FooterModule } from './pages/components/footer/footer.module';
   providers: [
     Library,
     AuthService,
+    Meta,
+    Title,
     //SafeHtmlPipe,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],

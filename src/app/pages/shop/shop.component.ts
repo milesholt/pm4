@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { CoreService } from '../../services/core.service';
 import { Library } from '../../app.library';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 //import { ProductComponent } from './product/product.component';
 
 import { register } from 'swiper/element/bundle';
@@ -30,6 +30,14 @@ export class ShopComponent implements OnInit {
 
   heroSlides: any = {
     all: {
+      meta: {
+        title: 'Your Source for Premium Health Products',
+        description:
+          'Welcome to Obscura Solutions, your one-stop shop for premium health products. Explore our diverse range of mushrooms, organic items, natural supplements, vegan products, Ayurvedic solutions, anti-ageing remedies, and gourmet coffee. Elevate your wellness journey with our expertly curated selections.',
+        image: 'http://obscura.solutions/assets/images/generic1.webp',
+        keywords:
+          'Obscura Solutions, health products, premium health supplements, organic health products, natural wellness, vegan health solutions, Ayurvedic products, anti-ageing remedies, gourmet coffee, holistic health, wellness products',
+      },
       product: 'Health Products',
       slides: [
         {
@@ -198,6 +206,14 @@ export class ShopComponent implements OnInit {
     },
     mushroom: {
       product: 'Mushroom',
+      meta: {
+        title: 'Premium Medicinal Mushrooms for Health and Wellness',
+        description:
+          'Discover the power of medicinal mushrooms with our premium range of health supplements. Boost your immune system, enhance energy levels, and support overall wellness with our organic mushroom products.',
+        keywords:
+          "medicinal mushrooms, mushroom supplements, health benefits of mushrooms, immune support, organic mushrooms, reishi, lion's mane, chaga, cordyceps",
+        image: 'http://obscura.solutions/assets/images/mushroom.webp',
+      },
       slides: [
         {
           title: 'Fungi',
@@ -320,6 +336,14 @@ export class ShopComponent implements OnInit {
     },
     coffee: {
       product: 'Coffee',
+      meta: {
+        title: 'Premium Coffee for Health and Wellness',
+        description:
+          'Enjoy the rich flavors and health benefits of our premium coffee selection. From organic beans to wellness blends, our coffee supports your health goals while providing a delightful taste experience.',
+        image: 'http://obscura.solutions/assets/images/coffee.webp',
+        keywords:
+          'premium coffee, health benefits of coffee, organic coffee, wellness coffee, coffee blends, healthy coffee options, gourmet coffee',
+      },
       slides: [
         {
           title: 'Premium Coffee Selection',
@@ -452,6 +476,14 @@ export class ShopComponent implements OnInit {
     },
     'natural-supplements': {
       product: 'Natural Supplements',
+      meta: {
+        title: 'Natural Supplements for Optimal Health and Vitality',
+        description:
+          "Boost your health with our natural supplements, crafted from the finest ingredients. Support your body's needs with vitamins, minerals, and herbs that promote wellness and vitality without synthetic additives.",
+        image: 'https://obscura.solutions/assets/images/generic2.webp',
+        keywords:
+          'natural supplements, herbal supplements, natural vitamins, holistic health, organic supplements, natural wellness, plant-based supplements',
+      },
       slides: [
         {
           title: 'Boost Your Health Naturally',
@@ -584,6 +616,14 @@ export class ShopComponent implements OnInit {
     },
     vegan: {
       product: 'Vegan',
+      meta: {
+        title: 'High-Quality Vegan Health Products',
+        description:
+          'Explore our collection of vegan health products designed to support a plant-based lifestyle. From supplements to snacks, our vegan range ensures you maintain optimal nutrition and health.',
+        image: 'https://obscura.solutions/assets/images/vegan1.webp',
+        keywords:
+          'vegan health products, vegan supplements, plant-based nutrition, vegan vitamins, cruelty-free health products, vegan lifestyle, vegan wellness',
+      },
       slides: [
         {
           title: 'Premium Vegan Products',
@@ -716,6 +756,14 @@ export class ShopComponent implements OnInit {
     },
     organic: {
       product: 'Organic',
+      meta: {
+        title: 'Organic Health Products for a Natural Lifestyle',
+        description:
+          'Embrace a healthier lifestyle with our range of organic health products. From supplements to food items, our organic selection ensures you receive the best nature has to offer, free from harmful chemicals.',
+        image: 'https://obscura.solutions/assets/images/organic1.webp',
+        keywords:
+          'organic health products, organic supplements, natural organic foods, chemical-free products, organic lifestyle, organic vitamins, organic wellness',
+      },
       slides: [
         {
           title: 'Pure & Organic Products',
@@ -849,6 +897,15 @@ export class ShopComponent implements OnInit {
 
     ayurvedic: {
       product: 'Ayurvedic',
+      meta: {
+        title: 'Ayurvedic Health Solutions for Balanced Living',
+        description:
+          'Reconnect with ancient wisdom through our Ayurvedic health products. Our range includes traditional herbs and formulations to balance your mind, body, and spirit according to Ayurvedic principles.',
+        image:
+          'http://obscura.solutions/assets/images/dhaka_flower_ayervedic.webp',
+        keywords:
+          'Ayurvedic health products, Ayurvedic supplements, traditional Ayurveda, herbal Ayurvedic remedies, balance and wellness, ancient health solutions, Ayurvedic lifestyle',
+      },
       slides: [
         {
           title: 'Authentic Ayurvedic Products',
@@ -981,6 +1038,14 @@ export class ShopComponent implements OnInit {
 
     'anti-ageing': {
       product: 'Anti-Ageing',
+      meta: {
+        title: 'Advanced Anti-Ageing Health Products',
+        description:
+          'Combat the signs of ageing with our advanced anti-ageing health products. Our supplements and skincare solutions help you maintain youthful energy and appearance, promoting longevity and vitality.',
+        image: 'http://obscura.solutions/assets/images/skincare.webp',
+        keywords:
+          'anti-ageing products, anti-ageing supplements, youthful skin, longevity supplements, anti-ageing skincare, age-defying products, anti-ageing health',
+      },
       slides: [
         {
           title: 'Advanced Anti-Ageing Solutions',
@@ -1181,6 +1246,14 @@ export class ShopComponent implements OnInit {
       this.filterCategory !== ''
         ? this.library.alias(this.filterCategory)
         : 'all';
+
+    this.route.queryParams.subscribe((params: Params) => {
+      if (params['search']) {
+        const query = this.library.alias(params['search']);
+        this.service.seo.doMeta(this.heroSlides[query].meta);
+      }
+    });
+
   }
 
   ngAfterViewInit(): void {

@@ -147,7 +147,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     IonicModule,
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, initialNavigation: 'enabledBlocking' }),
   ],
   exports: [RouterModule],
 })
