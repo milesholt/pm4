@@ -89,4 +89,13 @@ export class AppComponent implements OnInit {
   ngAfterViewInit() {
     this.cartLength = this.service.shop.getCartLength();
   }
+
+  doRefresh(event:any) {
+    console.log('Begin async operation');
+
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
+  }
 }

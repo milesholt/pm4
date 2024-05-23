@@ -9,7 +9,10 @@
 
 <ion-content *ngIf="service.shop.checkoutComplete == null">
 
+  <app-refresher></app-refresher>
 
+
+  
 <div class="no-products" *ngIf="filterProducts.length == 0 && !heroSlides[filterCategory]"><p>No products found, please try another search.</p></div>
 
 
@@ -38,9 +41,12 @@
 <!--<app-feed-comp [feedData]="products"></app-feed-comp>-->
 
 
-<ion-grid *ngIf="filterProducts.length > 0" [fixed]="true" id="productsGrid" class="anim" #item>
+<ion-grid [fixed]="true" id="productsGrid" class="anim" #item>
     <ion-row>
-      <ion-col [routerLink]="['./product/'+product.handle]" [queryParams]="{ 'filterCategory' : filterCategory}" size="6" size-sm="3" *ngFor="let product of filterProducts; index as idx">  
+      
+     <ion-col [routerLink]="['./product/'+product.handle]" [queryParams]="{ 'filterCategory' : filterCategory}" size="6"  size-sm="3" 
+      *ngFor="let product of filterProducts; index as idx">
+      
       
       <img src="{{product.variants[0].image.src}}" class="product-image" width="100%" height="auto" />
     

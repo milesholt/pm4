@@ -1,5 +1,9 @@
 <ion-app>
 
+
+
+
+
   <ion-menu menuId="main" side="start" contentId="main-content">
     <ion-header>
       <ion-toolbar>
@@ -7,6 +11,7 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
+     
       <ion-list>
      <ion-item *ngFor="let page of Pages; let i = index">
        <div class="menu-container"> 
@@ -87,12 +92,19 @@
 
   
   <div class="ion-page">
-    <ion-header>
+
+    
+
+    
+    
+   
+
+      <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
           <ion-menu-button menu="main"></ion-menu-button>
         </ion-buttons>
-        <ion-title><img src="/assets/logo.svg" id="logo" width="100" height="auto" alt="Obsucra Solutions" /></ion-title>
+        <ion-title><img src="/assets/logo.svg" id="logo" width="100" height="auto" alt="Obscura Solutions" /></ion-title>
         <ion-buttons slot="end">
           <ion-menu-button menu="cart">
             <ion-icon *ngIf="cartLength == 0" name="cart-outline"></ion-icon>

@@ -30,6 +30,7 @@
     color: white;
     transition: font-size 0.5s ease;
     margin: 0 auto;
+    max-width: 900px;
 
     // Media queries for responsive design
     @media (max-width: 992px) {

@@ -103,12 +103,14 @@ ion-content ::ng-deep > *:nth-last-child(2) {
   width: 100%; // Adjust as needed
   // other row styles...
 
-  .col-image img {
-    vertical-align: top;
-  }
-
   .col-image {
     width: 50%;
+    img {
+      object-fit: cover;
+      width: 100%;
+      max-height: 700px;
+      vertical-align: top;
+    }
   }
   .col-content {
     padding: 20px;
@@ -117,6 +119,9 @@ ion-content ::ng-deep > *:nth-last-child(2) {
     flex-direction: column;
     justify-content: center; // Horizontally center the content
     align-items: center; // Vertically center the content
+    .col-wrap {
+      max-width: 350px;
+    }
   }
 
   @media screen and (max-width: 576px) {
@@ -130,6 +135,11 @@ ion-content ::ng-deep > *:nth-last-child(2) {
     }
     .col-image {
       width: 100% !important;
+      img {
+        object-fit: cover;
+        width: 100%;
+        max-height: 350px;
+      }
     }
     .col-content {
       text-align: center;

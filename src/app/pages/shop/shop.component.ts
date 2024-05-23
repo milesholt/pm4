@@ -58,7 +58,7 @@ export class ShopComponent implements OnInit {
           content:
             '<p>Boost your health with our natural supplements, formulated to provide essential nutrients and support overall well-being.</p>',
           image:
-            'http://obscura.solutions/assets/images/dhaka_flower_ayervedic.webp',
+            'http://obscura.solutions/assets/images/dhaka_flower_ayurvedic.webp',
           template: 'col-2',
         },
         {
@@ -709,7 +709,10 @@ export class ShopComponent implements OnInit {
             'Start by gradually replacing animal-based products with vegan alternatives. Read labels carefully and explore a variety of vegan options to find what works best for you.',
         },
       ],
-      featuredProducts: [],
+      featuredProducts: [
+        'gid://shopify/Product/8945627136337',
+        'gid://shopify/Product/8959063589201',
+      ],
     },
     organic: {
       product: 'Organic',
@@ -838,7 +841,10 @@ export class ShopComponent implements OnInit {
             "Look for certification labels from reputable organizations that verify the organic status of the product. Reading the ingredients list can also provide insights into the product's organic nature.",
         },
       ],
-      featuredProducts: [],
+      featuredProducts: [
+        'gid://shopify/Product/8945588699473',
+        'gid://shopify/Product/8945648959825',
+      ],
     },
 
     ayurvedic: {
@@ -1179,6 +1185,15 @@ export class ShopComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.initializeObserver();
+    //Ensure products grid fades in when Shop Now button is clicked
+    const sliderCta = document.querySelector('#slider-cta');
+    if (sliderCta) {
+      sliderCta.addEventListener('click', () => {
+        this.elementRef.nativeElement
+          .querySelector('#productsGrid')
+          .classList.add('fade-in');
+      });
+    }
   }
 
   ngAfterViewChecked(): void {
@@ -1187,7 +1202,7 @@ export class ShopComponent implements OnInit {
 
   initializeObserver() {
     this.observer = new IntersectionObserver(this.handleIntersect.bind(this), {
-      threshold: 0.5, // Trigger when 50% of the target is visible
+      threshold: 0.3, // Trigger when 30% of the target is visible
     });
   }
 
@@ -1203,8 +1218,8 @@ export class ShopComponent implements OnInit {
 
   handleIntersect(entries: IntersectionObserverEntry[]) {
     entries.forEach((entry) => {
-      if (entry.intersectionRatio >= 0.5) {
-        // Element is at least 50% visible
+      if (entry.intersectionRatio >= 0.3) {
+        // Element is at least 30% visible
         const targetElement = entry.target as HTMLElement;
         targetElement.classList.add('fade-in');
         // Perform your desired actions here
