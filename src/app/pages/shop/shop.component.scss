@@ -108,6 +108,7 @@ ion-content ::ng-deep > *:nth-last-child(2) {
     img {
       object-fit: cover;
       width: 100%;
+      min-height: 500px;
       max-height: 700px;
       vertical-align: top;
     }

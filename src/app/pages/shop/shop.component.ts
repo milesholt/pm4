@@ -23,6 +23,7 @@ register();
 })
 export class ShopComponent implements OnInit {
   products: any = [];
+  search: string | boolean = false;
   filterProducts: any = [];
   filterCategory: string = 'all';
   featuredProducts: any = [];
@@ -1249,11 +1250,11 @@ export class ShopComponent implements OnInit {
 
     this.route.queryParams.subscribe((params: Params) => {
       if (params['search']) {
+        this.search = params['search'];
         const query = this.library.alias(params['search']);
         this.service.seo.doMeta(this.heroSlides[query].meta);
       }
     });
-
   }
 
   ngAfterViewInit(): void {

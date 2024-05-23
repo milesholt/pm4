@@ -11,12 +11,11 @@
 
   <app-refresher></app-refresher>
 
-
+  <div class="product-type container" *ngIf="filterProducts.length && !heroSlides[filterCategory] && search !== false">
+    <h1>{{search}}</h1>
+  </div>
   
 <div class="no-products" *ngIf="filterProducts.length == 0 && !heroSlides[filterCategory]"><p>No products found, please try another search.</p></div>
-
-
-<div *ngIf="heroSlides[filterCategory]">
 
 
 <div *ngIf="heroSlides[filterCategory]">
@@ -80,7 +79,7 @@
       </div>
     </div>
 
-    <div *ngIf="page.template == 'col-3'">
+    <div *ngIf="page.template == 'col-3'" class="space-top">
       
      <div class="row"> <h2>{{page.title}}</h2></div>
       <div class="row">
@@ -123,7 +122,7 @@
   <br><br><br><br>
 
 </div>
-</div>
+
 
 
 <app-footer></app-footer>

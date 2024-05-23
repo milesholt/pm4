@@ -60,6 +60,10 @@ export class FormatPipe implements PipeTransform {
         console.log(value);
         value = eval(value);
         break;
+
+      case 'capitalise':
+        value = value.replace(/\b\w/g, (char: any) => char.toUpperCase());
+        break;
     }
 
     return value;
