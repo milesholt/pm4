@@ -30,6 +30,7 @@ import { FooterModule } from './pages/components/footer/footer.module';
 
 //Pipes
 //import { SafeHtmlPipe } from './pipes/safeHtml.pipe';
+//import { FormatPipe } from './pipes/format.pipe';
 
 @NgModule({
   //schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -55,6 +56,7 @@ import { FooterModule } from './pages/components/footer/footer.module';
     AuthService,
     Meta,
     Title,
+    //FormatPipe,
     //SafeHtmlPipe,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],

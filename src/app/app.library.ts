@@ -16,7 +16,15 @@ export class Library {
       .replace(/\s+/g, '-');
   }
 
-  //
+  capitalise(value: string) {
+    return value.replace(/\b\w/g, (char: any) => char.toUpperCase());
+  }
+
+  title(value: string) {
+    return value
+      .replace(/\b\w/g, (char: any) => char.toUpperCase())
+      .replace('-', ' ');
+  }
 
   //prepare data that needs to be modified by user
   //converts data and binds it to structure in Definitions

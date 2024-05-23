@@ -13,9 +13,9 @@
 <div id="breadCrumbs">
   <span class="crumb" [routerLink]="['/shop']" [queryParams]="{search: ' ' }">Shop</span>
   <span class="crumb" [routerLink]="['/shop']" [queryParams]="{search: product.productType }">{{product.productType}}</span>
-  <span *ngIf="!!filterCategory && filterCategory.toLowerCase() !== product.productType.toLowerCase()" class="crumb" [routerLink]="['/shop']" [queryParams]="{search: filterCategory }">{{filterCategory | format : 'capitalise'}}</span>
+  <span *ngIf="!!filterCategory && filterCategory.toLowerCase() !== product.productType.toLowerCase()" class="crumb" [routerLink]="['/shop']" [queryParams]="{search: filterCategory }">{{library.title(filterCategory) }}</span>
   <span class="crumb">{{product.title}}</span> 
-</div>
+</div> 
 
 <ion-grid>
   <ion-row>

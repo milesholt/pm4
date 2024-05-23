@@ -17,7 +17,7 @@ import { FooterModule } from '../../components/footer/footer.module';
 //Pipes
 import { SafeHtmlPipe } from '../../../pipes/safeHtml.pipe';
 //import { AliasPipe } from '../../../pipes/alias.pipe';
-import { FormatPipe } from '../../../pipes/format.pipe';
+//import { FormatPipe } from '../../../pipes/format.pipe';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -32,6 +32,6 @@ import { FormatPipe } from '../../../pipes/format.pipe';
     SliderModule,
     FooterModule,
   ],
-  declarations: [ProductComponent, SafeHtmlPipe, FormatPipe],
+  declarations: [ProductComponent, SafeHtmlPipe],
 })
 export class ProductModule {}
