@@ -11,7 +11,7 @@
 
   <app-refresher></app-refresher>
 
-  <div class="product-type container" *ngIf="filterProducts.length && !heroSlides[filterCategory] && search !== false">
+  <div class="product-type container" *ngIf="filterProducts.length && !heroSlides[filterCategory] && search !== false && search !== 'all'">
     <h1>{{search}}</h1>
   </div>
   
