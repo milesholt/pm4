@@ -64,8 +64,8 @@ export class ProductComponent implements OnInit {
     await this.getAlias();
     await this.getProducts();
     await this.getProduct();
-    await this.getRelatedProducts();
     await this.doMeta();
+    await this.getRelatedProducts();
   }
 
   async ngAfterViewInit() {}
@@ -108,8 +108,6 @@ export class ProductComponent implements OnInit {
   }
 
   async doMeta() {
-    console.log(this.product);
-
     const meta = {
       title: this.product.title,
       description: this.service.seo.getMetaDescription(
