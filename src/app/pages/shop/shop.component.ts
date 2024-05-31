@@ -24,6 +24,7 @@ register();
 export class ShopComponent implements OnInit {
   products: any = [];
   search: string | boolean = false;
+  category: string = '';
   filterProducts: any = [];
   filterCategory: string = 'all';
   featuredProducts: any = [];
@@ -1253,6 +1254,36 @@ export class ShopComponent implements OnInit {
         this.search = params['search'];
         const query = this.library.alias(params['search']);
         this.service.seo.doMeta(this.heroSlides[query].meta);
+      }
+    });
+
+    /* this.route.url.subscribe((urlSegments) => {
+      // Convert urlSegments to an array of string
+      const segments = urlSegments.map((segment) => segment.path);
+
+      // Check if 'shop' exists in the segments
+      const shopIndex = segments.indexOf('shop');
+      if (shopIndex !== -1) {
+        // Get the last segment
+        const lastSegment = segments[segments.length - 1];
+        //Check if segment is a category
+        //alert(lastSegment);
+        if (this.heroSlides.hasOwnProperty(lastSegment)) {
+          // Append the last segment to the variable
+          this.search = lastSegment;
+          this.filterCategory = lastSegment;
+          this.service.seo.doMeta(this.heroSlides[this.search].meta);
+        }
+      }
+    });*/
+
+    this.route.paramMap.subscribe((params) => {
+      const category = params.get('category');
+      if (category && this.heroSlides.hasOwnProperty(category)) {
+        // Append the category to the variable if it matches any category key
+        this.filterCategory = category;
+        this.search = category;
+        this.service.seo.doMeta(this.heroSlides[this.search].meta);
       }
     });
   }

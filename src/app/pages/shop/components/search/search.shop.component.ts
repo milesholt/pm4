@@ -62,7 +62,7 @@ export class SearchShopComponent implements OnInit {
       this.search = '';
     const keywords = this.search
       .toLowerCase()
-      .split(' ')
+      .split(/[\s-]+/) //split hyphen and spaces
       .filter((keyword) => keyword);
 
     if (keywords.length === 0) {

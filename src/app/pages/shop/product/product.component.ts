@@ -65,6 +65,7 @@ export class ProductComponent implements OnInit {
     await this.getProducts();
     await this.getProduct();
     await this.getRelatedProducts();
+    await this.doMeta();
   }
 
   async ngAfterViewInit() {}
@@ -104,5 +105,21 @@ export class ProductComponent implements OnInit {
 
   async getCartIdx(product: any = false) {
     this.cartIdx = await this.service.shop.getCartIdx(product);
+  }
+
+  async doMeta() {
+    console.log(this.product);
+
+    const meta = {
+      title: this.product.title,
+      description: this.service.seo.getMetaDescription(
+        this.product.description,
+      ),
+      image: this.product.images[0].src,
+      keywords:
+        this.service.seo.doKeywords(this.product.title) +
+        ', Obscura Solutions, health products, premium health supplements, organic health products, natural wellness, vegan health solutions, Ayurvedic products, anti-ageing remedies, gourmet coffee, holistic health, wellness products',
+    };
+    this.service.seo.doMeta(meta);
   }
 }

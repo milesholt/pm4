@@ -40,10 +40,11 @@
 <!--<app-feed-comp [feedData]="products"></app-feed-comp>-->
 
 
+
 <ion-grid [fixed]="true" id="productsGrid" class="anim" #item>
     <ion-row>
       
-     <ion-col [routerLink]="['./product/'+product.handle]" [queryParams]="{ 'filterCategory' : filterCategory}" size="6"  size-sm="3" 
+     <ion-col [routerLink]="['/shop/product/'+product.handle]" [queryParams]="{ 'filterCategory' : filterCategory}" size="6"  size-sm="3" 
       *ngFor="let product of filterProducts; index as idx">
       
       
@@ -58,7 +59,7 @@
   </ion-row>
   </ion-grid>
 
-  <div *ngIf="filterProducts.length == 0" class="container">
+  <div *ngIf="filterProducts.length == 0 && heroSlides[filterCategory]" class="container">
     <p>Sorry, all products are currently sold out. Please check back again soon.</p>
   </div>
 

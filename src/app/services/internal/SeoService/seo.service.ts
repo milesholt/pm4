@@ -58,4 +58,29 @@ export class SeoService {
       { property: 'og:type', content: 'website' },
     ]);
   }
+
+  stripHtml(html: string): string {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    return tempDiv.textContent || tempDiv.innerText || '';
+  }
+
+  getMetaDescription(description: string, maxLength: number = 160): string {
+    const strippedDescription = this.stripHtml(description);
+    const firstParagraph = strippedDescription
+      .split('\n')
+      .filter((paragraph) => paragraph.trim() !== '')[0];
+    if (firstParagraph.length <= maxLength) {
+      return firstParagraph;
+    } else {
+      return firstParagraph.substring(0, maxLength).trim() + '...';
+    }
+  }
+
+  doKeywords(value: string) {
+    return value
+      .toLowerCase()
+      .split(/[\s-]+/)
+      .join(', ');
+  }
 }

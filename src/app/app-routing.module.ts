@@ -80,6 +80,12 @@ const routes: Routes = [
       import('./pages/shop/shop.module').then((m) => m.ShopModule),
   },
   {
+    path: 'shop/:category',
+    component: ShopComponent,
+    loadChildren: () =>
+      import('./pages/shop/shop.module').then((m) => m.ShopModule),
+  },
+  {
     path: 'cart',
     component: CartShopComponent,
     loadChildren: () =>
@@ -147,7 +153,10 @@ const routes: Routes = [
 @NgModule({
   imports: [
     IonicModule,
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, initialNavigation: 'enabledBlocking' }),
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: PreloadAllModules,
+      initialNavigation: 'enabledBlocking',
+    }),
   ],
   exports: [RouterModule],
 })
