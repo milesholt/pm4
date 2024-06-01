@@ -70,7 +70,17 @@
     
     <div class="row anim" *ngIf="page.template == 'col-1' || page.template == 'col-2'">
       <div *ngIf="page.image" class="col col-image">
-        <img src="{{page.image}}"  />
+        <!--<img src="{{url}}{page.image}}"  />-->
+
+        <picture>
+          
+          <source media="(min-width:1200px)" srcset="{{url}}/assets/images/WEBP/2400/{{page.image}}">
+          <source media="(min-width:600px)" srcset="{{url}}/assets/images/WEBP/1200/{{page.image}}">
+          <source media="(min-width:300px)" srcset="{{url}}/assets/images/WEBP/600/{{page.image}}">
+          <source media="(min-width:0px)" srcset="{{url}}/assets/images/WEBP/300/{{page.image}}">
+          <img src="{{url}}/assets/images/WEBP/1200/{{ page.image }}" loading="lazy" alt="{{page.title}}">
+        </picture>
+ 
       </div>
       <div class="col col-content">
         <div class="col-wrap">
@@ -85,7 +95,7 @@
      <div class="row"> <h2>{{page.title}}</h2></div>
       <div class="row">
        <div class="col anim" *ngFor="let col of page.content">
-         <img alt="{{col.title}}" src="{{col.image}}" class="{{col.classes}}" />
+         <img alt="{{col.title}}" src="{{url}}{{col.image}}" class="{{col.classes}}" />
          <h3>{{col.title}}</h3>
          <div class="content" [innerHtml]="col.content"></div>
        </div>

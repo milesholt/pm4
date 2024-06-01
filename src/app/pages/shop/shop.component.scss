@@ -130,6 +130,9 @@ ion-content ::ng-deep > *:nth-last-child(2) {
     &:nth-child(even) {
       flex-direction: column;
     }
+    h2 {
+      text-align: center;
+    }
     .col {
       width: 100% !important;
       flex: 1 100% !important;

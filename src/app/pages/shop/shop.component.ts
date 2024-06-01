@@ -12,6 +12,8 @@ import { Library } from '../../app.library';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 //import { ProductComponent } from './product/product.component';
 
+import { environment } from 'src/environments/environment';
+
 import { register } from 'swiper/element/bundle';
 register();
 
@@ -36,7 +38,7 @@ export class ShopComponent implements OnInit {
         title: 'Your Source for Premium Health Products',
         description:
           'Welcome to Obscura Solutions, your one-stop shop for premium health products. Explore our diverse range of mushrooms, organic items, natural supplements, vegan products, Ayurvedic solutions, anti-ageing remedies, and gourmet coffee. Elevate your wellness journey with our expertly curated selections.',
-        image: 'http://obscura.solutions/assets/images/generic1.webp',
+        image: 'https://obscura.solutions/assets/images/generic1.webp',
         keywords:
           'Obscura Solutions, health products, premium health supplements, organic health products, natural wellness, vegan health solutions, Ayurvedic products, anti-ageing remedies, gourmet coffee, holistic health, wellness products',
       },
@@ -46,7 +48,7 @@ export class ShopComponent implements OnInit {
           title: 'Time for a healthier you.',
           description:
             'Discover a wide range of health products designed to enhance your well-being.',
-          image: 'http://obscura.solutions/assets/images/generic2.webp',
+          image: 'generic2.webp',
         },
       ],
       content: [
@@ -60,51 +62,49 @@ export class ShopComponent implements OnInit {
           title: 'Our Product Categories',
           content:
             '<p>Explore our extensive range of health products across various categories to find the perfect solutions for your needs.</p>',
-          image: 'http://obscura.solutions/assets/images/fitness.webp',
+          image: 'fitness.webp',
           template: 'col-2',
         },
         {
           title: 'Natural Supplements',
           content:
             '<p>Boost your health with our natural supplements, formulated to provide essential nutrients and support overall well-being.</p>',
-          image:
-            'http://obscura.solutions/assets/images/dhaka_flower_ayurvedic.webp',
+          image: 'dhaka_flower_ayurvedic.webp',
           template: 'col-2',
         },
         {
           title: 'Vegan',
           content:
             '<p>Discover our range of vegan products, free from animal ingredients and perfect for a plant-based lifestyle.</p>',
-          image: 'http://obscura.solutions/assets/images/vegan1.webp',
+          image: 'vegan1.webp',
           template: 'col-2',
         },
         {
           title: 'Organic',
           content:
             '<p>Choose from our selection of organic products, made without synthetic chemicals or GMOs, for a natural approach to health.</p>',
-          image: 'http://obscura.solutions/assets/images/organic2.webp',
+          image: 'organic2.webp',
           template: 'col-2',
         },
         {
           title: 'Ayurvedic',
           content:
             '<p>Explore our Ayurvedic products, inspired by traditional Indian medicine and designed to promote balance and holistic health.</p>',
-          image:
-            'http://obscura.solutions/assets/images/ayurvedic_medicine.webp',
+          image: 'ayurvedic_medicine.webp',
           template: 'col-2',
         },
         {
           title: 'Coffee',
           content:
             '<p>Enjoy our premium coffee selection, sourced from the finest plantations and roasted to perfection for rich, flavorful experiences.</p>',
-          image: 'http://obscura.solutions/assets/images/coffee.webp',
+          image: 'coffee.webp',
           template: 'col-2',
         },
         {
           title: 'Anti-Ageing',
           content:
             '<p>Rejuvenate your skin with our anti-ageing products, formulated with advanced ingredients to reduce signs of ageing and promote youthful radiance.</p>',
-          image: 'http://obscura.solutions/assets/images/skincare.webp',
+          image: 'skincare.webp',
           template: 'col-2',
         },
         {
@@ -115,7 +115,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Comprehensive Care',
               content:
                 'Our products support all aspects of health, from nutrition to skincare, ensuring comprehensive care for your well-being.',
-              image: 'http://obscura.solutions/assets/icons/bio.png',
+              image: '/assets/icons/bio.png',
               classes: 'icon',
             },
             {
@@ -123,8 +123,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Premium Standards',
               content:
                 'We prioritize quality in all our products, using only the best ingredients and manufacturing processes.',
-              image:
-                'http://obscura.solutions/assets/icons/premium-quality.png',
+              image: '/assets/icons/premium-quality.png',
               classes: 'icon',
             },
             {
@@ -132,7 +131,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Chemical-Free',
               content:
                 'Our health products are made from natural ingredients, free from synthetic chemicals and additives.',
-              image: 'http://obscura.solutions/assets/icons/herbal.png',
+              image: '/assets/icons/herbal.png',
               classes: 'icon',
             },
             {
@@ -140,7 +139,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Eco-Friendly',
               content:
                 'We are committed to sustainability, sourcing our products responsibly and minimizing environmental impact.',
-              image: 'http://obscura.solutions/assets/icons/flower.png',
+              image: '/assets/icons/flower.png',
               classes: 'icon',
             },
             {
@@ -148,7 +147,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Ethical Choices',
               content:
                 'Our range includes vegan and organic products, catering to ethical and health-conscious consumers.',
-              image: 'http://obscura.solutions/assets/icons/vegan.png',
+              image: '/assets/icons/vegan.png',
               classes: 'icon',
             },
             {
@@ -156,7 +155,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Mind & Body',
               content:
                 'Promote holistic health with products that support both physical and mental well-being.',
-              image: 'http://obscura.solutions/assets/icons/mortar.png',
+              image: '/assets/icons/mortar.png',
               classes: 'icon',
             },
             {
@@ -164,7 +163,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Energy & Wellness',
               content:
                 'Our supplements and health products enhance vitality, helping you feel more energetic and vibrant.',
-              image: 'http://obscura.solutions/assets/icons/pharmacy.png',
+              image: '/assets/icons/pharmacy.png',
               classes: 'icon',
             },
             {
@@ -172,7 +171,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Science-Based',
               content:
                 'Our products are formulated based on scientific research and traditional wisdom, ensuring effectiveness and safety.',
-              image: 'http://obscura.solutions/assets/icons/pills.png',
+              image: '/assets/icons/pills.png',
               classes: 'icon',
             },
             {
@@ -180,7 +179,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Giving Back',
               content:
                 'By choosing our products, you support communities and initiatives that promote health and sustainability.',
-              image: 'http://obscura.solutions/assets/icons/customer.png',
+              image: '/assets/icons/customer.png',
               classes: 'icon',
             },
           ],
@@ -214,13 +213,13 @@ export class ShopComponent implements OnInit {
           'Discover the power of medicinal mushrooms with our premium range of health supplements. Boost your immune system, enhance energy levels, and support overall wellness with our organic mushroom products.',
         keywords:
           "medicinal mushrooms, mushroom supplements, health benefits of mushrooms, immune support, organic mushrooms, reishi, lion's mane, chaga, cordyceps",
-        image: 'http://obscura.solutions/assets/images/mushroom.webp',
+        image: 'https://obscura.solutions/assets/images/mushroom.webp',
       },
       slides: [
         {
           title: 'Fungi',
           description: 'Discover the power of mushrooms',
-          image: 'http://obscura.solutions/assets/images/mushroom.webp',
+          image: 'mushroom.webp',
         },
       ],
       content: [
@@ -234,14 +233,14 @@ export class ShopComponent implements OnInit {
           title: 'Experience the Power of Nature',
           content:
             "<p>Harness the ancient wisdom of mushrooms to supercharge your health journey. Our premium mushroom supplements are meticulously crafted to deliver potent benefits straight from nature's pharmacy.<p>",
-          image: 'http://obscura.solutions/assets/images/cordyceps.webp',
+          image: 'cordyceps.webp',
           template: 'col-2',
         },
         {
           title: "Discover Nature's Secret",
           content:
             '<p>Delve into the world of medicinal mushrooms and unlock a treasure trove of wellness. From boosting cognitive function to enhancing immune support, these extraordinary fungi offer a holistic approach to vitality.<p>',
-          image: 'http://obscura.solutions/assets/images/reishi_mushroom.webp',
+          image: 'reishi_mushroom.webp',
           template: 'col-2',
         },
         {
@@ -252,7 +251,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Enhanced Immunity',
               content:
                 "<p>Strengthen your body's defenses and ward off illness with mushroom supplements, rich in beta-glucans and antioxidants that fortify the immune system.</p>",
-              image: 'http://obscura.solutions/assets/icons/vitamin.png',
+              image: '/assets/icons/vitamin.png',
               classes: 'icon',
             },
             {
@@ -260,7 +259,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Brain Health',
               content:
                 "<p>Boost mental clarity and support brain health with mushroom extracts like Lion's Mane, renowned for promoting neural growth and memory function.</p>",
-              image: 'http://obscura.solutions/assets/icons/brain.png',
+              image: '/assets/icons/brain.png',
               classes: 'icon',
             },
             {
@@ -268,7 +267,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Energy & Vitality',
               content:
                 '<p>Experience sustained energy levels and vitality with Cordyceps mushroom, an adaptogen that enhances endurance and oxygen utilization in the body.</p>',
-              image: 'http://obscura.solutions/assets/icons/energy.png',
+              image: '/assets/icons/energy.png',
               classes: 'icon',
             },
             {
@@ -276,7 +275,7 @@ export class ShopComponent implements OnInit {
               subtitle: '',
               content:
                 '<p>Find relief from anxiety and stress with mushroom supplements, containing adaptogens that promote relaxation and emotional balance.</p>',
-              image: 'http://obscura.solutions/assets/icons/mental-health.png',
+              image: '/assets/icons/mental-health.png',
               classes: 'icon',
             },
             {
@@ -284,7 +283,7 @@ export class ShopComponent implements OnInit {
               subtitle: '',
               content:
                 '<p>Lift your spirits and combat depression naturally with mushroom extracts, known for their mood-regulating properties and serotonin support.</p>',
-              image: 'http://obscura.solutions/assets/icons/lotus.png',
+              image: '/assets/icons/lotus.png',
               classes: 'icon',
             },
             {
@@ -292,7 +291,7 @@ export class ShopComponent implements OnInit {
               subtitle: '',
               content:
                 "<p>Bolster your body's natural defenses and combat infections with mushroom extracts rich in immunomodulating compounds, offering protection against pathogens and toxins</p>",
-              image: 'http://obscura.solutions/assets/icons/infection.png',
+              image: '/assets/icons/infection.png',
               classes: 'icon',
             },
             {
@@ -300,7 +299,7 @@ export class ShopComponent implements OnInit {
               subtitle: '',
               content:
                 '<p>Protect your cells from oxidative damage and premature aging with mushroom supplements rich in potent antioxidants, supporting overall health and longevity.</p>',
-              image: 'http://obscura.solutions/assets/icons/molecule.png',
+              image: '/assets/icons/molecule.png',
               classes: 'icon',
             },
             {
@@ -308,7 +307,7 @@ export class ShopComponent implements OnInit {
               subtitle: '',
               content:
                 '<p>Combat inflammation and promote joint health with mushroom extracts known for their anti-inflammatory properties, easing discomfort and promoting mobility.</p>',
-              image: 'http://obscura.solutions/assets/icons/inflammation.png',
+              image: '/assets/icons/inflammation.png',
               classes: 'icon',
             },
             {
@@ -316,7 +315,7 @@ export class ShopComponent implements OnInit {
               subtitle: '',
               content:
                 "<p>Support your body's natural defense against cancer with mushroom supplements, containing bioactive compounds that inhibit tumor growth and boost immune surveillance.</p>",
-              image: 'http://obscura.solutions/assets/icons/cancer.png',
+              image: '/assets/icons/cancer.png',
               classes: 'icon',
             },
           ],
@@ -342,7 +341,7 @@ export class ShopComponent implements OnInit {
         title: 'Premium Coffee for Health and Wellness',
         description:
           'Enjoy the rich flavors and health benefits of our premium coffee selection. From organic beans to wellness blends, our coffee supports your health goals while providing a delightful taste experience.',
-        image: 'http://obscura.solutions/assets/images/coffee.webp',
+        image: 'https://obscura.solutions/assets/images/coffee.webp',
         keywords:
           'premium coffee, health benefits of coffee, organic coffee, wellness coffee, coffee blends, healthy coffee options, gourmet coffee',
       },
@@ -351,7 +350,7 @@ export class ShopComponent implements OnInit {
           title: 'Premium Coffee Selection',
           description:
             'Enjoy the rich and diverse flavors of our premium coffee.',
-          image: 'http://obscura.solutions/assets/images/coffee.webp',
+          image: 'coffee.webp',
         },
       ],
       content: [
@@ -365,14 +364,14 @@ export class ShopComponent implements OnInit {
           title: 'Why Choose Our Coffee?',
           content:
             '<p>We prioritize quality and sustainability, offering coffee that is ethically sourced and expertly roasted to perfection.</p>',
-          image: 'http://obscura.solutions/assets/images/coffee2.webp',
+          image: 'coffee2.webp',
           template: 'col-2',
         },
         {
           title: 'Our Coffee Varieties',
           content:
             '<p>Explore our range of coffee products, from single-origin beans to unique blends, each crafted to provide a distinct and enjoyable experience.</p>',
-          image: 'http://obscura.solutions/assets/images/lionsmane.webp',
+          image: 'lionsmane.webp',
           template: 'col-2',
         },
         {
@@ -383,7 +382,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Exquisite Taste',
               content:
                 'Our coffee offers rich, complex flavors that cater to all palates, from bold to subtle notes.',
-              image: 'http://obscura.solutions/assets/icons/leaf.png',
+              image: '/assets/icons/leaf.png',
               classes: 'icon',
             },
             {
@@ -391,7 +390,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Ethically Sourced',
               content:
                 'We source our coffee beans from sustainable farms, ensuring ethical practices and fair trade.',
-              image: 'http://obscura.solutions/assets/icons/natural.png',
+              image: '/assets/icons/natural.png',
               classes: 'icon',
             },
             {
@@ -399,7 +398,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Top Grade Beans',
               content:
                 'Our beans are carefully selected and roasted to bring out their best qualities, ensuring a superior coffee experience.',
-              image: 'http://obscura.solutions/assets/icons/coffee-beans.png',
+              image: '/assets/icons/coffee-beans.png',
               classes: 'icon',
             },
             {
@@ -407,7 +406,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Stay Alert',
               content:
                 'Enjoy the natural energy boost from our premium coffee, helping you stay alert and focused throughout the day.',
-              image: 'http://obscura.solutions/assets/icons/energy.png',
+              image: '/assets/icons/energy.png',
               classes: 'icon',
             },
             {
@@ -415,7 +414,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Health Benefits',
               content:
                 'Coffee is rich in antioxidants, which can help protect your cells and support overall health.',
-              image: 'http://obscura.solutions/assets/icons/molecule.png',
+              image: '/assets/icons/molecule.png',
               classes: 'icon',
             },
             {
@@ -423,7 +422,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Various Brew Methods',
               content:
                 'Our coffee can be enjoyed in various ways, from espresso to cold brew, providing flexibility in how you savor your cup.',
-              image: 'http://obscura.solutions/assets/icons/coffee-cup.png',
+              image: '/assets/icons/coffee-cup.png',
               classes: 'icon',
             },
             {
@@ -431,7 +430,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Supporting Farmers',
               content:
                 'By choosing our coffee, you are supporting farmers and communities who are committed to sustainable practices.',
-              image: 'http://obscura.solutions/assets/icons/customer.png',
+              image: '/assets/icons/customer.png',
               classes: 'icon',
             },
             {
@@ -439,7 +438,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Always Fresh',
               content:
                 'We ensure our coffee is roasted and delivered fresh, preserving its rich flavors and aroma.',
-              image: 'http://obscura.solutions/assets/icons/flower.png',
+              image: '/assets/icons/flower.png',
               classes: 'icon',
             },
             {
@@ -447,7 +446,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Unique Flavors',
               content:
                 'Our custom blends offer unique flavor profiles, allowing you to discover new and exciting coffee experiences.',
-              image: 'http://obscura.solutions/assets/icons/fungi.png',
+              image: '/assets/icons/fungi.png',
               classes: 'icon',
             },
           ],
@@ -491,7 +490,7 @@ export class ShopComponent implements OnInit {
           title: 'Boost Your Health Naturally',
           description:
             'Discover the power of our natural Supplements to enhance your well-being.',
-          image: 'http://obscura.solutions/assets/images/generic1.webp',
+          image: 'generic1.webp',
         },
       ],
       content: [
@@ -505,14 +504,14 @@ export class ShopComponent implements OnInit {
           title: 'Pure Ingredients',
           content:
             '<p>We source only the highest quality natural ingredients, ensuring that you receive the purest and most effective supplement available.</p>',
-          image: 'http://obscura.solutions/assets/images/generic2.webp',
+          image: 'generic2.webp',
           template: 'col-2',
         },
         {
           title: 'Proven Benefits',
           content:
             '<p>Our supplement is backed by scientific research and proven to support various aspects of health, including immune function, energy levels, and overall vitality.</p>',
-          image: 'http://obscura.solutions/assets/images/organic1.webp',
+          image: 'organic1.webp',
           template: 'col-2',
         },
         {
@@ -523,7 +522,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Support Your Immune System',
               content:
                 '<p>Natural supplements can bolster your immune system, helping you stay healthy and fight off illnesses more effectively.</p>',
-              image: 'http://obscura.solutions/assets/icons/immune.png',
+              image: '/assets/icons/immune.png',
               classes: 'icon',
             },
             {
@@ -531,7 +530,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Boost Your Vitality',
               content:
                 '<p>Experience a natural increase in energy levels, allowing you to stay active and productive throughout the day.</p>',
-              image: 'http://obscura.solutions/assets/icons/energy.png',
+              image: '/assets/icons/energy.png',
               classes: 'icon',
             },
             {
@@ -539,7 +538,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Support Digestive Health',
               content:
                 '<p>Natural supplements can promote better digestion, reducing discomfort and improving nutrient absorption.</p>',
-              image: 'http://obscura.solutions/assets/icons/bacteria.png',
+              image: '/assets/icons/bacteria.png',
               classes: 'icon',
             },
             {
@@ -547,7 +546,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Restful Nights',
               content:
                 "<p>Many natural supplements help regulate sleep patterns, ensuring you get a restful night's sleep and wake up refreshed.</p>",
-              image: 'http://obscura.solutions/assets/icons/yoga.png',
+              image: '/assets/icons/yoga.png',
               classes: 'icon',
             },
             {
@@ -555,7 +554,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Sharpen Your Mind',
               content:
                 '<p>Support cognitive function and mental clarity with natural ingredients that enhance brain health.</p>',
-              image: 'http://obscura.solutions/assets/icons/mental-health.png',
+              image: '/assets/icons/mental-health.png',
               classes: 'icon',
             },
             {
@@ -563,7 +562,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Radiant Complexion',
               content:
                 '<p>Natural supplements can improve skin health, giving you a radiant and youthful complexion.</p>',
-              image: 'http://obscura.solutions/assets/icons/molecule.png',
+              image: '/assets/icons/molecule.png',
               classes: 'icon',
             },
             {
@@ -571,7 +570,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Calm and Relaxation',
               content:
                 '<p>Many natural supplements have calming properties that help reduce stress and promote relaxation.</p>',
-              image: 'http://obscura.solutions/assets/icons/lotus.png',
+              image: '/assets/icons/lotus.png',
               classes: 'icon',
             },
             {
@@ -579,7 +578,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Support Joint Function',
               content:
                 '<p>Support joint health and reduce discomfort with natural supplements that promote flexibility and mobility.</p>',
-              image: 'http://obscura.solutions/assets/icons/neuron.png',
+              image: '/assets/icons/neuron.png',
               classes: 'icon',
             },
             {
@@ -587,7 +586,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Healthy Weight',
               content:
                 '<p>Natural supplements can support your weight management goals, helping you maintain a healthy weight.</p>',
-              image: 'http://obscura.solutions/assets/icons/vitamin.png',
+              image: '/assets/icons/vitamin.png',
               classes: 'icon',
             },
           ],
@@ -631,7 +630,7 @@ export class ShopComponent implements OnInit {
           title: 'Premium Vegan Products',
           description:
             'Embrace a healthy lifestyle with our exclusive vegan products.',
-          image: 'http://obscura.solutions/assets/images/vegan1.webp',
+          image: 'vegan1.webp',
         },
       ],
       content: [
@@ -645,14 +644,14 @@ export class ShopComponent implements OnInit {
           title: 'Why Choose Vegan?',
           content:
             '<p>Vegan products are free from animal derivatives, promoting a compassionate and environmentally sustainable lifestyle.</p>',
-          image: 'http://obscura.solutions/assets/images/organic2.webp',
+          image: 'organic2.webp',
           template: 'col-2',
         },
         {
           title: 'Our Vegan Range',
           content:
             '<p>Discover our extensive selection of vegan products, from nutritional supplements to skincare, all designed to enhance your health and well-being.</p>',
-          image: 'http://obscura.solutions/assets/images/reishi_mushroom2.webp',
+          image: 'reishi_mushroom2.webp',
           template: 'col-2',
         },
         {
@@ -663,7 +662,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Nutrient-Rich',
               content:
                 'Our vegan products are packed with essential nutrients derived from plants, ensuring optimal health.',
-              image: 'http://obscura.solutions/assets/icons/nutrient.png',
+              image: '/assets/icons/nutrient.png',
               classes: 'icon',
             },
             {
@@ -671,7 +670,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Ethical Choices',
               content:
                 'All our products are 100% cruelty-free, aligning with your values of compassion and ethical living.',
-              image: 'http://obscura.solutions/assets/icons/bee.png',
+              image: '/assets/icons/bee.png',
               classes: 'icon',
             },
             {
@@ -679,7 +678,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Eco-Friendly',
               content:
                 'Choosing vegan products helps reduce your environmental footprint, promoting a healthier planet.',
-              image: 'http://obscura.solutions/assets/icons/bio.png',
+              image: '/assets/icons/bio.png',
               classes: 'icon',
             },
             {
@@ -687,7 +686,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Gut-Friendly',
               content:
                 'Vegan diets are rich in fiber, aiding in digestive health and regularity.',
-              image: 'http://obscura.solutions/assets/icons/intestine.png',
+              image: '/assets/icons/intestine.png',
               classes: 'icon',
             },
             {
@@ -695,7 +694,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Healthy Weight',
               content:
                 'Our vegan products support healthy weight management through balanced nutrition.',
-              image: 'http://obscura.solutions/assets/icons/body.png',
+              image: '/assets/icons/body.png',
               classes: 'icon',
             },
             {
@@ -703,7 +702,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Glowing Skin',
               content:
                 'Achieve radiant skin with our plant-based skincare and supplements.',
-              image: 'http://obscura.solutions/assets/icons/skincare.png',
+              image: '/assets/icons/skincare.png',
               classes: 'icon',
             },
             {
@@ -711,7 +710,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Stay Energized',
               content:
                 'Feel more energetic with our vegan products that are designed to boost your vitality.',
-              image: 'http://obscura.solutions/assets/icons/energy.png',
+              image: '/assets/icons/energy.png',
               classes: 'icon',
             },
             {
@@ -719,7 +718,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Cardiovascular Support',
               content:
                 'Support your heart health with our cholesterol-free vegan products.',
-              image: 'http://obscura.solutions/assets/icons/vitality.png',
+              image: '/assets/icons/vitality.png',
               classes: 'icon',
             },
             {
@@ -727,7 +726,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Strong Bones',
               content:
                 'Ensure strong bones with our calcium and vitamin D fortified vegan products.',
-              image: 'http://obscura.solutions/assets/icons/joint.png',
+              image: '/assets/icons/joint.png',
               classes: 'icon',
             },
           ],
@@ -771,7 +770,7 @@ export class ShopComponent implements OnInit {
           title: 'Pure & Organic Products',
           description:
             'Experience the best of nature with our organic products.',
-          image: 'http://obscura.solutions/assets/images/organic1.webp',
+          image: 'organic1.webp',
         },
       ],
       content: [
@@ -785,14 +784,14 @@ export class ShopComponent implements OnInit {
           title: 'Why Choose Organic?',
           content:
             '<p>Choosing organic products means you are supporting sustainable farming practices and reducing your exposure to harmful chemicals.</p>',
-          image: 'http://obscura.solutions/assets/images/organic2.webp',
+          image: 'organic2.webp',
           template: 'col-2',
         },
         {
           title: 'Our Organic Range',
           content:
             '<p>Explore our wide range of organic products, from food items to personal care, all designed to enhance your health naturally.</p>',
-          image: 'http://obscura.solutions/assets/images/reishi_mushroom.webp',
+          image: 'reishi_mushroom.webp',
           template: 'col-2',
         },
         {
@@ -803,7 +802,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Chemical-Free',
               content:
                 'Our organic products are free from synthetic pesticides and fertilizers, ensuring they are safe and healthy.',
-              image: '',
+              image: '/assets/icons/pesticide-free.png',
               classes: 'icon',
             },
             {
@@ -811,7 +810,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'High Nutrition',
               content:
                 'Organic products are often richer in nutrients, providing you with more vitamins, minerals, and antioxidants.',
-              image: 'http://obscura.solutions/assets/icons/nutrient.png',
+              image: '/assets/icons/nutrient.png',
               classes: 'icon',
             },
             {
@@ -819,7 +818,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Sustainable Farming',
               content:
                 'Supporting organic products means promoting sustainable farming practices that protect the environment.',
-              image: 'http://obscura.solutions/assets/icons/leaf.png',
+              image: '/assets/icons/leaf.png',
               classes: 'icon',
             },
             {
@@ -827,7 +826,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Natural Flavor',
               content:
                 'Many people find that organic products have a better, more natural taste compared to non-organic alternatives.',
-              image: 'http://obscura.solutions/assets/icons/herbal2.png',
+              image: '/assets/icons/herbal2.png',
               classes: 'icon',
             },
             {
@@ -835,7 +834,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Non-GMO',
               content:
                 'Our organic products are free from genetically modified organisms, ensuring natural purity.',
-              image: 'http://obscura.solutions/assets/icons/nitrates-free.png',
+              image: '/assets/icons/nitrates-free.png',
               classes: 'icon',
             },
             {
@@ -843,7 +842,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Healthy Ecosystems',
               content:
                 'Organic farming supports biodiversity and helps maintain healthy ecosystems.',
-              image: 'http://obscura.solutions/assets/icons/seed.png',
+              image: '/assets/icons/seed.png',
               classes: 'icon',
             },
             {
@@ -851,7 +850,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Natural Growth',
               content:
                 'Organic products are free from growth hormones and antibiotics, ensuring natural growth processes.',
-              image: 'http://obscura.solutions/assets/icons/body.png',
+              image: '/assets/icons/body.png',
               classes: 'icon',
             },
             {
@@ -859,7 +858,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Humane Practices',
               content:
                 'Organic farming practices often include higher standards of animal welfare.',
-              image: 'http://obscura.solutions/assets/icons/bee.png',
+              image: '/assets/icons/bee.png',
               classes: 'icon',
             },
             {
@@ -867,7 +866,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Community Support',
               content:
                 'Buying organic products often supports local farmers and their communities.',
-              image: 'http://obscura.solutions/assets/icons/customer.png',
+              image: '/assets/icons/customer.png',
               classes: 'icon',
             },
           ],
@@ -904,7 +903,7 @@ export class ShopComponent implements OnInit {
         description:
           'Reconnect with ancient wisdom through our Ayurvedic health products. Our range includes traditional herbs and formulations to balance your mind, body, and spirit according to Ayurvedic principles.',
         image:
-          'http://obscura.solutions/assets/images/dhaka_flower_ayervedic.webp',
+          'https://obscura.solutions/assets/images/dhaka_flower_ayervedic.webp',
         keywords:
           'Ayurvedic health products, Ayurvedic supplements, traditional Ayurveda, herbal Ayurvedic remedies, balance and wellness, ancient health solutions, Ayurvedic lifestyle',
       },
@@ -913,8 +912,7 @@ export class ShopComponent implements OnInit {
           title: 'Authentic Ayurvedic Products',
           description:
             'Balance your body and mind with our traditional Ayurvedic products.',
-          image:
-            'http://obscura.solutions/assets/images/dhaka_flower_ayervedic.webp',
+          image: 'dhaka_flower_ayervedic.webp',
         },
       ],
       content: [
@@ -928,15 +926,14 @@ export class ShopComponent implements OnInit {
           title: 'Why Choose Ayurveda?',
           content:
             '<p>Ayurveda focuses on natural healing and balancing the body, mind, and spirit through diet, lifestyle, and herbal remedies.</p>',
-          image: 'http://obscura.solutions/assets/images/ashwagandha.webp',
+          image: 'ashwagandha.webp',
           template: 'col-2',
         },
         {
           title: 'Our Ayurvedic Range',
           content:
             '<p>Discover our range of Ayurvedic products, including herbal supplements, oils, and teas, designed to support your health and wellness naturally.</p>',
-          image:
-            'http://obscura.solutions/assets/images/ayurvedic_medicine.webp',
+          image: 'ayurvedic_medicine.webp',
           template: 'col-2',
         },
         {
@@ -947,7 +944,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Balance & Wellness',
               content:
                 "Ayurvedic products promote holistic health by balancing the body's doshas and supporting overall wellness.",
-              image: 'http://obscura.solutions/assets/icons/back.png',
+              image: '/assets/icons/back.png',
               classes: 'icon',
             },
             {
@@ -955,7 +952,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Herbal Remedies',
               content:
                 'Our products are made from natural herbs and ingredients, ensuring purity and effectiveness.',
-              image: 'http://obscura.solutions/assets/icons/herbal.png',
+              image: '/assets/icons/herbal.png',
               classes: 'icon',
             },
             {
@@ -963,7 +960,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Cleanse & Purify',
               content:
                 'Ayurvedic remedies help detoxify the body, removing toxins and promoting internal cleansing.',
-              image: 'http://obscura.solutions/assets/icons/inflammation.png',
+              image: '/assets/icons/inflammation.png',
               classes: 'icon',
             },
             {
@@ -971,7 +968,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Digestive Health',
               content:
                 'Support your digestive health with Ayurvedic herbs known for their digestive benefits.',
-              image: 'http://obscura.solutions/assets/icons/intestine.png',
+              image: '/assets/icons/intestine.png',
               classes: 'icon',
             },
             {
@@ -979,7 +976,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Calm & Relax',
               content:
                 'Ayurvedic products help reduce stress and promote relaxation through natural means.',
-              image: 'http://obscura.solutions/assets/icons/yoga.png',
+              image: '/assets/icons/yoga.png',
               classes: 'icon',
             },
             {
@@ -987,7 +984,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Immune Support',
               content:
                 'Boost your immune system with powerful Ayurvedic herbs and formulations.',
-              image: 'http://obscura.solutions/assets/icons/immune.png',
+              image: '/assets/icons/immune.png',
               classes: 'icon',
             },
             {
@@ -995,7 +992,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Radiant Skin',
               content:
                 'Achieve healthy, glowing skin with Ayurvedic skincare products.',
-              image: 'http://obscura.solutions/assets/icons/skincare.png',
+              image: '/assets/icons/skincare.png',
               classes: 'icon',
             },
             {
@@ -1003,7 +1000,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Flexible & Strong',
               content:
                 'Support joint health and flexibility with Ayurvedic oils and supplements.',
-              image: 'http://obscura.solutions/assets/icons/joint.png',
+              image: '/assets/icons/joint.png',
               classes: 'icon',
             },
             {
@@ -1011,7 +1008,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Focus & Memory',
               content:
                 'Enhance mental clarity and memory with Ayurvedic herbs traditionally used for cognitive support.',
-              image: 'http://obscura.solutions/assets/icons/mental-health.png',
+              image: '/assets/icons/mental-health.png',
               classes: 'icon',
             },
           ],
@@ -1044,7 +1041,7 @@ export class ShopComponent implements OnInit {
         title: 'Advanced Anti-Ageing Health Products',
         description:
           'Combat the signs of ageing with our advanced anti-ageing health products. Our supplements and skincare solutions help you maintain youthful energy and appearance, promoting longevity and vitality.',
-        image: 'http://obscura.solutions/assets/images/skincare.webp',
+        image: 'https://obscura.solutions/assets/images/skincare.webp',
         keywords:
           'anti-ageing products, anti-ageing supplements, youthful skin, longevity supplements, anti-ageing skincare, age-defying products, anti-ageing health',
       },
@@ -1053,7 +1050,7 @@ export class ShopComponent implements OnInit {
           title: 'Advanced Anti-Ageing Solutions',
           description:
             'Rejuvenate your skin and reduce the signs of ageing with our advanced products.',
-          image: 'http://obscura.solutions/assets/images/skincare.webp',
+          image: 'skincare.webp',
         },
       ],
       content: [
@@ -1067,14 +1064,14 @@ export class ShopComponent implements OnInit {
           title: 'Why Choose Anti-Ageing Products?',
           content:
             '<p>Our products target the signs of ageing, including wrinkles, fine lines, and loss of elasticity, to help you maintain a youthful appearance.</p>',
-          image: 'http://obscura.solutions/assets/images/skincare2.webp',
+          image: 'skincare2.webp',
           template: 'col-2',
         },
         {
           title: 'Our Anti-Ageing Range',
           content:
             '<p>Discover our range of anti-ageing products, including serums, creams, and supplements, designed to rejuvenate your skin and enhance its natural beauty.</p>',
-          image: 'http://obscura.solutions/assets/images/generic1.webp',
+          image: 'generic1.webp',
           template: 'col-2',
         },
         {
@@ -1085,7 +1082,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Smooth Skin',
               content:
                 'Our products help reduce the appearance of wrinkles, giving you smoother, younger-looking skin.',
-              image: 'http://obscura.solutions/assets/icons/skincare.png',
+              image: '/assets/icons/skincare.png',
               classes: 'icon',
             },
             {
@@ -1093,7 +1090,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Firm & Tight',
               content:
                 "Enhance your skin's elasticity and firmness with our advanced formulations.",
-              image: 'http://obscura.solutions/assets/icons/muscle.png',
+              image: '/assets/icons/muscle.png',
               classes: 'icon',
             },
             {
@@ -1101,7 +1098,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Moisturize & Nourish',
               content:
                 'Keep your skin hydrated and nourished to maintain a healthy glow and prevent dryness.',
-              image: 'http://obscura.solutions/assets/icons/moisturizer.png',
+              image: '/assets/icons/moisturizer.png',
               classes: 'icon',
             },
             {
@@ -1109,7 +1106,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Youthful Skin',
               content:
                 'Stimulate collagen production to support skin structure and reduce signs of ageing.',
-              image: 'http://obscura.solutions/assets/icons/molecule.png',
+              image: '/assets/icons/molecule.png',
               classes: 'icon',
             },
             {
@@ -1117,7 +1114,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Antioxidant Protection',
               content:
                 'Protect your skin from environmental damage with powerful antioxidants.',
-              image: 'http://obscura.solutions/assets/icons/immune.png',
+              image: '/assets/icons/immune.png',
               classes: 'icon',
             },
             {
@@ -1125,7 +1122,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Radiant Complexion',
               content:
                 'Achieve a more even skin tone and reduce dark spots for a radiant complexion.',
-              image: 'http://obscura.solutions/assets/icons/body.png',
+              image: '/assets/icons/body.png',
               classes: 'icon',
             },
             {
@@ -1133,7 +1130,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Refresh & Revitalize',
               content:
                 'Our products help reduce puffiness and dark circles, giving your eyes a refreshed look.',
-              image: 'http://obscura.solutions/assets/icons/eyes-mask.png',
+              image: '/assets/icons/eyes-mask.png',
               classes: 'icon',
             },
             {
@@ -1141,7 +1138,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Smooth & Soft',
               content:
                 "Enhance your skin's texture, making it smoother and softer to the touch.",
-              image: 'http://obscura.solutions/assets/icons/pore.png',
+              image: '/assets/icons/pore.png',
               classes: 'icon',
             },
             {
@@ -1149,7 +1146,7 @@ export class ShopComponent implements OnInit {
               subtitle: 'Sustained Youthfulness',
               content:
                 'Enjoy long-lasting anti-ageing benefits with consistent use of our products.',
-              image: 'http://obscura.solutions/assets/icons/lotion.png',
+              image: '/assets/icons/lotion.png',
               classes: 'icon',
             },
           ],
@@ -1181,7 +1178,7 @@ export class ShopComponent implements OnInit {
         {
           title: '',
           description: '',
-          image: 'http://obscura.solutions/assets/images/product.webp',
+          image: 'https://obscura.solutions/assets/images/product.webp',
         },
       ],
       content: [
@@ -1231,6 +1228,9 @@ export class ShopComponent implements OnInit {
   @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
   @ViewChildren('item') items?: QueryList<ElementRef>;
 
+  public url: string;
+  public title: string;
+
   constructor(
     public service: CoreService,
     public router: Router,
@@ -1239,7 +1239,10 @@ export class ShopComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
     //public productComponent: ProductComponent,
-  ) {}
+  ) {
+    this.url = environment.url;
+    this.title = environment.title;
+  }
 
   ngOnInit() {
     this.test();

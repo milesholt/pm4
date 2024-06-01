@@ -6,7 +6,21 @@
             <p>{{slide.description}}</p>
             <div *ngIf="!!cta"><ion-button id="slider-cta" (click)="doCTA()">{{cta.label}}</ion-button></div>
           </div>   
-          <img src="{{ slide[slideSuffix] }}" class="slide-image" width="100%" height="auto" />   
+
+
+          <img *ngIf="classes !== 'hero'" src="{{ slide[slideSuffix] }}" class="slide-image" width="100%" height="auto" /> 
+
+          <!--<img *ngIf="classes.includes('hero')" src="{{ slide[slideSuffix] }}" srcset="image-small.jpg 320w, image-medium.jpg 768w, image-large.jpg 1200w" sizes="(max-width: 320px) 280px, (max-width: 768px) 720px, 1200px" alt="Example Image">-->
+ 
+          <picture *ngIf="classes == 'hero'">
+            <source media="(min-width:1200px)" srcset="{{url}}/assets/images/WEBP/2400/{{slide[slideSuffix]}}">
+         
+            <source media="(min-width:600px)" srcset="{{url}}/assets/images/WEBP/1200/{{slide[slideSuffix]}}">
+            <source media="(min-width:300px)" srcset="{{url}}/assets/images/WEBP/600/{{slide[slideSuffix]}}">
+            <source media="(min-width:0px)" srcset="{{url}}/assets/images/WEBP/300/{{slide[slideSuffix]}}">
+            <img src="{{url}}/assets/images/WEBP/1200/{{ slide[slideSuffix] }}" alt="{{slide.title}}" class="slide-image">
+          </picture>
+
       </div>
   </swiper-slide>
 </swiper-container>

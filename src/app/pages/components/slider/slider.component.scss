@@ -11,6 +11,7 @@
   justify-content: center; // Horizontally center
   align-items: center; // Vertically center
   width: 100%; // Example width
+  min-height: 350px;
 }
 
 .main-slide img {
@@ -56,13 +57,29 @@
     font-size: 1.5rem;
     max-width: 70vw;
     margin: 0 auto;
+    @media (max-width: 600px) {
+      font-size: 1.2rem;
+    }
+    @media (max-width: 450px) {
+      font-size: 1rem;
+    }
+  }
+  picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
   }
   img.slide-image {
     height: 100%;
-    object-fit: cover !important;
     display: block;
     max-width: 100%;
     opacity: 0.8;
+    @media (max-width: 992px) {
+      object-fit: cover !important;
+      margin: 0 auto;
+      width: 100% !important;
+    }
   }
 
   .slide-content {

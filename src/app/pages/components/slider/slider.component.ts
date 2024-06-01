@@ -18,6 +18,8 @@ import { CoreService } from '../../../services/core.service';
 import { register } from 'swiper/element/bundle';
 register();
 
+import { environment } from 'src/environments/environment';
+
 @Component({
   //standalone: true,
   selector: 'app-slider-comp',
@@ -42,12 +44,16 @@ export class SliderComponent implements OnInit {
 
   @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
 
+  public url: string = '';
+
   constructor(
     public service: CoreService,
     public navCtrl: NavController,
     public router: Router,
     public lib: Library,
-  ) {}
+  ) {
+    this.url = environment.url;
+  }
 
   ngOnInit() {}
 
