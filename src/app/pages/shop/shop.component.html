@@ -26,6 +26,7 @@
       [navigation]="false"
       [classes]="'hero'"
       [cta]="{'label': 'Shop Now', 'anchor': '#searchBar'}"
+      [type]="'hero'"
       >
   </app-slider-comp>
 </div>
@@ -95,7 +96,7 @@
      <div class="row"> <h2>{{page.title}}</h2></div>
       <div class="row">
        <div class="col anim" *ngFor="let col of page.content">
-         <img alt="{{col.title}}" src="{{url}}{{col.image}}" class="{{col.classes}}" />
+         <img alt="{{col.title}}" src="{{url}}{{col.image}}" loading="lazy" alt="{{col.title}}" class="{{col.classes}}" />
          <h3>{{col.title}}</h3>
          <div class="content" [innerHtml]="col.content"></div>
        </div>

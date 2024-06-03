@@ -1,4 +1,4 @@
-<swiper-container *ngIf="!type" #mainSwiper id="mainSlider" class="swiper {{classes}}" init="false" >
+<swiper-container *ngIf="!type || type == 'hero'" #mainSwiper id="mainSlider" class="swiper {{classes}}" init="false" >
   <swiper-slide class="main-slide" *ngFor="let slide of slides; index as imgidx"> 
     <div class="swiper-zoom-container">     
       <div *ngIf="slide.title || slide.description" class="slide-content">
@@ -8,17 +8,17 @@
           </div>   
 
 
-          <img *ngIf="classes !== 'hero'" src="{{ slide[slideSuffix] }}" class="slide-image" width="100%" height="auto" /> 
+          <img *ngIf="type !== 'hero'" src="{{ slide[slideSuffix] }}" alt="{{slide.title}}" class="slide-image" width="100%" height="auto" /> 
 
           <!--<img *ngIf="classes.includes('hero')" src="{{ slide[slideSuffix] }}" srcset="image-small.jpg 320w, image-medium.jpg 768w, image-large.jpg 1200w" sizes="(max-width: 320px) 280px, (max-width: 768px) 720px, 1200px" alt="Example Image">-->
  
-          <picture *ngIf="classes == 'hero'">
+          <picture *ngIf="type == 'hero'">
             <source media="(min-width:1200px)" srcset="{{url}}/assets/images/WEBP/2400/{{slide[slideSuffix]}}">
          
             <source media="(min-width:600px)" srcset="{{url}}/assets/images/WEBP/1200/{{slide[slideSuffix]}}">
             <source media="(min-width:300px)" srcset="{{url}}/assets/images/WEBP/600/{{slide[slideSuffix]}}">
             <source media="(min-width:0px)" srcset="{{url}}/assets/images/WEBP/300/{{slide[slideSuffix]}}">
-            <img src="{{url}}/assets/images/WEBP/1200/{{ slide[slideSuffix] }}" alt="{{slide.title}}" class="slide-image">
+            <img src="{{url}}/assets/images/WEBP/1200/{{ slide[slideSuffix] }}" loading="eager" priority="high" alt="{{slide.title}}" class="slide-image">
           </picture>
 
       </div>
