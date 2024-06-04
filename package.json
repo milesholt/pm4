@@ -6,7 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --disable-host-check",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
@@ -14,7 +14,7 @@
     "serve:ssr": "node dist/app/server/main.js",
     "build:ssr": "ng build && ng run app:server",
     "prerender": "ng run app:prerender",
-    "postbuild": "node generate-sitemap.js"
+    "postbuild": "node generate-sitemap.js && zip -r build.zip dist/app/browser"
   },
   "private": true,
   "dependencies": {
@@ -44,6 +44,7 @@
     "firebase": "^9.23.0",
     "intersection-observer": "^0.12.2",
     "ionicons": "^7.0.0",
+    "ngx-cookie-service": "^18.0.0",
     "printful-js": "^1.0.3",
     "rxjs": "~7.8.0",
     "shopify-buy": "^2.21.1",

@@ -18,6 +18,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 //Auth service
 import { AuthService } from './services/external/firebase/AuthService/auth.capacitor.service';
@@ -56,6 +57,7 @@ import { FooterModule } from './pages/components/footer/footer.module';
     AuthService,
     Meta,
     Title,
+    CookieService,
     //FormatPipe,
     //SafeHtmlPipe,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
