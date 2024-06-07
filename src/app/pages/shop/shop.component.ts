@@ -903,7 +903,7 @@ export class ShopComponent implements OnInit {
         description:
           'Reconnect with ancient wisdom through our Ayurvedic health products. Our range includes traditional herbs and formulations to balance your mind, body, and spirit according to Ayurvedic principles.',
         image:
-          'https://obscura.solutions/assets/images/dhaka_flower_ayervedic.webp',
+          'https://obscura.solutions/assets/images/dhaka_flower_ayurvedic.webp',
         keywords:
           'Ayurvedic health products, Ayurvedic supplements, traditional Ayurveda, herbal Ayurvedic remedies, balance and wellness, ancient health solutions, Ayurvedic lifestyle',
       },
@@ -912,7 +912,7 @@ export class ShopComponent implements OnInit {
           title: 'Authentic Ayurvedic Products',
           description:
             'Balance your body and mind with our traditional Ayurvedic products.',
-          image: 'dhaka_flower_ayervedic.webp',
+          image: 'dhaka_flower_ayurvedic.webp',
         },
       ],
       content: [
@@ -1350,8 +1350,13 @@ export class ShopComponent implements OnInit {
         this.router.navigate(['/shop']);
       const checkout = await this.service.shop.fetchCheckout(checkoutId);
       this.service.shop.checkoutComplete = false;
-      if (checkout.completedAt !== null)
+      if (checkout.completedAt !== null) {
         this.service.shop.checkoutComplete = true;
+        this.service.ads.google.trackConversion(
+          checkout.totalPrice.amount,
+          checkout.totalPrice.currencyCode,
+        );
+      }
     }
   }
 
@@ -1372,6 +1377,7 @@ export class ShopComponent implements OnInit {
       searchData.keyword !== ''
         ? this.library.alias(searchData.keyword)
         : 'all';
+    if (this.filterCategory == 'featured') this.filterCategory = 'all';
 
     if (keyword == '') this.test();
     this.filterProducts = results;

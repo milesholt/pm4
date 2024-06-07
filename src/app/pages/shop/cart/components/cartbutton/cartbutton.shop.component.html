@@ -1,1 +1,1 @@
-<ion-button (click)="toggleAddToCart(product)">{{cartLabel}}</ion-button>    
+<ion-button id="cartButton" [ngClass]="cartLabel === 'Add to cart' ? 'add' : 'remove'" (click)="toggleAddToCart(product)">{{cartLabel}}</ion-button>    

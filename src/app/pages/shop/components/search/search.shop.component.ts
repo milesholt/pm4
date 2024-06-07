@@ -48,6 +48,17 @@ export class SearchShopComponent implements OnInit {
       // Call any method or perform any action based on the new searchQuery value
     });
 
+    this.route.paramMap.subscribe((params) => {
+      const category = params.get('category');
+      if (category) {
+        this.search = category == 'false' || category == 'all' ? '' : category;
+
+        setTimeout(async () => {
+          await this.beginSearch(null, false);
+        }, 1000);
+      }
+    });
+
     const query = this.route.snapshot.queryParamMap.get('search');
     if (query) {
       this.search = query;
@@ -55,6 +66,8 @@ export class SearchShopComponent implements OnInit {
         await this.beginSearch(null, true);
       }, 1000);
     }
+
+    
   }
 
   async beginSearch(event: any = null, clearSearch: boolean = false) {
@@ -65,8 +78,22 @@ export class SearchShopComponent implements OnInit {
       .split(/[\s-]+/) //split hyphen and spaces
       .filter((keyword) => keyword);
 
+      
     if (keywords.length === 0) {
       this.feedFilter = this.feed;
+
+    } else if (keywords.join('') === 'featured') {
+      
+    
+      var featuredProducts = [
+        "Ashwagandha",
+        "Collagen Gummies",
+        "Complete Multivitamin",
+        "Mushroom Extract Complex"
+      ];
+
+      this.feedFilter = this.feed.filter((item:any) => featuredProducts.includes(item.title));
+
     } else {
       /*this.feed = this.feed.filter(
       (item: any) =>
@@ -88,6 +115,7 @@ export class SearchShopComponent implements OnInit {
             description.includes(keyword) ||
             productType.includes(keyword),
         );
+        
       });
     }
     /* if (
