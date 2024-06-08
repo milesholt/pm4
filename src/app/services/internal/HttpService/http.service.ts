@@ -15,4 +15,8 @@ export class HttpService {
   post(url: string, data: any): Observable<any> {
     return this.http.post<any>(url, data);
   }
+
+  getJSON(path:string): Observable<any> {
+    return this.http.get(path);
+  }
 }
