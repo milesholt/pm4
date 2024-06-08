@@ -56,5 +56,14 @@ export class CartShopComponent implements OnInit {
     this.menuController.close('cart');
   }
 
+  doCheckout(){
+    this.service.ads.google.trackConversion(
+      this.service.shop.cart.totalPrice.amount,
+      this.service.shop.cart.totalPrice.currencyCode,
+      'checkout'
+    );
+    this.service.shop.openCheckout();
+  }
+
   async ngAfterContentInit() {}
 }

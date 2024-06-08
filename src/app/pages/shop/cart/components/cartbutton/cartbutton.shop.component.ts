@@ -57,11 +57,16 @@ export class CartButtonShopComponent implements OnInit {
     return this.cartItem;
   }
 
-  toggleAddToCart(product: any) {
+  async toggleAddToCart(product: any) {
     if (this.cartItem !== false) {
       this.service.shop.removeItem(this.cartItem);
     } else {
-      this.service.shop.addToCart(product);
+      await this.service.shop.addToCart(product);
+      this.service.ads.google.trackConversion(
+        this.service.shop.cart.totalPrice.amount,
+        this.service.shop.cart.totalPrice.currencyCode,
+        'addtocart'
+      );
     }
     this.changeDet.detectChanges();
     //await this.service.shop.getCart();

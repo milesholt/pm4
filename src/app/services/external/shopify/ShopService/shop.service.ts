@@ -284,8 +284,15 @@ export class ShopService {
 
   async fetchCheckout(checkoutId: any) {
     console.log('fetching checkout');
-    this.checkout = await this.client.checkout.fetch(checkoutId);
-    console.log(this.checkout);
+    this.checkout = await this.client.checkout.fetch(checkoutId).then((checkout:any) => {
+      console.log(checkout);
+      return checkout;
+    }).catch((error:any) => {
+      console.log('Error - no checkout found with that ID');
+      return false;
+    });
+
     return this.checkout;
+    
   }
 }

@@ -31,7 +31,7 @@ export class ShopComponent implements OnInit {
   filterCategory: string = 'all';
   featuredProducts: any = [];
   private observer: IntersectionObserver | undefined;
-
+ 
   heroSlides: any = {
     all: {
       meta: {
@@ -45,7 +45,7 @@ export class ShopComponent implements OnInit {
       product: 'Health Products',
       slides: [
         {
-          title: 'Time for a healthier you.',
+          title: 'Time for a better you.',
           description:
             'Discover a wide range of health products designed to enhance your well-being.',
           image: 'generic2.webp',
@@ -1346,17 +1346,25 @@ export class ShopComponent implements OnInit {
   async checkReturn() {
     if (this.router.url.indexOf('?return') > -1) {
       const checkoutId = localStorage.getItem('checkoutId');
+      
       if (checkoutId === null || checkoutId === undefined)
         this.router.navigate(['/shop']);
+      
       const checkout = await this.service.shop.fetchCheckout(checkoutId);
       this.service.shop.checkoutComplete = false;
-      if (checkout.completedAt !== null) {
-        this.service.shop.checkoutComplete = true;
-        this.service.ads.google.trackConversion(
-          checkout.totalPrice.amount,
-          checkout.totalPrice.currencyCode,
-        );
+        
+      if(!!checkout){
+        if (checkout.completedAt !== null) {
+          this.service.shop.checkoutComplete = true;
+          this.service.ads.google.trackConversion(
+            checkout.totalPrice.amount,
+            checkout.totalPrice.currencyCode,
+            'purchase'
+          );
+        }
+        
       }
+      
     }
   }
 

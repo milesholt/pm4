@@ -38,6 +38,6 @@
 
         <p>Subtotal: {{service.shop.cart.paymentDue.amount}} {{service.shop.cart.paymentDue.currencyCode}}</p>
 
-        <ion-button id="checkoutButton" (click)="service.shop.openCheckout()">Continue to Checkout</ion-button>
+        <ion-button id="checkoutButton" (click)="doCheckout()">Continue to Checkout</ion-button>
       </div>
   </ion-content>
