@@ -61,7 +61,7 @@
   </ion-grid>
 
   <div *ngIf="search=='featured'" class="container" style="margin-top:40px;">
-    <ion-button (click)="search = 'all'; test()" class="center">Show more</ion-button>
+    <ion-button id="showMore" (click)="search = 'all'; test()" class="center">Show more</ion-button>
   </div>
 
   <div *ngIf="filterProducts.length == 0 && heroSlides[filterCategory]" class="container">
