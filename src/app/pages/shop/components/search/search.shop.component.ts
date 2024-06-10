@@ -54,7 +54,7 @@ export class SearchShopComponent implements OnInit {
         this.search = category == 'false' || category == 'all' ? '' : category;
 
         setTimeout(async () => {
-          await this.beginSearch(null, false);
+          await this.beginSearch(null, true);
         }, 1000);
       }
     });
@@ -66,8 +66,6 @@ export class SearchShopComponent implements OnInit {
         await this.beginSearch(null, true);
       }, 1000);
     }
-
-    
   }
 
   async beginSearch(event: any = null, clearSearch: boolean = false) {
@@ -78,22 +76,21 @@ export class SearchShopComponent implements OnInit {
       .split(/[\s-]+/) //split hyphen and spaces
       .filter((keyword) => keyword);
 
-      
+    let excludedProducts = [];
+
     if (keywords.length === 0) {
       this.feedFilter = this.feed;
-
     } else if (keywords.join('') === 'featured') {
-      
-    
       var featuredProducts = [
-        "Ashwagandha",
-        "Collagen Gummies",
-        "Complete Multivitamin",
-        "Mushroom Extract Complex"
+        'Ashwagandha',
+        'Collagen Gummies',
+        'Complete Multivitamin',
+        'Mushroom Extract Complex',
       ];
 
-      this.feedFilter = this.feed.filter((item:any) => featuredProducts.includes(item.title));
-
+      this.feedFilter = this.feed.filter((item: any) =>
+        featuredProducts.includes(item.title),
+      );
     } else {
       /*this.feed = this.feed.filter(
       (item: any) =>
@@ -115,8 +112,20 @@ export class SearchShopComponent implements OnInit {
             description.includes(keyword) ||
             productType.includes(keyword),
         );
-        
       });
+
+      //Exclude any products from filter if necessary
+      var excludeProducts = ["Lion's Mane", 'Mushroom Coffee'];
+
+      this.feedFilter = this.feed.filter(
+        (item: any) =>
+          !excludeProducts.some((product) => item.title.includes(product)),
+      );
+
+      //capture and return any excluded products
+      excludedProducts = this.feed.filter((item: any) =>
+        excludeProducts.some((product) => item.title.includes(product)),
+      );
     }
     /* if (
       this.feedFilter.length === 0 &&
@@ -128,6 +137,7 @@ export class SearchShopComponent implements OnInit {
     let searchData = {
       keyword: this.search,
       results: this.feedFilter,
+      excluded: excludedProducts,
     };
     if (clearSearch) this.search = '';
     this.searchChange.emit(searchData);

@@ -28,6 +28,7 @@ export class ShopComponent implements OnInit {
   search: string | boolean = false;
   category: string = '';
   filterProducts: any = [];
+  excludedProducts: any = [];
   filterCategory: string = 'all';
   featuredProducts: any = [];
   private observer: IntersectionObserver | undefined;
@@ -54,8 +55,7 @@ export class ShopComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.service.http.getJSON(this.pagesJSON).subscribe(pages => {
+    this.service.http.getJSON(this.pagesJSON).subscribe((pages) => {
       this.heroSlides = pages.shop;
     });
 
@@ -115,6 +115,12 @@ export class ShopComponent implements OnInit {
           .querySelector('#productsGrid')
           .classList.add('fade-in');
       });
+      //if on featured page, show all products when clicked
+      if (this.search == 'featured') {
+        alert('here');
+        this.search = 'all';
+        this.test();
+      }
     }
   }
 
@@ -160,25 +166,23 @@ export class ShopComponent implements OnInit {
   async checkReturn() {
     if (this.router.url.indexOf('?return') > -1) {
       const checkoutId = localStorage.getItem('checkoutId');
-      
+
       if (checkoutId === null || checkoutId === undefined)
         this.router.navigate(['/shop']);
-      
+
       const checkout = await this.service.shop.fetchCheckout(checkoutId);
       this.service.shop.checkoutComplete = false;
-        
-      if(!!checkout){
+
+      if (!!checkout) {
         if (checkout.completedAt !== null) {
           this.service.shop.checkoutComplete = true;
           this.service.ads.google.trackConversion(
             checkout.totalPrice.amount,
             checkout.totalPrice.currencyCode,
-            'purchase'
+            'purchase',
           );
         }
-        
       }
-      
     }
   }
 
@@ -192,6 +196,10 @@ export class ShopComponent implements OnInit {
     }
   }
 
+  async showExcluded() {
+    this.filterProducts = [...this.filterProducts, ...this.excludedProducts];
+  }
+
   async handleSearchCallback(searchData: any) {
     const results = searchData.results;
     const keyword = searchData.keyword;
@@ -203,6 +211,8 @@ export class ShopComponent implements OnInit {
 
     if (keyword == '') this.test();
     this.filterProducts = results;
+    this.excludedProducts = searchData.excluded;
+
     this.doFeatured();
     this.cdr.detectChanges();
   }

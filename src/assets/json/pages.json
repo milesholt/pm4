@@ -25,6 +25,11 @@
           "title": "Our Product Categories",
           "content": "<p>Explore our extensive range of health products across various categories to find the perfect solutions for your needs.</p>",
           "image": "fitness.webp",
+          "link": {
+            "path": "/shop/mushroom",
+            "query": {},
+            "label": "Shop Fungi"
+          },
           "template": "col-2"
         },
         {

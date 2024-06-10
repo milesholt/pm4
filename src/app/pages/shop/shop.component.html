@@ -11,7 +11,7 @@
 
   <app-refresher></app-refresher>
 
-  <div class="product-type container" *ngIf="filterProducts.length && !heroSlides[filterCategory] && search !== false && search !== 'all' && search !== 'featured'">
+  <div class="product-type container" *ngIf="filterProducts.length && !heroSlides[filterCategory] && search !== false && search !== 'all' && search !== 'featured' && search !== 'false'">
     <h1>{{search}}</h1>
   </div>
   
@@ -60,8 +60,14 @@
   </ion-row>
   </ion-grid>
 
-  <div *ngIf="search=='featured'" class="container" style="margin-top:40px;">
+ <!-- Show all products, for main or featured landing page --> 
+  <div *ngIf="search == 'featured'" class="container" style="margin-top:40px;">
     <ion-button id="showMore" (click)="search = 'all'; test()" class="center">Show more</ion-button>
+  </div>
+
+  <!-- Reveal excluded products -->
+  <div *ngIf="search !== 'featured' && filterProducts.length < products.length" class="container" style="margin-top:40px;">
+    <ion-button id="showMore" (click)="showExcluded()" class="center">Show more</ion-button>
   </div>
 
   <div *ngIf="filterProducts.length == 0 && heroSlides[filterCategory]" class="container">
@@ -91,6 +97,7 @@
         <div class="col-wrap">
           <h2>{{page.title}}</h2>
           <div [innerHtml]="page.content"></div>
+          <ion-button *ngIf="page.link" [routerLink]="[page.link.path]" [queryParams]="page.link.query">{{page.link.label}}</ion-button>
         </div>
       </div>
     </div>
