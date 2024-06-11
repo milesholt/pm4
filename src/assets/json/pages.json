@@ -22,9 +22,9 @@
           "template": "col-1"
         },
         {
-          "title": "Our Product Categories",
-          "content": "<p>Explore our extensive range of health products across various categories to find the perfect solutions for your needs.</p>",
-          "image": "fitness.webp",
+          "title": "Fungi - Nature's Superfood",
+          "content": "<p>Discover the powerful benefits of our premium mushroom supplements. From boosting cognitive function to strengthening your immune system, our range of mushroom products harnesses the natural potency of fungi to support your health and well-being.</p>",
+          "image": "mushroom.webp",
           "link": {
             "path": "/shop/mushroom",
             "query": {},
@@ -36,36 +36,66 @@
           "title": "Natural Supplements",
           "content": "<p>Boost your health with our natural supplements, formulated to provide essential nutrients and support overall well-being.</p>",
           "image": "dhaka_flower_ayurvedic.webp",
+          "link": {
+            "path": "/shop/natural-supplements",
+            "query": {},
+            "label": "Shop Natural"
+          },
           "template": "col-2"
         },
         {
           "title": "Vegan",
           "content": "<p>Discover our range of vegan products, free from animal ingredients and perfect for a plant-based lifestyle.</p>",
           "image": "vegan1.webp",
+          "link": {
+            "path": "/shop/vegan",
+            "query": {},
+            "label": "Shop Vegan"
+          },
           "template": "col-2"
         },
         {
           "title": "Organic",
           "content": "<p>Choose from our selection of organic products, made without synthetic chemicals or GMOs, for a natural approach to health.</p>",
           "image": "organic2.webp",
+          "link": {
+            "path": "/shop/organic",
+            "query": {},
+            "label": "Shop Organic"
+          },
           "template": "col-2"
         },
         {
           "title": "Ayurvedic",
           "content": "<p>Explore our Ayurvedic products, inspired by traditional Indian medicine and designed to promote balance and holistic health.</p>",
           "image": "ayurvedic_medicine.webp",
+          "link": {
+            "path": "/shop/ayurvedic",
+            "query": {},
+            "label": "Shop Ayurvedic"
+          },
           "template": "col-2"
         },
         {
           "title": "Coffee",
           "content": "<p>Enjoy our premium coffee selection, sourced from the finest plantations and roasted to perfection for rich, flavorful experiences.</p>",
           "image": "coffee.webp",
+          "link": {
+            "path": "/shop/coffee",
+            "query": {},
+            "label": "Shop Coffee"
+          },
           "template": "col-2"
         },
         {
           "title": "Anti-Ageing",
           "content": "<p>Rejuvenate your skin with our anti-ageing products, formulated with advanced ingredients to reduce signs of ageing and promote youthful radiance.</p>",
           "image": "skincare.webp",
+          "link": {
+            "path": "/shop/anti-ageing",
+            "query": {},
+            "label": "Shop Anti-Ageing"
+          },
           "template": "col-2"
         },
         {
@@ -402,14 +432,14 @@
       "slides": [
         {
           "title": "Boost Your Health Naturally",
-          "description": "Discover the power of our natural Supplements to enhance your well-being.",
+          "description": "Discover the power of our all natural supplements to enhance your well-being.",
           "image": "generic1.webp"
         }
       ],
       "content": [
         {
-          "title": "Why Choose Our Natural Supplement?",
-          "content": "<p>Our Natural Supplement is crafted with the finest ingredients to provide you with optimal health benefits. It's time to embrace nature's goodness and support your body's natural functions.</p>",
+          "title": "Why Choose Our Natural Supplements",
+          "content": "<p>Our natural supplements are crafted with the finest ingredients to provide you with optimal health benefits. It's time to embrace nature's goodness and support your body's natural functions.</p>",
           "template": "col-1"
         },
         {
@@ -420,7 +450,7 @@
         },
         {
           "title": "Proven Benefits",
-          "content": "<p>Our supplement is backed by scientific research and proven to support various aspects of health, including immune function, energy levels, and overall vitality.</p>",
+          "content": "<p>Our supplements are backed by scientific research and proven to support various aspects of health, including immune function, energy levels, and overall vitality.</p>",
           "image": "organic1.webp",
           "template": "col-2"
         },
@@ -509,7 +539,7 @@
         }
       ],
       "featuredProducts": [
-        "gid://shopify/Product/8959021646161",
+        "gid://shopify/Product/8958996152657",
         "gid://shopify/Product/8959048155473"
       ]
     },
@@ -767,7 +797,7 @@
       },
       "slides": [
         {
-          "title": "Authentic Ayurvedic Products",
+          "title": "Authentic Ayurvedic",
           "description": "Balance your body and mind with our traditional Ayurvedic products.",
           "image": "dhaka_flower_ayurvedic.webp"
         }

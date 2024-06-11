@@ -115,7 +115,7 @@ export class SearchShopComponent implements OnInit {
       });
 
       //Exclude any products from filter if necessary
-      var excludeProducts = ["Lion's Mane", 'Mushroom Coffee'];
+      var excludeProducts = ["Lion's Mane", 'Mushroom Coffee', '5-HTP'];
 
       this.feedFilter = this.feed.filter(
         (item: any) =>

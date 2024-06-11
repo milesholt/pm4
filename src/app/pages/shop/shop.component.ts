@@ -54,11 +54,15 @@ export class ShopComponent implements OnInit {
     this.title = environment.title;
   }
 
-  ngOnInit() {
-    this.service.http.getJSON(this.pagesJSON).subscribe((pages) => {
+  async ngOnInit() {
+    await this.service.http.getJSON(this.pagesJSON).subscribe((pages) => {
       this.heroSlides = pages.shop;
+      //once main content is loaded, finish
+      this.finishLoad();
     });
+  }
 
+  finishLoad() {
     this.test();
     this.checkReturn();
     this.filterCategory =
@@ -95,8 +99,8 @@ export class ShopComponent implements OnInit {
     });*/
 
     this.route.paramMap.subscribe((params) => {
-      const category = params.get('category');
-      if (category && this.heroSlides.hasOwnProperty(category)) {
+      const category = String(params.get('category'));
+      if (this.heroSlides.hasOwnProperty(category)) {
         // Append the category to the variable if it matches any category key
         this.filterCategory = category;
         this.search = category;
@@ -108,20 +112,22 @@ export class ShopComponent implements OnInit {
   ngAfterViewInit(): void {
     this.initializeObserver();
     //Ensure products grid fades in when Shop Now button is clicked
-    const sliderCta = document.querySelector('#slider-cta');
-    if (sliderCta) {
-      sliderCta.addEventListener('click', () => {
-        this.elementRef.nativeElement
-          .querySelector('#productsGrid')
-          .classList.add('fade-in');
-      });
-      //if on featured page, show all products when clicked
-      if (this.search == 'featured') {
-        alert('here');
-        this.search = 'all';
-        this.test();
+
+    setTimeout(() => {
+      const sliderCta = document.querySelector('#slider-cta');
+      if (sliderCta) {
+        sliderCta.addEventListener('click', () => {
+          this.elementRef.nativeElement
+            .querySelector('#productsGrid')
+            .classList.add('fade-in');
+          //if on featured page, show all products when clicked
+          if (this.search == 'featured') {
+            this.search = 'all';
+            this.test();
+          }
+        });
       }
-    }
+    }, 1000);
   }
 
   ngAfterViewChecked(): void {

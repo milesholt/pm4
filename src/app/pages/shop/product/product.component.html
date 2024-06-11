@@ -35,7 +35,8 @@
   <ion-col size="12" size-lg="5" size-xl="3" class="product-content">
   
     <h1>{{product.title}}</h1>
-
+    <input type="hidden" name="product-id" value="{{product.id}}" />
+ 
     <div class="product-price">{{product.price}} {{ product.currency }}</div>  
       
     <div class="product-type">{{product.productType}}</div>
