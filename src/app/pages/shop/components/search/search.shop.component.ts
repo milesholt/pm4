@@ -76,7 +76,7 @@ export class SearchShopComponent implements OnInit {
       .split(/[\s-]+/) //split hyphen and spaces
       .filter((keyword) => keyword);
 
-    let excludedProducts = [];
+    let excludedProducts: any = [];
 
     if (keywords.length === 0) {
       this.feedFilter = this.feed;
@@ -117,14 +117,14 @@ export class SearchShopComponent implements OnInit {
       //Exclude any products from filter if necessary
       var excludeProducts = ["Lion's Mane", 'Mushroom Coffee', '5-HTP'];
 
-      this.feedFilter = this.feed.filter(
-        (item: any) =>
-          !excludeProducts.some((product) => item.title.includes(product)),
+      //capture and return any excluded products
+      excludedProducts = this.feedFilter.filter((item: any) =>
+        excludeProducts.some((product) => item.title.includes(product)),
       );
 
-      //capture and return any excluded products
-      excludedProducts = this.feed.filter((item: any) =>
-        excludeProducts.some((product) => item.title.includes(product)),
+      this.feedFilter = this.feedFilter.filter(
+        (item: any) =>
+          !excludeProducts.some((product) => item.title.includes(product)),
       );
     }
     /* if (
@@ -134,6 +134,7 @@ export class SearchShopComponent implements OnInit {
     )*/
     //this.searchMessage = 'No items found';
     //else this.searchMessage = '';
+
     let searchData = {
       keyword: this.search,
       results: this.feedFilter,

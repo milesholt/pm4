@@ -34,6 +34,7 @@ export class ShopComponent implements OnInit {
   private observer: IntersectionObserver | undefined;
   private pagesJSON = 'assets/json/pages.json';
   heroSlides: any = {};
+  showMoreClicked: boolean = false;
 
   @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
   @ViewChildren('item') items?: QueryList<ElementRef>;
@@ -102,6 +103,7 @@ export class ShopComponent implements OnInit {
       const category = String(params.get('category'));
       if (this.heroSlides.hasOwnProperty(category)) {
         // Append the category to the variable if it matches any category key
+
         this.filterCategory = category;
         this.search = category;
         this.service.seo.doMeta(this.heroSlides[this.search].meta);
@@ -120,14 +122,20 @@ export class ShopComponent implements OnInit {
           this.elementRef.nativeElement
             .querySelector('#productsGrid')
             .classList.add('fade-in');
-          //if on featured page, show all products when clicked
+          //if on featured page, show all products when clicked and redo scroll
           if (this.search == 'featured') {
-            this.search = 'all';
-            this.test();
+            const sectionElement = document.querySelector('#searchBar');
+            if (sectionElement) {
+              sectionElement.scrollIntoView({ behavior: 'smooth' });
+              setTimeout(() => {
+                this.search = 'all';
+                this.test();
+              }, 300);
+            }
           }
         });
       }
-    }, 1000);
+    }, 800);
   }
 
   ngAfterViewChecked(): void {
@@ -204,6 +212,7 @@ export class ShopComponent implements OnInit {
 
   async showExcluded() {
     this.filterProducts = [...this.filterProducts, ...this.excludedProducts];
+    this.showMoreClicked = true;
   }
 
   async handleSearchCallback(searchData: any) {
@@ -215,7 +224,9 @@ export class ShopComponent implements OnInit {
         : 'all';
     if (this.filterCategory == 'featured') this.filterCategory = 'all';
 
-    if (keyword == '') this.test();
+    //if (keyword == '') this.test();
+    //if (keyword == '') this.test();
+
     this.filterProducts = results;
     this.excludedProducts = searchData.excluded;
 
@@ -230,7 +241,7 @@ export class ShopComponent implements OnInit {
   test() {
     this.service.shop.getProducts(this.service.shop.client).then((products) => {
       this.products = products;
-      this.filterProducts = products;
+      //this.filterProducts = products;
     });
   }
 }
