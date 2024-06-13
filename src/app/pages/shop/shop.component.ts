@@ -226,7 +226,8 @@ export class ShopComponent implements OnInit {
   }
 
   async showExcluded() {
-    this.filterProducts = [...this.filterProducts, ...this.excludedProducts];
+    if (!this.showMoreClicked)
+      this.filterProducts = [...this.filterProducts, ...this.excludedProducts];
     this.showMoreClicked = true;
   }
 
