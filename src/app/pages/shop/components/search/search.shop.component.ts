@@ -130,7 +130,7 @@ export class SearchShopComponent implements OnInit, OnChanges {
           ? item.productType.toLowerCase()
           : '';
 
-        return keywords.every(
+        return keywords.some(
           (keyword) =>
             title.includes(keyword) ||
             description.includes(keyword) ||
