@@ -1,4 +1,12 @@
-import { Input, Output, EventEmitter, Component, OnInit } from '@angular/core';
+import {
+  Input,
+  Output,
+  EventEmitter,
+  Component,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -15,7 +23,7 @@ import { CoreService } from '../../../../services/core.service';
   providers: [CoreService, Library],
   //imports:[IonicModule]
 })
-export class SearchShopComponent implements OnInit {
+export class SearchShopComponent implements OnInit, OnChanges {
   public search: string = '';
   public searchMessage: string = '';
   public feedFilter: any = [];
@@ -35,15 +43,22 @@ export class SearchShopComponent implements OnInit {
     await this.checkQuery();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['feed'] && this.feed.length) {
+      this.checkQuery();
+    }
+  }
+
   async checkQuery() {
     this.route.queryParams.subscribe((params) => {
       const query = params['search'];
       if (query) {
         this.search = query == 'false' || query == 'all' ? '' : query;
+        this.beginSearch(null, false);
 
-        setTimeout(async () => {
+        /*setTimeout(async () => {
           await this.beginSearch(null, false);
-        }, 1000);
+        }, 1000);*/
       }
       // Call any method or perform any action based on the new searchQuery value
     });
@@ -52,25 +67,34 @@ export class SearchShopComponent implements OnInit {
       const category = params.get('category');
       if (category) {
         this.search = category == 'false' || category == 'all' ? '' : category;
+        this.beginSearch(null, true);
 
-        setTimeout(async () => {
+        /*setTimeout(async () => {
+          alert(this.search);
+          //
           await this.beginSearch(null, true);
-        }, 1000);
+        }, 1000);*/
       }
     });
 
     const query = this.route.snapshot.queryParamMap.get('search');
     if (query) {
       this.search = query;
-      setTimeout(async () => {
+      await this.beginSearch(null, true);
+
+      /*setTimeout(async () => {
         await this.beginSearch(null, true);
-      }, 1000);
+      }, 1000);*/
     }
   }
 
   async beginSearch(event: any = null, clearSearch: boolean = false) {
     if (this.search == 'false' || this.search == 'all' || this.search == '')
       this.search = '';
+
+    if (event !== null) {
+    }
+
     const keywords = this.search
       .toLowerCase()
       .split(/[\s-]+/) //split hyphen and spaces
@@ -139,6 +163,7 @@ export class SearchShopComponent implements OnInit {
       keyword: this.search,
       results: this.feedFilter,
       excluded: excludedProducts,
+      products: this.feed,
     };
     if (clearSearch) this.search = '';
     this.searchChange.emit(searchData);

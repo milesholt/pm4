@@ -13,8 +13,10 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 //import { ProductComponent } from './product/product.component';
 
 import { environment } from 'src/environments/environment';
+import { BehaviorSubject } from 'rxjs';
 
 import { register } from 'swiper/element/bundle';
+import { SearchShopComponent } from './components/search/search.shop.component';
 register();
 
 @Component({
@@ -26,6 +28,7 @@ register();
 export class ShopComponent implements OnInit {
   products: any = [];
   search: string | boolean = false;
+  searchData: any = null;
   category: string = '';
   filterProducts: any = [];
   excludedProducts: any = [];
@@ -35,9 +38,12 @@ export class ShopComponent implements OnInit {
   private pagesJSON = 'assets/json/pages.json';
   heroSlides: any = {};
   showMoreClicked: boolean = false;
+  statusMessage: string = ''; 
+  filterProducts$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
   @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
   @ViewChildren('item') items?: QueryList<ElementRef>;
+  @ViewChild(SearchShopComponent) searchComponent!: SearchShopComponent;
 
   public url: string;
   public title: string;
@@ -63,9 +69,11 @@ export class ShopComponent implements OnInit {
     });
   }
 
-  finishLoad() {
-    this.test();
-    this.checkReturn();
+  async finishLoad() {
+    await this.test();
+    await this.checkReturn();
+    await this.doSearch();
+
     this.filterCategory =
       this.filterCategory !== ''
         ? this.library.alias(this.filterCategory)
@@ -200,6 +208,28 @@ export class ShopComponent implements OnInit {
     }
   }
 
+  doSearch() {
+    if (this.searchComponent) {
+      //this.searchComponent.checkQuery();
+      this.filterCategory =
+        this.searchData.keyword !== ''
+          ? this.library.alias(this.searchData.keyword)
+          : 'all';
+
+      if (this.filterCategory == 'featured') this.filterCategory = 'all';
+
+      //if (keyword == '') this.test();
+      //if (keyword == '') this.test();
+      this.search = this.searchData.keyword;
+      this.filterProducts = this.searchData.results;
+      this.filterProducts$.next(this.searchData.results);
+      this.excludedProducts = this.searchData.excluded;
+
+      this.doFeatured();
+      this.cdr.detectChanges();
+    }
+  }
+
   async doFeatured() {
     if (this.filterCategory !== 'all') {
       const cat = this.heroSlides[this.filterCategory];
@@ -216,26 +246,33 @@ export class ShopComponent implements OnInit {
   }
 
   async handleSearchCallback(searchData: any) {
-    const results = searchData.results;
-    const keyword = searchData.keyword;
-    this.filterCategory =
-      searchData.keyword !== ''
-        ? this.library.alias(searchData.keyword)
-        : 'all';
-    if (this.filterCategory == 'featured') this.filterCategory = 'all';
-
-    //if (keyword == '') this.test();
-    //if (keyword == '') this.test();
-
-    this.filterProducts = results;
-    this.excludedProducts = searchData.excluded;
-
-    this.doFeatured();
-    this.cdr.detectChanges();
+    //if no products loaded yet, try again
+    this.searchData = searchData;
+    await this.doSearch();
+    await this.handleStatus();
   }
 
   async handleFilterCallback(filterData: any) {
     this.cdr.detectChanges();
+  }
+
+  handleStatus() {
+    //Handle status message
+    if (this.search !== '' && typeof this.search == 'string') {
+      if (
+        this.heroSlides.hasOwnProperty(this.search) &&
+        this.filterProducts.length == 0
+      )
+        this.statusMessage =
+          'Sorry all products are currently sold out. Please try again later.';
+
+      if (
+        !this.heroSlides.hasOwnProperty(this.search) &&
+        this.filterProducts.length == 0
+      )
+        this.statusMessage =
+          'Sorry no products could be found, please try a different search.';
+    }
   }
 
   test() {
