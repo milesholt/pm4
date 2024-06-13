@@ -124,7 +124,7 @@ export class ShopComponent implements OnInit {
               } else {
                 this.showExcluded();
               }
-            }, 500);
+            }, 800);
           }
         });
       }

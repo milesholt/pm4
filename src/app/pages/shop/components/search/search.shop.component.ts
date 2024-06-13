@@ -92,10 +92,13 @@ export class SearchShopComponent implements OnInit, OnChanges {
     if (this.search == 'false' || this.search == 'all' || this.search == '')
       this.search = '';
 
+    //if search input event, split only spaces, otherwise spaces and hyphens
+    const regex = event ? /[\s]+/ : /[\s-]+/;
+
     const keywords = this.search
       .toLowerCase()
       .replace(/\banti-ageing\b/g, 'ANTI_AGEING')
-      .split(/[\s-]+/) //split hyphen and spaces
+      .split(regex) //split hyphen and spaces
       .filter((keyword) => keyword)
       .map((keyword) => (keyword === 'ANTI_AGEING' ? 'anti-ageing' : keyword));
 
@@ -138,7 +141,10 @@ export class SearchShopComponent implements OnInit, OnChanges {
       });
 
       //Exclude any products from filter if necessary
-      var excludeProducts = ["Lion's Mane", 'Mushroom Coffee', '5-HTP'];
+      //If there is a search input event (event is not null), ignore exlusions
+      var excludeProducts = event
+        ? []
+        : ["Lion's Mane", 'Mushroom Coffee', '5-HTP'];
 
       //capture and return any excluded products
       excludedProducts = this.feedFilter.filter((item: any) =>
