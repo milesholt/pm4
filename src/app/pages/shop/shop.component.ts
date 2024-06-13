@@ -114,14 +114,17 @@ export class ShopComponent implements OnInit {
             .querySelector('#productsGrid')
             .classList.add('fade-in');
           //if on featured page, show all products when clicked and redo scroll
-          if (this.search == 'featured') {
-            const sectionElement = document.querySelector('#searchBar');
-            if (sectionElement) {
-              sectionElement.scrollIntoView({ behavior: 'smooth' });
-              setTimeout(() => {
+
+          const sectionElement = document.querySelector('#searchBar');
+          if (sectionElement) {
+            sectionElement.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+              if (this.search == 'featured' || this.search == 'all') {
                 this.showAll();
-              }, 300);
-            }
+              } else {
+                this.showExcluded();
+              }
+            }, 500);
           }
         });
       }

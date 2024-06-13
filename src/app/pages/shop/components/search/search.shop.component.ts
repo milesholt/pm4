@@ -92,13 +92,12 @@ export class SearchShopComponent implements OnInit, OnChanges {
     if (this.search == 'false' || this.search == 'all' || this.search == '')
       this.search = '';
 
-    if (event !== null) {
-    }
-
     const keywords = this.search
       .toLowerCase()
+      .replace(/\banti-ageing\b/g, 'ANTI_AGEING')
       .split(/[\s-]+/) //split hyphen and spaces
-      .filter((keyword) => keyword);
+      .filter((keyword) => keyword)
+      .map((keyword) => (keyword === 'ANTI_AGEING' ? 'anti-ageing' : keyword));
 
     let excludedProducts: any = [];
 
