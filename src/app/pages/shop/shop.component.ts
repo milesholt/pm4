@@ -38,7 +38,7 @@ export class ShopComponent implements OnInit {
   private pagesJSON = 'assets/json/pages.json';
   heroSlides: any = {};
   showMoreClicked: boolean = false;
-  statusMessage: string = ''; 
+  statusMessage: string = '';
   filterProducts$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
   @ViewChild('mainSwiper', { static: false }) mainSwiper!: ElementRef;
@@ -79,44 +79,27 @@ export class ShopComponent implements OnInit {
         ? this.library.alias(this.filterCategory)
         : 'all';
 
+    let category = this.filterCategory;
+
     this.route.queryParams.subscribe((params: Params) => {
       if (params['search']) {
         this.search = params['search'];
-        const query = this.library.alias(params['search']);
-        this.service.seo.doMeta(this.heroSlides[query].meta);
+        category = this.library.alias(params['search']);
       }
     });
-
-    /* this.route.url.subscribe((urlSegments) => {
-      // Convert urlSegments to an array of string
-      const segments = urlSegments.map((segment) => segment.path);
-
-      // Check if 'shop' exists in the segments
-      const shopIndex = segments.indexOf('shop');
-      if (shopIndex !== -1) {
-        // Get the last segment
-        const lastSegment = segments[segments.length - 1];
-        //Check if segment is a category
-        //alert(lastSegment);
-        if (this.heroSlides.hasOwnProperty(lastSegment)) {
-          // Append the last segment to the variable
-          this.search = lastSegment;
-          this.filterCategory = lastSegment;
-          this.service.seo.doMeta(this.heroSlides[this.search].meta);
-        }
-      }
-    });*/
 
     this.route.paramMap.subscribe((params) => {
-      const category = String(params.get('category'));
+      category = String(params.get('category'));
       if (this.heroSlides.hasOwnProperty(category)) {
-        // Append the category to the variable if it matches any category key
-
         this.filterCategory = category;
         this.search = category;
-        this.service.seo.doMeta(this.heroSlides[this.search].meta);
       }
     });
+
+    //do meta for category
+    //if no category exists, it will default to 'all' or default meta
+    if (category == 'null') category = 'all';
+    this.service.seo.doMeta(this.heroSlides[category].meta);
   }
 
   ngAfterViewInit(): void {
@@ -136,8 +119,7 @@ export class ShopComponent implements OnInit {
             if (sectionElement) {
               sectionElement.scrollIntoView({ behavior: 'smooth' });
               setTimeout(() => {
-                this.search = 'all';
-                this.test();
+                this.showAll();
               }, 300);
             }
           }
@@ -242,6 +224,12 @@ export class ShopComponent implements OnInit {
 
   async showExcluded() {
     this.filterProducts = [...this.filterProducts, ...this.excludedProducts];
+    this.showMoreClicked = true;
+  }
+
+  showAll() {
+    this.search = 'all';
+    this.filterProducts = this.products;
     this.showMoreClicked = true;
   }
 
