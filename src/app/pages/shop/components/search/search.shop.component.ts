@@ -50,11 +50,14 @@ export class SearchShopComponent implements OnInit, OnChanges {
   }
 
   async checkQuery() {
+    let clear: boolean = false;
+
     this.route.queryParams.subscribe((params) => {
       const query = params['search'];
       if (query) {
         this.search = query == 'false' || query == 'all' ? '' : query;
-        this.beginSearch(null, false);
+        clear = false;
+        //this.beginSearch(null, false);
 
         /*setTimeout(async () => {
           await this.beginSearch(null, false);
@@ -67,7 +70,8 @@ export class SearchShopComponent implements OnInit, OnChanges {
       const category = params.get('category');
       if (category) {
         this.search = category == 'false' || category == 'all' ? '' : category;
-        this.beginSearch(null, true);
+        clear = true;
+        //this.beginSearch(null, true);
 
         /*setTimeout(async () => {
           alert(this.search);
@@ -80,15 +84,20 @@ export class SearchShopComponent implements OnInit, OnChanges {
     const query = this.route.snapshot.queryParamMap.get('search');
     if (query) {
       this.search = query;
-      await this.beginSearch(null, true);
+      clear = true;
+      //await this.beginSearch(null, true);
 
       /*setTimeout(async () => {
         await this.beginSearch(null, true);
       }, 1000);*/
     }
+
+    await this.beginSearch(null, clear);
   }
 
   async beginSearch(event: any = null, clearSearch: boolean = false) {
+    alert('beginning search');
+
     if (this.search == 'false' || this.search == 'all' || this.search == '')
       this.search = '';
 
@@ -163,6 +172,8 @@ export class SearchShopComponent implements OnInit, OnChanges {
     )*/
     //this.searchMessage = 'No items found';
     //else this.searchMessage = '';
+
+    alert('search data');
 
     let searchData = {
       keyword: this.search,
