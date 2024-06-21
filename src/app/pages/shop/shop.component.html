@@ -16,7 +16,6 @@
   </div>
   
 <div class="no-products" *ngIf="filterProducts.length == 0 && !heroSlides[filterCategory]">
-  here
   <p [innerHtml]="statusMessage"></p>
   <ion-spinner *ngIf="statusMessage == ''" class="center" name="circular"></ion-spinner>
 </div>
@@ -75,7 +74,6 @@
   </div>
 
   <div *ngIf="filterProducts.length == 0 && heroSlides[filterCategory]" class="container">
-    {{filterCategory}}
     <p [innerHtml]="statusMessage"></p>
     <ion-spinner *ngIf="statusMessage == ''" class="center" name="circular"></ion-spinner>
   </div>

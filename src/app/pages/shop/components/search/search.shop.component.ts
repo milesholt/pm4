@@ -96,8 +96,6 @@ export class SearchShopComponent implements OnInit, OnChanges {
   }
 
   async beginSearch(event: any = null, clearSearch: boolean = false) {
-    alert('beginning search');
-
     if (this.search == 'false' || this.search == 'all' || this.search == '')
       this.search = '';
 
@@ -172,8 +170,6 @@ export class SearchShopComponent implements OnInit, OnChanges {
     )*/
     //this.searchMessage = 'No items found';
     //else this.searchMessage = '';
-
-    alert('search data');
 
     let searchData = {
       keyword: this.search,

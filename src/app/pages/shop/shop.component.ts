@@ -201,11 +201,7 @@ export class ShopComponent implements OnInit {
           ? this.library.alias(this.searchData.keyword)
           : 'all';
 
-      alert('search2');
-
       if (this.filterCategory == 'featured') this.filterCategory = 'all';
-
-      alert(this.filterCategory);
 
       //if (keyword == '') this.test();
       //if (keyword == '') this.test();
@@ -229,6 +225,7 @@ export class ShopComponent implements OnInit {
     }
   }
 
+  //
   async showExcluded() {
     if (!this.showMoreClicked)
       this.filterProducts = [...this.filterProducts, ...this.excludedProducts];
@@ -243,7 +240,6 @@ export class ShopComponent implements OnInit {
 
   async handleSearchCallback(searchData: any) {
     //if no products loaded yet, try again
-    alert('handle search');
     this.searchData = searchData;
     await this.doSearch();
     await this.handleStatus();
