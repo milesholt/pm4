@@ -48,6 +48,7 @@ export class ShopService {
 
   async getProducts(client: any) {
     const products = await client.product.fetchAll();
+    console.log(products);
     return products;
   }
 
@@ -284,15 +285,17 @@ export class ShopService {
 
   async fetchCheckout(checkoutId: any) {
     console.log('fetching checkout');
-    this.checkout = await this.client.checkout.fetch(checkoutId).then((checkout:any) => {
-      console.log(checkout);
-      return checkout;
-    }).catch((error:any) => {
-      console.log('Error - no checkout found with that ID');
-      return false;
-    });
+    this.checkout = await this.client.checkout
+      .fetch(checkoutId)
+      .then((checkout: any) => {
+        console.log(checkout);
+        return checkout;
+      })
+      .catch((error: any) => {
+        console.log('Error - no checkout found with that ID');
+        return false;
+      });
 
     return this.checkout;
-    
   }
 }

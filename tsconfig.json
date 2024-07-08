@@ -2,6 +2,15 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "stream": ["./node_modules/stream-browserify"],
+      "util": ["./node_modules/util"],
+      "url": ["./node_modules/url"],
+      "assert": ["./node_modules/assert"],
+      "crypto": ["./node_modules/crypto-js"],
+      "http": ["./node_modules/stream-http"],
+      "https": ["./node_modules/https-browserify"]
+    },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "esModuleInterop": true,
@@ -20,7 +29,7 @@
     "importHelpers": true,
     "target": "es2022",
     "module": "es2020",
-    "lib": ["es2018", "dom"],
+    "lib": ["es2018", "dom", "esnext"],
     "skipLibCheck": true,
     "useDefineForClassFields": false
   },

@@ -18,13 +18,16 @@ import { TestComponent } from './pages/test/test.component';
 
 import { ContentComponent } from './pages/shop/content/content.component';
 
+//Project deus
+import { DeusComponent } from './pages/projectdeus/deus.component';
+
 // route guard
 import { AuthGuard } from './services/shared/guard/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/shop',
+    redirectTo: '/deus',
     pathMatch: 'full',
     //loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
@@ -148,6 +151,12 @@ const routes: Routes = [
       import('./pages/shop/content/content.module').then(
         (m) => m.ContentModule,
       ),
+  },
+  {
+    path: 'deus',
+    component: DeusComponent,
+    loadChildren: () =>
+      import('./pages/projectdeus/deus.module').then((m) => m.DeusModule),
   },
 ];
 @NgModule({

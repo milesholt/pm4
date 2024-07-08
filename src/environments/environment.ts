@@ -13,6 +13,11 @@ export const environment = {
     messagingSenderId: '1026315619936',
     appId: '1:1026315619936:android:ce09d8440aea1dca',
   },
+  ig: {
+    IG_DEMO_USERNAME: 'milesholt_demo2',
+    IG_DEMO_PASSWORD: 'Savelli_1986',
+    IG_DEMO_API_KEY: '3fe3a5a3a41355df513eda0ec98230da7d7d9a9e',
+  },
   url: 'https://obscura.solutions',
   title: 'Obscura Solutions',
 };

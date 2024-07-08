@@ -13,6 +13,16 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "polyfills": ["node_modules/process/browser.js"],
+            "allowedCommonJsDependencies": [
+              "stream",
+              "util",
+              "url",
+              "assert",
+              "crypto",
+              "http",
+              "https"
+            ],
             "outputPath": "dist/app/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
