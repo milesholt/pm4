@@ -70,6 +70,7 @@ export class AIGeminiService {
 
     //if (res == null)
     //res = response.candidates?.[0].content.parts[0].text || response.text();
+    this.message = '';
     return res;
   }
 

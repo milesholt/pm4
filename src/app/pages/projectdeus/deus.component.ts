@@ -23,6 +23,7 @@ export class DeusComponent implements OnInit {
   myIg: any;
   results: any = [];
   findings: any = {};
+  go: boolean | null = null;
 
   constructor(
     public service: CoreService,
@@ -80,7 +81,7 @@ export class DeusComponent implements OnInit {
   async runMultiple(pricedata: any = false, i: number = 0) {
     console.log('running multiple');
     console.log('running AI Query: ' + i);
-    await this.runAIQuery(pricedata).then((result) => {
+    await this.runAIQuery(pricedata).then(async (result) => {
       this.results.push(result);
       i++;
       if (i < 5) {
@@ -88,7 +89,8 @@ export class DeusComponent implements OnInit {
         console.log(`Result ${i + 1}:`, result);
       } else {
         console.log('All results:', this.results);
-        this.analyseResults();
+        await this.analyseResults();
+        this.decide();
       }
     });
   }
@@ -153,6 +155,20 @@ export class DeusComponent implements OnInit {
         }
       }
     }
+  }
+
+  async decide() {
+    this.go = false;
+    if (
+      this.findings.movingAveragesScore > 5 &&
+      this.findings.MACDScore > 5 &&
+      this.findings.fibonacciScore > 5 &&
+      this.findings.rsiScore > 5 &&
+      this.findings.overallRisk !== 'high' &&
+      this.findings.riskLevel < 5 &&
+      this.findings.decision !== 'CAUTION'
+    )
+      this.go = true;
   }
 
   async runAIQuery(data: any = false) {

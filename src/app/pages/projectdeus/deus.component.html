@@ -18,4 +18,7 @@
  <!--<pre> {{session | json}} </pre>-->
 
  {{service.ai.message}}
+
+ <p *ngIf="go == true">Open trade - {{findings.decision}}</p>
+ <p *ngIf="go == false">Don't open trade</p>
 </ion-content>
