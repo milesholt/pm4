@@ -21,6 +21,9 @@ import { ContentComponent } from './pages/shop/content/content.component';
 //Project deus
 import { DeusComponent } from './pages/projectdeus/deus.component';
 
+//AIAnalysisService
+import { AIComponent } from './pages/ai/ai.component';
+
 // route guard
 import { AuthGuard } from './services/shared/guard/auth.guard';
 
@@ -157,6 +160,11 @@ const routes: Routes = [
     component: DeusComponent,
     loadChildren: () =>
       import('./pages/projectdeus/deus.module').then((m) => m.DeusModule),
+  },
+  {
+    path: 'ai',
+    component: AIComponent,
+    loadChildren: () => import('./pages/ai/ai.module').then((m) => m.AIModule),
   },
 ];
 @NgModule({

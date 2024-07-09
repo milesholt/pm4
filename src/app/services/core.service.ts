@@ -24,6 +24,8 @@ import { ShopService } from './external/shopify/ShopService/shop.service';
 import { SeoService } from './internal/SeoService/seo.service';
 import { AdsService } from './internal/AdsService/ads.service';
 
+import { AIAnalysisService } from './external/ai/analysis.service';
+import { AIGeminiService } from './external/ai/gemini.service';
 /*
 @Injectable()
 export class CoreService {
@@ -49,6 +51,7 @@ export class CoreService {
     public http: HttpService,
     public seo: SeoService,
     public ads: AdsService,
+    public ai: AIGeminiService,
   ) {}
 }
 
