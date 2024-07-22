@@ -151,7 +151,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'stories/clove-oil',
+    path: 'stories/cahaya-clove-oil',
     component: ContentComponent,
     loadChildren: () =>
       import('./pages/content/content.module').then((m) => m.ContentModule),

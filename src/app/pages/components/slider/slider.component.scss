@@ -95,6 +95,22 @@
   background-color: black;
 }
 
+.hero.opacity-2 img.slide-image {
+  opacity: 0.2 !important;
+}
+
+.hero.opacity-3 img.slide-image {
+  opacity: 0.3 !important;
+}
+
+.hero.opacity-4 img.slide-image {
+  opacity: 0.4 !important;
+}
+
+.hero.opacity-5 img.slide-image {
+  opacity: 0.5 !important;
+}
+
 #thumbsSlider {
   height: 30%;
 }

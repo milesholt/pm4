@@ -1,6 +1,6 @@
 {
   "content": {
-    "clove-oil": {
+    "cahaya-clove-oil": {
       "title": "Clove Oil Story",
       "content": {
         "rows": [
@@ -18,7 +18,7 @@
                         "imagepath": "stories/cahaya-clove-oil/"
                       }
                     ],
-                    "classes": "hero",
+                    "classes": "hero background-turquoise opacity-4",
                     "cta": {
                       "label": "View More",
                       "link": "#"
