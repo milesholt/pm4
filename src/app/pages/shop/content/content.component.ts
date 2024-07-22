@@ -17,7 +17,7 @@ import { CoreService } from '../../../services/core.service';
   providers: [CoreService, Library],
   //imports:[IonicModule]
 })
-export class ContentComponent implements OnInit {
+export class ShopContentComponent implements OnInit {
   alias: any = false;
   pageContent: any;
 

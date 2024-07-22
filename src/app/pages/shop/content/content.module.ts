@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { ContentComponent } from './content.component';
+import { ShopContentComponent } from './content.component';
 import { FooterModule } from '../../components/footer/footer.module';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -24,7 +24,7 @@ import { ContactFormModule } from '../../components/contactform/contactform.modu
     HttpClientModule,
     ContactFormModule,
   ],
-  declarations: [ContentComponent],
-  exports: [ContentComponent],
+  declarations: [ShopContentComponent],
+  exports: [ShopContentComponent],
 })
-export class ContentModule {}
+export class ShopContentModule {}

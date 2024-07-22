@@ -1,0 +1,100 @@
+<div class="ion-page" id="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Content Page</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+
+      <h1>{{pageTitle}}</h1>
+
+       <!-- Additional Content --> 
+  <ion-grid>
+    <ion-row class="row {{row.classes}}" *ngFor="let row of pageContent.rows; index as ridx">
+      <ion-col class="col {{col.classes}} col-content" *ngFor="let col of row.cols; index as cidx"
+              [attr.size]="getColumnSizes(row.cols.length).size" 
+              [attr.size-md]="getColumnSizes(row.cols.length).sizeMd"
+              [attr.size-lg]="getColumnSizes(row.cols.length).sizeLg"
+              [ngClass]="getColumnClasses(row.cols.length)">
+              <div class="{{ doChildClasses(col.mods) }}">
+              
+          <div class="mod {{mod.classes}}" *ngFor="let mod of col.mods; index as midx">
+            <div class="mod-wrap mod-{{mod.type}}" [ngSwitch]="mod.type">
+              
+              <!--For any text content, wrap in a content div -->
+                <div *ngSwitchCase="'heading'">
+                  <div class="mod-heading">
+                    <h2 *ngIf="mod.params.type == 'h2'">{{ mod.value }}</h2>
+                    <h3 *ngIf="mod.params.type == 'h3'">{{ mod.value }}</h3>
+                    <h4 *ngIf="mod.params.type == 'h4'">{{ mod.value }}</h4>
+                  </div>
+                </div>
+                <div *ngSwitchCase="'copy'">
+                  <div class="mod-copy" [innerHTML]="sanitizeContent(mod.value)"></div>
+                </div>
+              
+
+              <!-- Images -->
+              <div *ngSwitchCase="'image'">
+                
+                <picture *ngIf="!mod.value.includes('http')" class="image-container">
+                  <source media="(min-width:1200px)" srcset="{{url}}/assets/images/{{mod.imagepath}}WEBP/2400/{{mod.value}}">
+                  <source media="(min-width:600px)" srcset="{{url}}/assets/images/{{mod.imagepath}}WEBP/1200/{{mod.value}}">
+                  <source media="(min-width:300px)" srcset="{{url}}/assets/images/{{mod.imagepath}}WEBP/600/{{mod.value}}">
+                  <source media="(min-width:0px)" srcset="{{url}}/assets/images/{{mod.imagepath}}WEBP/300/{{mod.value}}">
+                  <img src="{{url}}/assets/images/{{mod.imagepath}}WEBP/1200/{{ mod.value }}" loading="lazy" class="mod.classes" alt="{{mod.label}}">
+                </picture>   
+
+                <img *ngIf="mod.value.includes('http')" src="{{ mod.value }}" loading="lazy" class="mod.classes" alt="{{mod.label}}">
+              </div>
+
+
+              <!-- Button-->
+              <div *ngSwitchCase="'cta'"> 
+                <ion-button [routerLink]="[mod.params.link]" [queryParams]="mod.params.query">{{mod.value}}</ion-button>
+              </div>
+              <!--Components-->
+
+              <!--Slider-->
+              <div *ngSwitchCase="'slider'">
+                <app-slider-comp 
+                  [slides]="mod.slides"
+                  [slidesPerView]="mod.params.slidesPerView"
+                  [slideSuffix]="mod.params.suffix"
+                  [navigation]="mod.params.navigation"
+                  [classes]="mod.classes"
+                  [cta]="{'label': mod.cta.label, 'anchor': mod.cta.link}"
+                  [type]="mod.params.type"
+                  >
+              </app-slider-comp>
+              </div>
+
+              <!-- Video-->
+              <div *ngSwitchCase="'video'">
+              <div class="mod-video">
+                <!--<video width="100%" controls>
+                  <source [src]="sanitizeUrl(mod.value)" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>-->
+                <app-video [videoid]="mod.value"></app-video>
+                <!--<iframe width="560" height="315" [src]="sanitizeUrl(mod.value)" [title]="mod.title" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>-->
+              </div>
+            </div>
+
+          </div>
+            </div>
+          </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      
+
+      
+    <app-footer></app-footer>
+
+    </ion-content>
+</div>

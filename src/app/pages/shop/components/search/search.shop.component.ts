@@ -96,18 +96,28 @@ export class SearchShopComponent implements OnInit, OnChanges {
   }
 
   async beginSearch(event: any = null, clearSearch: boolean = false) {
+    let s = '';
+
     if (this.search == 'false' || this.search == 'all' || this.search == '')
       this.search = '';
+
+    s = this.search;
+
+    //catch different spellings
+    if (this.search == 'anti-aging') this.search = 'anti-ageing';
+    if (this.search == 'anti-ageing') s = s + ' anti-aging';
 
     //if search input event, split only spaces, otherwise spaces and hyphens
     const regex = event ? /[\s]+/ : /[\s-]+/;
 
-    const keywords = this.search
+    const keywords = s
       .toLowerCase()
       .replace(/\banti-ageing\b/g, 'ANTI_AGEING')
+      .replace(/\banti-aging\b/g, 'ANTI_AGING')
       .split(regex) //split hyphen and spaces
       .filter((keyword) => keyword)
-      .map((keyword) => (keyword === 'ANTI_AGEING' ? 'anti-ageing' : keyword));
+      .map((keyword) => (keyword === 'ANTI_AGEING' ? 'anti-ageing' : keyword))
+      .map((keyword) => (keyword === 'ANTI_AGING' ? 'anti-aging' : keyword));
 
     let excludedProducts: any = [];
 
@@ -138,10 +148,12 @@ export class SearchShopComponent implements OnInit, OnChanges {
         const productType = item.productType
           ? item.productType.toLowerCase()
           : '';
+        const handle = item.handle;
 
         return keywords.some(
           (keyword) =>
             title.includes(keyword) ||
+            handle.includes(keyword) ||
             description.includes(keyword) ||
             productType.includes(keyword),
         );

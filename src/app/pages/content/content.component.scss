@@ -1,0 +1,92 @@
+.ion-col-12 .mod {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+ion-content {
+  margin: 0px;
+  padding: 0px;
+  --padding: 0px;
+}
+
+.mod-video app-video {
+  max-width: 1000px;
+  height: 600px;
+  display: block;
+  margin: 0 auto;
+}
+
+/*Add spacing to element before footer */
+ion-content ::ng-deep > *:nth-last-child(2) {
+  /* Styles for the child before the last */
+  padding-bottom: 60px;
+}
+
+ion-grid {
+  margin: 0px;
+  padding: 0px;
+  --padding: 0px;
+}
+
+ion-row,
+ion-col,
+.mod-wrap {
+  margin: 0;
+  width: 100%;
+  padding: 0;
+}
+
+ion-row {
+  @media screen and (max-width: 768px) {
+    &.col-2-left-content {
+      flex-direction: column-reverse;
+    }
+  }
+}
+
+h1 {
+  text-align: center;
+}
+
+h2 {
+  padding: 0px 0px 10px;
+}
+
+.content-wrap {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 350px;
+  flex-direction: column;
+  margin: 0 auto;
+  min-height: 350px;
+}
+
+ion-col div {
+  height: 100%;
+}
+
+.content-wrap div,
+.mod-slider div {
+  height: initial;
+}
+
+.image-container {
+  width: 100%; /* Ensure the container takes full width of the column */
+  height: 100%; /* Ensure the container takes full height of the column */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-container img {
+  max-width: 100%; /* Ensure the image doesn't overflow horizontally */
+  max-height: 100%; /* Ensure the image doesn't overflow vertically */
+  width: auto; /* Maintain aspect ratio */
+  height: 100%; /* Maintain aspect ratio */
+  object-fit: cover;
+}

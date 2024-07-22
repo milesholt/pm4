@@ -1,4 +1,226 @@
 {
+  "content": {
+    "clove-oil": {
+      "title": "Clove Oil Story",
+      "content": {
+        "rows": [
+          {
+            "cols": [
+              {
+                "mods": [
+                  {
+                    "type": "slider",
+                    "slides": [
+                      {
+                        "title": "Time for a<br>better you.",
+                        "description": "Discover a wide range of health products designed to enhance your well-being.",
+                        "image": "IMG_3336.webp",
+                        "imagepath": "stories/cahaya-clove-oil/"
+                      }
+                    ],
+                    "classes": "hero",
+                    "cta": {
+                      "label": "View More",
+                      "link": "#"
+                    },
+                    "params": {
+                      "type": "hero",
+                      "suffix": "image",
+                      "navigation": "false",
+                      "slidesPerView": 1
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "cols": [
+              {
+                "mods": [
+                  {
+                    "type": "heading",
+                    "value": "Some Heading",
+                    "classes": "heading",
+                    "params": {
+                      "type": "h2"
+                    }
+                  },
+                  {
+                    "type": "copy",
+                    "value": "<p>some intro content<p>",
+                    "classes": "col-1 intro"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "cols": [
+              {
+                "mods": [
+                  {
+                    "type": "heading",
+                    "value": "Some Heading",
+                    "classes": "heading",
+                    "params": {
+                      "type": "h2"
+                    }
+                  },
+                  {
+                    "type": "copy",
+                    "value": "<p>some intro content<p>",
+                    "classes": "col-1 intro"
+                  }
+                ]
+              },
+              {
+                "mods": [
+                  {
+                    "type": "image",
+                    "value": "IMG_3331.webp",
+                    "label": "Generic",
+                    "classes": "",
+                    "imagepath": "stories/cahaya-clove-oil/"
+                  }
+                ]
+              }
+            ],
+            "classes": "col-2-left-content"
+          },
+          {
+            "cols": [
+              {
+                "mods": [
+                  {
+                    "type": "image",
+                    "value": "IMG_3333.webp",
+                    "label": "Generic",
+                    "classes": "",
+                    "imagepath": "stories/cahaya-clove-oil/"
+                  }
+                ]
+              },
+              {
+                "mods": [
+                  {
+                    "type": "heading",
+                    "value": "Some Heading",
+                    "classes": "heading",
+                    "params": {
+                      "type": "h2"
+                    }
+                  },
+                  {
+                    "type": "copy",
+                    "value": "<p>some intro content<p>",
+                    "classes": "col-1 intro"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "cols": [
+              {
+                "mods": [
+                  {
+                    "type": "slider",
+                    "slides": [
+                      {
+                        "title": "Time for a<br>better you.",
+                        "description": "Discover a wide range of health products designed to enhance your well-being.",
+                        "image": "IMG_3338.webp",
+                        "imagepath": "stories/cahaya-clove-oil/"
+                      }
+                    ],
+                    "classes": "hero",
+                    "cta": {
+                      "label": "View More",
+                      "link": "#"
+                    },
+                    "params": {
+                      "type": "hero",
+                      "suffix": "image",
+                      "navigation": "false",
+                      "slidesPerView": 1
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "cols": [
+              {
+                "mods": [
+                  {
+                    "type": "heading",
+                    "value": "Some Heading",
+                    "classes": "heading",
+                    "params": {
+                      "type": "h2"
+                    }
+                  },
+                  {
+                    "type": "copy",
+                    "value": "<p>some intro content<p>",
+                    "classes": "col-1 intro"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "cols": [
+              {
+                "mods": [
+                  {
+                    "type": "video",
+                    "value": "KMdCfjWutX4",
+                    "classes": "",
+                    "params": {}
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "cols": [
+              {
+                "mods": [
+                  {
+                    "type": "cta",
+                    "value": "Enquire",
+                    "classes": "",
+                    "params": {
+                      "link": "#",
+                      "target": "blank",
+                      "query": {}
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "cols": [
+              {
+                "mods": [
+                  {
+                    "type": "image",
+                    "value": "https://obscura.solutions/assets/images/stories/cahaya-clove-oil/clove_oil_product_alpha.png",
+                    "label": "Product",
+                    "classes": ""
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
   "shop": {
     "all": {
       "meta": {

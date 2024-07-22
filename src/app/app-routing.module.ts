@@ -16,7 +16,8 @@ import { CartShopComponent } from './pages/shop/cart/cart.shop.component';
 
 import { TestComponent } from './pages/test/test.component';
 
-import { ContentComponent } from './pages/shop/content/content.component';
+import { ShopContentComponent } from './pages/shop/content/content.component';
+import { ContentComponent } from './pages/content/content.component';
 
 // route guard
 import { AuthGuard } from './services/shared/guard/auth.guard';
@@ -103,51 +104,57 @@ const routes: Routes = [
   },
   {
     path: 'shipping-policy',
-    component: ContentComponent,
+    component: ShopContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ContentModule,
+        (m) => m.ShopContentModule,
       ),
   },
   {
     path: 'privacy-policy',
-    component: ContentComponent,
+    component: ShopContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ContentModule,
+        (m) => m.ShopContentModule,
       ),
   },
   {
     path: 'refund-policy',
-    component: ContentComponent,
+    component: ShopContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ContentModule,
+        (m) => m.ShopContentModule,
       ),
   },
   {
     path: 'terms-and-conditions',
-    component: ContentComponent,
+    component: ShopContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ContentModule,
+        (m) => m.ShopContentModule,
       ),
   },
   {
     path: 'about-us',
-    component: ContentComponent,
+    component: ShopContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ContentModule,
+        (m) => m.ShopContentModule,
       ),
   },
   {
     path: 'contact-us',
-    component: ContentComponent,
+    component: ShopContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ContentModule,
+        (m) => m.ShopContentModule,
       ),
+  },
+  {
+    path: 'stories/clove-oil',
+    component: ContentComponent,
+    loadChildren: () =>
+      import('./pages/content/content.module').then((m) => m.ContentModule),
   },
 ];
 @NgModule({
