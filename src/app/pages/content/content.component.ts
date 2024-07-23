@@ -75,14 +75,12 @@ export class ContentComponent implements OnInit {
 
   observeElements() {
     if (!this.observer) {
-      console.log('no observce');
       return;
     }
     const targetElements =
       this.elementRef.nativeElement.querySelectorAll('.anim');
 
     targetElements.forEach((element: any) => {
-      console.log('here');
       this.observer!.observe(element);
     });
   }
