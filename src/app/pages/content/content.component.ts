@@ -103,6 +103,7 @@ export class ContentComponent implements OnInit {
       if (pages.content[page]) {
         this.pageTitle = pages.content[page].title;
         this.pageContent = pages.content[page].content;
+        this.service.seo.doMeta(pages.content[page].meta);
         this.cdr.detectChanges();
       } else {
         this.pageTitle = 'Page Not Found';
