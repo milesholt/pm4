@@ -1,4 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  ElementRef,
+} from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -40,6 +45,7 @@ export class ContentComponent implements OnInit {
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     public cdr: ChangeDetectorRef,
+    private elementRef: ElementRef,
   ) {
     this.url = environment.url;
     this.title = environment.title;
@@ -54,6 +60,42 @@ export class ContentComponent implements OnInit {
 
   ngAfterViewInit(): void {
     this.cdr.detectChanges(); // Ensure change detection after view init
+    this.initializeObserver();
+  }
+
+  ngAfterViewChecked(): void {
+    this.observeElements();
+  }
+
+  initializeObserver() {
+    this.observer = new IntersectionObserver(this.handleIntersect.bind(this), {
+      threshold: 0.3, // Trigger when 30% of the target is visible
+    });
+  }
+
+  observeElements() {
+    if (!this.observer) {
+      console.log('no observce');
+      return;
+    }
+    const targetElements =
+      this.elementRef.nativeElement.querySelectorAll('.anim');
+
+    targetElements.forEach((element: any) => {
+      console.log('here');
+      this.observer!.observe(element);
+    });
+  }
+
+  handleIntersect(entries: IntersectionObserverEntry[]) {
+    entries.forEach((entry) => {
+      if (entry.intersectionRatio >= 0.3) {
+        // Element is at least 30% visible
+        const targetElement = entry.target as HTMLElement;
+        targetElement.classList.add('fade-in');
+        // Perform your desired actions here
+      }
+    });
   }
 
   loadPageContent(page: string): void {

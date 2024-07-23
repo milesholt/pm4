@@ -1,4 +1,4 @@
-<div #f class="{{el.classes}}" >
+<div *ngIf="!!el" #f class="{{el.classes}}" >
     <form *ngIf="sent == null" (ngSubmit)="onSubmit(el.action,$event)" class="{{el.boxclasses}}" autocomplete="off" role="presentation">
       <div *ngIf="f.classList.contains('twocol')">
           <div class="col1 form-cols">

@@ -4,6 +4,7 @@
       <div *ngIf="slide.title || slide.description" class="slide-content">
             <h1 [ngClass]="setWordClass(slide.title)" [innerHtml]="slide.title"></h1>
             <p [innerHtml]="slide.description"></p>
+
             <div *ngIf="!!cta"><ion-button id="slider-cta" (click)="doCTA()">{{cta.label}}</ion-button></div>
           </div>   
 

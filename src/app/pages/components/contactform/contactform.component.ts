@@ -22,7 +22,7 @@ import {
   //imports:[IonicModule]
 })
 export class ContactFormComponent implements OnInit {
-  @Input() el: any = {
+  defaultForm: any = {
     action: 'submitcontact',
     classes: 'nocol',
     fields: [
@@ -120,6 +120,8 @@ export class ContactFormComponent implements OnInit {
       },
     ],
   };
+
+  @Input() el: any = false;
   @Output() callback = new EventEmitter();
 
   form: any = {};
@@ -138,7 +140,9 @@ export class ContactFormComponent implements OnInit {
     //private http: HttpClient,
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.el === false) this.el = this.defaultForm;
+  }
 
   ngAfterContentInit() {
     this.url = window.location.href;

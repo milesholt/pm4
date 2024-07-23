@@ -14,15 +14,15 @@
 
        <!-- Additional Content --> 
   <ion-grid>
-    <ion-row class="row {{row.classes}}" *ngFor="let row of pageContent.rows; index as ridx">
-      <ion-col class="col {{col.classes}} col-content" *ngFor="let col of row.cols; index as cidx"
+    <ion-row id="row-{{ridx}}" class="row anim {{row.classes}}" *ngFor="let row of pageContent.rows; index as ridx">
+      <ion-col id="col-{{cidx}}" class="col {{col.classes}} col-content" *ngFor="let col of row.cols; index as cidx"
               [attr.size]="getColumnSizes(row.cols.length).size" 
               [attr.size-md]="getColumnSizes(row.cols.length).sizeMd"
               [attr.size-lg]="getColumnSizes(row.cols.length).sizeLg"
               [ngClass]="getColumnClasses(row.cols.length)">
               <div class="{{ doChildClasses(col.mods) }}">
               
-          <div class="mod {{mod.classes}}" *ngFor="let mod of col.mods; index as midx">
+          <div id="mod-{{midx}}" class="mod {{mod.classes}}" *ngFor="let mod of col.mods; index as midx">
             <div class="mod-wrap mod-{{mod.type}}" [ngSwitch]="mod.type">
               
               <!--For any text content, wrap in a content div -->
@@ -67,7 +67,7 @@
                   [slideSuffix]="mod.params.suffix"
                   [navigation]="mod.params.navigation"
                   [classes]="mod.classes"
-                  [cta]="{'label': mod.cta.label, 'anchor': mod.cta.link}"
+                  [cta]="mod.cta ? {'label': mod.cta.label, 'anchor': mod.cta.link } : false"
                   [type]="mod.params.type"
                   >
               </app-slider-comp>
@@ -84,6 +84,17 @@
                 <!--<iframe width="560" height="315" [src]="sanitizeUrl(mod.value)" [title]="mod.title" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>-->
               </div>
             </div>
+
+             
+              <!-- Form -->
+              <div *ngSwitchCase="'form'">
+                <div class="mod-form">
+                  <h2>{{mod.title}}</h2>
+                  <div *ngIf="mod.value" [innerHTML]="mod.value"></div>
+                  <app-contactform-comp [el]="mod.form ? mod.form : false"></app-contactform-comp>
+                </div>
+                </div>   
+  
 
           </div>
             </div>

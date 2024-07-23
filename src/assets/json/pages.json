@@ -1,7 +1,7 @@
 {
   "content": {
     "cahaya-clove-oil": {
-      "title": "Clove Oil Story",
+      "title": "Local Stories",
       "content": {
         "rows": [
           {
@@ -12,8 +12,8 @@
                     "type": "slider",
                     "slides": [
                       {
-                        "title": "Time for a<br>better you.",
-                        "description": "Discover a wide range of health products designed to enhance your well-being.",
+                        "title": "Cahaya Clove Oil",
+                        "description": "Discover the Essence of Lombok with Cahaya Clove Oil",
                         "image": "IMG_3336.webp",
                         "imagepath": "stories/cahaya-clove-oil/"
                       }
@@ -21,7 +21,7 @@
                     "classes": "hero background-turquoise opacity-4",
                     "cta": {
                       "label": "View More",
-                      "link": "#"
+                      "link": "#row-1"
                     },
                     "params": {
                       "type": "hero",
@@ -40,7 +40,7 @@
                 "mods": [
                   {
                     "type": "heading",
-                    "value": "Some Heading",
+                    "value": "In the heart of Indonesia",
                     "classes": "heading",
                     "params": {
                       "type": "h2"
@@ -48,7 +48,7 @@
                   },
                   {
                     "type": "copy",
-                    "value": "<p>some intro content<p>",
+                    "value": "<p>Nestled in the serene village of Tetebatu, Lombok, Lesehan Cahaya and his family, collect large supplies of fallen clove leaves, handpicked from around the mountain near Mt Rinjani. These leaves are then transported to Lesehan's factory, where the careful process of distillation begins.<p>",
                     "classes": "col-1 intro"
                   }
                 ]
@@ -61,7 +61,7 @@
                 "mods": [
                   {
                     "type": "heading",
-                    "value": "Some Heading",
+                    "value": "The Art of Clove Oil Distillation",
                     "classes": "heading",
                     "params": {
                       "type": "h2"
@@ -69,7 +69,7 @@
                   },
                   {
                     "type": "copy",
-                    "value": "<p>some intro content<p>",
+                    "value": "<p>Witnessing the creation of Cahaya Clove Oil is nothing short of mesmerizing. The process starts with the clove leaves being burned in a large fire chimney, a method that ensures the purest extraction of essential oils. The smoke is carefully collected and directed to a water tank, where cold water transforms the smoke into vapor. This vapor condenses and blends with running water, resulting in the rich, aromatic clove oil that is cherished worldwide.<p>",
                     "classes": "col-1 intro"
                   }
                 ]
@@ -105,7 +105,7 @@
                 "mods": [
                   {
                     "type": "heading",
-                    "value": "Some Heading",
+                    "value": "Herbal Benefits of Clove Oil",
                     "classes": "heading",
                     "params": {
                       "type": "h2"
@@ -113,7 +113,7 @@
                   },
                   {
                     "type": "copy",
-                    "value": "<p>some intro content<p>",
+                    "value": "<p>Clove oil, renowned for its powerful antiseptic and anti-inflammatory properties, has been a staple in traditional Indonesian medicine for centuries. It's known to alleviate toothaches, improve digestion, and even boost the immune system. This potent oil is not only a testament to the healing power of nature but also a vital part of Indonesia's cultural heritage.<p>",
                     "classes": "col-1 intro"
                   }
                 ]
@@ -128,17 +128,13 @@
                     "type": "slider",
                     "slides": [
                       {
-                        "title": "Time for a<br>better you.",
-                        "description": "Discover a wide range of health products designed to enhance your well-being.",
+                        "title": "A Legacy Rooted in Tradition",
+                        "description": "The use of clove oil in Indonesian culture dates back to ancient times, where it was employed in rituals, medicine, and daily life.",
                         "image": "IMG_3338.webp",
                         "imagepath": "stories/cahaya-clove-oil/"
                       }
                     ],
                     "classes": "hero",
-                    "cta": {
-                      "label": "View More",
-                      "link": "#"
-                    },
                     "params": {
                       "type": "hero",
                       "suffix": "image",
@@ -156,7 +152,7 @@
                 "mods": [
                   {
                     "type": "heading",
-                    "value": "Some Heading",
+                    "value": "Support the Local Indonesian Community",
                     "classes": "heading",
                     "params": {
                       "type": "h2"
@@ -164,7 +160,7 @@
                   },
                   {
                     "type": "copy",
-                    "value": "<p>some intro content<p>",
+                    "value": "<p>By choosing Cahaya Clove Oil, you are not just purchasing a product; you are supporting a local community. Your contribution helps sustain the livelihoods of his family and other villagers in Tetebatu, allowing them to continue their time-honored craft. Embrace the essence of Lombok and make a meaningful impact with every drop of Cahaya Clove Oil.<p>",
                     "classes": "col-1 intro"
                   }
                 ]
@@ -190,13 +186,140 @@
               {
                 "mods": [
                   {
-                    "type": "cta",
-                    "value": "Enquire",
+                    "type": "heading",
+                    "value": "Request an order",
                     "classes": "",
                     "params": {
-                      "link": "#",
-                      "target": "blank",
-                      "query": {}
+                      "type": "h2"
+                    }
+                  },
+                  {
+                    "type": "copy",
+                    "value": "<p>Because you're making a purchase to a local family who make the clove oil upon request, this may take a few weeks to process and ship your order, but we'll keep you updated throughout and notify you once your order is shipped.<p>",
+                    "classes": "col-1 intro"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "cols": [
+              {
+                "mods": [
+                  {
+                    "type": "form",
+                    "value": "",
+                    "label": "",
+                    "classes": "",
+                    "form": {
+                      "action": "submitcontact",
+                      "classes": "nocol",
+                      "fields": [
+                        {
+                          "key": "name",
+                          "name": "Name",
+                          "placeholder": "Enter your name",
+                          "value": "",
+                          "type": "text",
+                          "classes": "nocol",
+                          "required": true,
+                          "autocomplete": true,
+                          "prefix": "",
+                          "suffix": ""
+                        },
+                        {
+                          "key": "email",
+                          "name": "Email",
+                          "placeholder": "Enter your email",
+                          "value": "",
+                          "type": "email",
+                          "classes": "nocol",
+                          "required": true,
+                          "autocomplete": true,
+                          "prefix": "",
+                          "suffix": ""
+                        },
+                        {
+                          "key": "phone",
+                          "name": "Phone",
+                          "placeholder": "Enter your contact no. (optional)",
+                          "value": "",
+                          "type": "text",
+                          "classes": "nocol",
+                          "required": false,
+                          "autocomplete": true,
+                          "prefix": "",
+                          "suffix": ""
+                        },
+                        {
+                          "key": "quantity",
+                          "name": "Quantity",
+                          "placeholder": "Enter quantity",
+                          "value": "1",
+                          "type": "number",
+                          "classes": "nocol",
+                          "required": false,
+                          "autocomplete": true,
+                          "prefix": "",
+                          "suffix": ""
+                        },
+                        {
+                          "key": "subject",
+                          "name": "Subject",
+                          "placeholder": "Select an option",
+                          "value": "general",
+                          "type": "select",
+                          "classes": "nocol",
+                          "required": false,
+                          "autocomplete": true,
+                          "prefix": "",
+                          "suffix": "",
+                          "options": [
+                            {
+                              "value": "general",
+                              "label": "I would like an order of this product",
+                              "sublist": false
+                            },
+                            {
+                              "value": "help",
+                              "label": "I have a general enquiry about this product",
+                              "sublist": false
+                            },
+                            {
+                              "value": "business",
+                              "label": "I have a business enquiry",
+                              "sublist": false
+                            }
+                          ]
+                        },
+                        {
+                          "key": "message",
+                          "name": "Message",
+                          "placeholder": "Enter any information about your request",
+                          "value": "",
+                          "type": "textarea",
+                          "classes": "nocol",
+                          "required": true,
+                          "autocomplete": true,
+                          "prefix": "",
+                          "suffix": "",
+                          "counter": true,
+                          "maxlength": 500,
+                          "autogrow": true
+                        },
+                        {
+                          "key": "submit",
+                          "name": "Send",
+                          "placeholder": "",
+                          "value": "",
+                          "type": "submit",
+                          "classes": "nocol",
+                          "required": false,
+                          "autocomplete": false,
+                          "prefix": "",
+                          "suffix": ""
+                        }
+                      ]
                     }
                   }
                 ]
