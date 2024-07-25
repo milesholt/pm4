@@ -130,11 +130,61 @@ ion-content {
 
 /* Animations */
 
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .anim {
   opacity: 0;
   transition: all 0.5s ease-in-out;
   position: relative;
   top: 100px;
+}
+
+.is-loaded {
+  animation: fadeIn 1s ease-out forwards;
+  animation-delay: 1s;
+}
+
+.is-changing .fade-in,
+.is-changing .fade-up {
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+}
+
+.is-changing .fade-up {
+  opacity: 0;
+  //transform: translateY(20px);
+  //top: -20px;
+  //position: relative;
+}
+
+.is-changed .fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.is-changed .fade-up {
+  // Add any additional styles here
+  animation: fadeSlideIn 1s ease-out forwards;
+  //opacity: 1;
+  //top: 0px;
+  //transform: translateY(0px);
 }
 
 .anim.fade-in {

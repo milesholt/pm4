@@ -24,13 +24,16 @@ import { DeusComponent } from './pages/projectdeus/deus.component';
 //AIAnalysisService
 import { AIComponent } from './pages/ai/ai.component';
 
+//Brand Builder
+import { BrandBuilderComponent } from './pages/brandbuilder/brandbuilder.component';
+
 // route guard
 import { AuthGuard } from './services/shared/guard/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/deus',
+    redirectTo: '/brandbuilder',
     pathMatch: 'full',
     //loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
@@ -160,6 +163,14 @@ const routes: Routes = [
     component: DeusComponent,
     loadChildren: () =>
       import('./pages/projectdeus/deus.module').then((m) => m.DeusModule),
+  },
+  {
+    path: 'brandbuilder',
+    component: BrandBuilderComponent,
+    loadChildren: () =>
+      import('./pages/brandbuilder/brandbuilder.module').then(
+        (m) => m.BrandBuilderModule,
+      ),
   },
   {
     path: 'ai',
