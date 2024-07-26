@@ -144,17 +144,18 @@ export class BrandBuilderComponent
         description: '',
       },
       sections: [
-        'welcome',
-        'introduction',
-        'problemSolution',
-        'primaryService',
-        'secondaryService',
-        'thirdService',
-        'primaryFeature',
-        'secondaryFeature',
-        'thirdFeature',
-        'mailingList',
-        'faq',
+        { name: 'welcome' },
+        { name: 'introduction' },
+        { name: 'problemSolution' },
+        { name: 'primaryService' },
+        { name: 'secondaryService' },
+        { name: 'thirdService' },
+        { name: 'primaryFeature' },
+        { name: 'secondaryFeature' },
+        { name: 'thirdFeature' },
+        { name: 'mailingList', layoutId: 2, modules: [{ name: 'form' }] },
+        { name: 'faq', layoutId: 2, modules: [{ name: 'faq' }] },
+        { name: 'contactform', layoutId: 3, modules: [{ name: 'form' }] },
       ],
     },
 
@@ -168,14 +169,14 @@ export class BrandBuilderComponent
         description: '',
       },
       sections: [
-        'aboutUs',
-        'ourMission',
-        'ourHistory',
-        'ourValues',
-        'ourPromise',
-        'otherServices',
-        'mailingList',
-        'faq',
+        { name: 'aboutUs' },
+        { name: 'ourMission' },
+        { name: 'ourHistory' },
+        { name: 'ourValues' },
+        { name: 'ourPromise' },
+        { name: 'otherServices' },
+        { name: 'mailingList', layoutId: 2, modules: [{ name: 'form' }] },
+        { name: 'faq', layoutId: 2, modules: [{ name: 'faq' }] },
       ],
     },
     {
@@ -187,7 +188,11 @@ export class BrandBuilderComponent
         title: '',
         description: '',
       },
-      sections: ['ourProducts', 'mailingList', 'faq'],
+      sections: [
+        { name: 'ourProducts' },
+        { name: 'mailingList', layoutId: 2, modules: [{ name: 'form' }] },
+        { name: 'faq', layoutId: 2, modules: [{ name: 'faq' }] },
+      ],
     },
     {
       title: 'Shop',
@@ -208,7 +213,10 @@ export class BrandBuilderComponent
           tags: [''],
         },
       ],
-      sections: ['mailingList', 'faq'],
+      sections: [
+        { name: 'mailingList', layoutId: 2, modules: [{ name: 'form' }] },
+        { name: 'faq', layoutId: 2, modules: [{ name: 'faq' }] },
+      ],
     },
     {
       title: 'Contact Us',
@@ -219,7 +227,11 @@ export class BrandBuilderComponent
         title: '',
         description: '',
       },
-      sections: ['mailingList', 'faq'],
+      sections: [
+        { name: 'mailingList', layoutId: 2, modules: [{ name: 'form' }] },
+        { name: 'faq', layoutId: 2, modules: [{ name: 'faq' }] },
+        { name: 'contactform', layoutId: 3, modules: [{ name: 'form' }] },
+      ],
     },
   ];
 
@@ -307,7 +319,38 @@ export class BrandBuilderComponent
         parentclasses: 'col-2',
       },
     },
+    {
+      structure: [[{ heading: '' }, { content: '' }]],
+      params: {
+        classes: 'col-1-center-content',
+        parentclasses: 'col-1',
+      },
+    },
+    {
+      structure: [[{}]],
+      params: {
+        classes: 'col-1-empty',
+        parentclasses: 'col-1',
+      },
+    },
   ];
+
+  /*contentLayouts = [
+    {
+      structure: [[{ heading: '' }, { content: '' }], [{ image: '' }]],
+      params: {
+        classes: 'col-2-left-content',
+        parentclasses: 'col-2',
+      },
+    },
+    {
+      structure: [[{ image: '' }], [{ heading: '' }, { content: '' }]],
+      params: {
+        classes: 'col-2-right-content',
+        parentclasses: 'col-2',
+      },
+    },
+  ];*/
 
   generated: any = false;
   generating: any = false;
@@ -570,66 +613,85 @@ export class BrandBuilderComponent
   }
 
   async doSections() {
-    return new Promise(async (resolve) => {
-      console.log('do sections');
-      console.log(this.generated);
+    return new Promise(async (resolve, reject) => {
+      try {
+        console.log('do sections');
+        console.log(this.generated);
 
-      this.generated.forEach((page: any, idx: number) => {
-        console.log(idx);
-        //set layout as an array
-        page.layout = [];
-        console.log(page);
-        let layoutIndex = 0;
-        //loop through sections
-        page.sections.forEach((section: any) => {
-          //clone a random layout
-          page.layout.push(
-            this.cloneObject(
-              /*this.contentLayouts[
+        this.generated.forEach((page: any, idx: number) => {
+          console.log(idx);
+          //set layout as an array
+          page.layout = [];
+          console.log(page);
+          let layoutIndex = 0;
+          //loop through sections
+          page.sections.forEach((section: any) => {
+            // Update the layout index to loop from 1 to 5
+            console.log(section);
+
+            if (section.hasOwnProperty('layoutId')) {
+              layoutIndex = section.layoutId;
+
+              console.log('using layoutId:');
+              console.log(layoutIndex);
+            } else {
+              // Update the layout index to loop from 1 to 5
+              /*layoutIndex =
+              layoutIndex === this.contentLayouts.length - 1
+                ? 0
+                : layoutIndex + 1;*/
+              layoutIndex = layoutIndex === 1 ? 0 : layoutIndex + 1;
+            }
+
+            //clone a random layout
+            page.layout.push(
+              this.cloneObject(
+                /*this.contentLayouts[
                 Math.floor(Math.random() * this.contentLayouts.length)
               ],*/
 
-              this.contentLayouts[layoutIndex],
-            ),
-          );
-          // Update the layout index to loop from 1 to 5
-          layoutIndex =
-            layoutIndex === this.contentLayouts.length - 1
-              ? 0
-              : layoutIndex + 1;
-        });
+                this.contentLayouts[layoutIndex],
+              ),
+            );
+          });
 
-        //
+          //
 
-        //loop through layouts and
-        page.layout.forEach((layout: any, index: number) => {
-          layout.structure.forEach((row: any) => {
-            row.forEach((col: any) => {
-              //console.log(typeof col.heading);
-              if (typeof col.heading !== 'undefined') {
-                if (
-                  typeof this.aiform[page.sections[index]].title !== 'undefined'
-                )
-                  col.heading = this.aiform[page.sections[index]].title;
-              }
-              if (typeof col.content !== 'undefined')
-                if (
-                  typeof this.aiform[page.sections[index]].content !==
-                  'undefined'
-                )
-                  col.content = this.aiform[page.sections[index]].content;
+          //loop through layouts and
+          page.layout.forEach((layout: any, index: number) => {
+            layout.structure.forEach((row: any) => {
+              row.forEach((col: any) => {
+                var sectionName = page.sections[index].name;
 
-              if (typeof col.image !== 'undefined')
-                col.image =
-                  this.photos[this.selectRandom(this.photos)].src.large;
+                //console.log(sectionName);
+
+                if (typeof this.aiform[sectionName] !== 'undefined') {
+                  //console.log(typeof col.heading);
+                  if (typeof col.heading !== 'undefined') {
+                    if (typeof this.aiform[sectionName].title !== 'undefined')
+                      col.heading = this.aiform[sectionName].title;
+                  }
+                  if (typeof col.content !== 'undefined')
+                    if (typeof this.aiform[sectionName].content !== 'undefined')
+                      col.content = this.aiform[sectionName].content;
+
+                  if (typeof col.image !== 'undefined')
+                    col.image =
+                      this.photos[this.selectRandom(this.photos)].src.large;
+                }
+              });
             });
           });
+          console.log('end');
+          console.log(page);
         });
-        console.log('end');
-        console.log(page);
-      });
 
-      resolve(this.generated);
+        resolve(this.generated);
+      } catch (e: any) {
+        console.log('Error doing sections:');
+        console.log(e);
+        reject(false);
+      }
     });
   }
 

@@ -69,7 +69,7 @@
     <!--website displays here-->
 
     <!-- main menu-->
-    <ion-menu contentId="main-content">
+    <ion-menu menuId="builderMain" contentId="main-page">
       <ion-header>
         <ion-toolbar>
           <ion-title>Main Menu</ion-title>
@@ -81,7 +81,11 @@
           <ion-item *ngFor="let page of generated; let i = index">
             <div class="menu-container"> 
              <ion-menu-toggle auto-hide="false">
-             <ion-item (click)="changePage(i)" routerDirection="root" [routerLink]="[page.url]" [queryParams]="getSearchParams(false)" lines="none"
+             <!--<ion-item (click)="changePage(i)" routerDirection="root" [routerLink]="[page.url]" [queryParams]="getSearchParams(false)" lines="none"
+               detail="false" [class.selected]="activeIndex == i">         
+               <ion-label>{{ page.title }}</ion-label>    
+             </ion-item>-->
+             <ion-item (click)="changePage(i)" lines="none"
                detail="false" [class.selected]="activeIndex == i">         
                <ion-label>{{ page.title }}</ion-label>    
              </ion-item>
@@ -97,8 +101,11 @@
       <!--page header-->
       <ion-header>
         <ion-toolbar>
-          <ion-buttons slot="start">
+          <!--<ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
+          </ion-buttons>-->
+          <ion-buttons slot="start">
+            <ion-menu-button menu="builderMain"></ion-menu-button>
           </ion-buttons>
           <ion-title>{{activePage.title}}</ion-title>
         </ion-toolbar>
@@ -156,9 +163,29 @@
         </div>
         </div> <!--cols-->
         </div> <!--row-->
+
+        <div *ngIf="activePage.sections[lidx].modules" class="row module">
+
+          <div *ngFor="let module of activePage.sections[lidx].modules; let midx = index">
+          <div [ngSwitch]="module.name">
+              <div *ngSwitchCase="'form'">
+                <app-contactform-comp></app-contactform-comp>
+              </div>
+
+              <div *ngSwitchCase="'faq'">
+                <app-accordion-comp></app-accordion-comp>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        
       </div> <!--layout-->
 
+    
     </div><!--main content-->
+
+    
 
 
     <!-- footer-->

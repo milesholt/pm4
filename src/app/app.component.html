@@ -3,7 +3,7 @@
 
 
 
-
+<!--
   <ion-menu menuId="main" side="start" contentId="main-content">
     <ion-header>
       <ion-toolbar>
@@ -64,11 +64,7 @@
         </div>    
         </ion-item>
         
-        <!--
-          <a [routerLink]="['/about-us']">About Us</a><br>
-          <a [routerLink]="['/contact-us']">Contact Us</a><br>
-        -->
-
+       
           <ion-menu-toggle auto-hide="false">
             <ion-item (click)="activePageTitle = 'About Us'" [routerLink]="['/about-us']" [class.selected]=""><ion-label>About Us</ion-label></ion-item>
           </ion-menu-toggle>
@@ -89,7 +85,7 @@
     </ion-content>
   </ion-menu>
 
-
+-->
   
   <div class="ion-page">
 
@@ -99,7 +95,7 @@
     
    
 
-      <ion-header>
+     <!-- <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
           <ion-menu-button menu="main"></ion-menu-button>
@@ -113,7 +109,7 @@
         </ion-buttons>
         
       </ion-toolbar>
-    </ion-header>
+    </ion-header>-->
 
     
       <ion-router-outlet id="main-content"></ion-router-outlet>
