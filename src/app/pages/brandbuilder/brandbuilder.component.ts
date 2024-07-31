@@ -153,9 +153,21 @@ export class BrandBuilderComponent
         { name: 'primaryFeature' },
         { name: 'secondaryFeature' },
         { name: 'thirdFeature' },
-        { name: 'mailingList', layoutId: 2, modules: [{ name: 'form' }] },
-        { name: 'faq', layoutId: 2, modules: [{ name: 'faq' }] },
-        { name: 'contactform', layoutId: 3, modules: [{ name: 'form' }] },
+        {
+          name: 'mailingList',
+          layoutId: 2,
+          modules: [{ name: 'form', title: 'Join our Mailing List' }],
+        },
+        {
+          name: 'faq',
+          layoutId: 2,
+          modules: [{ name: 'faq', title: 'Frequenty Asked Questions' }],
+        },
+        {
+          name: 'contactform',
+          layoutId: 3,
+          modules: [{ name: 'form', title: 'Get in touch' }],
+        },
       ],
     },
 
@@ -175,8 +187,16 @@ export class BrandBuilderComponent
         { name: 'ourValues' },
         { name: 'ourPromise' },
         { name: 'otherServices' },
-        { name: 'mailingList', layoutId: 2, modules: [{ name: 'form' }] },
-        { name: 'faq', layoutId: 2, modules: [{ name: 'faq' }] },
+        {
+          name: 'mailingList',
+          layoutId: 2,
+          modules: [{ name: 'form', title: 'Join our Mailing List' }],
+        },
+        {
+          name: 'faq',
+          layoutId: 2,
+          modules: [{ name: 'faq', title: 'Frequenty Asked Questions' }],
+        },
       ],
     },
     {
@@ -190,8 +210,16 @@ export class BrandBuilderComponent
       },
       sections: [
         { name: 'ourProducts' },
-        { name: 'mailingList', layoutId: 2, modules: [{ name: 'form' }] },
-        { name: 'faq', layoutId: 2, modules: [{ name: 'faq' }] },
+        {
+          name: 'mailingList',
+          layoutId: 2,
+          modules: [{ name: 'form', title: 'Join our Mailing List' }],
+        },
+        {
+          name: 'faq',
+          layoutId: 2,
+          modules: [{ name: 'faq', title: 'Frequenty Asked Questions' }],
+        },
       ],
     },
     {
@@ -214,8 +242,16 @@ export class BrandBuilderComponent
         },
       ],
       sections: [
-        { name: 'mailingList', layoutId: 2, modules: [{ name: 'form' }] },
-        { name: 'faq', layoutId: 2, modules: [{ name: 'faq' }] },
+        {
+          name: 'mailingList',
+          layoutId: 2,
+          modules: [{ name: 'form', title: 'Join our Mailing List' }],
+        },
+        {
+          name: 'faq',
+          layoutId: 2,
+          modules: [{ name: 'faq', title: 'Frequenty Asked Questions' }],
+        },
       ],
     },
     {
@@ -228,9 +264,21 @@ export class BrandBuilderComponent
         description: '',
       },
       sections: [
-        { name: 'mailingList', layoutId: 2, modules: [{ name: 'form' }] },
-        { name: 'faq', layoutId: 2, modules: [{ name: 'faq' }] },
-        { name: 'contactform', layoutId: 3, modules: [{ name: 'form' }] },
+        {
+          name: 'mailingList',
+          layoutId: 2,
+          modules: [{ name: 'form', title: 'Join our Mailing List' }],
+        },
+        {
+          name: 'faq',
+          layoutId: 2,
+          modules: [{ name: 'faq', title: 'Frequenty Asked Questions' }],
+        },
+        {
+          name: 'contactform',
+          layoutId: 3,
+          modules: [{ name: 'form', title: 'Get in touch' }],
+        },
       ],
     },
   ];

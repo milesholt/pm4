@@ -5,11 +5,11 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyBAhZc4AJgvSwMyEyQH04q3DRa8tuJK9mU',
+    apiKey: 'AIzaSyA4MovvYg4hn40t78B8rFYY2CN4yequ1I0',
     authDomain: 'project-manager-2045e.firebaseapp.com',
-    databaseURL: 'https://project-manager-2045e.firebaseio.com',
-    projectId: 'project-manager-2045e',
-    storageBucket: 'project-manager-2045e.appspot.com',
+    databaseURL: 'https://brand-builder-ai.firebaseio.com',
+    projectId: 'brand-builder-ai',
+    storageBucket: 'brand-builder-ai.appspot.com',
     messagingSenderId: '1026315619936',
     appId: '1:1026315619936:android:ce09d8440aea1dca',
   },

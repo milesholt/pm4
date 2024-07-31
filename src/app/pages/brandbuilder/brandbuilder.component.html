@@ -167,6 +167,9 @@
         <div *ngIf="activePage.sections[lidx].modules" class="row module">
 
           <div *ngFor="let module of activePage.sections[lidx].modules; let midx = index">
+
+          <h2>{{module.title}}</h2>
+
           <div [ngSwitch]="module.name">
               <div *ngSwitchCase="'form'">
                 <app-contactform-comp></app-contactform-comp>

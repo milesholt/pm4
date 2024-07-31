@@ -28,11 +28,11 @@ export class AppComponent implements OnInit {
   cartLength: number = 0;
   cartSubscription: Subscription;
   Pages = [
-    {
+    /*{
       title: 'Shop',
       url: '/shop',
       icon: 'storefront',
-    },
+    },*/
     /*{
       title: 'About Us',
       url: '/about-us',
@@ -48,7 +48,12 @@ export class AppComponent implements OnInit {
       url: '/cart',
       icon: 'cart',
     },*/
-    /*{
+    {
+      title: 'Dashboard',
+      url: '/dashboard',
+      icon: 'person',
+    },
+    {
       title: 'Login',
       url: '/login',
       icon: 'person',
@@ -57,7 +62,7 @@ export class AppComponent implements OnInit {
       title: 'Register',
       url: '/register',
       icon: 'person',
-    },*/
+    },
   ];
   constructor(
     public lib: Library,
@@ -66,9 +71,9 @@ export class AppComponent implements OnInit {
     private titleService: Title,
     private meta: Meta,
     public route: ActivatedRoute,
-    private cookieService: CookieService,
-    //public cartComp: CartShopComponent,
-  ) {
+    private cookieService: CookieService
+  ) //public cartComp: CartShopComponent,
+  {
     this.cartSubscription = this.service.shop.cart$.subscribe((cart) => {
       this.cartLength = this.service.shop.getCartLength();
     });
