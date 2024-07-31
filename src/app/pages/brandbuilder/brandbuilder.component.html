@@ -1,5 +1,3 @@
-
-
 <!--<ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
@@ -18,123 +16,173 @@
   <app-explore-container name="Tab 1 page"></app-explore-container>
 </ion-content>-->
 
-
 <ion-header>
   <ion-toolbar class="toolbar">
-    <ion-title style="text-align:center; color:white">Site In An Hour</ion-title>
+    <ion-title style="text-align: center; color: white"
+      >Site In An Hour</ion-title
+    >
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
-<div *ngIf="showCreate" id="createPanel" class="container" [ngClass]="{'generating': generating === true, 'generated': generated && !!aiform }">
-     <div *ngIf="!generated && !generating && !aiform">
+  <div
+    *ngIf="showCreate"
+    id="createPanel"
+    class="container"
+    [ngClass]="{
+      generating: generating === true,
+      generated: generated && !!aiform
+    }"
+  >
+    <div *ngIf="!generated && !generating && !aiform">
       <form (ngSubmit)="onSubmit()">
         <ion-item>
-          <ion-input label="What's your business called?" labelPlacement="stacked" [(ngModel)]="companyName" name="company-title" required></ion-input>
+          <ion-input
+            label="What's your business called?"
+            labelPlacement="stacked"
+            [(ngModel)]="companyName"
+            name="company-title"
+            required
+          ></ion-input>
         </ion-item>
         <ion-item>
-          <ion-textarea [autoGrow]="true" label="Give a brief description about your business" labelPlacement="stacked" [(ngModel)]="companyDescription" name="company-description" required></ion-textarea>
+          <ion-textarea
+            [autoGrow]="true"
+            label="Give a brief description about your business"
+            labelPlacement="stacked"
+            [(ngModel)]="companyDescription"
+            name="company-description"
+            required
+          ></ion-textarea>
         </ion-item>
         <ion-item>
-          <ion-textarea [autoGrow]="true" label="What products do you sell?" labelPlacement="stacked" [(ngModel)]="companyProducts" name="company-products" required></ion-textarea>
+          <ion-textarea
+            [autoGrow]="true"
+            label="What products do you sell?"
+            labelPlacement="stacked"
+            [(ngModel)]="companyProducts"
+            name="company-products"
+            required
+          ></ion-textarea>
         </ion-item>
-        <ion-button expand="full" type="submit"><ion-icon name="color-wand" class="button-icon"></ion-icon> Generate Website</ion-button>
+        <ion-button expand="full" type="submit"
+          ><ion-icon name="color-wand" class="button-icon"></ion-icon> Generate
+          Website</ion-button
+        >
       </form>
 
-        <ion-button (click)="resetForm()">Clear</ion-button>
-     </div>
-      <div *ngIf="generating">{{message}}</div>
-
-      <div *ngIf="generated && !!aiform">
-
-        <p>Your website is ready.</p>
-        <ion-button (click)="showSection('preview')">View</ion-button>
-
-        <!--{{generated | json}}-->
-      </div>
-
-      
-    </div> 
-
-  <div id="previewPanel" *ngIf="showPreview" [ngClass]="{ 'generating' : generating === true, 'is-loaded': showPreview, 'is-changing': isChanging === true, 'is-changed' : isChanging === false }" #previewPanel>
-    
-
-    <div *ngIf="!generated" >
-      Working on it..
+      <ion-button (click)="resetForm()">Clear</ion-button>
     </div>
+    <div *ngIf="generating">{{ message }}</div>
 
-   <div *ngIf="generated" style="padding-bottom:300px;">
+    <div *ngIf="generated && !!aiform">
+      <p>Your website is ready.</p>
+      <ion-button (click)="showSection('preview')">View</ion-button>
 
-    <!--website displays here-->
+      <!--{{generated | json}}-->
+    </div>
+  </div>
 
-    <!-- main menu-->
-    <ion-menu menuId="builderMain" contentId="main-page">
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Main Menu</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <!--menu content-->
-      <ion-content class="ion-padding">
-        <ion-list>
-          <ion-item *ngFor="let page of generated; let i = index">
-            <div class="menu-container"> 
-             <ion-menu-toggle auto-hide="false">
-             <!--<ion-item (click)="changePage(i)" routerDirection="root" [routerLink]="[page.url]" [queryParams]="getSearchParams(false)" lines="none"
+  <div
+    id="previewPanel"
+    *ngIf="showPreview"
+    [ngClass]="{
+      generating: generating === true,
+      'is-loaded': showPreview,
+      'is-changing': isChanging === true,
+      'is-changed': isChanging === false
+    }"
+    #previewPanel
+  >
+    <div *ngIf="!generated">Working on it..</div>
+
+    <div *ngIf="generated" style="padding-bottom: 300px">
+      <!--website displays here-->
+
+      <!-- main menu-->
+      <ion-menu menuId="builderMain" contentId="main-page">
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Main Menu</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <!--menu content-->
+        <ion-content class="ion-padding">
+          <ion-list>
+            <ion-item *ngFor="let page of generated; let i = index">
+              <div class="menu-container">
+                <ion-menu-toggle auto-hide="false">
+                  <!--<ion-item (click)="changePage(i)" routerDirection="root" [routerLink]="[page.url]" [queryParams]="getSearchParams(false)" lines="none"
                detail="false" [class.selected]="activeIndex == i">         
                <ion-label>{{ page.title }}</ion-label>    
              </ion-item>-->
-             <ion-item (click)="changePage(i)" lines="none"
-               detail="false" [class.selected]="activeIndex == i">         
-               <ion-label>{{ page.title }}</ion-label>    
-             </ion-item>
-             </ion-menu-toggle>
-           </div>
-         </ion-item>
-       </ion-list>
-      </ion-content>
-    </ion-menu>
+                  <ion-item
+                    (click)="changePage(i)"
+                    lines="none"
+                    detail="false"
+                    [class.selected]="activeIndex == i"
+                  >
+                    <ion-label>{{ page.title }}</ion-label>
+                  </ion-item>
+                </ion-menu-toggle>
+              </div>
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ion-menu>
 
-    <!-- main content-->
-    <div class="ion-page" id="main-page">
-      <!--page header-->
-      <ion-header>
-        <ion-toolbar>
-          <!--<ion-buttons slot="start">
+      <!-- main content-->
+      <div class="ion-page" id="main-page">
+        <!--page header-->
+        <ion-header>
+          <ion-toolbar>
+            <!--<ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
           </ion-buttons>-->
-          <ion-buttons slot="start">
-            <ion-menu-button menu="builderMain"></ion-menu-button>
-          </ion-buttons>
-          <ion-title>{{activePage.title}}</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <!--page content-->
-      <ion-content>
-        <!-- main page preview -->
+            <ion-buttons slot="start">
+              <ion-menu-button menu="builderMain"></ion-menu-button>
+            </ion-buttons>
+            <ion-title>{{ activePage.title }}</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <!--page content-->
+        <ion-content>
+          <!-- main page preview -->
 
-  
-       <!--{{generated | json}}-->
-       <div id="hero"> 
-        <div id="hero-container">
-          <h1 class="fade-up" [innerHTML]="activePage.title == 'Home' ? activePage.subheading: activePage.title"></h1>
-          <h2 [innerHTML]="activePage.title == 'Home' ? '' : activePage.subheading"></h2>
-        </div>
-        <img [src]="activePage.image" id="hero-image" />
-       </div>
+          <!--{{generated | json}}-->
+          <div id="hero">
+            <div id="hero-container">
+              <h1
+                class="fade-up"
+                [innerHTML]="
+                  activePage.title == 'Home'
+                    ? activePage.subheading
+                    : activePage.title
+                "
+              ></h1>
+              <h2
+                [innerHTML]="
+                  activePage.title == 'Home' ? '' : activePage.subheading
+                "
+              ></h2>
+            </div>
+            <img [src]="activePage.image" id="hero-image" />
+          </div>
 
-      <div id="main-content">
-        <div class="container">
-       <div class="col-1">
-        <div class="row">
-          <div class="page-content col" [innerHTML]="activePage.content"></div>
-        </div> 
-       </div>
-      </div>
-        <!--{{activePage.layout[0].structure | json}}-->
-      
-        <!--<ion-grid *ngFor="let layout of activePage.layout; let lidx = index">   
+          <div id="main-content">
+            <div class="container">
+              <div class="col-1">
+                <div class="row">
+                  <div
+                    class="page-content col"
+                    [innerHTML]="activePage.content"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <!--{{activePage.layout[0].structure | json}}-->
+
+            <!--<ion-grid *ngFor="let layout of activePage.layout; let lidx = index">   
           <ion-row *ngFor="let row of layout.structure; let ridx = index">
             <ion-col *ngFor="let col of row; let cidx = index" size="6" size-md="6" size-xs="12">
                 <div class="col-wrap {{layout.params.classes}}">
@@ -146,97 +194,120 @@
           </ion-row>
         </ion-grid>-->
 
-      <div class="{{layout.params.parentclasses}} anim" *ngFor="let layout of activePage.layout; let lidx = index">
-        <div class="row {{layout.params.classes}}">
-        <div class="col {{ hasProperty(col, 'image') ? 'col-image' : 'col-content'}}" *ngFor="let col of layout.structure; let cidx = index">
-          <div class="{{ hasProperty(col, 'image') ? '' : 'content-wrap'}}">
-            <div class="mod" *ngFor="let mod of col; let midx = index"> 
-            
-              <div *ngIf="mod.image">
-                <img [src]="mod.image" style="display:block; width:100%; height:auto;" /> 
+            <div
+              class="{{ layout.params.parentclasses }} anim"
+              *ngFor="let layout of activePage.layout; let lidx = index"
+            >
+              <div class="row {{ layout.params.classes }}">
+                <div
+                  class="col {{
+                    hasProperty(col, 'image') ? 'col-image' : 'col-content'
+                  }}"
+                  *ngFor="let col of layout.structure; let cidx = index"
+                >
+                  <div
+                    class="{{
+                      hasProperty(col, 'image') ? '' : 'content-wrap'
+                    }}"
+                  >
+                    <div class="mod" *ngFor="let mod of col; let midx = index">
+                      <div *ngIf="mod.image">
+                        <img
+                          [src]="mod.image"
+                          style="display: block; width: 100%; height: auto"
+                        />
+                      </div>
+                      <div class="mod-heading" *ngIf="mod.heading">
+                        <h2>{{ mod.heading }}</h2>
+                      </div>
+                      <div
+                        class="mod-content"
+                        *ngIf="mod.content"
+                        [innerHtml]="mod.content"
+                      ></div>
+                      <!--<ion-button *ngIf="col.link" [routerLink]="[col.link.path]" [queryParams]="col.link.query">{{col.link.label}}</ion-button>-->
+                    </div>
+                  </div>
+                </div>
+                <!--cols-->
               </div>
-              <div class="mod-heading" *ngIf="mod.heading"><h2>{{mod.heading}}</h2></div>
-              <div class="mod-content" *ngIf="mod.content" [innerHtml]="mod.content"></div>
-                  <!--<ion-button *ngIf="col.link" [routerLink]="[col.link.path]" [queryParams]="col.link.query">{{col.link.label}}</ion-button>-->
-              
+              <!--row-->
+
+              <div *ngIf="activePage.sections[lidx].modules" class="row module">
+                <div
+                  *ngFor="
+                    let module of activePage.sections[lidx].modules;
+                    let midx = index
+                  "
+                >
+                  <h2>{{ module.title }}</h2>
+
+                  <div [ngSwitch]="module.name">
+                    <div *ngSwitchCase="'form'">
+                      <app-contactform-comp></app-contactform-comp>
+                    </div>
+
+                    <div *ngSwitchCase="'faq'">
+                      <app-accordion-comp></app-accordion-comp>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </div>
-        </div> <!--cols-->
-        </div> <!--row-->
+            <!--layout-->
+          </div>
+          <!--main content-->
 
-        <div *ngIf="activePage.sections[lidx].modules" class="row module">
+          <!-- footer-->
+          <div id="footer">
+            <div id="footer-wrap">
+              <ion-row>
+                <ion-col size="9">
+                  <a>Privacy Policy</a><br />
+                  <a>Refund Policy</a><br />
+                  <a>Shipping Policy</a><br />
+                  <a (click)="changePage(1)">About Us</a><br />
+                  <a (click)="changePage(4)">Contact Us</a><br />
+                  <a>Terms and Conditions</a>
+                </ion-col>
+                <ion-col class="col-2">
+                  <a
+                    href="https://www.facebook.com/"
+                    target="_blank"
+                    class="social-icon-link"
+                    ><ion-icon
+                      name="logo-facebook"
+                      class="social-icon"
+                    ></ion-icon
+                  ></a>
 
-          <div *ngFor="let module of activePage.sections[lidx].modules; let midx = index">
-
-          <h2>{{module.title}}</h2>
-
-          <div [ngSwitch]="module.name">
-              <div *ngSwitchCase="'form'">
-                <app-contactform-comp></app-contactform-comp>
+                  <a
+                    href="https://www.instagram.com/"
+                    target="_blank"
+                    class="social-icon-link"
+                    ><ion-icon
+                      name="logo-instagram"
+                      class="social-icon"
+                    ></ion-icon
+                  ></a>
+                </ion-col>
+              </ion-row>
+              <div id="copyright-notice">
+                Copyright {{ companyName }} {{ currentYear }}
               </div>
-
-              <div *ngSwitchCase="'faq'">
-                <app-accordion-comp></app-accordion-comp>
-              </div>
-
             </div>
           </div>
-        </div>
-        
-      </div> <!--layout-->
-
-    
-    </div><!--main content-->
-
-    
-
-
-    <!-- footer-->
-    <div id="footer">
-      <div id='footer-wrap'>
-        <ion-row>
-          <ion-col size="9">
-              <a>Privacy Policy</a><br>
-              <a>Refund Policy</a><br>
-              <a>Shipping Policy</a><br> 
-              <a (click)="changePage(1)">About Us</a><br>
-              <a (click)="changePage(4)">Contact Us</a><br>
-              <a>Terms and Conditions</a>
-          </ion-col>
-          <ion-col class="col-2">
-            <a href="https://www.facebook.com/" target="_blank" class="social-icon-link"><ion-icon name="logo-facebook" class="social-icon"></ion-icon></a>
-            
-            <a href="https://www.instagram.com/" target="_blank" class="social-icon-link"><ion-icon name="logo-instagram" class="social-icon"></ion-icon></a>
-            
-          </ion-col>
-        </ion-row>
-          <div id="copyright-notice">
-            Copyright {{ companyName }} {{ currentYear }}
-          </div>
-          
+        </ion-content>
       </div>
-    </div>
-      
-      </ion-content>
-    </div>
 
- 
-
-
-
-
-
-
-
-
-    <!--site header and menu-->
-    <!--<ion-menu menuId="main" side="start" contentId="main-content" style="margin-top:100px">
+      <!--site header and menu-->
+      <!--<ion-menu menuId="main" side="start" contentId="main-content" style="margin-top:100px">
       <ion-header>
         <ion-toolbar>
           <ion-title>{{generated[0].title}}</ion-title>
         </ion-toolbar>
       </ion-header>-->
-      
+
       <!--main site navigation-->
       <!--<ion-list>
        <ion-item *ngFor="let page of generated; let i = index">
@@ -251,45 +322,59 @@
       </ion-item>
     </ion-list>
   </ion-menu>
--->  
+-->
 
-   
-   
-<div class="bottom-panel">
-  <p>What do you think?</p>
-  <ion-button (click)="showSection('publish')">Publish it</ion-button>
-  <ion-button (click)="showSection('create'); onSubmit(); generated = false; generating = true; aiform = false; message = 'Working on it'">Change it</ion-button>
-  <ion-button (click)="showSection('create'); generated = false; aiform = false">Edit it</ion-button>
-</div>
-
-   
-   
-   
+      <div class="bottom-panel">
+        <p>What do you think?</p>
+        <ion-button (click)="showSection('publish')">Publish it</ion-button>
+        <ion-button
+          (click)="
+            showSection('create');
+            onSubmit();
+            generated = false;
+            generating = true;
+            aiform = false;
+            message = 'Working on it'
+          "
+          >Change it</ion-button
+        >
+        <ion-button
+          (click)="showSection('create'); generated = false; aiform = false"
+          >Edit it</ion-button
+        >
+      </div>
     </div>
-
-    
   </div>
 
   <div *ngIf="showPublish" class="container">
     <h1>Thank you for using SiteInAnHour</h1>
-    
-    <p>Signup and keep building your site with us</p>
-    <ion-button><ion-icon name="power" class="button-icon"></ion-icon> Signup</ion-button>
+
+    <p>Keep building your site with us</p>
+    <ion-button (click)="storeSite()"
+      ><ion-icon name="power" class="button-icon"></ion-icon>
+      Continue</ion-button
+    >
 
     <p>Or download the content and all the files</p>
-    <ion-button><ion-icon name="cloud-download" class="button-icon"></ion-icon> Download your site for $5</ion-button>
+    <ion-button
+      ><ion-icon name="cloud-download" class="button-icon"></ion-icon> Download
+      your site for $5</ion-button
+    >
 
-    
     <div class="bottom-panel">
-      <ion-button (click)="showSection('create');generated = false;generating=false; aiform = false"><ion-icon name="arrow-back" class="button-icon"></ion-icon> Start again</ion-button>
-   
+      <ion-button
+        (click)="
+          showSection('create');
+          generated = false;
+          generating = false;
+          aiform = false
+        "
+        ><ion-icon name="arrow-back" class="button-icon"></ion-icon> Start
+        again</ion-button
+      >
     </div>
- 
   </div>
-
-
 </ion-content>
-
 
 <!--
 <ion-tabs>

@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 //import { PexelsService } from '../services/pexels.service';
 
@@ -41,7 +41,7 @@ import { environment } from '../../../environments/environment';
       transition(':enter', [
         animate(
           '1000ms ease-out',
-          style({ opacity: 1, transform: 'translateY(0)' }),
+          style({ opacity: 1, transform: 'translateY(0)' })
         ),
       ]),
     ]),
@@ -415,6 +415,7 @@ export class BrandBuilderComponent
     private lib: Library,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
+    public router: Router
   ) {
     this.currentYear = new Date().getFullYear();
   }
@@ -532,7 +533,7 @@ export class BrandBuilderComponent
       const randomLayout = this.cloneObject(
         this.contentLayouts2[
           Math.floor(Math.random() * this.contentLayouts2.length)
-        ],
+        ]
       );
       // Assign the cloned layout to the item's layout property
       item.layout = randomLayout;
@@ -698,8 +699,8 @@ export class BrandBuilderComponent
                 Math.floor(Math.random() * this.contentLayouts.length)
               ],*/
 
-                this.contentLayouts[layoutIndex],
-              ),
+                this.contentLayouts[layoutIndex]
+              )
             );
           });
 
@@ -785,7 +786,7 @@ export class BrandBuilderComponent
   async doAI(
     prompt: string,
     attempt: number = 0,
-    attempt2: number = 0,
+    attempt2: number = 0
   ): Promise<any> {
     return new Promise(async (resolve, reject) => {
       const genAI = new GoogleGenerativeAI(environment.ai.gemini.API_KEY);
@@ -807,7 +808,7 @@ export class BrandBuilderComponent
       const response = await result.response;
 
       let res = await this.cleanJsonResponse(
-        response.candidates?.[0].content.parts[0].text || response.text(),
+        response.candidates?.[0].content.parts[0].text || response.text()
       );
 
       if (res == null) {
@@ -898,5 +899,18 @@ export class BrandBuilderComponent
       console.error('Invalid JSON response:', error);
       return null;
     }
+  }
+
+  storeSite() {
+    const companyInfo = {
+      companyName: this.companyName,
+      companyDescription: this.companyDescription,
+      companyProducts: this.companyProducts,
+    };
+    localStorage.setItem('generatedSite', this.generated);
+    localStorage.setItem('companyInfo', JSON.stringify(companyInfo));
+    localStorage.setItem('doAction', 'createSite');
+
+    this.router.navigate(['dashboard']);
   }
 }
