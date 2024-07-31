@@ -41,6 +41,30 @@ export class FirestoreService {
       );
   }
 
+  getDocumentById(collection: string, docId: string): Observable<any> {
+    return this.firestore
+      .collection(collection)
+      .doc(docId)
+      .snapshotChanges()
+      .pipe(
+        map((action) => {
+          if (!action.payload.exists) {
+            return null;
+          } else {
+            const data: any = action.payload.data();
+            const id = action.payload.id;
+            return { id, ...data }; // Combine the ID and the data
+          }
+        }),
+        catchError((error) => {
+          console.error('Error getting document: ', error);
+          return throwError(
+            () => new Error('Error getting document, please try again later.')
+          );
+        })
+      );
+  }
+
   // Update a document
   updateDocument(collection: string, docId: string, data: any): Promise<void> {
     return this.firestore.collection(collection).doc(docId).update(data);

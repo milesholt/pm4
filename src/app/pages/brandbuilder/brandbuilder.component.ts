@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 //import { PexelsService } from '../services/pexels.service';
 
@@ -415,13 +415,37 @@ export class BrandBuilderComponent
     private lib: Library,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
-    public router: Router
+    public router: Router,
+    public route: ActivatedRoute
   ) {
     this.currentYear = new Date().getFullYear();
   }
 
   ngOnInit(): void {
     //this.showSection('create');
+    this.route.queryParams.subscribe((params) => {
+      const docId = params['id']; // Get the document ID from query parameters
+      if (docId) {
+        this.loadDocument(docId);
+      }
+    });
+  }
+
+  loadDocument(docId: string) {
+    this.service.firestore.getDocumentById('sites', docId).subscribe(
+      (data) => {
+        if (data) {
+          this.generated = data;
+          //this.errorMessage = null; // Clear any previous error
+        } else {
+          this.message = 'Site not found';
+        }
+      },
+      (error) => {
+        this.message = error.message;
+        console.error('Error fetching document: ', error);
+      }
+    );
   }
 
   ngAfterViewInit(): void {

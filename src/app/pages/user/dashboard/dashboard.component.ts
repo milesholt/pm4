@@ -62,6 +62,7 @@ export class DashboardComponent implements OnInit {
       .createDocument('sites', { name: this.companyInfo.companyName })
       .then(async () => {
         this.message = 'Site being setup..';
+        await this.getSites();
         await this.updateSite();
       })
       .catch((e: any) => {
@@ -74,13 +75,10 @@ export class DashboardComponent implements OnInit {
     this.service.firestore.getDocuments('sites').subscribe(
       (data: any) => {
         this.sites = data;
-        this.message =
-          'Success, your site url is : https://siteinanhour.com/site?' +
-          this.sites[0].id;
       },
       (error) => {
         this.message = error.message;
-        console.error('Error fetching documents: ', error);
+        console.error('Error fetching sites: ', error);
       }
     );
   }
@@ -115,7 +113,10 @@ export class DashboardComponent implements OnInit {
     this.service.firestore
       .updateDocument(collectionName, documentId, updatedData)
       .then(() => {
-        this.message = 'Site updated';
+        //this.message = 'Site updated';
+        this.message =
+          'Success, your site url is : https://siteinanhour.com/?site=' +
+          this.sites[0].id;
         console.log('Document updated successfully!');
       })
       .catch((error) => {
