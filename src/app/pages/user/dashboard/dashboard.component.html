@@ -96,6 +96,15 @@
               <p>
                 Email Verified: <strong>{{ user.emailVerified }}</strong>
               </p>
+
+              <ion-button (click)="createSite()">Create Site</ion-button>
+              <ion-button (click)="getSites()">List Sites</ion-button>
+              <ion-button (click)="updateSite()">Update Site</ion-button>
+              <ion-button (click)="deleteSite()">Delete Site</ion-button>
+
+              {{ message }}
+
+              {{ sites | json }}
             </div>
           </div>
         </div>

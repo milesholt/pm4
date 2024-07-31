@@ -15,6 +15,7 @@ import { HttpService } from './internal/HttpService/http.service';
 
 //connect to external services
 import { AuthService } from './external/firebase/AuthService/auth.capacitor.service';
+import { FirestoreService } from './external/firebase/FireStoreService/firestore.service';
 //import { UserService } from './external/firebase/UserService/user.service';
 //import { DatabaseService } from './external/firebase/DatabaseService/database.service';
 //import { NotificationServiceExt } from './external/firebase/NotificationService/notification.service';
@@ -48,12 +49,13 @@ export { ModalService }
 export class CoreService {
   constructor(
     public auth: AuthService,
+    public firestore: FirestoreService,
     public shop: ShopService,
     public http: HttpService,
     public seo: SeoService,
     public ads: AdsService,
     public ai: AIGeminiService,
-    public pexels: PexelsService,
+    public pexels: PexelsService
   ) {}
 }
 
