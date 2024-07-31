@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   firebase: {
     apiKey: 'AIzaSyA4MovvYg4hn40t78B8rFYY2CN4yequ1I0',
-    authDomain: 'project-manager-2045e.firebaseapp.com',
+    authDomain: 'brand-builder-ai.firebaseapp.com',
     databaseURL: 'https://brand-builder-ai.firebaseio.com',
     projectId: 'brand-builder-ai',
     storageBucket: 'brand-builder-ai.appspot.com',
