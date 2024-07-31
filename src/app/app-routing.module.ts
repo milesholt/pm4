@@ -46,7 +46,7 @@ const routes: Routes = [
     component: RegisterComponent,
     loadChildren: () =>
       import('./pages/auth/register/register.module').then(
-        (m) => m.RegisterModule,
+        (m) => m.RegisterModule
       ),
   },
   {
@@ -54,7 +54,7 @@ const routes: Routes = [
     component: DashboardComponent,
     loadChildren: () =>
       import('./pages/user/dashboard/dashboard.module').then(
-        (m) => m.DashboardModule,
+        (m) => m.DashboardModule
       ),
     canActivate: [AuthGuard],
   },
@@ -63,7 +63,7 @@ const routes: Routes = [
     component: ForgotPasswordComponent,
     loadChildren: () =>
       import('./pages/auth/forgot-password/forgot-password.module').then(
-        (m) => m.ForgotPasswordModule,
+        (m) => m.ForgotPasswordModule
       ),
   },
   {
@@ -71,7 +71,7 @@ const routes: Routes = [
     component: VerifyEmailComponent,
     loadChildren: () =>
       import('./pages/auth/verify-email/verify-email.module').then(
-        (m) => m.VerifyEmailModule,
+        (m) => m.VerifyEmailModule
       ),
   },
   {
@@ -91,7 +91,7 @@ const routes: Routes = [
     component: CartShopComponent,
     loadChildren: () =>
       import('./pages/shop/cart/cart.shop.module').then(
-        (m) => m.CartShopModule,
+        (m) => m.CartShopModule
       ),
   },
   {
@@ -99,7 +99,7 @@ const routes: Routes = [
     component: ProductComponent,
     loadChildren: () =>
       import('./pages/shop/product/product.module').then(
-        (m) => m.ProductModule,
+        (m) => m.ProductModule
       ),
   },
   {
@@ -107,7 +107,7 @@ const routes: Routes = [
     component: ShopContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ShopContentModule,
+        (m) => m.ShopContentModule
       ),
   },
   {
@@ -115,7 +115,7 @@ const routes: Routes = [
     component: ShopContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ShopContentModule,
+        (m) => m.ShopContentModule
       ),
   },
   {
@@ -123,7 +123,7 @@ const routes: Routes = [
     component: ShopContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ShopContentModule,
+        (m) => m.ShopContentModule
       ),
   },
   {
@@ -131,7 +131,7 @@ const routes: Routes = [
     component: ShopContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ShopContentModule,
+        (m) => m.ShopContentModule
       ),
   },
   {
@@ -139,7 +139,7 @@ const routes: Routes = [
     component: ShopContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ShopContentModule,
+        (m) => m.ShopContentModule
       ),
   },
   {
@@ -147,11 +147,17 @@ const routes: Routes = [
     component: ShopContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ShopContentModule,
+        (m) => m.ShopContentModule
       ),
   },
   {
     path: 'stories/cahaya-clove-oil',
+    component: ContentComponent,
+    loadChildren: () =>
+      import('./pages/content/content.module').then((m) => m.ContentModule),
+  },
+  {
+    path: 'stories/homegrown-coffee-from-indonesia',
     component: ContentComponent,
     loadChildren: () =>
       import('./pages/content/content.module').then((m) => m.ContentModule),
