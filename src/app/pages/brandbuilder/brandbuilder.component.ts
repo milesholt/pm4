@@ -433,9 +433,11 @@ export class BrandBuilderComponent
 
   loadDocument(docId: string) {
     this.service.firestore.getDocumentById('sites', docId).subscribe(
-      (data) => {
-        if (data) {
-          this.generated = data;
+      (doc) => {
+        if (doc) {
+          console.log('Loading document from site id: ' + docId);
+          console.log(doc);
+          this.generated = JSON.parse(doc.data);
           this.showSection('preview');
           //this.errorMessage = null; // Clear any previous error
         } else {
@@ -932,7 +934,7 @@ export class BrandBuilderComponent
       companyDescription: this.companyDescription,
       companyProducts: this.companyProducts,
     };
-    localStorage.setItem('generatedSite', this.generated);
+    localStorage.setItem('generatedSite', JSON.stringify(this.generated));
     localStorage.setItem('companyInfo', JSON.stringify(companyInfo));
     localStorage.setItem('doAction', 'createSite');
 
