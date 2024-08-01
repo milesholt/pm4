@@ -945,6 +945,9 @@ export class BrandBuilderComponent
       companyDescription: this.companyDescription,
       companyProducts: this.companyProducts,
     };
+    this.generated.companyInfo = companyInfo;
+    this.generated.photos = this.photos;
+    
     localStorage.setItem('generatedSite', JSON.stringify(this.generated));
     localStorage.setItem('companyInfo', JSON.stringify(companyInfo));
     localStorage.setItem('doAction', 'createSite');
