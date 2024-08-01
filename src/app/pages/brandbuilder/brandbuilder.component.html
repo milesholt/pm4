@@ -16,7 +16,7 @@
   <app-explore-container name="Tab 1 page"></app-explore-container>
 </ion-content>-->
 
-<ion-header>
+<ion-header class="main-header">
   <ion-toolbar class="toolbar">
     <ion-title style="text-align: center; color: white"
       >Site In An Hour</ion-title
@@ -142,7 +142,7 @@
             <ion-buttons slot="start">
               <ion-menu-button menu="builderMain"></ion-menu-button>
             </ion-buttons>
-            <ion-title>{{ activePage.title }}</ion-title>
+            <ion-title>{{ companyName }}</ion-title>
           </ion-toolbar>
         </ion-header>
         <!--page content-->
@@ -200,11 +200,41 @@
             >
               <div class="row {{ layout.params.classes }}">
                 <div
+                  *ngIf="service.auth.isLoggedIn"
+                  class="editor-panel editor-panel-row"
+                >
+                  <ion-button (click)="moveRowUp(lidx)" [disabled]="lidx === 0"
+                    ><ion-icon name="chevron-up-outline"></ion-icon
+                  ></ion-button>
+                  <ion-button
+                    (click)="moveRowDown(lidx)"
+                    [disabled]="lidx === activePage.layout.length - 1"
+                    ><ion-icon name="chevron-down-outline"></ion-icon
+                  ></ion-button>
+                </div>
+
+                <div
                   class="col {{
                     hasProperty(col, 'image') ? 'col-image' : 'col-content'
                   }}"
                   *ngFor="let col of layout.structure; let cidx = index"
                 >
+                  <div
+                    *ngIf="service.auth.isLoggedIn"
+                    class="editor-panel editor-panel-col"
+                  >
+                    <ion-button
+                      (click)="swapColumns(lidx, cidx, cidx - 1)"
+                      [hidden]="cidx === 0"
+                      ><ion-icon name="chevron-back-outline"></ion-icon
+                    ></ion-button>
+                    <ion-button
+                      (click)="swapColumns(lidx, cidx, cidx + 1)"
+                      [hidden]="cidx === layout.structure.length - 1"
+                      ><ion-icon name="chevron-forward-outline"></ion-icon
+                    ></ion-button>
+                  </div>
+
                   <div
                     class="{{
                       hasProperty(col, 'image') ? '' : 'content-wrap'
@@ -235,12 +265,15 @@
 
               <div *ngIf="activePage.sections[lidx].modules" class="row module">
                 <div
+                  class="mod-{{ module.name }}"
                   *ngFor="
                     let module of activePage.sections[lidx].modules;
                     let midx = index
                   "
                 >
-                  <h2>{{ module.title }}</h2>
+                  <h2 *ngIf="module.title && module.title !== ''">
+                    {{ module.title }}
+                  </h2>
 
                   <div [ngSwitch]="module.name">
                     <div *ngSwitchCase="'form'">
@@ -325,23 +358,32 @@
 -->
 
       <div class="bottom-panel">
-        <p>What do you think?</p>
-        <ion-button (click)="showSection('publish')">Publish it</ion-button>
-        <ion-button
-          (click)="
-            showSection('create');
-            onSubmit();
-            generated = false;
-            generating = true;
-            aiform = false;
-            message = 'Working on it'
-          "
-          >Change it</ion-button
-        >
-        <ion-button
-          (click)="showSection('create'); generated = false; aiform = false"
-          >Edit it</ion-button
-        >
+        <div *ngIf="service.auth.isLoggedIn">
+          <ion-button>Undo</ion-button>
+          <ion-button>Redo</ion-button>
+          <ion-button>Save changes</ion-button>
+          <ion-button>Dashboard</ion-button>
+        </div>
+
+        <div *ngIf="!service.auth.isLoggedIn">
+          <p>What do you think?</p>
+          <ion-button (click)="showSection('publish')">Publish it</ion-button>
+          <ion-button
+            (click)="
+              showSection('create');
+              onSubmit();
+              generated = false;
+              generating = true;
+              aiform = false;
+              message = 'Working on it'
+            "
+            >Change it</ion-button
+          >
+          <ion-button
+            (click)="showSection('create'); generated = false; aiform = false"
+            >Edit it</ion-button
+          >
+        </div>
       </div>
     </div>
   </div>

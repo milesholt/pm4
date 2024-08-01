@@ -137,6 +137,14 @@ ion-content ::ng-deep > *:nth-last-child(2) {
   padding: 10px 0px 40px;
 }
 
+.col{
+  position:relative;
+}
+
+.row{
+  position:relative;
+}
+
 .col-1 {
   .row {
     .col {
@@ -354,4 +362,38 @@ $colors: #ff7e5f, #feb47b, #ff7e5f, #86a8e7, #91eae4, #86a8e7;
   text-align: center;
   color: white;
   @include gradient-animation;
+}
+
+/* Modules */
+
+.mod-faq, .mod-form{
+  width:50vw;
+  max-width:500px;
+  margin:0 auto;
+}
+
+/* Editor */
+
+.editor-panel{
+  position:absolute;
+  top:0;
+  z-index:100000;
+
+  ion-button{
+    min-width:50px!important;
+  }
+}
+
+.editor-panel-col{
+  right:0;
+}
+
+.editor-panel-row{
+  left:0;
+}
+
+/* Site */
+
+::ng-deep .is-site .main-header{
+  display:none!important;
 }

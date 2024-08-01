@@ -29,6 +29,10 @@
 
 /* Global Theme Overide */
 
+*[hidden] {
+  display: none !important;
+}
+
 /* Main Colours */
 
 :root {

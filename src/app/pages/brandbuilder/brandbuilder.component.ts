@@ -156,17 +156,17 @@ export class BrandBuilderComponent
         {
           name: 'mailingList',
           layoutId: 2,
-          modules: [{ name: 'form', title: 'Join our Mailing List' }],
+          modules: [{ name: 'form', title: '', classes: '' }],
         },
         {
           name: 'faq',
           layoutId: 2,
-          modules: [{ name: 'faq', title: 'Frequenty Asked Questions' }],
+          modules: [{ name: 'faq', title: '', classes: '' }],
         },
         {
           name: 'contactform',
           layoutId: 3,
-          modules: [{ name: 'form', title: 'Get in touch' }],
+          modules: [{ name: 'form', title: 'Get in touch', classes: '' }],
         },
       ],
     },
@@ -190,12 +190,12 @@ export class BrandBuilderComponent
         {
           name: 'mailingList',
           layoutId: 2,
-          modules: [{ name: 'form', title: 'Join our Mailing List' }],
+          modules: [{ name: 'form', title: '', classes: '' }],
         },
         {
           name: 'faq',
           layoutId: 2,
-          modules: [{ name: 'faq', title: 'Frequenty Asked Questions' }],
+          modules: [{ name: 'faq', title: '', classes: '' }],
         },
       ],
     },
@@ -213,12 +213,12 @@ export class BrandBuilderComponent
         {
           name: 'mailingList',
           layoutId: 2,
-          modules: [{ name: 'form', title: 'Join our Mailing List' }],
+          modules: [{ name: 'form', title: '', classes: '' }],
         },
         {
           name: 'faq',
           layoutId: 2,
-          modules: [{ name: 'faq', title: 'Frequenty Asked Questions' }],
+          modules: [{ name: 'faq', title: '', classes: '' }],
         },
       ],
     },
@@ -245,12 +245,12 @@ export class BrandBuilderComponent
         {
           name: 'mailingList',
           layoutId: 2,
-          modules: [{ name: 'form', title: 'Join our Mailing List' }],
+          modules: [{ name: 'form', title: '', classes: '' }],
         },
         {
           name: 'faq',
           layoutId: 2,
-          modules: [{ name: 'faq', title: 'Frequenty Asked Questions' }],
+          modules: [{ name: 'faq', title: '', classes: '' }],
         },
       ],
     },
@@ -267,17 +267,17 @@ export class BrandBuilderComponent
         {
           name: 'mailingList',
           layoutId: 2,
-          modules: [{ name: 'form', title: 'Join our Mailing List' }],
+          modules: [{ name: 'form', title: '', classes: '' }],
         },
         {
           name: 'faq',
           layoutId: 2,
-          modules: [{ name: 'faq', title: 'Frequenty Asked Questions' }],
+          modules: [{ name: 'faq', title: '', classes: '' }],
         },
         {
           name: 'contactform',
           layoutId: 3,
-          modules: [{ name: 'form', title: 'Get in touch' }],
+          modules: [{ name: 'form', title: 'Get in touch', classes: '' }],
         },
       ],
     },
@@ -411,7 +411,7 @@ export class BrandBuilderComponent
   private observer: IntersectionObserver | undefined;
 
   constructor(
-    private service: CoreService,
+    public service: CoreService,
     private lib: Library,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
@@ -426,9 +426,15 @@ export class BrandBuilderComponent
     this.route.queryParams.subscribe((params) => {
       const docId = params['site']; // Get the document ID from query parameters
       if (docId) {
+        this.prepareSiteLoad();
         this.loadDocument(docId);
       }
     });
+  }
+
+  prepareSiteLoad() {
+    //add class to body to hide elements when viewing a Site
+    document.body.classList.add('is-site');
   }
 
   loadDocument(docId: string) {
@@ -438,6 +444,11 @@ export class BrandBuilderComponent
           console.log('Loading document from site id: ' + docId);
           console.log(doc);
           this.generated = JSON.parse(doc.data);
+          console.log(this.generated);
+          this.activeIndex = 0;
+          this.activePage = this.generated[0];
+          this.activePageTitle = this.generated[0].title;
+
           this.showSection('preview');
           //this.errorMessage = null; // Clear any previous error
         } else {
@@ -939,5 +950,36 @@ export class BrandBuilderComponent
     localStorage.setItem('doAction', 'createSite');
 
     this.router.navigate(['dashboard']);
+  }
+
+  //Grid Component
+
+  moveRowUp(index: number) {
+    //define rows
+    const rows = this.activePage.layout;
+    if (index > 0) {
+      [rows[index - 1], rows[index]] = [rows[index], rows[index - 1]];
+    }
+  }
+
+  moveRowDown(index: number) {
+    const rows = this.activePage.layout;
+    if (index < rows.length - 1) {
+      [rows[index + 1], rows[index]] = [rows[index], rows[index + 1]];
+    }
+  }
+
+  swapColumns(rowIndex: number, colIndex1: number, colIndex2: number) {
+    console.log('swapping columns');
+    console.log(rowIndex);
+    console.log(colIndex1);
+    console.log(colIndex2);
+    const cols = this.activePage.layout[rowIndex].structure;
+
+    console.log(cols);
+
+    if (colIndex2 >= 0 && colIndex2 < cols.length) {
+      [cols[colIndex1], cols[colIndex2]] = [cols[colIndex2], cols[colIndex1]];
+    }
   }
 }
