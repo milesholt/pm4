@@ -982,4 +982,22 @@ export class BrandBuilderComponent
       [cols[colIndex1], cols[colIndex2]] = [cols[colIndex2], cols[colIndex1]];
     }
   }
+
+  onContentChange(event: any, ridx: number, cidx: number, midx: number) {
+    console.log(event);
+    //this.generated[this.activeIndex].layout[ridx].structure[cidx][midx].content = event;
+  }
+
+  onImageChange(event: any, ridx: number, cidx: number, midx: number) {
+    if (this.service.auth.isLoggedIn) {
+      const imgMod = this.activePage.layout[ridx].structure[cidx][midx].image;
+      console.log(imgMod);
+
+      //const newPic = this.photos[this.selectRandom(this.photos)].src.large;
+      console.log(this.photos);
+
+      //this.activePage.layout[ridx].structure[cidx][midx].image =
+      //this.photos[this.selectRandom(this.photos)].src.large;
+    }
+  }
 }

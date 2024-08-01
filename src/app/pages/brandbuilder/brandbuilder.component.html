@@ -243,16 +243,25 @@
                     <div class="mod" *ngFor="let mod of col; let midx = index">
                       <div *ngIf="mod.image">
                         <img
+                          (click)="onImageChange($event, lidx, cidx, midx)"
                           [src]="mod.image"
                           style="display: block; width: 100%; height: auto"
                         />
                       </div>
                       <div class="mod-heading" *ngIf="mod.heading">
-                        <h2>{{ mod.heading }}</h2>
+                        <h2
+                          [attr.contenteditable]="service.auth.isLoggedIn"
+                          (input)="onContentChange($event, lidx, cidx, midx)"
+                          [innerHtml]="mod.heading"
+                        >
+                          {{ mod.heading }}
+                        </h2>
                       </div>
                       <div
                         class="mod-content"
                         *ngIf="mod.content"
+                        [attr.contenteditable]="service.auth.isLoggedIn"
+                        (input)="onContentChange($event, lidx, cidx, midx)"
                         [innerHtml]="mod.content"
                       ></div>
                       <!--<ion-button *ngIf="col.link" [routerLink]="[col.link.path]" [queryParams]="col.link.query">{{col.link.label}}</ion-button>-->
