@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoreService } from '../../../services/core.service';
 import { Library } from '../../../app.library';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,12 +11,13 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   styleUrls: ['./dashboard.component.scss'],
   providers: [CoreService, Library],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   message: string = '';
   sites: any = [];
   action: string | boolean = false;
   generated: any = false;
   companyInfo: any = false;
+  private subscription: Subscription | null = null;
 
   constructor(
     public service: CoreService,
@@ -29,14 +32,18 @@ export class DashboardComponent implements OnInit {
     });
     this.action = localStorage.getItem('doAction') ?? false;
 
-    if (!!this.action) this.doAction(this.action);
+    if (!!this.action) {
+      this.doAction(this.action);
+    }
   }
 
   async doAction(action: any = false) {
     switch (action) {
       case 'createSite':
+        this.message = 'Setting up, one moment...';
         this.generated = localStorage.getItem('generatedSite');
         this.companyInfo = localStorage.getItem('companyInfo');
+
         if (!!this.generated && !!this.companyInfo) {
           await this.createSite();
         } else {
@@ -58,11 +65,52 @@ export class DashboardComponent implements OnInit {
 
   async createSite() {
     // Example: Add a document
+    this.message =
+      'Preparing to store site...' + JSON.parse(this.companyInfo).companyName;
     this.service.firestore
-      .createDocument('sites', { name: this.companyInfo.companyName })
+      .createDocument('sites', {
+        name: JSON.parse(this.companyInfo).companyName,
+      })
       .then(async () => {
         this.message = 'Site being setup..';
         await this.getSites();
+      })
+      .catch((e: any) => {
+        this.message = e;
+      });
+  }
+
+  async observeSites() {
+    // Example: Fetch documents
+    this.message = 'Fetching database...';
+    this.subscription = this.service.firestore.getDocuments('sites').subscribe({
+      next: (data) => {
+        this.message = 'Got sites';
+        this.sites = data; // Process data here
+        console.log('Documents fetched:', this.sites);
+        this.updateSite();
+      },
+      error: (error) => {
+        this.message = error.message;
+        console.error('Error fetching documents: ', error);
+      },
+      complete: async () => {
+        // Final action after data is processed and observable completes
+        console.log('Subscription complete');
+        this.message = 'done';
+        this.updateSite();
+      },
+    });
+  }
+
+  async getSites() {
+    // Example: Fetch documents
+    this.message = 'Fetching database...';
+    this.service.firestore
+      .getDocumentsPromise('sites')
+      .then(async (data: any) => {
+        this.sites = data;
+        this.message = 'Got sites';
         await this.updateSite();
       })
       .catch((e: any) => {
@@ -70,17 +118,12 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  getSites() {
-    // Example: Fetch documents
-    this.service.firestore.getDocuments('sites').subscribe(
-      (data: any) => {
-        this.sites = data;
-      },
-      (error) => {
-        this.message = error.message;
-        console.error('Error fetching sites: ', error);
-      }
-    );
+  ngOnDestroy() {
+    // Unsubscribe from the observable to stop receiving data updates
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.updateSite(); // Finalize data processing
+    }
   }
 
   deleteSite() {
@@ -102,13 +145,18 @@ export class DashboardComponent implements OnInit {
   }
 
   updateSite() {
+    this.message = 'Updating database...';
     // Example usage of updating a document
     const collectionName = 'sites';
+
     //const documentId = 'eLPOqsKWpPos5c0ezpFW'; // You need to have this ID
-    const documentId = this.sites[0].id;
+    let lastSite = this.sites[this.sites.length - 1];
+    const documentId = lastSite.id;
 
     //const updatedData = { fieldName: 'new value' };
-    const updatedData = this.generated;
+    const updatedData = {
+      data: this.generated,
+    };
 
     this.service.firestore
       .updateDocument(collectionName, documentId, updatedData)
@@ -116,8 +164,9 @@ export class DashboardComponent implements OnInit {
         //this.message = 'Site updated';
         this.message =
           'Success, your site url is : https://siteinanhour.com/?site=' +
-          this.sites[0].id;
+          documentId;
         console.log('Document updated successfully!');
+        return false;
       })
       .catch((error) => {
         this.message = 'Site could not be updated';

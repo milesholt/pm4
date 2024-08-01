@@ -4,6 +4,9 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
+import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { DocumentData } from '@angular/fire/compat/firestore/interfaces';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -39,6 +42,25 @@ export class FirestoreService {
           );
         })
       );
+  }
+
+  // Get documents from a collection as a Promise
+  getDocumentsPromise(collection: string): Promise<any[]> {
+    const collectionRef: AngularFirestoreCollection<DocumentData> =
+      this.firestore.collection(collection);
+    return collectionRef
+      .get()
+      .toPromise()
+      .then((snapshot: any) => {
+        return snapshot.docs.map((doc: any) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+      })
+      .catch((error) => {
+        console.error('Error getting documents: ', error);
+        throw new Error('Error getting documents, please try again later.');
+      });
   }
 
   getDocumentById(collection: string, docId: string): Observable<any> {

@@ -424,7 +424,7 @@ export class BrandBuilderComponent
   ngOnInit(): void {
     //this.showSection('create');
     this.route.queryParams.subscribe((params) => {
-      const docId = params['id']; // Get the document ID from query parameters
+      const docId = params['site']; // Get the document ID from query parameters
       if (docId) {
         this.loadDocument(docId);
       }
@@ -436,6 +436,7 @@ export class BrandBuilderComponent
       (data) => {
         if (data) {
           this.generated = data;
+          this.showSection('preview');
           //this.errorMessage = null; // Clear any previous error
         } else {
           this.message = 'Site not found';

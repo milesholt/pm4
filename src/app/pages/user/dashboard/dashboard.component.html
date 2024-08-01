@@ -82,11 +82,12 @@
             />
             <div class="media-body">
               <h1>
-                Hello:
+                Welcome,
                 <strong>{{
                   user.displayName ? user.displayName : "User"
                 }}</strong>
               </h1>
+              <!--
               <p>
                 User ID: <strong>{{ user.uid }}</strong>
               </p>
@@ -95,16 +96,16 @@
               </p>
               <p>
                 Email Verified: <strong>{{ user.emailVerified }}</strong>
-              </p>
+              </p>-->
 
-              <ion-button (click)="createSite()">Create Site</ion-button>
+              <!--ion-button (click)="createSite()">Create Site</ion-button>
               <ion-button (click)="getSites()">List Sites</ion-button>
               <ion-button (click)="updateSite()">Update Site</ion-button>
-              <ion-button (click)="deleteSite()">Delete Site</ion-button>
+              <ion-button (click)="deleteSite()">Delete Site</ion-button>-->
 
               {{ message }}
 
-              {{ sites | json }}
+              <!-- {{ sites | json }}-->
             </div>
           </div>
         </div>
