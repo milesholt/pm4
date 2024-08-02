@@ -320,6 +320,19 @@
                       <div *ngSwitchCase="'faq'">
                         <app-accordion-comp></app-accordion-comp>
                       </div>
+
+                      <div *ngSwitchCase="'gallery'">
+                        <app-gallery-comp
+                          [type]="
+                            module.params.type ? module.params.type : false
+                          "
+                          [username]="
+                            module.params.username
+                              ? module.params.username
+                              : false
+                          "
+                        ></app-gallery-comp>
+                      </div>
                     </div>
                   </div>
                   <!--let mod-->

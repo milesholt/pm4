@@ -15,7 +15,7 @@ import { CoreService } from '../../../services/core.service';
 
 @Component({
   //standalone: true,
-  selector: 'app-gallery',
+  selector: 'app-gallery-comp',
   templateUrl: './gallery.component.html',
   styleUrls: ['./gallery.component.scss'],
   providers: [CoreService, Library],

@@ -102,6 +102,19 @@ export class BrandBuilderComponent
 
   photos: any[] = [];
 
+  themeStructure: any = {
+    colours: [
+      { primary: '', secondary: '', tertiary: '' },
+      { primary: '', secondary: '', tertiary: '' },
+      { primary: '', secondary: '', tertiary: '' },
+    ],
+    fonts: [
+      { name: '', url: '' },
+      { name: '', url: '' },
+      { name: '', url: '' },
+    ],
+  };
+
   aiStructure: any = {
     welcome: { section: 'Welcome', title: '', content: '' },
     introduction: { section: 'Introduction', title: '', content: '' },
@@ -159,6 +172,7 @@ export class BrandBuilderComponent
   modules: any = [
     { name: 'form', title: '', classes: '' },
     { name: 'faq', title: '', classes: '' },
+    { name: 'gallery', title: '', classes: '', params: {} },
   ];
 
   websiteStructure: any = [
@@ -593,6 +607,8 @@ export class BrandBuilderComponent
         await this.doImages();
         this.message = 'Generating structure...';
         this.aiform = await this.doAIStructure();
+        this.message = 'Generating themes...';
+        await this.doThemes();
       })
       .then(async (result: any) => {
         this.message = 'Generating layouts...';
@@ -758,6 +774,26 @@ export class BrandBuilderComponent
 
     try {
       const res = await this.doAI(prompt);
+      return res;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async doThemes() {
+    console.log('doing themes:');
+    const prompt =
+      'Using the data and content from this json: ' +
+      JSON.stringify(this.generated) +
+      this.companyProducts +
+      ' Use this json structure: ' +
+      JSON.stringify(this.themeStructure) +
+      ' and complete the values for all the empty properties, providing three groups of three hex colours - a primary, secondary and tertiary color - in hex code, and three suggested Google Fonts. The colors and fonts must be fitting to the company and website content, in terms of style. Return only the updated json structure. All the empty values should be completed. For the fonts please provide the name of the google font and a url to load the font and all available weights';
+    console.log(prompt);
+
+    try {
+      const res = await this.doAI(prompt);
+      console.log(res);
       return res;
     } catch (e) {
       throw e;
