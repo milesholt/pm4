@@ -17,6 +17,7 @@ import { ContactFormModule } from '../components/contactform/contactform.module'
 import { AccordionModule } from '../components/accordion/accordion.module';
 import { FooterModule } from '../components/footer/footer.module';
 import { RefresherModule } from '../components/refresher/refresher.module';
+import { GalleryModule } from '../components/gallery/gallery.module';
 
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ContentEditableDirective } from 'src/app/directives/content-editable.directive';
@@ -36,6 +37,7 @@ import { ContentEditableDirective } from 'src/app/directives/content-editable.di
     AccordionModule,
     FooterModule,
     RefresherModule,
+    GalleryModule,
     //BrowserAnimationsModule,
   ],
   declarations: [BrandBuilderComponent, ContentEditableDirective],
