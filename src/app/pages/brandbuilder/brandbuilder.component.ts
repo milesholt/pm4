@@ -95,6 +95,8 @@ export class BrandBuilderComponent
     "We're an old fashioned tattoo shop based in Las Vegas. We provide high quality tattoo services. We offer a wider variety of styles and tattoo application methods, with a team of dedicated and professional ink artists. We do all methods of tattooing from Stick and Poke Hand Poke, Single Needle, Yantra/Sak Yants, and Tebori. We also provide tattoo removal services.";
   companyProducts: string =
     'bamboo tattoo, blackwork tattoo, black ink tattoo, watercolour tattoo, body art tattoo, geometric tattoo, tattoo removal, bespoke tattoo design service';
+  companyEmail: string = 'contact@liketheroad.com';
+  companyInstagram: string = 'milesholt_';
 
   showCreate: boolean = false;
   showPreview: boolean = false;
@@ -447,6 +449,7 @@ export class BrandBuilderComponent
 
   message: string = '';
   aiform: any = false;
+  themes: any = false;
 
   currentYear: number;
 
@@ -605,10 +608,10 @@ export class BrandBuilderComponent
           });*/
         this.message = 'Generating images...';
         await this.doImages();
-        this.message = 'Generating structure...';
-        this.aiform = await this.doAIStructure();
         this.message = 'Generating themes...';
         await this.doThemes();
+        this.message = 'Generating structure...';
+        this.aiform = await this.doAIStructure();
       })
       .then(async (result: any) => {
         this.message = 'Generating layouts...';
@@ -794,10 +797,70 @@ export class BrandBuilderComponent
     try {
       const res = await this.doAI(prompt);
       console.log(res);
+      this.themes = res;
+      if (JSON.parse(this.themes)) {
+        await this.doThemesCSS();
+      } else {
+        console.log('Could not parse themes response as JSON');
+      }
       return res;
     } catch (e) {
       throw e;
     }
+  }
+
+  async doThemesCSS() {
+    console.log('Writing css for themes');
+    let css = '<style>';
+    this.themes.fonts.forEach((font: any, index: number) => {
+      css += '@import url("' + font.url + '")';
+      css +=
+        '.theme' +
+        index +
+        ' body {font-family: "' +
+        font.name +
+        '", sans-serif;}';
+      css +=
+        '.theme' +
+        index +
+        ' h1, h2, h3, h4, h5, h6 {font-family: "' +
+        font.name +
+        '", sans-serif;font-weight: 700;}';
+      css +=
+        '.theme' +
+        index +
+        ' p,a,span,td,li {font-family: "' +
+        font.name +
+        '", sans-serif;font-weight: 400;}';
+    });
+
+    this.themes.colours.forEach((colour: any, index: number) => {
+      css +=
+        '.theme' +
+        index +
+        ' .row:nth-child(even){color:white; background-color:' +
+        colour.primary +
+        '}';
+      css +=
+        '.theme' +
+        index +
+        ' .row:nth-child(even) h1,h2,h3,p,a,li,span{color:white;}';
+      css +=
+        '.theme' +
+        index +
+        ' .col:nth-child(even){color:white; background-color:' +
+        colour.tertiary +
+        '}';
+      css +=
+        '.theme' +
+        index +
+        ' .col:nth-child(even) p,h1,h2,h3,a,li{color:white;}';
+      css += '.theme' + index + ' h1,p,a{color:' + colour.primary + '}';
+      css += '.theme' + index + ' h2,h3{color:' + colour.secondary + '}';
+    });
+    css += '</style>';
+
+    console.log(css);
   }
 
   async doSections() {
@@ -885,7 +948,7 @@ export class BrandBuilderComponent
     });
   }
 
-  doImages() {
+  async doImages() {
     //alert('image');
     this.message = 'Generating images...';
     //this.cleanJsonResponse(response);
@@ -902,6 +965,12 @@ export class BrandBuilderComponent
           });*/
       });
     });
+    console.log('getting instagram:');
+
+    await this.service.instagram.getImages(this.companyInstagram).subscribe(
+      (images) => (this.photos = [...this.photos, ...images]),
+      (error) => console.error('Error fetching Instagram images', error)
+    );
     //return this.generated;
   }
 
@@ -1057,6 +1126,7 @@ export class BrandBuilderComponent
       media: {
         photoData: this.photos,
       },
+      themes: this.themes,
     };
 
     localStorage.setItem('generatedSite', JSON.stringify(siteData));

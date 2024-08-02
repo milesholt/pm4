@@ -65,6 +65,24 @@
             required
           ></ion-textarea>
         </ion-item>
+        <ion-item>
+          <ion-input
+            label="Got an email? (optional)"
+            labelPlacement="stacked"
+            [(ngModel)]="companyEmail"
+            name="company-email"
+            required
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            label="Got Instagram? Enter your username here (optional)"
+            labelPlacement="stacked"
+            [(ngModel)]="companyInstagram"
+            name="company-instagram"
+            required
+          ></ion-input>
+        </ion-item>
         <ion-button expand="full" type="submit"
           ><ion-icon name="color-wand" class="button-icon"></ion-icon> Generate
           Website</ion-button
