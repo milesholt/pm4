@@ -22,6 +22,8 @@ import {
   style,
   animate,
   transition,
+  query,
+  stagger,
 } from '@angular/animations';
 
 import {
@@ -36,12 +38,33 @@ import { environment } from '../../../environments/environment';
   templateUrl: 'brandbuilder.component.html',
   styleUrls: ['brandbuilder.component.scss'],
   animations: [
-    trigger('fadeSlideIn', [
-      state('void', style({ opacity: 0, transform: 'translateY(20px)' })),
+    trigger('rowAnimation', [
       transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-20px)' }),
         animate(
-          '1000ms ease-out',
+          '300ms ease-out',
           style({ opacity: 1, transform: 'translateY(0)' })
+        ),
+      ]),
+      transition(':leave', [
+        animate(
+          '300ms ease-out',
+          style({ opacity: 0, transform: 'translateY(20px)' })
+        ),
+      ]),
+    ]),
+    trigger('columnAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateX(-20px)' }),
+        animate(
+          '300ms ease-out',
+          style({ opacity: 1, transform: 'translateX(0)' })
+        ),
+      ]),
+      transition(':leave', [
+        animate(
+          '300ms ease-out',
+          style({ opacity: 0, transform: 'translateX(20px)' })
         ),
       ]),
     ]),
@@ -73,7 +96,7 @@ export class BrandBuilderComponent
   companyProducts: string =
     'bamboo tattoo, blackwork tattoo, black ink tattoo, watercolour tattoo, body art tattoo, geometric tattoo, tattoo removal, bespoke tattoo design service';
 
-  showCreate: boolean = true;
+  showCreate: boolean = false;
   showPreview: boolean = false;
   showPublish: boolean = false;
 
@@ -438,28 +461,64 @@ export class BrandBuilderComponent
   }
 
   loadDocument(docId: string) {
-    this.service.firestore.getDocumentById('sites', docId).subscribe(
-      (doc) => {
-        if (doc) {
-          console.log('Loading document from site id: ' + docId);
-          console.log(doc);
-          this.generated = JSON.parse(doc.data);
-          console.log(this.generated);
-          this.activeIndex = 0;
-          this.activePage = this.generated[0];
-          this.activePageTitle = this.generated[0].title;
-
-          this.showSection('preview');
-          //this.errorMessage = null; // Clear any previous error
-        } else {
-          this.message = 'Site not found';
+    let site: any = false;
+    var local = localStorage.getItem('bb_' + docId);
+    if (local) {
+      console.log('got site locally');
+      site = JSON.parse(local);
+      console.log(site);
+      this.finishLoadSite(site, docId);
+    } else {
+      console.log('getting site remotely');
+      this.service.firestore.getDocumentById('sites', docId).subscribe(
+        (doc) => {
+          if (doc) {
+            console.log('Loading document from site id: ' + docId);
+            site = doc;
+            this.finishLoadSite(site, docId);
+          } else {
+            this.message = 'Site not found';
+          }
+        },
+        (error) => {
+          this.message = error.message;
+          console.error('Error fetching document: ', error);
         }
-      },
-      (error) => {
-        this.message = error.message;
-        console.error('Error fetching document: ', error);
-      }
-    );
+      );
+    }
+  }
+
+  finishLoadSite(doc: any, docId: string) {
+    const d = JSON.parse(doc.data);
+    console.log('Got site:');
+    console.log(d);
+    this.generated = d.content;
+    this.companyName = d.details.companyInfo.companyName;
+    this.companyDescription = d.details.companyInfo.companyDescription;
+    this.companyProducts = d.details.companyInfo.companyProducts;
+    this.photos = d.media.photoData;
+    this.activeIndex = 0;
+    this.activePage = this.generated[0];
+    this.activePageTitle = this.generated[0].title;
+
+    localStorage.setItem('bb_' + docId, JSON.stringify(doc));
+
+    this.showSection('preview');
+
+    /*
+    this.generated = d.content;
+    this.companyName = d.details.companyInfo.companyName;
+    this.companyDescription = d.details.companyInfo.companyDescription;
+    this.companyProducts = d.details.companyInfo.companyProducts;
+    this.photos = d.media.photoData;
+    this.activeIndex = 0;
+    this.activePage = this.generated[0];
+    this.activePageTitle = this.generated[0].title;*/
+
+    //store locally once loaded from remote
+    //localStorage.setItem('bb_' + docId, JSON.stringify(doc));
+    //this.showSection('preview');
+    //this.errorMessage = null; // Clear any previous error
   }
 
   ngAfterViewInit(): void {
@@ -945,10 +1004,18 @@ export class BrandBuilderComponent
       companyDescription: this.companyDescription,
       companyProducts: this.companyProducts,
     };
-    this.generated.companyInfo = companyInfo;
-    this.generated.photos = this.photos;
-    
-    localStorage.setItem('generatedSite', JSON.stringify(this.generated));
+
+    const siteData = {
+      content: this.generated,
+      details: {
+        companyInfo: companyInfo,
+      },
+      media: {
+        photoData: this.photos,
+      },
+    };
+
+    localStorage.setItem('generatedSite', JSON.stringify(siteData));
     localStorage.setItem('companyInfo', JSON.stringify(companyInfo));
     localStorage.setItem('doAction', 'createSite');
 
@@ -970,6 +1037,18 @@ export class BrandBuilderComponent
     if (index < rows.length - 1) {
       [rows[index + 1], rows[index]] = [rows[index], rows[index + 1]];
     }
+  }
+
+  deleteRow(index: number) {
+    const rows = this.activePage.layout;
+    rows.splice(index, 1);
+  }
+
+  copyRow(index: number) {
+    const rows = this.activePage.layout;
+    const newRow = JSON.parse(JSON.stringify(rows[index]));
+    console.log(newRow);
+    rows.splice(index + 1, 0, newRow);
   }
 
   swapColumns(rowIndex: number, colIndex1: number, colIndex2: number) {
@@ -998,9 +1077,17 @@ export class BrandBuilderComponent
 
       //const newPic = this.photos[this.selectRandom(this.photos)].src.large;
       console.log(this.photos);
-
-      //this.activePage.layout[ridx].structure[cidx][midx].image =
-      //this.photos[this.selectRandom(this.photos)].src.large;
+      if (this.photos.length) {
+        this.activePage.layout[ridx].structure[cidx][midx].image =
+          this.photos[this.selectRandom(this.photos)].src.large;
+      }
     }
+  }
+
+  checkContent(content: any) {
+    if (content == '') {
+      console.log('content is blank');
+    }
+    return content;
   }
 }

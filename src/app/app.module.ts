@@ -3,6 +3,7 @@ import { BrowserModule, Title, Meta } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 //This had no effect and only works in child component and module
 //import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
@@ -49,6 +50,7 @@ import { FooterModule } from './pages/components/footer/footer.module';
     CartShopModule,
     FooterModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     //QuantityShopModule,
     //SafeHtmlPipe,
   ],

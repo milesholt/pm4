@@ -162,9 +162,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .updateDocument(collectionName, documentId, updatedData)
       .then(() => {
         //this.message = 'Site updated';
+        const siteurl = '/brandbuilder?site=' + documentId;
         this.message =
-          'Success, your site url is : https://siteinanhour.com/?site=' +
-          documentId;
+          'Success, your site url is : <a href="' +
+          siteurl +
+          '">' +
+          siteurl +
+          '<a/>';
         console.log('Document updated successfully!');
         return false;
       })

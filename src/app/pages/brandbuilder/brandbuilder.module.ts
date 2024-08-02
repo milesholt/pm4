@@ -18,6 +18,9 @@ import { AccordionModule } from '../components/accordion/accordion.module';
 import { FooterModule } from '../components/footer/footer.module';
 import { RefresherModule } from '../components/refresher/refresher.module';
 
+//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ContentEditableDirective } from 'src/app/directives/content-editable.directive';
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -33,7 +36,8 @@ import { RefresherModule } from '../components/refresher/refresher.module';
     AccordionModule,
     FooterModule,
     RefresherModule,
+    //BrowserAnimationsModule,
   ],
-  declarations: [BrandBuilderComponent],
+  declarations: [BrandBuilderComponent, ContentEditableDirective],
 })
 export class BrandBuilderModule {}

@@ -202,6 +202,7 @@
                 <div
                   *ngIf="service.auth.isLoggedIn"
                   class="editor-panel editor-panel-row"
+                  @rowAnimation
                 >
                   <ion-button (click)="moveRowUp(lidx)" [disabled]="lidx === 0"
                     ><ion-icon name="chevron-up-outline"></ion-icon
@@ -211,6 +212,13 @@
                     [disabled]="lidx === activePage.layout.length - 1"
                     ><ion-icon name="chevron-down-outline"></ion-icon
                   ></ion-button>
+
+                  <ion-button (click)="copyRow(lidx)"
+                    ><ion-icon name="copy-outline"></ion-icon
+                  ></ion-button>
+                  <ion-button (click)="deleteRow(lidx)"
+                    ><ion-icon name="close-outline"></ion-icon
+                  ></ion-button>
                 </div>
 
                 <div
@@ -218,6 +226,7 @@
                     hasProperty(col, 'image') ? 'col-image' : 'col-content'
                   }}"
                   *ngFor="let col of layout.structure; let cidx = index"
+                  @columnAnimation
                 >
                   <div
                     *ngIf="service.auth.isLoggedIn"
@@ -248,21 +257,28 @@
                           style="display: block; width: 100%; height: auto"
                         />
                       </div>
-                      <div class="mod-heading" *ngIf="mod.heading">
+
+                      <div
+                        class="mod-heading"
+                        *ngIf="mod.hasOwnProperty('heading')"
+                      >
                         <h2
+                          appContentEditable
                           [attr.contenteditable]="service.auth.isLoggedIn"
                           (input)="onContentChange($event, lidx, cidx, midx)"
                           [innerHtml]="mod.heading"
-                        >
-                          {{ mod.heading }}
-                        </h2>
+                          data-text="Enter a heading here"
+                        ></h2>
                       </div>
+
                       <div
                         class="mod-content"
-                        *ngIf="mod.content"
+                        *ngIf="mod.hasOwnProperty('content')"
+                        appContentEditable
                         [attr.contenteditable]="service.auth.isLoggedIn"
                         (input)="onContentChange($event, lidx, cidx, midx)"
                         [innerHtml]="mod.content"
+                        data-text="Enter some content here"
                       ></div>
                       <!--<ion-button *ngIf="col.link" [routerLink]="[col.link.path]" [queryParams]="col.link.query">{{col.link.label}}</ion-button>-->
                     </div>

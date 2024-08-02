@@ -397,3 +397,8 @@ $colors: #ff7e5f, #feb47b, #ff7e5f, #86a8e7, #91eae4, #86a8e7;
 ::ng-deep .is-site .main-header{
   display:none!important;
 }
+
+[contentEditable=true]:empty:not(:focus):before {
+  content: attr(data-text);
+  opacity:0.5;
+}

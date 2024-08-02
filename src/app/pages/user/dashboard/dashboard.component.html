@@ -103,8 +103,7 @@
               <ion-button (click)="updateSite()">Update Site</ion-button>
               <ion-button (click)="deleteSite()">Delete Site</ion-button>-->
 
-              {{ message }}
-
+              <div [innerHtml]="message"></div>
               <!-- {{ sites | json }}-->
             </div>
           </div>
