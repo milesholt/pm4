@@ -154,9 +154,6 @@
             <div id="hero-container">
               <h1
                 class="fade-up"
-                appContentEditable
-                [attr.contenteditable]="service.auth.isLoggedIn"
-                data-text="Enter a heading here"
                 [innerHTML]="
                   activePage.title == 'Home'
                     ? activePage.subheading
@@ -164,19 +161,12 @@
                 "
               ></h1>
               <h2
-                appContentEditable
-                [attr.contenteditable]="service.auth.isLoggedIn"
-                data-text="Enter a subheading here"
                 [innerHTML]="
                   activePage.title == 'Home' ? '' : activePage.subheading
                 "
               ></h2>
             </div>
-            <img
-              (click)="onImageChange2($event, activePage)"
-              [src]="activePage.image"
-              id="hero-image"
-            />
+            <img [src]="activePage.image" id="hero-image" />
           </div>
 
           <div id="main-content">
@@ -298,33 +288,28 @@
               </div>
               <!--row-->
 
-              <div *ngIf="layout.modules" class="row module">
+              <div *ngIf="activePage.sections[lidx].modules" class="row module">
                 <div
-                  class="mod-{{ modules[module.id].name }}"
-                  *ngFor="let module of layout.modules; let midx = index"
+                  class="mod-{{ module.name }}"
+                  *ngFor="
+                    let module of activePage.sections[lidx].modules;
+                    let midx = index
+                  "
                 >
-                  <h2
-                    *ngIf="module.title && module.title !== ''"
-                    appContentEditable
-                    [attr.contenteditable]="service.auth.isLoggedIn"
-                    [innerHtml]="module.title"
-                    data-text="Enter a heading here"
-                  ></h2>
+                  <h2 *ngIf="module.title && module.title !== ''">
+                    {{ module.title }}
+                  </h2>
 
-                  <div *ngIf="modules[module.id]">
-                    <div [ngSwitch]="modules[module.id].name">
-                      <div *ngSwitchCase="'form'">
-                        <app-contactform-comp></app-contactform-comp>
-                      </div>
+                  <div [ngSwitch]="module.name">
+                    <div *ngSwitchCase="'form'">
+                      <app-contactform-comp></app-contactform-comp>
+                    </div>
 
-                      <div *ngSwitchCase="'faq'">
-                        <app-accordion-comp></app-accordion-comp>
-                      </div>
+                    <div *ngSwitchCase="'faq'">
+                      <app-accordion-comp></app-accordion-comp>
                     </div>
                   </div>
-                  <!--let mod-->
                 </div>
-                <!--modules-->
               </div>
             </div>
             <!--layout-->

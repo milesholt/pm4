@@ -156,6 +156,11 @@ export class BrandBuilderComponent
     faq: { section: 'Frequently Asked Questions', title: '', content: '' },
   };
 
+  modules: any = [
+    { name: 'form', title: '', classes: '' },
+    { name: 'faq', title: '', classes: '' },
+  ];
+
   websiteStructure: any = [
     {
       title: 'Home',
@@ -179,17 +184,17 @@ export class BrandBuilderComponent
         {
           name: 'mailingList',
           layoutId: 2,
-          modules: [{ name: 'form', title: '', classes: '' }],
+          modules: [{ id: 0 }],
         },
         {
           name: 'faq',
           layoutId: 2,
-          modules: [{ name: 'faq', title: '', classes: '' }],
+          modules: [{ id: 1 }],
         },
         {
           name: 'contactform',
           layoutId: 3,
-          modules: [{ name: 'form', title: 'Get in touch', classes: '' }],
+          modules: [{ id: 0, title: 'Get in touch' }],
         },
       ],
     },
@@ -213,12 +218,12 @@ export class BrandBuilderComponent
         {
           name: 'mailingList',
           layoutId: 2,
-          modules: [{ name: 'form', title: '', classes: '' }],
+          modules: [{ id: 0 }],
         },
         {
           name: 'faq',
           layoutId: 2,
-          modules: [{ name: 'faq', title: '', classes: '' }],
+          modules: [{ id: 1 }],
         },
       ],
     },
@@ -236,12 +241,12 @@ export class BrandBuilderComponent
         {
           name: 'mailingList',
           layoutId: 2,
-          modules: [{ name: 'form', title: '', classes: '' }],
+          modules: [{ id: 0 }],
         },
         {
           name: 'faq',
           layoutId: 2,
-          modules: [{ name: 'faq', title: '', classes: '' }],
+          modules: [{ id: 1 }],
         },
       ],
     },
@@ -268,12 +273,12 @@ export class BrandBuilderComponent
         {
           name: 'mailingList',
           layoutId: 2,
-          modules: [{ name: 'form', title: '', classes: '' }],
+          modules: [{ id: 0 }],
         },
         {
           name: 'faq',
           layoutId: 2,
-          modules: [{ name: 'faq', title: '', classes: '' }],
+          modules: [{ id: 1 }],
         },
       ],
     },
@@ -290,17 +295,17 @@ export class BrandBuilderComponent
         {
           name: 'mailingList',
           layoutId: 2,
-          modules: [{ name: 'form', title: '', classes: '' }],
+          modules: [{ id: 0 }],
         },
         {
           name: 'faq',
           layoutId: 2,
-          modules: [{ name: 'faq', title: '', classes: '' }],
+          modules: [{ id: 1 }],
         },
         {
           name: 'contactform',
           layoutId: 3,
-          modules: [{ name: 'form', title: 'Get in touch', classes: '' }],
+          modules: [{ id: 0, title: 'Get in touch' }],
         },
       ],
     },
@@ -445,12 +450,13 @@ export class BrandBuilderComponent
   }
 
   ngOnInit(): void {
-    //this.showSection('create');
     this.route.queryParams.subscribe((params) => {
       const docId = params['site']; // Get the document ID from query parameters
       if (docId) {
         this.prepareSiteLoad();
         this.loadDocument(docId);
+      } else {
+        this.showSection('create');
       }
     });
   }
@@ -771,7 +777,7 @@ export class BrandBuilderComponent
           console.log(page);
           let layoutIndex = 0;
           //loop through sections
-          page.sections.forEach((section: any) => {
+          page.sections.forEach((section: any, index: number) => {
             // Update the layout index to loop from 1 to 5
             console.log(section);
 
@@ -799,6 +805,8 @@ export class BrandBuilderComponent
                 this.contentLayouts[layoutIndex]
               )
             );
+            //copy modules
+            page.layout[index].modules = this.lib.deepCopy(section.modules);
           });
 
           //
@@ -1045,10 +1053,9 @@ export class BrandBuilderComponent
   }
 
   copyRow(index: number) {
-    const rows = this.activePage.layout;
-    const newRow = JSON.parse(JSON.stringify(rows[index]));
-    console.log(newRow);
-    rows.splice(index + 1, 0, newRow);
+    let rows = this.activePage.layout;
+    const rowToCopy = this.lib.deepCopy(rows[index]);
+    rows.splice(index + 1, 0, rowToCopy);
   }
 
   swapColumns(rowIndex: number, colIndex1: number, colIndex2: number) {
@@ -1080,6 +1087,15 @@ export class BrandBuilderComponent
       if (this.photos.length) {
         this.activePage.layout[ridx].structure[cidx][midx].image =
           this.photos[this.selectRandom(this.photos)].src.large;
+      }
+    }
+  }
+
+  onImageChange2(event: any, obj: any) {
+    if (this.service.auth.isLoggedIn) {
+      if (this.photos.length) {
+        obj.image = this.photos[this.selectRandom(this.photos)].src.large;
+        console.log(obj);
       }
     }
   }

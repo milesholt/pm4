@@ -97,6 +97,10 @@ export class Library {
     return newObj;
   }
 
+  deepCopy2(obj: any): any {
+    return JSON.parse(JSON.stringify(obj));
+  }
+
   //returns true if it is an array
   isArray(value: any) {
     return Array.isArray(value) && value.constructor === Array;
