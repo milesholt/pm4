@@ -149,4 +149,10 @@ export class Library {
     }*/
     return array.findIndex((x: any) => x[key] === value);
   }
+
+  decodeHtmlEntity(encodedUrl: string): string {
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = encodedUrl;
+    return textArea.value;
+  }
 }
