@@ -83,6 +83,7 @@ export class BrandBuilderComponent
   activePage: any = false;
   activeIndex = 0;
   isChanging: boolean = false;
+  activeTheme = 0;
 
   /*companyName: string = 'Roses R Us';
     companyDescription: string =
@@ -103,6 +104,11 @@ export class BrandBuilderComponent
   showPublish: boolean = false;
 
   photos: any[] = [];
+  media:any = {
+    social:{
+      instagram: []
+    }
+  }
 
   themeStructure: any = {
     colours: [
@@ -511,7 +517,7 @@ export class BrandBuilderComponent
     }
   }
 
-  finishLoadSite(doc: any, docId: string) {
+  async finishLoadSite(doc: any, docId: string) {
     const d = JSON.parse(doc.data);
     console.log('Got site:');
     console.log(d);
@@ -520,9 +526,12 @@ export class BrandBuilderComponent
     this.companyDescription = d.details.companyInfo.companyDescription;
     this.companyProducts = d.details.companyInfo.companyProducts;
     this.photos = d.media.photoData;
+    this.media = d.media;
     this.activeIndex = 0;
     this.activePage = this.generated[0];
     this.activePageTitle = this.generated[0].title;
+    this.themes = d.themes;
+    await this.doThemesCSS();
 
     localStorage.setItem('bb_' + docId, JSON.stringify(doc));
 
@@ -610,6 +619,8 @@ export class BrandBuilderComponent
         await this.doImages();
         this.message = 'Generating themes...';
         await this.doThemes();
+        this.message = 'Generating style...';
+        await this.doThemesCSS();
         this.message = 'Generating structure...';
         this.aiform = await this.doAIStructure();
       })
@@ -791,18 +802,13 @@ export class BrandBuilderComponent
       this.companyProducts +
       ' Use this json structure: ' +
       JSON.stringify(this.themeStructure) +
-      ' and complete the values for all the empty properties, providing three groups of three hex colours - a primary, secondary and tertiary color - in hex code, and three suggested Google Fonts. The colors and fonts must be fitting to the company and website content, in terms of style. Return only the updated json structure. All the empty values should be completed. For the fonts please provide the name of the google font and a url to load the font and all available weights';
+      ' and complete the values for all the empty properties, providing three groups of three hex colours - a primary, secondary and tertiary color - in hex code, and three suggested Google Fonts. The colors and fonts must be fitting to the company and website content, in terms of style. Return only the updated json structure. All the empty values should be completed. For colours, they must all be different to each other. No colour can be the same, nor can any be white or a shade of white. For the fonts please provide the name of the google font and a url to load the font and all available weights';
     console.log(prompt);
 
     try {
       const res = await this.doAI(prompt);
       console.log(res);
       this.themes = res;
-      if (JSON.parse(this.themes)) {
-        await this.doThemesCSS();
-      } else {
-        console.log('Could not parse themes response as JSON');
-      }
       return res;
     } catch (e) {
       throw e;
@@ -811,27 +817,47 @@ export class BrandBuilderComponent
 
   async doThemesCSS() {
     console.log('Writing css for themes');
-    let css = '<style>';
+    let css = '';
     this.themes.fonts.forEach((font: any, index: number) => {
-      css += '@import url("' + font.url + '")';
+      css += '@import url("' + font.url + '");';
+    });
+    this.themes.fonts.forEach((font: any, index: number) => {
+      css +=
+        'body .theme' +
+        index +
+        ' * {font-family: "' +
+        font.name +
+        '", sans-serif!important;}';
       css +=
         '.theme' +
         index +
-        ' body {font-family: "' +
+        ' h1, .theme' +
+        index +
+        ' h2, .theme' +
+        index +
+        ' h3, .theme' +
+        index +
+        ' h4, .theme' +
+        index +
+        ' h5, .theme' +
+        index +
+        ' h6 {font-family: "' +
         font.name +
-        '", sans-serif;}';
+        '", sans-serif!important;font-weight: 700!important;}';
       css +=
         '.theme' +
         index +
-        ' h1, h2, h3, h4, h5, h6 {font-family: "' +
-        font.name +
-        '", sans-serif;font-weight: 700;}';
-      css +=
-        '.theme' +
+        ' p, .theme' +
         index +
-        ' p,a,span,td,li {font-family: "' +
+        ' a, .theme' +
+        index +
+        ' span, .theme' +
+        index +
+        ' td, .theme' +
+        index +
+        ' li {font-family: "' +
         font.name +
-        '", sans-serif;font-weight: 400;}';
+        '", sans-serif!important;font-weight: 400!important;}';
     });
 
     this.themes.colours.forEach((colour: any, index: number) => {
@@ -840,7 +866,7 @@ export class BrandBuilderComponent
         index +
         ' .row:nth-child(even){color:white; background-color:' +
         colour.primary +
-        '}';
+        '!important; }';
       css +=
         '.theme' +
         index +
@@ -850,15 +876,16 @@ export class BrandBuilderComponent
         index +
         ' .col:nth-child(even){color:white; background-color:' +
         colour.tertiary +
-        '}';
+        ';}';
       css +=
         '.theme' +
         index +
         ' .col:nth-child(even) p,h1,h2,h3,a,li{color:white;}';
-      css += '.theme' + index + ' h1,p,a{color:' + colour.primary + '}';
-      css += '.theme' + index + ' h2,h3{color:' + colour.secondary + '}';
+      css += '.theme' + index + ' h1,p,a{color:' + colour.primary + ';}';
+      css += '.theme' + index + ' h2,h3{color:' + colour.secondary + ';}';
     });
-    css += '</style>';
+
+    this.loadStyles(css);
 
     console.log(css);
   }
@@ -929,8 +956,9 @@ export class BrandBuilderComponent
                       col.content = this.aiform[sectionName].content;
 
                   if (typeof col.image !== 'undefined')
+                    let allImages = [...this.photos, ...this.media.social.instagram];
                     col.image =
-                      this.photos[this.selectRandom(this.photos)].src.large;
+                      allImages[this.selectRandom(allImages)].src.large;
                 }
               });
             });
@@ -968,7 +996,7 @@ export class BrandBuilderComponent
     console.log('getting instagram:');
 
     await this.service.instagram.getImages(this.companyInstagram).subscribe(
-      (images) => (this.photos = [...this.photos, ...images]),
+      (images) => (this.media.social.instagram = images),
       (error) => console.error('Error fetching Instagram images', error)
     );
     //return this.generated;
@@ -1065,6 +1093,13 @@ export class BrandBuilderComponent
     }, 600);
   }
 
+  async loadStyles(css: string) {
+    const styleElement = document.createElement('style');
+    styleElement.type = 'text/css';
+    styleElement.innerHTML = css;
+    document.getElementsByTagName('head')[0].appendChild(styleElement);
+  }
+
   checkJSONContentEmpty(json: any) {
     let content = '';
     for (let i = 0; i < json.length; i++) {
@@ -1113,9 +1148,13 @@ export class BrandBuilderComponent
 
   storeSite() {
     const companyInfo = {
-      companyName: this.companyName,
-      companyDescription: this.companyDescription,
-      companyProducts: this.companyProducts,
+      name: this.companyName,
+      description: this.companyDescription,
+      products: this.companyProducts,
+      email: this.companyEmail,
+      social: {
+        instagram: this.companyInstagram,
+      },
     };
 
     const siteData = {
@@ -1125,6 +1164,9 @@ export class BrandBuilderComponent
       },
       media: {
         photoData: this.photos,
+        social:{
+          instagram: this.media.social.instagram
+        }
       },
       themes: this.themes,
     };
@@ -1191,8 +1233,9 @@ export class BrandBuilderComponent
       //const newPic = this.photos[this.selectRandom(this.photos)].src.large;
       console.log(this.photos);
       if (this.photos.length) {
+        let allImages = [...this.photos, ...this.media.social.instagram];
         this.activePage.layout[ridx].structure[cidx][midx].image =
-          this.photos[this.selectRandom(this.photos)].src.large;
+          allImages[this.selectRandom(allImages)].src.large;
       }
     }
   }
@@ -1200,7 +1243,8 @@ export class BrandBuilderComponent
   onImageChange2(event: any, obj: any) {
     if (this.service.auth.isLoggedIn) {
       if (this.photos.length) {
-        obj.image = this.photos[this.selectRandom(this.photos)].src.large;
+        let allImages = [...this.photos, ...this.media.social.instagram];                   
+        obj.image = allImages[this.selectRandom(allImages)].src.large;
         console.log(obj);
       }
     }
@@ -1211,5 +1255,10 @@ export class BrandBuilderComponent
       console.log('content is blank');
     }
     return content;
+  }
+
+  changeTheme() {
+    this.activeTheme =
+      this.activeTheme >= this.themes.colours.length ? 0 : this.activeTheme + 1;
   }
 }

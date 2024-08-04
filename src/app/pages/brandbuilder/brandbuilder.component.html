@@ -65,6 +65,23 @@
             required
           ></ion-textarea>
         </ion-item>
+        <ion-item>
+          <ion-input
+            label="Got an email? (optional)"
+            labelPlacement="stacked"
+            [(ngModel)]="companyEmail"
+            name="company-email"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            label="Got Instagram? Enter your username here (optional)"
+            labelPlacement="stacked"
+            [(ngModel)]="companyInstagram"
+            name="company-instagram"
+          ></ion-input>
+        </ion-item>
+
         <ion-button expand="full" type="submit"
           ><ion-icon name="color-wand" class="button-icon"></ion-icon> Generate
           Website</ion-button
@@ -86,6 +103,7 @@
   <div
     id="previewPanel"
     *ngIf="showPreview"
+    class="theme{{ activeTheme }}"
     [ngClass]="{
       generating: generating === true,
       'is-loaded': showPreview,
@@ -208,11 +226,10 @@
               class="{{ layout.params.parentclasses }} anim"
               *ngFor="let layout of activePage.layout; let lidx = index"
             >
-              <div class="row {{ layout.params.classes }}">
+              <div class="row {{ layout.params.classes }}" @rowAnimation>
                 <div
                   *ngIf="service.auth.isLoggedIn"
                   class="editor-panel editor-panel-row"
-                  @rowAnimation
                 >
                   <ion-button (click)="moveRowUp(lidx)" [disabled]="lidx === 0"
                     ><ion-icon name="chevron-up-outline"></ion-icon
@@ -414,6 +431,7 @@
         <div *ngIf="service.auth.isLoggedIn">
           <ion-button>Undo</ion-button>
           <ion-button>Redo</ion-button>
+          <ion-button (click)="changeTheme()">Change Theme</ion-button>
           <ion-button>Save changes</ion-button>
           <ion-button>Dashboard</ion-button>
         </div>

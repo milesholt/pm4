@@ -47,9 +47,10 @@ export class GalleryComponent implements OnInit {
   }
 
   loadInstagram() {
-    this.service.instagram.getImages(this.username).subscribe(
+    /*this.service.instagram.getImages(this.username).subscribe(
       (images) => (this.images = images),
       (error) => console.error('Error fetching Instagram images', error)
-    );
+    );*/
+    this.service.instagram.getImages(this.username);
   }
 }

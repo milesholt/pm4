@@ -1,23 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InstagramService {
+  //private backendURL = 'http://localhost:3000/instagram';
+  private baseUrl = 'https://siteinanhour.com/server/instagram2.php';
 
-  private instagramURL = 'https://www.instagram.com';
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
+  getImages(username: string) {
+    console.log('Getting insta images from backend');
+    //return this.http.get<string[]>(`${this.backendURL}?username=${username}`);
 
-  getImages(username: string, count: number = 5): Observable<string[]> {
-    return this.http.get<any>(`${this.instagramURL}/${username}/?__a=1`).pipe(
-      map(response => {
-        const posts = response.graphql.user.edge_owner_to_timeline_media.edges;
-        return posts.slice(0, count).map((post:any) => post.node.display_url);
-      })
-    );
+    /*this.http.get(`${this.baseUrl}?username=${username}`).subscribe(
+      (res) => {
+        // handle the response here
+        console.log(res);
+      },
+      (err) => {
+        // handle the error here
+        console.error(err);
+      }
+    );*/ 
+
+    this.http.get(`${this.baseUrl}?username=${username}`);
   }
 }

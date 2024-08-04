@@ -9,7 +9,8 @@
       "assert": ["./node_modules/assert"],
       "crypto": ["./node_modules/crypto-js"],
       "http": ["./node_modules/stream-http"],
-      "https": ["./node_modules/https-browserify"]
+      "https": ["./node_modules/https-browserify"],
+      "zlib": ["./node_modules/browserify-zlib"]
     },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
