@@ -11,7 +11,7 @@ export class InstagramService {
 
   constructor(private http: HttpClient) {}
 
-  getImages(username: string) {
+  getImages(username: string): Observable<any> {
     console.log('Getting insta images from backend');
     //return this.http.get<string[]>(`${this.backendURL}?username=${username}`);
 
@@ -24,8 +24,8 @@ export class InstagramService {
         // handle the error here
         console.error(err);
       }
-    );*/ 
+    );*/
 
-    this.http.get(`${this.baseUrl}?username=${username}`);
+    return this.http.get(`${this.baseUrl}?username=${username}`);
   }
 }

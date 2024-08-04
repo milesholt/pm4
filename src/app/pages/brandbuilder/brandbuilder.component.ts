@@ -104,11 +104,11 @@ export class BrandBuilderComponent
   showPublish: boolean = false;
 
   photos: any[] = [];
-  media:any = {
-    social:{
-      instagram: []
-    }
-  }
+  media: any = {
+    social: {
+      instagram: [],
+    },
+  };
 
   themeStructure: any = {
     colours: [
@@ -955,10 +955,14 @@ export class BrandBuilderComponent
                     if (typeof this.aiform[sectionName].content !== 'undefined')
                       col.content = this.aiform[sectionName].content;
 
-                  if (typeof col.image !== 'undefined')
-                    let allImages = [...this.photos, ...this.media.social.instagram];
+                  if (typeof col.image !== 'undefined') {
+                    let allImages = [
+                      ...this.photos,
+                      ...this.media.social.instagram,
+                    ];
                     col.image =
                       allImages[this.selectRandom(allImages)].src.large;
+                  }
                 }
               });
             });
@@ -996,8 +1000,8 @@ export class BrandBuilderComponent
     console.log('getting instagram:');
 
     await this.service.instagram.getImages(this.companyInstagram).subscribe(
-      (images) => (this.media.social.instagram = images),
-      (error) => console.error('Error fetching Instagram images', error)
+      (images: any) => (this.media.social.instagram = images),
+      (error: any) => console.error('Error fetching Instagram images', error)
     );
     //return this.generated;
   }
@@ -1164,9 +1168,9 @@ export class BrandBuilderComponent
       },
       media: {
         photoData: this.photos,
-        social:{
-          instagram: this.media.social.instagram
-        }
+        social: {
+          instagram: this.media.social.instagram,
+        },
       },
       themes: this.themes,
     };
@@ -1243,7 +1247,7 @@ export class BrandBuilderComponent
   onImageChange2(event: any, obj: any) {
     if (this.service.auth.isLoggedIn) {
       if (this.photos.length) {
-        let allImages = [...this.photos, ...this.media.social.instagram];                   
+        let allImages = [...this.photos, ...this.media.social.instagram];
         obj.image = allImages[this.selectRandom(allImages)].src.large;
         console.log(obj);
       }
