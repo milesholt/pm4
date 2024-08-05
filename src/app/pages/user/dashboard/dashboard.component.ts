@@ -66,10 +66,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   async createSite() {
     // Example: Add a document
     this.message =
-      'Preparing to store site...' + JSON.parse(this.companyInfo).companyName;
+      'Preparing to store site...' + JSON.parse(this.companyInfo).name;
     this.service.firestore
       .createDocument('sites', {
-        name: JSON.parse(this.companyInfo).companyName,
+        name: JSON.parse(this.companyInfo).name,
       })
       .then(async () => {
         this.message = 'Site being setup..';

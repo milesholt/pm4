@@ -279,7 +279,7 @@
                     <div class="mod" *ngFor="let mod of col; let midx = index">
                       <div *ngIf="mod.image">
                         <img
-                          (click)="onImageChange($event, lidx, cidx, midx)"
+                          (click)="onImageChange2($event, mod)"
                           [src]="mod.image"
                           style="display: block; width: 100%; height: auto"
                         />

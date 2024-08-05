@@ -1,30 +1,19 @@
 import {
-  Component,
-  OnInit,
   AfterViewChecked,
   AfterViewInit,
   ChangeDetectorRef,
+  Component,
   ElementRef,
+  OnInit,
   ViewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 //import { PexelsService } from '../services/pexels.service';
 
-import { CoreService } from '../../services/core.service';
 import { Library } from '../../app.library';
+import { CoreService } from '../../services/core.service';
 
-import { Observable } from 'rxjs';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition,
-  query,
-  stagger,
-} from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 import {
   GoogleGenerativeAI,
@@ -32,6 +21,7 @@ import {
   HarmCategory,
 } from '@google/generative-ai';
 import { environment } from '../../../environments/environment';
+import { error } from 'console';
 
 @Component({
   selector: 'app-brandbuilder',
@@ -463,7 +453,7 @@ export class BrandBuilderComponent
 
   constructor(
     public service: CoreService,
-    private lib: Library,
+    public lib: Library,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
     public router: Router,
@@ -502,14 +492,19 @@ export class BrandBuilderComponent
       this.service.firestore.getDocumentById('sites', docId).subscribe(
         (doc) => {
           if (doc) {
+            alert('site found');
             console.log('Loading document from site id: ' + docId);
             site = doc;
             this.finishLoadSite(site, docId);
+            return true;
           } else {
+            alert('Site not found, please check the site ID');
             this.message = 'Site not found';
+            return false;
           }
         },
         (error) => {
+          alert(error);
           this.message = error.message;
           console.error('Error fetching document: ', error);
         }
@@ -531,6 +526,7 @@ export class BrandBuilderComponent
     this.activePage = this.generated[0];
     this.activePageTitle = this.generated[0].title;
     this.themes = d.themes;
+    await this.loadImages();
     await this.doThemesCSS();
 
     localStorage.setItem('bb_' + docId, JSON.stringify(doc));
@@ -617,6 +613,7 @@ export class BrandBuilderComponent
           });*/
         this.message = 'Generating images...';
         await this.doImages();
+
         this.message = 'Generating themes...';
         await this.doThemes();
         this.message = 'Generating style...';
@@ -627,6 +624,8 @@ export class BrandBuilderComponent
       .then(async (result: any) => {
         this.message = 'Generating layouts...';
         this.generated = await this.doSections();
+        this.message = 'Loading images...';
+        await this.loadImages();
       })
       .finally(() => {
         this.message = 'Finalising...';
@@ -903,7 +902,7 @@ export class BrandBuilderComponent
           console.log(page);
           let layoutIndex = 0;
           //loop through sections
-          page.sections.forEach((section: any, index: number) => {
+          page.sections.forEach((section: any) => {
             // Update the layout index to loop from 1 to 5
             console.log(section);
 
@@ -921,52 +920,64 @@ export class BrandBuilderComponent
               layoutIndex = layoutIndex === 1 ? 0 : layoutIndex + 1;
             }
 
-            //clone a random layout
-            page.layout.push(
-              this.cloneObject(
-                /*this.contentLayouts[
-                Math.floor(Math.random() * this.contentLayouts.length)
-              ],*/
+            /*this.contentLayouts[
+              Math.floor(Math.random() * this.contentLayouts.length)
+            ],*/
 
-                this.contentLayouts[layoutIndex]
-              )
-            );
+            let layout = this.cloneObject(this.contentLayouts[layoutIndex]);
+
             //copy modules
-            page.layout[index].modules = this.lib.deepCopy(section.modules);
+            if (section.hasOwnProperty('modules')) {
+              console.log('section has modules');
+              layout.modules = this.lib.deepCopy(section.modules);
+            }
+
+            //clone a random layout
+            page.layout.push(layout);
           });
 
           //
+          if (page.sections) {
+            //loop through layouts and
+            page.layout.forEach((layout: any, index: number) => {
+              layout.structure.forEach((row: any) => {
+                row.forEach((col: any) => {
+                  var sectionName = page.sections[index].name;
 
-          //loop through layouts and
-          page.layout.forEach((layout: any, index: number) => {
-            layout.structure.forEach((row: any) => {
-              row.forEach((col: any) => {
-                var sectionName = page.sections[index].name;
+                  //console.log(sectionName);
 
-                //console.log(sectionName);
+                  if (typeof this.aiform[sectionName] !== 'undefined') {
+                    //console.log(typeof col.heading);
+                    if (typeof col.heading !== 'undefined') {
+                      if (typeof this.aiform[sectionName].title !== 'undefined')
+                        col.heading = this.aiform[sectionName].title;
+                    }
+                    if (typeof col.content !== 'undefined')
+                      if (
+                        typeof this.aiform[sectionName].content !== 'undefined'
+                      )
+                        col.content = this.aiform[sectionName].content;
 
-                if (typeof this.aiform[sectionName] !== 'undefined') {
-                  //console.log(typeof col.heading);
-                  if (typeof col.heading !== 'undefined') {
-                    if (typeof this.aiform[sectionName].title !== 'undefined')
-                      col.heading = this.aiform[sectionName].title;
+                    if (typeof col.image !== 'undefined') {
+                      let allImages = [
+                        ...this.photos,
+                        ...this.media.social.instagram,
+                      ];
+                      console.log('all images');
+                      console.log(allImages);
+
+                      col.image =
+                        allImages[this.selectRandom(allImages)].src.large;
+                    }
                   }
-                  if (typeof col.content !== 'undefined')
-                    if (typeof this.aiform[sectionName].content !== 'undefined')
-                      col.content = this.aiform[sectionName].content;
-
-                  if (typeof col.image !== 'undefined') {
-                    let allImages = [
-                      ...this.photos,
-                      ...this.media.social.instagram,
-                    ];
-                    col.image =
-                      allImages[this.selectRandom(allImages)].src.large;
-                  }
-                }
+                });
               });
             });
-          });
+          } else {
+            throw new Error(
+              'page does not have any sections, cannot create layouts'
+            );
+          }
           console.log('end');
           console.log(page);
         });
@@ -983,27 +994,39 @@ export class BrandBuilderComponent
   async doImages() {
     //alert('image');
     this.message = 'Generating images...';
-    //this.cleanJsonResponse(response);
-    this.searchPhotos(this.companyProducts).then((result) => {
-      this.generated.forEach((page: any, index: number) => {
-        page.image = this.photos[this.selectRandom(this.photos)].src.large;
-        //alert(page.image);
-        /*page.layout.forEach((row: any) => {
+
+    try {
+      //this.cleanJsonResponse(response);
+      this.searchPhotos(this.companyProducts).then((result) => {
+        this.generated.forEach((page: any, index: number) => {
+          page.image = this.photos[this.selectRandom(this.photos)].src.large;
+          //alert(page.image);
+          /*page.layout.forEach((row: any) => {
             row.array.forEach((col: any) => {
               if (col.image) {
                 col.image = this.photos[this.selectRandom(this.photos)].src.large;
               }
             });
           });*/
+        });
       });
-    });
-    console.log('getting instagram:');
+      console.log('getting instagram:');
 
-    await this.service.instagram.getImages(this.companyInstagram).subscribe(
-      (images: any) => (this.media.social.instagram = images),
-      (error: any) => console.error('Error fetching Instagram images', error)
-    );
-    //return this.generated;
+      await this.service.instagram.getImages(this.companyInstagram).subscribe(
+        (images: any) => {
+          this.media.social.instagram = images;
+          console.log('this media should have images');
+          console.log(this.media);
+        },
+        (error: any) => console.error('Error fetching Instagram images', error)
+      );
+      //return this.generated;
+    } catch (e) {
+      console.log('doImages failed');
+      console.log(e);
+      this.message = 'failed to generated images';
+      throw e;
+    }
   }
 
   async doLayouts() {
@@ -1244,11 +1267,12 @@ export class BrandBuilderComponent
     }
   }
 
-  onImageChange2(event: any, obj: any) {
+  async onImageChange2(event: any, obj: any) {
     if (this.service.auth.isLoggedIn) {
       if (this.photos.length) {
         let allImages = [...this.photos, ...this.media.social.instagram];
-        obj.image = allImages[this.selectRandom(allImages)].src.large;
+        let imageUrl = allImages[this.selectRandom(allImages)].src.large;
+        obj.image = await this.loadImage(imageUrl);
         console.log(obj);
       }
     }
@@ -1264,5 +1288,33 @@ export class BrandBuilderComponent
   changeTheme() {
     this.activeTheme =
       this.activeTheme >= this.themes.colours.length ? 0 : this.activeTheme + 1;
+  }
+
+  async loadImages() {
+    console.log('loading images');
+    console.log(this.generated);
+    this.generated.forEach(async (page: any) => {
+      if (page.image) {
+        console.log('base64 encoding main page image:');
+        console.log(page.image);
+        page.image = await this.loadImage(page.image);
+      }
+      page.layout.forEach((row: any) => {
+        row.structure.forEach((col: any) => {
+          col.forEach(async (mod: any) => {
+            if (mod.image) {
+              console.log('base64 encoding module image:');
+              console.log(mod.image);
+              mod.image = await this.loadImage(mod.image);
+            }
+          });
+        });
+      });
+    });
+  }
+
+  async loadImage(url: string) {
+    const base64Url = btoa(url); // Encode the URL to Base64
+    return 'https://siteinanhour.com/server/imageloader.php?url=' + base64Url;
   }
 }

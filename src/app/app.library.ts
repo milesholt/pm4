@@ -155,4 +155,30 @@ export class Library {
     textArea.innerHTML = encodedUrl;
     return textArea.value;
   }
+
+  getBase64ImageFromUrl(imageUrl: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      fetch(imageUrl)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.blob();
+        })
+        .then((blob) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64data = reader.result as string;
+            resolve(base64data);
+          };
+          reader.onerror = () => {
+            reject(new Error('Failed to convert blob to base64'));
+          };
+          reader.readAsDataURL(blob);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
 }
