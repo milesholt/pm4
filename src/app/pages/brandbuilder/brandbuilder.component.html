@@ -175,6 +175,7 @@
                 appContentEditable
                 [attr.contenteditable]="service.auth.isLoggedIn"
                 data-text="Enter a heading here"
+                (input)="onContentInput($event, activePage, 'title')"
                 [innerHTML]="
                   activePage.title == 'Home'
                     ? activePage.subheading
@@ -185,6 +186,7 @@
                 appContentEditable
                 [attr.contenteditable]="service.auth.isLoggedIn"
                 data-text="Enter a subheading here"
+                (input)="onContentInput($event, activePage, 'subheading')"
                 [innerHTML]="
                   activePage.title == 'Home' ? '' : activePage.subheading
                 "
@@ -203,6 +205,10 @@
                 <div class="row">
                   <div
                     class="page-content col"
+                    [(contenteditableModel)]="activePage.content"
+                    [attr.contenteditable]="service.auth.isLoggedIn"
+                    data-text="Enter some content here"
+                    (input)="onContentInput($event, activePage, 'content')"
                     [innerHTML]="activePage.content"
                   ></div>
                 </div>
@@ -223,7 +229,7 @@
         </ion-grid>-->
 
             <div
-              class="{{ layout.params.parentclasses }} anim"
+              class="{{ layout.params.parentclasses }} layout anim"
               *ngFor="let layout of activePage.layout; let lidx = index"
             >
               <div class="row {{ layout.params.classes }}" @rowAnimation>
@@ -292,7 +298,8 @@
                         <h2
                           appContentEditable
                           [attr.contenteditable]="service.auth.isLoggedIn"
-                          (input)="onContentChange($event, lidx, cidx, midx)"
+                          (input)="onContentInput($event, mod, 'heading')"
+                          [(ngModel)]="mod.heading"
                           [innerHtml]="mod.heading"
                           data-text="Enter a heading here"
                         ></h2>
@@ -324,6 +331,7 @@
                     *ngIf="module.title && module.title !== ''"
                     appContentEditable
                     [attr.contenteditable]="service.auth.isLoggedIn"
+                    (input)="onModuleChange($event, lidx, midx)"
                     [innerHtml]="module.title"
                     data-text="Enter a heading here"
                   ></h2>
@@ -432,8 +440,19 @@
           <ion-button>Undo</ion-button>
           <ion-button>Redo</ion-button>
           <ion-button (click)="changeTheme()">Change Theme</ion-button>
-          <ion-button>Save changes</ion-button>
-          <ion-button>Dashboard</ion-button>
+          <ion-button (click)="saveChanges()"
+            ><span *ngIf="!isSaving">{{
+              !!isSaved ? "Saved" : "Save Changes"
+            }}</span
+            ><ion-spinner
+              *ngIf="isSaving"
+              class="center"
+              name="circular"
+            ></ion-spinner
+          ></ion-button>
+          <ion-button routerDirection="root" [routerLink]="'/dashboard'"
+            >Dashboard</ion-button
+          >
         </div>
 
         <div *ngIf="!service.auth.isLoggedIn">

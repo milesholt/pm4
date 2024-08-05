@@ -69,11 +69,19 @@ export class BrandBuilderComponent
   //
   @ViewChild('previewPanel') previewPanel!: ElementRef;
 
+  siteId: string = '';
   activePageTitle: string = '';
   activePage: any = false;
   activeIndex = 0;
   isChanging: boolean = false;
   activeTheme = 0;
+
+  isSaved: boolean = false;
+  isSaving: boolean = false;
+
+  versions: any = [];
+  activeVersion: number = 0;
+  maxVersions: number = 50;
 
   /*companyName: string = 'Roses R Us';
     companyDescription: string =
@@ -465,6 +473,7 @@ export class BrandBuilderComponent
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       const docId = params['site']; // Get the document ID from query parameters
+      this.siteId = docId;
       if (docId) {
         this.prepareSiteLoad();
         this.loadDocument(docId);
@@ -863,19 +872,34 @@ export class BrandBuilderComponent
       css +=
         '.theme' +
         index +
-        ' .row:nth-child(even){color:white; background-color:' +
+        ' .layout:nth-child(even){color:white; background-color:' +
         colour.primary +
         '!important; }';
       css +=
         '.theme' +
         index +
-        ' .row:nth-child(even) h1,h2,h3,p,a,li,span{color:white;}';
+        ' .layout:nth-child(even) h1,h2,h3,p,a,li,span{color:white;}';
       css +=
         '.theme' +
         index +
         ' .col:nth-child(even){color:white; background-color:' +
         colour.tertiary +
         ';}';
+
+      css +=
+        '.theme' +
+        index +
+        ' .layout.col-1:nth-child(even) .col {color:white; background-color:' +
+        colour.primary +
+        '!important; }';
+
+      css +=
+        '.theme' +
+        index +
+        ' .layout.col-1:nth-child(odd) {color:white; background-color:' +
+        colour.tertiary +
+        '!important; }';
+
       css +=
         '.theme' +
         index +
@@ -1205,6 +1229,68 @@ export class BrandBuilderComponent
     this.router.navigate(['dashboard']);
   }
 
+  saveChanges() {
+    console.log(this.activePage);
+    console.log(this.activeIndex);
+
+    this.generated[this.activeIndex] = this.activePage;
+
+    this.isSaving = true;
+    const companyInfo = {
+      name: this.companyName,
+      description: this.companyDescription,
+      products: this.companyProducts,
+      email: this.companyEmail,
+      social: {
+        instagram: this.companyInstagram,
+      },
+    };
+    const siteData = {
+      content: this.generated,
+      details: {
+        companyInfo: companyInfo,
+      },
+      media: {
+        photoData: this.photos,
+        social: {
+          instagram: this.media.social.instagram,
+        },
+      },
+      themes: this.themes,
+    };
+
+    const updatedData = {
+      data: JSON.stringify(this.generated),
+    };
+
+    if (this.siteId !== '') {
+      console.log(this.siteId);
+
+      const collectionName = 'sites';
+
+      this.service.firestore
+        .updateDocument(collectionName, this.siteId, updatedData)
+        .then(() => {
+          //this.message = 'Site updated';
+          this.message = 'Changes saved';
+          this.isSaved = true;
+          this.isSaving = false;
+          setTimeout(() => {
+            this.isSaved = false;
+            this.isSaving = false;
+          }, 1000);
+          console.log('Site updated successfully.');
+          return false;
+        })
+        .catch((error) => {
+          this.message = 'Site could not be updated';
+          console.error('Error updating document: ', error);
+        });
+    } else {
+      alert('No site ID is set. Cannot save.');
+    }
+  }
+
   //Grid Component
 
   moveRowUp(index: number) {
@@ -1250,6 +1336,67 @@ export class BrandBuilderComponent
   onContentChange(event: any, ridx: number, cidx: number, midx: number) {
     console.log(event);
     //this.generated[this.activeIndex].layout[ridx].structure[cidx][midx].content = event;
+  }
+
+  onModuleChange(event: any, lidx: number, midx: number) {
+    console.log(event.target.innerHTML);
+    let v: string = '';
+    if (event.target.innerHTML) v = event.target.innerHTML;
+    if (event.target.value) v = event.target.value;
+
+    console.log(v);
+    //this.generated[this.activeIndex].layout[ridx].structure[cidx][midx].content = event;
+  }
+
+  onContentInput(event: any, obj: any, prop: string) {
+    console.log(event);
+    let v: string = '';
+    if (event.target.innerHTML) v = event.target.innerHTML;
+    if (event.target.value) v = event.target.value;
+    console.log(this.activePage);
+    //const editableDiv = event.target as HTMLElement;
+    //const savedPosition = this.lib.saveCursorPosition(editableDiv);
+    //obj[prop] = v;
+    //this.recordChange(v, obj, prop);
+    //this.lib.restoreCursorPosition(editableDiv, savedPosition);
+  }
+
+  recordChange(value: any, obj: any, prop: string) {
+    //obj nodes is linked to activePage
+
+    //update activePage with latest changes
+    /*if (this.versions.length) {
+      let pv = this.versions[this.activeVersion];
+      this.activePage = Object.assign({}, this.activePage, pv);
+    }*/
+    //clone existing object
+    let p = this.lib.deepCopy(this.activePage);
+
+    //update value of property
+    //o[prop] = value;
+    //if max undo versions, remove first one
+    if (this.versions.length >= this.maxVersions) {
+      this.versions.splice(0, 1);
+    }
+    //push new version
+    this.versions.push(p);
+    this.activeVersion = this.versions.length - 1;
+    console.log(this.versions);
+    console.log(this.activeVersion);
+  }
+
+  undoChange() {
+    this.activeVersion =
+      this.activeVersion - 1 < 0 ? 0 : this.activeVersion - 1;
+    this.activePage = this.lib.deepCopy(this.versions[this.activeVersion]);
+  }
+
+  redoChange() {
+    this.activeVersion =
+      this.activeVersion + 1 > this.versions.length - 1
+        ? this.activeVersion
+        : this.activeVersion + 1;
+    this.activePage = this.lib.deepCopy(this.versions[this.activeVersion]);
   }
 
   onImageChange(event: any, ridx: number, cidx: number, midx: number) {

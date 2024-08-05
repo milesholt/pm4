@@ -181,4 +181,41 @@ export class Library {
         });
     });
   }
+
+  // Utility functions for saving and restoring cursor position
+
+  saveCursorPosition(
+    editableDiv: HTMLElement
+  ): { node: Node; offset: number } | null {
+    const selection = window.getSelection();
+    if (!selection!.rangeCount) {
+      return null;
+    }
+    const range = selection!.getRangeAt(0);
+    const preSelectionRange = range.cloneRange();
+    preSelectionRange.selectNodeContents(editableDiv);
+    preSelectionRange.setEnd(range.startContainer, range.startOffset);
+    const start = preSelectionRange.toString().length;
+
+    return {
+      node: range.startContainer,
+      offset: range.startOffset,
+    };
+  }
+
+  restoreCursorPosition(
+    editableDiv: HTMLElement,
+    savedPosition: { node: Node; offset: number } | null
+  ) {
+    if (!savedPosition) {
+      return;
+    }
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.setStart(savedPosition.node, savedPosition.offset);
+    range.collapse(true);
+    selection!.removeAllRanges();
+    selection!.addRange(range);
+    editableDiv.focus();
+  }
 }

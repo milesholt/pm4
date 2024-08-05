@@ -114,13 +114,12 @@ ion-textarea {
 }
 
 /*Add spacing to element before footer */
-ion-content ::ng-deep > *:nth-last-child(2) {
-  /* Styles for the child before the last */
+/*ion-content ::ng-deep > *:nth-last-child(2) {
   padding-bottom: 60px;
-}
+}*/
 
 #main-content {
-  max-width: 1200px;
+  /*max-width: 1200px;*/
   margin: 0 auto;
 }
 
@@ -403,6 +402,10 @@ $colors: #ff7e5f, #feb47b, #ff7e5f, #86a8e7, #91eae4, #86a8e7;
   opacity:0.5;
 }
 
-.theme-0{
-  background-color:red;
+.row.col-1-empty{
+  display:none;
+}
+
+.layout.col-1 .row.module{
+  padding-bottom: 20vh;
 }
