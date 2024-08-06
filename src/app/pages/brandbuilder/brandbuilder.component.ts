@@ -1349,31 +1349,26 @@ export class BrandBuilderComponent
   }
 
   onContentInput(event: any, obj: any, prop: string) {
-    console.log(event);
+    //console.log(event);
     let v: string = '';
     if (event.target.innerHTML) v = event.target.innerHTML;
     if (event.target.value) v = event.target.value;
-    console.log(this.activePage);
+    //console.log(this.activePage);
     //const editableDiv = event.target as HTMLElement;
     //const savedPosition = this.lib.saveCursorPosition(editableDiv);
     //obj[prop] = v;
-    //this.recordChange(v, obj, prop);
+    //console.log(obj);
+    this.recordChange();
     //this.lib.restoreCursorPosition(editableDiv, savedPosition);
+    console.log(this.activePage);
   }
 
-  recordChange(value: any, obj: any, prop: string) {
+  recordChange() {
     //obj nodes is linked to activePage
 
-    //update activePage with latest changes
-    /*if (this.versions.length) {
-      let pv = this.versions[this.activeVersion];
-      this.activePage = Object.assign({}, this.activePage, pv);
-    }*/
     //clone existing object
     let p = this.lib.deepCopy(this.activePage);
 
-    //update value of property
-    //o[prop] = value;
     //if max undo versions, remove first one
     if (this.versions.length >= this.maxVersions) {
       this.versions.splice(0, 1);

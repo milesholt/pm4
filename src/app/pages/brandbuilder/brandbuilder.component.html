@@ -208,7 +208,7 @@
                     [(contenteditableModel)]="activePage.content"
                     [attr.contenteditable]="service.auth.isLoggedIn"
                     data-text="Enter some content here"
-                    (input)="onContentInput($event, activePage, 'content')"
+                    (input)="recordChange()"
                     [innerHTML]="activePage.content"
                   ></div>
                 </div>

@@ -218,4 +218,24 @@ export class Library {
     selection!.addRange(range);
     editableDiv.focus();
   }
+
+  findPath(obj: any, target: any, path: string[] = []): string | null {
+    console.log(obj);
+    console.log(target);
+
+    if (obj === target) {
+      return path.join('.');
+    }
+
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const result = this.findPath(obj[key], target, [...path, key]);
+        if (result) {
+          return result;
+        }
+      }
+    }
+
+    return null;
+  }
 }
