@@ -25,6 +25,31 @@
 </ion-header>
 
 <ion-content>
+  <div *ngIf="showHolding" class="container center">
+    <div *ngIf="isHoldingPending">
+      <ion-spinner class="center" name="circular"></ion-spinner>
+      <br /><br />
+
+      {{ message }}
+    </div>
+
+    <div *ngIf="isHoldingFailed">
+      <ion-icon name="close-circle-outline"></ion-icon>
+
+      <br /><br />
+
+      {{ message }}
+    </div>
+
+    <div *ngIf="isHoldingSuccess">
+      <ion-icon name="checkmark-circle-outline"></ion-icon>
+
+      <br /><br />
+
+      {{ message }}
+    </div>
+  </div>
+
   <div
     *ngIf="showCreate"
     id="createPanel"
@@ -36,59 +61,122 @@
   >
     <div *ngIf="!generated && !generating && !aiform">
       <form (ngSubmit)="onSubmit()">
-        <ion-item>
-          <ion-input
-            label="What's your business called?"
-            labelPlacement="stacked"
-            [(ngModel)]="companyName"
-            name="company-title"
-            required
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-textarea
-            [autoGrow]="true"
-            label="Give a brief description about your business"
-            labelPlacement="stacked"
-            [(ngModel)]="companyDescription"
-            name="company-description"
-            required
-          ></ion-textarea>
-        </ion-item>
-        <ion-item>
-          <ion-textarea
-            [autoGrow]="true"
-            label="What products do you sell?"
-            labelPlacement="stacked"
-            [(ngModel)]="companyProducts"
-            name="company-products"
-            required
-          ></ion-textarea>
-        </ion-item>
-        <ion-item>
-          <ion-input
-            label="Got an email? (optional)"
-            labelPlacement="stacked"
-            [(ngModel)]="companyEmail"
-            name="company-email"
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input
-            label="Got Instagram? Enter your username here (optional)"
-            labelPlacement="stacked"
-            [(ngModel)]="companyInstagram"
-            name="company-instagram"
-          ></ion-input>
-        </ion-item>
+        <!-- Section 1 -->
+        <div *ngIf="currentStage === 1">
+          <h2>Let's get started</h2>
 
-        <ion-button expand="full" type="submit"
-          ><ion-icon name="color-wand" class="button-icon"></ion-icon> Generate
-          Website</ion-button
-        >
+          <p>Just three questions, and let our AI do the rest.</p>
+          <br /><br />
+
+          <ion-item lines="none">
+            <ion-input
+              label="1) What's your business called?"
+              class="form-input"
+              labelPlacement="stacked"
+              [(ngModel)]="companyName"
+              maxlength="250"
+              [counter]="true"
+              name="company-title"
+              required
+            ></ion-input>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-textarea
+              [autoGrow]="true"
+              label="2) Give a brief description about your business"
+              class="form-input"
+              placeholder="eg. Who you are, what you do, where you're based, what services you offer."
+              labelPlacement="stacked"
+              maxlength="500"
+              [counter]="true"
+              [(ngModel)]="companyDescription"
+              name="company-description"
+              required
+            ></ion-textarea>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-textarea
+              [autoGrow]="true"
+              label="3) What products do you sell?"
+              class="form-input"
+              maxlength="250"
+              [counter]="true"
+              placeholder="eg. fitness courses, hand-made jewellery, organic coffee, cats on shirts"
+              labelPlacement="stacked"
+              [(ngModel)]="companyProducts"
+              name="company-products"
+              required
+            ></ion-textarea>
+          </ion-item>
+
+          <p>
+            Not sure?
+            <ion-button size="small" (click)="doDemo()">Try a demo</ion-button>
+          </p>
+
+          <br /><br /><br /><br />
+        </div>
+
+        <!-- Section 2 -->
+        <div *ngIf="currentStage === 2">
+          <h2>A few optionals</h2>
+
+          <p>
+            Use photos from your Instagram, or receive messages to your email.
+          </p>
+          <br /><br />
+
+          <ion-item>
+            <ion-input
+              label="Got an email?"
+              placeholder="Enter your email here"
+              labelPlacement="stacked"
+              [(ngModel)]="companyEmail"
+              name="company-email"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input
+              label="Got Instagram?"
+              placeholder="Enter your username here"
+              labelPlacement="stacked"
+              [(ngModel)]="companyInstagram"
+              name="company-instagram"
+            ></ion-input>
+          </ion-item>
+        </div>
+
+        <!-- Section 3 -->
+        <div *ngIf="currentStage === 3" class="center">
+          <h2>You're all set</h2>
+
+          <p>
+            Thanks, that's all we need! Just click below to create your site.
+          </p>
+          <br /><br />
+
+          <ion-button class="center" expand="full" type="submit"
+            ><ion-icon name="color-wand" class="button-icon"></ion-icon> Make
+            some magic</ion-button
+          >
+        </div>
       </form>
 
-      <ion-button (click)="resetForm()">Clear</ion-button>
+      <div class="form-nav">
+        <ion-button
+          [disabled]="currentStage == 1"
+          size="small"
+          (click)="previousStage()"
+          >Back</ion-button
+        >
+        <ion-button size="small" (click)="resetForm()">Reset</ion-button>
+        <ion-button
+          [disabled]="currentStage == 3"
+          size="small"
+          (click)="nextStage()"
+          >Next</ion-button
+        >
+      </div>
     </div>
     <div *ngIf="generating">{{ message }}</div>
 
@@ -195,7 +283,7 @@
               ></h2>
             </div>
             <img
-              (click)="onImageChange2($event, activePage); recordChange()"
+              (click)="onImageChange($event, activePage)"
               [src]="activePage.image"
               id="hero-image"
             />
@@ -275,7 +363,7 @@
                     <div class="mod" *ngFor="let mod of col; let midx = index">
                       <div *ngIf="mod.image">
                         <img
-                          (click)="onImageChange2($event, mod); recordChange()"
+                          (click)="onImageChange($event, mod)"
                           [src]="mod.image"
                           style="display: block; width: 100%; height: auto"
                         />

@@ -409,3 +409,53 @@ $colors: #ff7e5f, #feb47b, #ff7e5f, #86a8e7, #91eae4, #86a8e7;
 .layout.col-1 .row.module{
   padding-bottom: 20vh;
 }
+
+/* Form */
+
+
+
+/* Form Navigation */
+
+.form-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background-color:black;
+  margin:0;
+  padding:0;
+  left:0;
+  z-index:10000;
+}
+
+.form-nav ion-button:first-child {
+  order: 1;
+}
+
+.form-nav ion-button:nth-child(2) {
+  order: 2;
+  //margin-left: auto;
+}
+
+.form-nav ion-button:nth-child(3) {
+  order: 3;
+}
+
+.form-nav ion-button:last-child {
+  order: 4;
+}
+
+.form-nav ion-button:disabled {
+  opacity:0;
+}
+
+form h2, form p{
+  text-align:center;
+}
+
+form h2{
+  padding-top:0px;
+}

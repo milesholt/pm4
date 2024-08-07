@@ -121,6 +121,16 @@ ion-button {
   font-weight: 700;
 }
 
+ion-button.inverse{
+  --background: white;
+  --background-hover: white;
+  --color: black;
+}
+
+ion-button[size="small"]{
+  min-width:0;
+}
+
 /*Slider */
 swiper-container {
   --swiper-navigation-color: var(--ion-color-primary);
@@ -201,3 +211,23 @@ ion-content {
 .social-icon {
   font-size: 20px;
 }
+
+
+/*textarea placeholder styling*/
+ion-textarea.form-input textarea::placeholder {
+  font-size: 14px; /* Change to your desired font size */
+  --placeholder-color: #333;
+  --placeholder-opacity:0.4;
+}
+
+/*textarea floating label spacing*/
+ion-textarea.form-input textarea{
+  --padding-top: 10px;
+}
+
+/*ion-input floating label spacing*/
+.input-label-placement-floating.sc-ion-input-ios-h, .input-label-placement-stacked.sc-ion-input-ios-h{
+  min-height:80px;
+}
+
+

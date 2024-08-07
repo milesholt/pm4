@@ -69,6 +69,8 @@ export class BrandBuilderComponent
   //
   @ViewChild('previewPanel') previewPanel!: ElementRef;
 
+  currentStage: number = 1;
+
   siteId: string = '';
   activePageTitle: string = '';
   activePage: any = false;
@@ -89,17 +91,33 @@ export class BrandBuilderComponent
     companyProducts: string =
       'flower bouquets, roses, sunflowers, lavender, orchids';
   */
-  companyName: string = 'Black & Red Tattoo Parlor';
-  companyDescription: string =
-    "We're an old fashioned tattoo shop based in Las Vegas. We provide high quality tattoo services. We offer a wider variety of styles and tattoo application methods, with a team of dedicated and professional ink artists. We do all methods of tattooing from Stick and Poke Hand Poke, Single Needle, Yantra/Sak Yants, and Tebori. We also provide tattoo removal services.";
-  companyProducts: string =
-    'bamboo tattoo, blackwork tattoo, black ink tattoo, watercolour tattoo, body art tattoo, geometric tattoo, tattoo removal, bespoke tattoo design service';
-  companyEmail: string = 'contact@liketheroad.com';
-  companyInstagram: string = 'milesholt_';
+
+  demos: any = [
+    {
+      name: 'Black & Red Tattoo Parlor',
+      description:
+        "We're an old fashioned tattoo shop based in Las Vegas. We provide high quality tattoo services. We offer a wider variety of styles and tattoo application methods, with a team of dedicated and professional ink artists. We do all methods of tattooing from Stick and Poke Hand Poke, Single Needle, Yantra/Sak Yants, and Tebori. We also provide tattoo removal services.\n",
+      products:
+        'bamboo tattoo, blackwork tattoo, black ink tattoo, watercolour tattoo, body art tattoo, geometric tattoo, tattoo removal, bespoke tattoo design service',
+      email: '',
+      instagram: '',
+    },
+  ];
+
+  companyName: string = '';
+  companyDescription: string = '';
+  companyProducts: string = '';
+  companyEmail: string = '';
+  companyInstagram: string = '';
 
   showCreate: boolean = false;
   showPreview: boolean = false;
   showPublish: boolean = false;
+  showHolding: boolean = false;
+
+  isHoldingFailed: boolean = false;
+  isHoldingPending: boolean = false;
+  isHoldingSuccess: boolean = false;
 
   photos: any[] = [];
   media: any = {
@@ -489,26 +507,34 @@ export class BrandBuilderComponent
   }
 
   loadDocument(docId: string) {
+    this.showSection('holding');
+    this.showHoldingStatus('pending');
+    this.message = 'Getting your site, hold on...';
+
     let site: any = false;
     var local = localStorage.getItem('bb_' + docId);
     if (local) {
       console.log('got site locally');
       site = JSON.parse(local);
       console.log(site);
+      this.message = 'Loading local version...';
       this.finishLoadSite(site, docId);
     } else {
       console.log('getting site remotely');
+      this.message = 'Checking for remote version...';
       this.service.firestore.getDocumentById('sites', docId).subscribe(
         (doc) => {
           if (doc) {
-            alert('site found');
+            this.showHoldingStatus('success');
+            this.message = 'Found your site, downloading...';
             console.log('Loading document from site id: ' + docId);
             site = doc;
             this.finishLoadSite(site, docId);
             return true;
           } else {
-            alert('Site not found, please check the site ID');
-            this.message = 'Site not found';
+            this.showHoldingStatus('failed');
+            this.message =
+              "Sorry, we couldn't find your site. Please check the ID and try again.";
             return false;
           }
         },
@@ -522,6 +548,8 @@ export class BrandBuilderComponent
   }
 
   async finishLoadSite(obj: any, docId: string) {
+    this.showHoldingStatus('pending');
+    this.message = 'Setting everything up...';
     //Firestore contains data node, otherwise raw data is passed from local
     const d = obj.hasOwnProperty('data') ? JSON.parse(obj.data) : obj;
     console.log('Got site:');
@@ -536,8 +564,12 @@ export class BrandBuilderComponent
     this.activePage = this.generated[0];
     this.activePageTitle = this.generated[0].title;
     this.themes = d.themes;
+    this.activeTheme = d.themeId ?? 0;
     await this.loadImages();
     await this.doThemesCSS();
+
+    this.showHoldingStatus('success');
+    this.message = 'Your site is ready!';
 
     localStorage.setItem('bb_' + docId, JSON.stringify(obj));
 
@@ -593,6 +625,20 @@ export class BrandBuilderComponent
         // Perform your desired actions here
       }
     });
+  }
+
+  nextStage() {
+    this.currentStage++;
+  }
+
+  previousStage() {
+    this.currentStage--;
+  }
+
+  doDemo() {
+    this.companyName = this.demos[0].name;
+    this.companyDescription = this.demos[0].description;
+    this.companyProducts = this.demos[0].products;
   }
 
   async onSubmit() {
@@ -719,6 +765,7 @@ export class BrandBuilderComponent
     this.companyDescription = '';
     this.companyName = '';
     this.companyProducts = '';
+    this.currentStage = 1;
   }
 
   showSection(section: string = 'create') {
@@ -727,18 +774,47 @@ export class BrandBuilderComponent
         this.showPreview = false;
         this.showCreate = true;
         this.showPublish = false;
+        this.showHolding = false;
         break;
       case 'preview':
         this.showPreview = true;
         this.showCreate = false;
         this.showPublish = false;
+        this.showHolding = false;
         break;
       case 'publish':
         this.showPreview = false;
         this.showCreate = false;
         this.showPublish = true;
+        this.showHolding = false;
+        break;
+      case 'holding':
+        this.showPreview = false;
+        this.showCreate = false;
+        this.showPublish = false;
+        this.showHolding = true;
         break;
       default:
+        break;
+    }
+  }
+
+  showHoldingStatus(status: string = 'pending') {
+    switch (status) {
+      case 'pending':
+        this.isHoldingPending = true;
+        this.isHoldingFailed = false;
+        this.isHoldingSuccess = false;
+        break;
+      case 'failed':
+        this.isHoldingPending = false;
+        this.isHoldingFailed = true;
+        this.isHoldingSuccess = false;
+        break;
+      case 'success':
+        this.isHoldingPending = false;
+        this.isHoldingFailed = false;
+        this.isHoldingSuccess = true;
         break;
     }
   }
@@ -1259,6 +1335,7 @@ export class BrandBuilderComponent
         },
       },
       themes: this.themes,
+      themeId: this.activeTheme,
     };
 
     const updatedData = {
@@ -1302,6 +1379,7 @@ export class BrandBuilderComponent
     if (index > 0) {
       [rows[index - 1], rows[index]] = [rows[index], rows[index - 1]];
     }
+    this.recordChange();
   }
 
   moveRowDown(index: number) {
@@ -1309,17 +1387,20 @@ export class BrandBuilderComponent
     if (index < rows.length - 1) {
       [rows[index + 1], rows[index]] = [rows[index], rows[index + 1]];
     }
+    this.recordChange();
   }
 
   deleteRow(index: number) {
     const rows = this.activePage.layout;
     rows.splice(index, 1);
+    this.recordChange();
   }
 
   copyRow(index: number) {
     let rows = this.activePage.layout;
     const rowToCopy = this.lib.deepCopy(rows[index]);
     rows.splice(index + 1, 0, rowToCopy);
+    this.recordChange();
   }
 
   swapColumns(rowIndex: number, colIndex1: number, colIndex2: number) {
@@ -1334,6 +1415,7 @@ export class BrandBuilderComponent
     if (colIndex2 >= 0 && colIndex2 < cols.length) {
       [cols[colIndex1], cols[colIndex2]] = [cols[colIndex2], cols[colIndex1]];
     }
+    this.recordChange();
   }
 
   onContentChange(event: any, ridx: number, cidx: number, midx: number) {
@@ -1397,7 +1479,7 @@ export class BrandBuilderComponent
     this.activePage = this.lib.deepCopy(this.versions[this.activeVersion]);
   }
 
-  onImageChange(event: any, ridx: number, cidx: number, midx: number) {
+  /*onImageChange(event: any, ridx: number, cidx: number, midx: number) {
     if (this.service.auth.isLoggedIn) {
       const imgMod = this.activePage.layout[ridx].structure[cidx][midx].image;
       console.log(imgMod);
@@ -1408,17 +1490,19 @@ export class BrandBuilderComponent
         let allImages = [...this.photos, ...this.media.social.instagram];
         this.activePage.layout[ridx].structure[cidx][midx].image =
           allImages[this.selectRandom(allImages)].src.large;
+        this.recordChange();
       }
     }
-  }
+  }*/
 
-  async onImageChange2(event: any, obj: any) {
+  async onImageChange(event: any, obj: any) {
     if (this.service.auth.isLoggedIn) {
       if (this.photos.length) {
         let allImages = [...this.photos, ...this.media.social.instagram];
         let imageUrl = allImages[this.selectRandom(allImages)].src.large;
         obj.image = await this.loadImage(imageUrl);
         console.log(obj);
+        this.recordChange();
       }
     }
   }

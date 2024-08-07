@@ -25,6 +25,18 @@
               <ion-icon slot="start" name="document"></ion-icon>
               <ion-label>Sites</ion-label>
             </ion-button>
+            <ion-button expand="block" [disabled]="true">
+              <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
+              <ion-label>Campaigns</ion-label>
+            </ion-button>
+            <ion-button expand="block" [disabled]="true">
+              <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
+              <ion-label>Videos</ion-label>
+            </ion-button>
+            <ion-button expand="block" [disabled]="true">
+              <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
+              <ion-label>Content</ion-label>
+            </ion-button>
           </div>
         </ion-accordion>
         <ion-accordion value="second">
@@ -102,9 +114,64 @@
               <ion-button (click)="getSites()">List Sites</ion-button>
               <ion-button (click)="updateSite()">Update Site</ion-button>
               <ion-button (click)="deleteSite()">Delete Site</ion-button>-->
+              <h2>Sites</h2>
+              <ion-list>
+                <ion-item-sliding
+                  *ngFor="let site of sites; let sidx = index"
+                  #slidingItem
+                >
+                  <ion-item>
+                    <ion-input
+                      placeholder="Enter your site name here"
+                      [(ngModel)]="site.name"
+                      (ngModelChange)="
+                        renameSite(site.name, sidx); updateSite(site)
+                      "
+                    ></ion-input>
+                    <ion-button
+                      class="site-button"
+                      size="small"
+                      (click)="previewSite(site.id)"
+                      ><ion-icon name="chevron-forward-outline"></ion-icon
+                    ></ion-button>
+                    <ion-button
+                      class="inverse"
+                      size="small"
+                      (click)="slideItem(slidingItem)"
+                    >
+                      <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+                    </ion-button>
+                  </ion-item>
+                  <ion-item-options>
+                    <ion-item-option [disabled]="true">
+                      <ion-icon
+                        (click)="genSiteLink(site.id)"
+                        name="link-outline"
+                      ></ion-icon>
+                    </ion-item-option>
+
+                    <ion-item-option [disabled]="true">
+                      <ion-icon name="cog"></ion-icon>
+                    </ion-item-option>
+                    <ion-item-option [disabled]="true">
+                      <ion-icon name="cloud-download"></ion-icon>
+                    </ion-item-option>
+                    <ion-item-option [disabled]="true">
+                      <ion-icon name="analytics"></ion-icon>
+                    </ion-item-option>
+                    <ion-item-option (click)="deleteSite(site)" color="danger">
+                      <ion-icon name="trash"></ion-icon>
+                    </ion-item-option>
+                  </ion-item-options>
+                </ion-item-sliding>
+              </ion-list>
 
               <div [innerHtml]="message"></div>
               <!-- {{ sites | json }}-->
+
+              <ion-button [routerLink]="'/brandbuilder'"
+                >Create Site</ion-button
+              >
             </div>
           </div>
         </div>
