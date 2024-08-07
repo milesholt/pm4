@@ -242,10 +242,8 @@ export class Library {
   base64Url(str: string): string {
     try {
       if (this.isBase64(str)) {
-        console.log('image already base64');
         return str;
       } else {
-        console.log('converting image to base64');
         return btoa(str);
       }
     } catch (err) {

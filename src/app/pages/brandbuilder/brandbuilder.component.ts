@@ -1441,7 +1441,6 @@ export class BrandBuilderComponent
     this.generated.forEach(async (page: any) => {
       if (page.image) {
         console.log('base64 encoding main page image:');
-        console.log(page.image);
         page.image = await this.loadImage(page.image);
       }
       page.layout.forEach((row: any) => {
@@ -1459,6 +1458,7 @@ export class BrandBuilderComponent
   }
 
   async loadImage(url: string) {
+    if (url.includes('imageloader.php')) url = url.split('?url=')[1];
     const base64Url = this.lib.base64Url(url); // Encode the URL to Base64
     return 'https://siteinanhour.com/server/imageloader.php?url=' + base64Url;
   }
