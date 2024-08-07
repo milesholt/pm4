@@ -173,9 +173,10 @@
               <h1
                 class="fade-up"
                 appContentEditable
+                [(contenteditableModel)]="activePage.title"
                 [attr.contenteditable]="service.auth.isLoggedIn"
                 data-text="Enter a heading here"
-                (input)="onContentInput($event, activePage, 'title')"
+                (input)="recordChange()"
                 [innerHTML]="
                   activePage.title == 'Home'
                     ? activePage.subheading
@@ -184,9 +185,10 @@
               ></h1>
               <h2
                 appContentEditable
+                [(contenteditableModel)]="activePage.subheading"
                 [attr.contenteditable]="service.auth.isLoggedIn"
                 data-text="Enter a subheading here"
-                (input)="onContentInput($event, activePage, 'subheading')"
+                (input)="recordChange()"
                 [innerHTML]="
                   activePage.title == 'Home' ? '' : activePage.subheading
                 "
@@ -437,13 +439,26 @@
 
       <div class="bottom-panel">
         <div *ngIf="service.auth.isLoggedIn">
-          <ion-button>Undo</ion-button>
-          <ion-button>Redo</ion-button>
-          <ion-button (click)="changeTheme()">Change Theme</ion-button>
+          {{ activeVersion }}
+          {{ versions.length }}
+          <ion-button (click)="undoChange()" [disabled]="activeVersion == 0"
+            ><ion-icon name="arrow-undo-circle-outline"></ion-icon
+          ></ion-button>
+          <ion-button
+            (click)="redoChange()"
+            [disabled]="activeVersion == versions.length - 1"
+            ><ion-icon name="arrow-redo-circle-outline"></ion-icon
+          ></ion-button>
+          <ion-button (click)="changeTheme()"
+            ><ion-icon name="color-wand-outline"></ion-icon
+          ></ion-button>
           <ion-button (click)="saveChanges()"
-            ><span *ngIf="!isSaving">{{
-              !!isSaved ? "Saved" : "Save Changes"
-            }}</span
+            ><span *ngIf="!isSaving">
+              {{ isSaved ? "Saved" : "" }}
+              <ion-icon
+                *ngIf="!isSaved"
+                name="checkmark-outline"
+              ></ion-icon> </span
             ><ion-spinner
               *ngIf="isSaving"
               class="center"
@@ -451,8 +466,8 @@
             ></ion-spinner
           ></ion-button>
           <ion-button routerDirection="root" [routerLink]="'/dashboard'"
-            >Dashboard</ion-button
-          >
+            ><ion-icon name="home-outline"></ion-icon
+          ></ion-button>
         </div>
 
         <div *ngIf="!service.auth.isLoggedIn">

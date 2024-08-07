@@ -151,6 +151,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     //const documentId = 'eLPOqsKWpPos5c0ezpFW'; // You need to have this ID
     let lastSite = this.sites[this.sites.length - 1];
+    console.log('sites');
+    console.log(this.sites);
     const documentId = lastSite.id;
 
     //const updatedData = { fieldName: 'new value' };
@@ -170,6 +172,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
           siteurl +
           '<a/>';
         console.log('Document updated successfully!');
+        localStorage.removeItem('generatedSite');
+        localStorage.removeItem('companyInfo');
+        localStorage.removeItem('doAction');
+
         return false;
       })
       .catch((error) => {

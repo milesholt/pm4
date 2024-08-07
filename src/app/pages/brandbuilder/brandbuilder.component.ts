@@ -521,8 +521,9 @@ export class BrandBuilderComponent
     }
   }
 
-  async finishLoadSite(doc: any, docId: string) {
-    const d = JSON.parse(doc.data);
+  async finishLoadSite(obj: any, docId: string) {
+    //Firestore contains data node, otherwise raw data is passed from local
+    const d = obj.hasOwnProperty('data') ? JSON.parse(obj.data) : obj;
     console.log('Got site:');
     console.log(d);
     this.generated = d.content;
@@ -538,8 +539,9 @@ export class BrandBuilderComponent
     await this.loadImages();
     await this.doThemesCSS();
 
-    localStorage.setItem('bb_' + docId, JSON.stringify(doc));
+    localStorage.setItem('bb_' + docId, JSON.stringify(obj));
 
+    this.recordChange();
     this.showSection('preview');
 
     /*
@@ -1260,7 +1262,7 @@ export class BrandBuilderComponent
     };
 
     const updatedData = {
-      data: JSON.stringify(this.generated),
+      data: JSON.stringify(siteData),
     };
 
     if (this.siteId !== '') {
@@ -1280,6 +1282,7 @@ export class BrandBuilderComponent
             this.isSaving = false;
           }, 1000);
           console.log('Site updated successfully.');
+          localStorage.setItem('bb_' + this.siteId, updatedData.data);
           return false;
         })
         .catch((error) => {
@@ -1446,7 +1449,7 @@ export class BrandBuilderComponent
           col.forEach(async (mod: any) => {
             if (mod.image) {
               console.log('base64 encoding module image:');
-              console.log(mod.image);
+              //console.log(mod.image);
               mod.image = await this.loadImage(mod.image);
             }
           });
@@ -1456,7 +1459,7 @@ export class BrandBuilderComponent
   }
 
   async loadImage(url: string) {
-    const base64Url = btoa(url); // Encode the URL to Base64
+    const base64Url = this.lib.base64Url(url); // Encode the URL to Base64
     return 'https://siteinanhour.com/server/imageloader.php?url=' + base64Url;
   }
 }

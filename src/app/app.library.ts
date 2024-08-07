@@ -238,4 +238,29 @@ export class Library {
 
     return null;
   }
+
+  base64Url(str: string): string {
+    try {
+      if (this.isBase64(str)) {
+        console.log('image already base64');
+        return str;
+      } else {
+        console.log('converting image to base64');
+        return btoa(str);
+      }
+    } catch (err) {
+      console.error('Error encoding to Base64:', err);
+      return ''; // Handle the error appropriately
+    }
+  }
+
+  isBase64(str: string): boolean {
+    try {
+      // Check if the string is Base64 encoded
+      return btoa(atob(str)) === str;
+    } catch (err) {
+      // If an error occurs, it's not a valid Base64 string
+      return false;
+    }
+  }
 }
