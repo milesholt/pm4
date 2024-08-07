@@ -58,14 +58,13 @@
         <ion-item>
           <ion-textarea
             [autoGrow]="true"
-            label="What products do you sell??"
+            label="What products do you sell?"
             labelPlacement="stacked"
             [(ngModel)]="companyProducts"
             name="company-products"
             required
           ></ion-textarea>
         </ion-item>
-        <p>test</p>
         <ion-item>
           <ion-input
             label="Got an email? (optional)"
@@ -82,6 +81,7 @@
             name="company-instagram"
           ></ion-input>
         </ion-item>
+
         <ion-button expand="full" type="submit"
           ><ion-icon name="color-wand" class="button-icon"></ion-icon> Generate
           Website</ion-button
@@ -103,6 +103,7 @@
   <div
     id="previewPanel"
     *ngIf="showPreview"
+    class="theme{{ activeTheme }}"
     [ngClass]="{
       generating: generating === true,
       'is-loaded': showPreview,
@@ -171,6 +172,11 @@
             <div id="hero-container">
               <h1
                 class="fade-up"
+                appContentEditable
+                [(contenteditableModel)]="activePage.title"
+                [attr.contenteditable]="service.auth.isLoggedIn"
+                data-text="Enter a heading here"
+                (input)="recordChange()"
                 [innerHTML]="
                   activePage.title == 'Home'
                     ? activePage.subheading
@@ -178,12 +184,21 @@
                 "
               ></h1>
               <h2
+                appContentEditable
+                [(contenteditableModel)]="activePage.subheading"
+                [attr.contenteditable]="service.auth.isLoggedIn"
+                data-text="Enter a subheading here"
+                (input)="recordChange()"
                 [innerHTML]="
                   activePage.title == 'Home' ? '' : activePage.subheading
                 "
               ></h2>
             </div>
-            <img [src]="activePage.image" id="hero-image" />
+            <img
+              (click)="onImageChange2($event, activePage); recordChange()"
+              [src]="activePage.image"
+              id="hero-image"
+            />
           </div>
 
           <div id="main-content">
@@ -192,6 +207,10 @@
                 <div class="row">
                   <div
                     class="page-content col"
+                    [(contenteditableModel)]="activePage.content"
+                    [attr.contenteditable]="service.auth.isLoggedIn"
+                    data-text="Enter some content here"
+                    (input)="recordChange()"
                     [innerHTML]="activePage.content"
                   ></div>
                 </div>
@@ -212,14 +231,13 @@
         </ion-grid>-->
 
             <div
-              class="{{ layout.params.parentclasses }} anim"
+              class="{{ layout.params.parentclasses }} layout anim"
               *ngFor="let layout of activePage.layout; let lidx = index"
             >
-              <div class="row {{ layout.params.classes }}">
+              <div class="row {{ layout.params.classes }}" @rowAnimation>
                 <div
                   *ngIf="service.auth.isLoggedIn"
                   class="editor-panel editor-panel-row"
-                  @rowAnimation
                 >
                   <ion-button (click)="moveRowUp(lidx)" [disabled]="lidx === 0"
                     ><ion-icon name="chevron-up-outline"></ion-icon
@@ -269,7 +287,7 @@
                     <div class="mod" *ngFor="let mod of col; let midx = index">
                       <div *ngIf="mod.image">
                         <img
-                          (click)="onImageChange($event, lidx, cidx, midx)"
+                          (click)="onImageChange2($event, mod); recordChange()"
                           [src]="mod.image"
                           style="display: block; width: 100%; height: auto"
                         />
@@ -282,7 +300,9 @@
                         <h2
                           appContentEditable
                           [attr.contenteditable]="service.auth.isLoggedIn"
-                          (input)="onContentChange($event, lidx, cidx, midx)"
+                          [(contenteditableModel)]="mod.heading"
+                          (input)="recordChange()"
+                          [(ngModel)]="mod.heading"
                           [innerHtml]="mod.heading"
                           data-text="Enter a heading here"
                         ></h2>
@@ -292,8 +312,9 @@
                         class="mod-content"
                         *ngIf="mod.hasOwnProperty('content')"
                         appContentEditable
+                        [(contenteditableModel)]="mod.content"
                         [attr.contenteditable]="service.auth.isLoggedIn"
-                        (input)="onContentChange($event, lidx, cidx, midx)"
+                        (input)="recordChange()"
                         [innerHtml]="mod.content"
                         data-text="Enter some content here"
                       ></div>
@@ -305,28 +326,48 @@
               </div>
               <!--row-->
 
-              <div *ngIf="activePage.sections[lidx].modules" class="row module">
+              <div *ngIf="layout.modules" class="row module">
                 <div
-                  class="mod-{{ module.name }}"
-                  *ngFor="
-                    let module of activePage.sections[lidx].modules;
-                    let midx = index
-                  "
+                  class="mod-{{ modules[module.id].name }}"
+                  *ngFor="let module of layout.modules; let midx = index"
                 >
-                  <h2 *ngIf="module.title && module.title !== ''">
-                    {{ module.title }}
-                  </h2>
+                  <h2
+                    *ngIf="module.title && module.title !== ''"
+                    appContentEditable
+                    [(contenteditableModel)]="module.title"
+                    [attr.contenteditable]="service.auth.isLoggedIn"
+                    (input)="recordChange()"
+                    [innerHtml]="module.title"
+                    data-text="Enter a heading here"
+                  ></h2>
 
-                  <div [ngSwitch]="module.name">
-                    <div *ngSwitchCase="'form'">
-                      <app-contactform-comp></app-contactform-comp>
-                    </div>
+                  <div *ngIf="modules[module.id]">
+                    <div [ngSwitch]="modules[module.id].name">
+                      <div *ngSwitchCase="'form'">
+                        <app-contactform-comp></app-contactform-comp>
+                      </div>
 
-                    <div *ngSwitchCase="'faq'">
-                      <app-accordion-comp></app-accordion-comp>
+                      <div *ngSwitchCase="'faq'">
+                        <app-accordion-comp></app-accordion-comp>
+                      </div>
+
+                      <div *ngSwitchCase="'gallery'">
+                        <app-gallery-comp
+                          [type]="
+                            module.params.type ? module.params.type : false
+                          "
+                          [username]="
+                            module.params.username
+                              ? module.params.username
+                              : false
+                          "
+                        ></app-gallery-comp>
+                      </div>
                     </div>
                   </div>
+                  <!--let mod-->
                 </div>
+                <!--modules-->
               </div>
             </div>
             <!--layout-->
@@ -401,10 +442,35 @@
 
       <div class="bottom-panel">
         <div *ngIf="service.auth.isLoggedIn">
-          <ion-button>Undo</ion-button>
-          <ion-button>Redo</ion-button>
-          <ion-button>Save changes</ion-button>
-          <ion-button>Dashboard</ion-button>
+          {{ activeVersion }}
+          {{ versions.length }}
+          <ion-button (click)="undoChange()" [disabled]="activeVersion == 0"
+            ><ion-icon name="arrow-undo-circle-outline"></ion-icon
+          ></ion-button>
+          <ion-button
+            (click)="redoChange()"
+            [disabled]="activeVersion == versions.length - 1"
+            ><ion-icon name="arrow-redo-circle-outline"></ion-icon
+          ></ion-button>
+          <ion-button (click)="changeTheme()"
+            ><ion-icon name="color-wand-outline"></ion-icon
+          ></ion-button>
+          <ion-button (click)="saveChanges()"
+            ><span *ngIf="!isSaving">
+              {{ isSaved ? "Saved" : "" }}
+              <ion-icon
+                *ngIf="!isSaved"
+                name="checkmark-outline"
+              ></ion-icon> </span
+            ><ion-spinner
+              *ngIf="isSaving"
+              class="center"
+              name="circular"
+            ></ion-spinner
+          ></ion-button>
+          <ion-button routerDirection="root" [routerLink]="'/dashboard'"
+            ><ion-icon name="home-outline"></ion-icon
+          ></ion-button>
         </div>
 
         <div *ngIf="!service.auth.isLoggedIn">

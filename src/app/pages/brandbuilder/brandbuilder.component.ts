@@ -826,7 +826,7 @@ export class BrandBuilderComponent
   }
 
   async doThemesCSS() {
-    console.log('Writing css for themes');
+    //console.log('Writing css for themes');
     let css = '';
     this.themes.fonts.forEach((font: any, index: number) => {
       css += '@import url("' + font.url + '");';
@@ -912,7 +912,7 @@ export class BrandBuilderComponent
 
     this.loadStyles(css);
 
-    console.log(css);
+    //console.log(css);
   }
 
   async doSections() {
@@ -1379,8 +1379,8 @@ export class BrandBuilderComponent
     //push new version
     this.versions.push(p);
     this.activeVersion = this.versions.length - 1;
-    console.log(this.versions);
-    console.log(this.activeVersion);
+    //console.log(this.versions);
+    //console.log(this.activeVersion);
   }
 
   undoChange() {
@@ -1436,18 +1436,18 @@ export class BrandBuilderComponent
   }
 
   async loadImages() {
-    console.log('loading images');
-    console.log(this.generated);
+    //console.log('loading images');
+    //console.log(this.generated);
     this.generated.forEach(async (page: any) => {
       if (page.image) {
-        console.log('base64 encoding main page image:');
+        //console.log('base64 encoding main page image:');
         page.image = await this.loadImage(page.image);
       }
       page.layout.forEach((row: any) => {
         row.structure.forEach((col: any) => {
           col.forEach(async (mod: any) => {
             if (mod.image) {
-              console.log('base64 encoding module image:');
+              //console.log('base64 encoding module image:');
               //console.log(mod.image);
               mod.image = await this.loadImage(mod.image);
             }

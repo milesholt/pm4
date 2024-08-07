@@ -195,7 +195,7 @@
               ></h2>
             </div>
             <img
-              (click)="onImageChange2($event, activePage)"
+              (click)="onImageChange2($event, activePage); recordChange()"
               [src]="activePage.image"
               id="hero-image"
             />
@@ -217,18 +217,6 @@
               </div>
             </div>
             <!--{{activePage.layout[0].structure | json}}-->
-
-            <!--<ion-grid *ngFor="let layout of activePage.layout; let lidx = index">   
-          <ion-row *ngFor="let row of layout.structure; let ridx = index">
-            <ion-col *ngFor="let col of row; let cidx = index" size="6" size-md="6" size-xs="12">
-                <div class="col-wrap {{layout.params.classes}}">
-                  <div *ngIf="col.heading"><h2>{{col.heading}}</h2></div>
-                  <div *ngIf="col.content">{{col.content}}</div>
-                  
-                </div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>-->
 
             <div
               class="{{ layout.params.parentclasses }} layout anim"
@@ -287,7 +275,7 @@
                     <div class="mod" *ngFor="let mod of col; let midx = index">
                       <div *ngIf="mod.image">
                         <img
-                          (click)="onImageChange2($event, mod)"
+                          (click)="onImageChange2($event, mod); recordChange()"
                           [src]="mod.image"
                           style="display: block; width: 100%; height: auto"
                         />
@@ -300,8 +288,8 @@
                         <h2
                           appContentEditable
                           [attr.contenteditable]="service.auth.isLoggedIn"
-                          (input)="onContentInput($event, mod, 'heading')"
-                          [(ngModel)]="mod.heading"
+                          [(contenteditableModel)]="mod.heading"
+                          (input)="recordChange()"
                           [innerHtml]="mod.heading"
                           data-text="Enter a heading here"
                         ></h2>
@@ -311,8 +299,9 @@
                         class="mod-content"
                         *ngIf="mod.hasOwnProperty('content')"
                         appContentEditable
+                        [(contenteditableModel)]="mod.content"
                         [attr.contenteditable]="service.auth.isLoggedIn"
-                        (input)="onContentChange($event, lidx, cidx, midx)"
+                        (input)="recordChange()"
                         [innerHtml]="mod.content"
                         data-text="Enter some content here"
                       ></div>
@@ -332,8 +321,9 @@
                   <h2
                     *ngIf="module.title && module.title !== ''"
                     appContentEditable
+                    [(contenteditableModel)]="module.title"
                     [attr.contenteditable]="service.auth.isLoggedIn"
-                    (input)="onModuleChange($event, lidx, midx)"
+                    (input)="recordChange()"
                     [innerHtml]="module.title"
                     data-text="Enter a heading here"
                   ></h2>
