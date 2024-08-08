@@ -71,7 +71,8 @@ export class BrandBuilderComponent
 
   currentStage: number = 1;
 
-  siteId: string = '';
+  siteId: any = false;
+  isCreating: boolean = true;
   activePageTitle: string = '';
   activePage: any = false;
   activeIndex = 0;
@@ -80,6 +81,7 @@ export class BrandBuilderComponent
 
   isSaved: boolean = false;
   isSaving: boolean = false;
+  isFailed: boolean = false;
 
   versions: any = [];
   activeVersion: number = 0;
@@ -513,7 +515,10 @@ export class BrandBuilderComponent
       if (docId) {
         this.prepareSiteLoad();
         this.loadDocument(docId);
+        this.isCreating = false;
       } else {
+        this.siteId = false;
+        this.isCreating = true;
         this.showSection('create');
       }
     });
@@ -1216,8 +1221,8 @@ export class BrandBuilderComponent
             'Re-generating content. Hold on... (' + attempt + ' / 3 runs)';
           resolve(await this.doAI(prompt, attempt, attempt2));
         } else {
-          alert('failed');
-          this.message = 'Failed to generate content. Try again?';
+          this.message = 'Sorry, we failed to generate it this time.';
+          this.isFailed = true;
           console.log('failed');
           reject(false);
         }

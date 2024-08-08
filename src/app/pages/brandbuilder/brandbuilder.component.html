@@ -25,7 +25,7 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="showHolding" class="container center">
+  <div *ngIf="showHolding" class="container center full">
     <div *ngIf="isHoldingPending">
       <ion-spinner class="center" name="circular"></ion-spinner>
       <br /><br />
@@ -178,7 +178,23 @@
         >
       </div>
     </div>
-    <div *ngIf="generating">{{ message }}</div>
+    <div *ngIf="generating">
+      {{ message }}
+
+      <ion-button
+        *ngIf="isFailed"
+        (click)="
+          showSection('create');
+          onSubmit();
+          generated = false;
+          generating = true;
+          aiform = false;
+          isFailed = false;
+          message = 'Working on it'
+        "
+        >Try again</ion-button
+      >
+    </div>
 
     <div *ngIf="generated && !!aiform">
       <p>Your website is ready.</p>
@@ -516,9 +532,7 @@
 -->
 
       <div class="bottom-panel">
-        <div *ngIf="service.auth.isLoggedIn">
-          {{ activeVersion }}
-          {{ versions.length }}
+        <div *ngIf="service.auth.isLoggedIn && siteId !== false && !isCreating">
           <ion-button (click)="undoChange()" [disabled]="activeVersion == 0"
             ><ion-icon name="arrow-undo-circle-outline"></ion-icon
           ></ion-button>
@@ -548,10 +562,42 @@
           ></ion-button>
         </div>
 
+        <div *ngIf="service.auth.isLoggedIn && siteId == false && isCreating">
+          <p>What do you think?</p>
+
+          <ion-button (click)="changeTheme()"
+            ><ion-icon name="color-wand-outline"></ion-icon> Change
+            theme</ion-button
+          >
+          <ion-button
+            (click)="showSection('create'); generated = false; aiform = false"
+            ><ion-icon name="create"></ion-icon> Edit it</ion-button
+          >
+          <ion-button
+            (click)="
+              showSection('create');
+              onSubmit();
+              generated = false;
+              generating = true;
+              aiform = false;
+              isFailed = false;
+              message = 'Working on it'
+            "
+            ><ion-icon name="refresh"></ion-icon> Go again</ion-button
+          >
+          <ion-button (click)="storeSite()"
+            ><ion-icon name="checkmark-circle"></ion-icon> Publish
+            it</ion-button
+          >
+        </div>
+
         <div *ngIf="!service.auth.isLoggedIn">
           <p>What do you think?</p>
-          <ion-button (click)="showSection('publish')">Publish it</ion-button>
-          <ion-button
+          <ion-button (click)="showSection('publish')"
+            ><ion-icon name="checkmark-circle"></ion-icon> Publish
+            it</ion-button
+          >
+          <!--<ion-button
             (click)="
               showSection('create');
               onSubmit();
@@ -561,10 +607,15 @@
               message = 'Working on it'
             "
             >Change it</ion-button
+          >-->
+
+          <ion-button (click)="changeTheme()"
+            ><ion-icon name="color-wand-outline"></ion-icon> Change
+            theme</ion-button
           >
           <ion-button
             (click)="showSection('create'); generated = false; aiform = false"
-            >Edit it</ion-button
+            ><ion-icon name="create"></ion-icon> Edit it</ion-button
           >
         </div>
       </div>

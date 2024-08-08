@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   generated: any = false;
   companyInfo: any = false;
   isCreateSite: boolean = false;
+  isLoading: boolean = false;
   private subscription: Subscription | null = null;
 
   constructor(
@@ -35,6 +36,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       if (params['action']) this.action = params['action'];
     });
     this.action = localStorage.getItem('doAction') ?? false;
+    this.isLoading = true;
     await this.getSites();
     if (!!this.action) {
       this.doAction(this.action);
@@ -50,6 +52,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.companyInfo = localStorage.getItem('companyInfo');
 
         if (!!this.generated && !!this.companyInfo) {
+          this.companyInfo = JSON.parse(this.companyInfo);
           await this.createSite();
         } else {
           this.message = 'Sorry there was a problem loading your info.';
@@ -70,11 +73,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   async createSite() {
     // Example: Add a document
-    this.message =
-      'Preparing to store site...' + JSON.parse(this.companyInfo).name;
+    this.message = 'Preparing to store site...' + this.companyInfo.name;
     this.service.firestore
       .createDocument('sites', {
-        name: JSON.parse(this.companyInfo).name,
+        name: this.companyInfo.name,
       })
       .then(async () => {
         this.message = 'Site being setup..';
@@ -82,6 +84,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         await this.updateSite();
       })
       .catch((e: any) => {
+        alert('here');
         this.message = e;
       });
   }
@@ -117,6 +120,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .then(async (data: any) => {
         this.sites = data;
         this.message = '';
+        this.isLoading = false;
       })
       .catch((e: any) => {
         this.message = e;
@@ -191,7 +195,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     //const updatedData = { fieldName: 'new value' };
     const updatedData = {
       data: this.generated,
-      name: !!site ? site.name : this.generated.title,
+      name: !!site ? site.name : this.companyInfo.name,
     };
 
     this.service.firestore
@@ -218,7 +222,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           }, 2000);
         }
 
-        return false;
+        return true;
       })
       .catch((error) => {
         this.message = 'Site could not be updated';
