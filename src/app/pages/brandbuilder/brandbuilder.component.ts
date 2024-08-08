@@ -91,7 +91,7 @@ export class BrandBuilderComponent
     companyProducts: string =
       'flower bouquets, roses, sunflowers, lavender, orchids';
   */
-
+  demoIdx = 0;
   demos: any = [
     {
       name: 'Black & Red Tattoo Parlor',
@@ -99,6 +99,24 @@ export class BrandBuilderComponent
         "We're an old fashioned tattoo shop based in Las Vegas. We provide high quality tattoo services. We offer a wider variety of styles and tattoo application methods, with a team of dedicated and professional ink artists. We do all methods of tattooing from Stick and Poke Hand Poke, Single Needle, Yantra/Sak Yants, and Tebori. We also provide tattoo removal services.\n",
       products:
         'bamboo tattoo, blackwork tattoo, black ink tattoo, watercolour tattoo, body art tattoo, geometric tattoo, tattoo removal, bespoke tattoo design service',
+      email: '',
+      instagram: '',
+    },
+    {
+      name: 'Paws 4 Coffee',
+      description:
+        "We're a small family run cafe, but that also runs an animal rescue shelter for stray dogs and cats. We'e based in San Francisco and have been going for the last 3 or so years. All our coffee is homegrown and while enjoying our coffee, customers can enjoy the company of our rescue feline friends. This helps the customers get to know and spend time with the animals, and even giving them a chance of finding a new home. We also offer workshops on pet care and how to grow your own coffee \n",
+      products:
+        'arabica coffee, robusta coffee, rescue animal adoption, pet care workshop, coffee growing workshop',
+      email: '',
+      instagram: '',
+    },
+    {
+      name: 'Death Valley Fitness',
+      description:
+        "Based near the region of Death Valley, we're a 24 hour self service gym. We offer high-end premium gym facilites, weights and machines that cover all upper, lower body and core, abdominal areas. Customers can swipe in an out using our mobile app. We offer a range of membership options to suit all needs. We also offer evening and morning yoga and pilates classes for those getting ready or coming back from work. \n",
+      products:
+        'weight training, yoga, pilates, 24 hour gym service, self service, cardio machines, high intensity training',
       email: '',
       instagram: '',
     },
@@ -636,9 +654,10 @@ export class BrandBuilderComponent
   }
 
   doDemo() {
-    this.companyName = this.demos[0].name;
-    this.companyDescription = this.demos[0].description;
-    this.companyProducts = this.demos[0].products;
+    this.demoIdx = this.selectRandom(this.demos, this.demoIdx);
+    this.companyName = this.demos[this.demoIdx].name;
+    this.companyDescription = this.demos[this.demoIdx].description;
+    this.companyProducts = this.demos[this.demoIdx].products;
   }
 
   async onSubmit() {
@@ -746,8 +765,20 @@ export class BrandBuilderComponent
     });
   }
 
-  selectRandom(arr: any = 10) {
+  /*selectRandom(arr: any = 10) {
     const randomIndex = Math.floor(Math.random() * arr.length);
+    return randomIndex;
+  }*/
+
+  selectRandom(arr: any[], currentIndex?: number): number {
+    let randomIndex: number;
+    if (currentIndex === undefined) {
+      randomIndex = Math.floor(Math.random() * arr.length);
+    } else {
+      do {
+        randomIndex = Math.floor(Math.random() * arr.length);
+      } while (randomIndex === currentIndex);
+    }
     return randomIndex;
   }
 

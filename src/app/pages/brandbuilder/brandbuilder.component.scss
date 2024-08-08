@@ -448,8 +448,8 @@ $colors: #ff7e5f, #feb47b, #ff7e5f, #86a8e7, #91eae4, #86a8e7;
   order: 4;
 }
 
-.form-nav ion-button:disabled {
-  opacity:0;
+.form-nav ion-button.button-disabled {
+  //opacity:0;
 }
 
 form h2, form p{
