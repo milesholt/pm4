@@ -207,7 +207,6 @@
   <div
     id="previewPanel"
     *ngIf="showPreview"
-    class="theme{{ activeTheme }}"
     [ngClass]="{
       generating: generating === true,
       'is-loaded': showPreview,
@@ -221,291 +220,299 @@
     <div *ngIf="generated" style="padding-bottom: 300px">
       <!--website displays here-->
 
-      <!-- main menu-->
-      <ion-menu menuId="builderMain" contentId="main-page">
-        <ion-header>
-          <ion-toolbar>
-            <ion-title>Main Menu</ion-title>
-          </ion-toolbar>
-        </ion-header>
-        <!--menu content-->
-        <ion-content class="ion-padding">
-          <ion-list>
-            <ion-item *ngFor="let page of generated; let i = index">
-              <div class="menu-container">
-                <ion-menu-toggle auto-hide="false">
-                  <!--<ion-item (click)="changePage(i)" routerDirection="root" [routerLink]="[page.url]" [queryParams]="getSearchParams(false)" lines="none"
+      <div class="preview-area theme{{ activeTheme }}">
+        <!-- main menu-->
+        <ion-menu menuId="builderMain" contentId="main-page">
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Main Menu</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <!--menu content-->
+          <ion-content class="ion-padding">
+            <ion-list>
+              <ion-item *ngFor="let page of generated; let i = index">
+                <div class="menu-container">
+                  <ion-menu-toggle auto-hide="false">
+                    <!--<ion-item (click)="changePage(i)" routerDirection="root" [routerLink]="[page.url]" [queryParams]="getSearchParams(false)" lines="none"
                detail="false" [class.selected]="activeIndex == i">         
                <ion-label>{{ page.title }}</ion-label>    
              </ion-item>-->
-                  <ion-item
-                    (click)="changePage(i)"
-                    lines="none"
-                    detail="false"
-                    [class.selected]="activeIndex == i"
-                  >
-                    <ion-label>{{ page.title }}</ion-label>
-                  </ion-item>
-                </ion-menu-toggle>
-              </div>
-            </ion-item>
-          </ion-list>
-        </ion-content>
-      </ion-menu>
+                    <ion-item
+                      (click)="changePage(i)"
+                      lines="none"
+                      detail="false"
+                      [class.selected]="activeIndex == i"
+                    >
+                      <ion-label>{{ page.title }}</ion-label>
+                    </ion-item>
+                  </ion-menu-toggle>
+                </div>
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ion-menu>
 
-      <!-- main content-->
-      <div class="ion-page" id="main-page">
-        <!--page header-->
-        <ion-header>
-          <ion-toolbar>
-            <!--<ion-buttons slot="start">
+        <!-- main content-->
+        <div class="ion-page" id="main-page">
+          <!--page header-->
+          <ion-header>
+            <ion-toolbar>
+              <!--<ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
           </ion-buttons>-->
-            <ion-buttons slot="start">
-              <ion-menu-button menu="builderMain"></ion-menu-button>
-            </ion-buttons>
-            <ion-title>{{ companyName }}</ion-title>
-          </ion-toolbar>
-        </ion-header>
-        <!--page content-->
-        <ion-content>
-          <!-- main page preview -->
+              <ion-buttons slot="start">
+                <ion-menu-button menu="builderMain"></ion-menu-button>
+              </ion-buttons>
+              <ion-title>{{ companyName }}</ion-title>
+            </ion-toolbar>
+          </ion-header>
+          <!--page content-->
+          <ion-content>
+            <!-- main page preview -->
 
-          <!--{{generated | json}}-->
-          <div id="hero">
-            <div id="hero-container">
-              <h1
-                class="fade-up"
-                appContentEditable
-                [(contenteditableModel)]="activePage.title"
-                [attr.contenteditable]="service.auth.isLoggedIn"
-                data-text="Enter a heading here"
-                (input)="recordChange()"
-                [innerHTML]="
-                  activePage.title == 'Home'
-                    ? activePage.subheading
-                    : activePage.title
-                "
-              ></h1>
-              <h2
-                appContentEditable
-                [(contenteditableModel)]="activePage.subheading"
-                [attr.contenteditable]="service.auth.isLoggedIn"
-                data-text="Enter a subheading here"
-                (input)="recordChange()"
-                [innerHTML]="
-                  activePage.title == 'Home' ? '' : activePage.subheading
-                "
-              ></h2>
+            <!--{{generated | json}}-->
+            <div id="hero">
+              <div id="hero-container">
+                <h1
+                  class="fade-up"
+                  appContentEditable
+                  [(contenteditableModel)]="activePage.title"
+                  [attr.contenteditable]="service.auth.isLoggedIn"
+                  data-text="Enter a heading here"
+                  (input)="recordChange()"
+                  [innerHTML]="
+                    activePage.title == 'Home'
+                      ? activePage.subheading
+                      : activePage.title
+                  "
+                ></h1>
+                <h2
+                  appContentEditable
+                  [(contenteditableModel)]="activePage.subheading"
+                  [attr.contenteditable]="service.auth.isLoggedIn"
+                  data-text="Enter a subheading here"
+                  (input)="recordChange()"
+                  [innerHTML]="
+                    activePage.title == 'Home' ? '' : activePage.subheading
+                  "
+                ></h2>
+              </div>
+              <img
+                (click)="onImageChange($event, activePage)"
+                [src]="activePage.image"
+                id="hero-image"
+              />
             </div>
-            <img
-              (click)="onImageChange($event, activePage)"
-              [src]="activePage.image"
-              id="hero-image"
-            />
-          </div>
 
-          <div id="main-content">
-            <div class="container">
-              <div class="col-1">
-                <div class="row">
-                  <div
-                    class="page-content col"
-                    [(contenteditableModel)]="activePage.content"
-                    [attr.contenteditable]="service.auth.isLoggedIn"
-                    data-text="Enter some content here"
-                    (input)="recordChange()"
-                    [innerHTML]="activePage.content"
-                  ></div>
+            <div id="main-content">
+              <div class="container">
+                <div class="col-1">
+                  <div class="row">
+                    <div
+                      class="page-content col"
+                      [(contenteditableModel)]="activePage.content"
+                      [attr.contenteditable]="service.auth.isLoggedIn"
+                      data-text="Enter some content here"
+                      (input)="recordChange()"
+                      [innerHTML]="activePage.content"
+                    ></div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <!--{{activePage.layout[0].structure | json}}-->
+              <!--{{activePage.layout[0].structure | json}}-->
 
-            <div
-              class="{{ layout.params.parentclasses }} layout anim"
-              *ngFor="let layout of activePage.layout; let lidx = index"
-            >
-              <div class="row {{ layout.params.classes }}" @rowAnimation>
-                <div
-                  *ngIf="service.auth.isLoggedIn"
-                  class="editor-panel editor-panel-row"
-                >
-                  <ion-button (click)="moveRowUp(lidx)" [disabled]="lidx === 0"
-                    ><ion-icon name="chevron-up-outline"></ion-icon
-                  ></ion-button>
-                  <ion-button
-                    (click)="moveRowDown(lidx)"
-                    [disabled]="lidx === activePage.layout.length - 1"
-                    ><ion-icon name="chevron-down-outline"></ion-icon
-                  ></ion-button>
-
-                  <ion-button (click)="copyRow(lidx)"
-                    ><ion-icon name="copy-outline"></ion-icon
-                  ></ion-button>
-                  <ion-button (click)="deleteRow(lidx)"
-                    ><ion-icon name="close-outline"></ion-icon
-                  ></ion-button>
-                </div>
-
-                <div
-                  class="col {{
-                    hasProperty(col, 'image') ? 'col-image' : 'col-content'
-                  }}"
-                  *ngFor="let col of layout.structure; let cidx = index"
-                  @columnAnimation
-                >
+              <div
+                class="{{ layout.params.parentclasses }} layout anim"
+                *ngFor="let layout of activePage.layout; let lidx = index"
+              >
+                <div class="row {{ layout.params.classes }}" @rowAnimation>
                   <div
                     *ngIf="service.auth.isLoggedIn"
-                    class="editor-panel editor-panel-col"
+                    class="editor-panel editor-panel-row"
                   >
                     <ion-button
-                      (click)="swapColumns(lidx, cidx, cidx - 1)"
-                      [hidden]="cidx === 0"
-                      ><ion-icon name="chevron-back-outline"></ion-icon
+                      (click)="moveRowUp(lidx)"
+                      [disabled]="lidx === 0"
+                      ><ion-icon name="chevron-up-outline"></ion-icon
                     ></ion-button>
                     <ion-button
-                      (click)="swapColumns(lidx, cidx, cidx + 1)"
-                      [hidden]="cidx === layout.structure.length - 1"
-                      ><ion-icon name="chevron-forward-outline"></ion-icon
+                      (click)="moveRowDown(lidx)"
+                      [disabled]="lidx === activePage.layout.length - 1"
+                      ><ion-icon name="chevron-down-outline"></ion-icon
+                    ></ion-button>
+
+                    <ion-button (click)="copyRow(lidx)"
+                      ><ion-icon name="copy-outline"></ion-icon
+                    ></ion-button>
+                    <ion-button (click)="deleteRow(lidx)"
+                      ><ion-icon name="close-outline"></ion-icon
                     ></ion-button>
                   </div>
 
                   <div
-                    class="{{
-                      hasProperty(col, 'image') ? '' : 'content-wrap'
+                    class="col {{
+                      hasProperty(col, 'image') ? 'col-image' : 'col-content'
                     }}"
+                    *ngFor="let col of layout.structure; let cidx = index"
+                    @columnAnimation
                   >
-                    <div class="mod" *ngFor="let mod of col; let midx = index">
-                      <div *ngIf="mod.image">
-                        <img
-                          (click)="onImageChange($event, mod)"
-                          [src]="mod.image"
-                          style="display: block; width: 100%; height: auto"
-                        />
-                      </div>
+                    <div
+                      *ngIf="service.auth.isLoggedIn"
+                      class="editor-panel editor-panel-col"
+                    >
+                      <ion-button
+                        (click)="swapColumns(lidx, cidx, cidx - 1)"
+                        [hidden]="cidx === 0"
+                        ><ion-icon name="chevron-back-outline"></ion-icon
+                      ></ion-button>
+                      <ion-button
+                        (click)="swapColumns(lidx, cidx, cidx + 1)"
+                        [hidden]="cidx === layout.structure.length - 1"
+                        ><ion-icon name="chevron-forward-outline"></ion-icon
+                      ></ion-button>
+                    </div>
 
+                    <div
+                      class="{{
+                        hasProperty(col, 'image') ? '' : 'content-wrap'
+                      }}"
+                    >
                       <div
-                        class="mod-heading"
-                        *ngIf="mod.hasOwnProperty('heading')"
+                        class="mod"
+                        *ngFor="let mod of col; let midx = index"
                       >
-                        <h2
+                        <div *ngIf="mod.image">
+                          <img
+                            (click)="onImageChange($event, mod)"
+                            [src]="mod.image"
+                            style="display: block; width: 100%; height: auto"
+                          />
+                        </div>
+
+                        <div
+                          class="mod-heading"
+                          *ngIf="mod.hasOwnProperty('heading')"
+                        >
+                          <h2
+                            appContentEditable
+                            [attr.contenteditable]="service.auth.isLoggedIn"
+                            [(contenteditableModel)]="mod.heading"
+                            (input)="recordChange()"
+                            [innerHtml]="mod.heading"
+                            data-text="Enter a heading here"
+                          ></h2>
+                        </div>
+
+                        <div
+                          class="mod-content"
+                          *ngIf="mod.hasOwnProperty('content')"
                           appContentEditable
+                          [(contenteditableModel)]="mod.content"
                           [attr.contenteditable]="service.auth.isLoggedIn"
-                          [(contenteditableModel)]="mod.heading"
                           (input)="recordChange()"
-                          [innerHtml]="mod.heading"
-                          data-text="Enter a heading here"
-                        ></h2>
-                      </div>
-
-                      <div
-                        class="mod-content"
-                        *ngIf="mod.hasOwnProperty('content')"
-                        appContentEditable
-                        [(contenteditableModel)]="mod.content"
-                        [attr.contenteditable]="service.auth.isLoggedIn"
-                        (input)="recordChange()"
-                        [innerHtml]="mod.content"
-                        data-text="Enter some content here"
-                      ></div>
-                      <!--<ion-button *ngIf="col.link" [routerLink]="[col.link.path]" [queryParams]="col.link.query">{{col.link.label}}</ion-button>-->
-                    </div>
-                  </div>
-                </div>
-                <!--cols-->
-              </div>
-              <!--row-->
-
-              <div *ngIf="layout.modules" class="row module">
-                <div
-                  class="mod-{{ modules[module.id].name }}"
-                  *ngFor="let module of layout.modules; let midx = index"
-                >
-                  <h2
-                    *ngIf="module.title && module.title !== ''"
-                    appContentEditable
-                    [(contenteditableModel)]="module.title"
-                    [attr.contenteditable]="service.auth.isLoggedIn"
-                    (input)="recordChange()"
-                    [innerHtml]="module.title"
-                    data-text="Enter a heading here"
-                  ></h2>
-
-                  <div *ngIf="modules[module.id]">
-                    <div [ngSwitch]="modules[module.id].name">
-                      <div *ngSwitchCase="'form'">
-                        <app-contactform-comp></app-contactform-comp>
-                      </div>
-
-                      <div *ngSwitchCase="'faq'">
-                        <app-accordion-comp></app-accordion-comp>
-                      </div>
-
-                      <div *ngSwitchCase="'gallery'">
-                        <app-gallery-comp
-                          [type]="
-                            module.params.type ? module.params.type : false
-                          "
-                          [username]="
-                            module.params.username
-                              ? module.params.username
-                              : false
-                          "
-                        ></app-gallery-comp>
+                          [innerHtml]="mod.content"
+                          data-text="Enter some content here"
+                        ></div>
+                        <!--<ion-button *ngIf="col.link" [routerLink]="[col.link.path]" [queryParams]="col.link.query">{{col.link.label}}</ion-button>-->
                       </div>
                     </div>
                   </div>
-                  <!--let mod-->
+                  <!--cols-->
                 </div>
-                <!--modules-->
+                <!--row-->
+
+                <div *ngIf="layout.modules" class="row module">
+                  <div
+                    class="mod-{{ modules[module.id].name }}"
+                    *ngFor="let module of layout.modules; let midx = index"
+                  >
+                    <h2
+                      *ngIf="module.title && module.title !== ''"
+                      appContentEditable
+                      [(contenteditableModel)]="module.title"
+                      [attr.contenteditable]="service.auth.isLoggedIn"
+                      (input)="recordChange()"
+                      [innerHtml]="module.title"
+                      data-text="Enter a heading here"
+                    ></h2>
+
+                    <div *ngIf="modules[module.id]">
+                      <div [ngSwitch]="modules[module.id].name">
+                        <div *ngSwitchCase="'form'">
+                          <app-contactform-comp></app-contactform-comp>
+                        </div>
+
+                        <div *ngSwitchCase="'faq'">
+                          <app-accordion-comp></app-accordion-comp>
+                        </div>
+
+                        <div *ngSwitchCase="'gallery'">
+                          <app-gallery-comp
+                            [type]="
+                              module.params.type ? module.params.type : false
+                            "
+                            [username]="
+                              module.params.username
+                                ? module.params.username
+                                : false
+                            "
+                          ></app-gallery-comp>
+                        </div>
+                      </div>
+                    </div>
+                    <!--let mod-->
+                  </div>
+                  <!--modules-->
+                </div>
+              </div>
+              <!--layout-->
+            </div>
+            <!--main content-->
+
+            <!-- footer-->
+            <div id="footer">
+              <div id="footer-wrap">
+                <ion-row>
+                  <ion-col size="9">
+                    <a>Privacy Policy</a><br />
+                    <a>Refund Policy</a><br />
+                    <a>Shipping Policy</a><br />
+                    <a (click)="changePage(1)">About Us</a><br />
+                    <a (click)="changePage(4)">Contact Us</a><br />
+                    <a>Terms and Conditions</a>
+                  </ion-col>
+                  <ion-col class="col-2">
+                    <a
+                      href="https://www.facebook.com/"
+                      target="_blank"
+                      class="social-icon-link"
+                      ><ion-icon
+                        name="logo-facebook"
+                        class="social-icon"
+                      ></ion-icon
+                    ></a>
+
+                    <a
+                      href="https://www.instagram.com/"
+                      target="_blank"
+                      class="social-icon-link"
+                      ><ion-icon
+                        name="logo-instagram"
+                        class="social-icon"
+                      ></ion-icon
+                    ></a>
+                  </ion-col>
+                </ion-row>
+                <div id="copyright-notice">
+                  Copyright {{ companyName }} {{ currentYear }}
+                </div>
               </div>
             </div>
-            <!--layout-->
-          </div>
-          <!--main content-->
-
-          <!-- footer-->
-          <div id="footer">
-            <div id="footer-wrap">
-              <ion-row>
-                <ion-col size="9">
-                  <a>Privacy Policy</a><br />
-                  <a>Refund Policy</a><br />
-                  <a>Shipping Policy</a><br />
-                  <a (click)="changePage(1)">About Us</a><br />
-                  <a (click)="changePage(4)">Contact Us</a><br />
-                  <a>Terms and Conditions</a>
-                </ion-col>
-                <ion-col class="col-2">
-                  <a
-                    href="https://www.facebook.com/"
-                    target="_blank"
-                    class="social-icon-link"
-                    ><ion-icon
-                      name="logo-facebook"
-                      class="social-icon"
-                    ></ion-icon
-                  ></a>
-
-                  <a
-                    href="https://www.instagram.com/"
-                    target="_blank"
-                    class="social-icon-link"
-                    ><ion-icon
-                      name="logo-instagram"
-                      class="social-icon"
-                    ></ion-icon
-                  ></a>
-                </ion-col>
-              </ion-row>
-              <div id="copyright-notice">
-                Copyright {{ companyName }} {{ currentYear }}
-              </div>
-            </div>
-          </div>
-        </ion-content>
+          </ion-content>
+        </div>
       </div>
+      <!--preview theme area -->
 
       <!--site header and menu-->
       <!--<ion-menu menuId="main" side="start" contentId="main-content" style="margin-top:100px">

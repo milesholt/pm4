@@ -995,7 +995,19 @@ export class BrandBuilderComponent
       css +=
         '.theme' +
         index +
-        ' .layout:nth-child(even) h1,h2,h3,p,a,li,span{color:white;}';
+        ' .layout:nth-child(even) h1, .theme' +
+        index +
+        ' .layout:nth-child(even) h2, .theme' +
+        index +
+        ' .layout:nth-child(even) h3, .theme' +
+        index +
+        ' .layout:nth-child(even) p, .theme' +
+        index +
+        ' .layout:nth-child(even) a, .theme' +
+        index +
+        ' .layout:nth-child(even) li, .theme' +
+        index +
+        ' .layout:nth-child(even) span {color:white;}';
       css +=
         '.theme' +
         index +
@@ -1020,9 +1032,36 @@ export class BrandBuilderComponent
       css +=
         '.theme' +
         index +
-        ' .col:nth-child(even) p,h1,h2,h3,a,li{color:white;}';
-      css += '.theme' + index + ' h1,p,a{color:' + colour.primary + ';}';
-      css += '.theme' + index + ' h2,h3{color:' + colour.secondary + ';}';
+        ' .col:nth-child(even)  p, .theme' +
+        index +
+        ' .col:nth-child(even)  h1, .theme' +
+        index +
+        ' .col:nth-child(even)  h2, .theme' +
+        index +
+        ' .col:nth-child(even)  h3, .theme' +
+        index +
+        ' .col:nth-child(even)  a, .theme' +
+        index +
+        ' .col:nth-child(even)  li {color:white;}';
+
+      css +=
+        '.theme' +
+        index +
+        ' h1, .theme' +
+        index +
+        '  p, .theme' +
+        index +
+        '  a {color:' +
+        colour.primary +
+        ';}';
+      css +=
+        '.theme' +
+        index +
+        ' h2, .theme' +
+        index +
+        '  h3 {color:' +
+        colour.secondary +
+        ';}';
     });
 
     this.loadStyles(css);
@@ -1042,43 +1081,52 @@ export class BrandBuilderComponent
           page.layout = [];
           console.log(page);
           let layoutIndex = 0;
-          //loop through sections
-          page.sections.forEach((section: any) => {
-            // Update the layout index to loop from 1 to 5
-            console.log(section);
 
-            if (section.hasOwnProperty('layoutId')) {
-              layoutIndex = section.layoutId;
+          if (!page.hasOwnProperty('sections')) {
+            page.sections = this.lib.deepCopy(
+              this.websiteStructure[idx].sections
+            );
+          }
 
-              console.log('using layoutId:');
-              console.log(layoutIndex);
-            } else {
+          //make sure page has sections
+          //its possible ai does not return complete website structure with sections on each page
+          if (page.sections) {
+            //loop through sections
+            page.sections.forEach((section: any) => {
               // Update the layout index to loop from 1 to 5
-              /*layoutIndex =
+              console.log(section);
+
+              if (section.hasOwnProperty('layoutId')) {
+                layoutIndex = section.layoutId;
+
+                console.log('using layoutId:');
+                console.log(layoutIndex);
+              } else {
+                // Update the layout index to loop from 1 to 5
+                /*layoutIndex =
               layoutIndex === this.contentLayouts.length - 1
                 ? 0
                 : layoutIndex + 1;*/
-              layoutIndex = layoutIndex === 1 ? 0 : layoutIndex + 1;
-            }
+                layoutIndex = layoutIndex === 1 ? 0 : layoutIndex + 1;
+              }
 
-            /*this.contentLayouts[
+              /*this.contentLayouts[
               Math.floor(Math.random() * this.contentLayouts.length)
             ],*/
 
-            let layout = this.cloneObject(this.contentLayouts[layoutIndex]);
+              let layout = this.cloneObject(this.contentLayouts[layoutIndex]);
 
-            //copy modules
-            if (section.hasOwnProperty('modules')) {
-              console.log('section has modules');
-              layout.modules = this.lib.deepCopy(section.modules);
-            }
+              //copy modules
+              if (section.hasOwnProperty('modules')) {
+                console.log('section has modules');
+                layout.modules = this.lib.deepCopy(section.modules);
+              }
 
-            //clone a random layout
-            page.layout.push(layout);
-          });
+              //clone a random layout
+              page.layout.push(layout);
+            });
 
-          //
-          if (page.sections) {
+            //
             //loop through layouts and
             page.layout.forEach((layout: any, index: number) => {
               layout.structure.forEach((row: any) => {
@@ -1337,6 +1385,7 @@ export class BrandBuilderComponent
         },
       },
       themes: this.themes,
+      themeId: this.activeTheme,
     };
 
     localStorage.setItem('generatedSite', JSON.stringify(siteData));
