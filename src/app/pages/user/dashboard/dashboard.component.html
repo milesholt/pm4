@@ -21,7 +21,7 @@
             <ion-label>Manage</ion-label>
           </ion-item>
           <div class="ion-padding" slot="content">
-            <ion-button expand="block">
+            <ion-button (click)="showSection('sites')" expand="block">
               <ion-icon slot="start" name="document"></ion-icon>
               <ion-label>Sites</ion-label>
             </ion-button>
@@ -44,21 +44,35 @@
             <ion-label>Account</ion-label>
           </ion-item>
           <div class="ion-padding" slot="content">
-            <ion-button fill="outline" expand="block">
+            <ion-button
+              (click)="showSection('profile')"
+              fill="outline"
+              expand="block"
+            >
+              <ion-icon slot="start" name="person"></ion-icon>
+              <ion-label> Profile </ion-label>
+            </ion-button>
+
+            <ion-button
+              (click)="showSection('settings')"
+              fill="outline"
+              expand="block"
+            >
               <ion-icon slot="start" name="list"></ion-icon>
               <ion-label> Details </ion-label>
             </ion-button>
 
-            <ion-button fill="outline" expand="block">
-              <ion-icon slot="start" name="layers"></ion-icon>
+            <ion-button
+              (click)="showSection('memberships')"
+              fill="outline"
+              expand="block"
+            >
+              <ion-icon slot="start" name="ribbon"></ion-icon>
               <ion-label> Membership </ion-label>
             </ion-button>
 
             <ion-button fill="outline" expand="block" (click)="signOut()">
-              <ion-icon
-                slot="start"
-                name="arrow-back-circle-outline"
-              ></ion-icon>
+              <ion-icon slot="start" name="log-out"></ion-icon>
               <ion-label> Sign Out</ion-label>
             </ion-button>
           </div>
@@ -96,6 +110,12 @@
           <h2>Profile</h2>
 
           <p>Your profile information:</p>
+
+          <img
+            class="align-self-start mr-5 img-thumbnail rounded-circle"
+            src="{{ user.photoURL ? user.photoURL : '/assets/dummy-user.png' }}"
+            alt="{{ user.displayName }}"
+          />
 
           <p>
             User ID: <strong>{{ user.uid }}</strong>
@@ -154,7 +174,7 @@
               <p>Need a quick landing page? Try us out for free</p>
 
               <ul>
-                <li>1 Free landing page</li>
+                <li>3 free landing pages</li>
                 <li>100 AI calls</li>
                 <li>Contact form</li>
                 <li>Youtube integration</li>
@@ -171,7 +191,11 @@
               [disabled]="userSettings.membershipId == 'free'"
               fill="clear"
             >
-              {{userSettings.membershipId == 'free' ? Your current membership : Choose }}
+              {{
+                userSettings.membershipId == "free"
+                  ? "Your current membership"
+                  : "Choose"
+              }}
             </ion-button>
           </ion-card>
 
@@ -185,7 +209,7 @@
               <p>Enough to get your business up and running.</p>
 
               <ul>
-                <li>Up to 3 websites</li>
+                <li>3x Essential websites</li>
                 <li>500 AI calls</li>
                 <li>3 campaigns / month</li>
                 <li>All integrations from Free, plus more</li>
@@ -197,7 +221,11 @@
               [disabled]="userSettings.membershipId == 'starter'"
               fill="clear"
             >
-              {{userSettings.membershipId == 'starter' ? Your current membership : Choose }}
+              {{
+                userSettings.membershipId == "starter"
+                  ? "Your current membership"
+                  : "Choose"
+              }}
             </ion-button>
           </ion-card>
 
@@ -211,7 +239,8 @@
               <p>Everything, unlimited.</p>
 
               <ul>
-                <li>Unlimited websites</li>
+                <li>Unlimited Premium websites</li>
+                <li>Unlimited pages</li>
                 <li>Unlimited AI calls</li>
                 <li>Unlimited campaigns</li>
                 <li>All integrations from Free, plus more</li>
@@ -223,7 +252,11 @@
               [disabled]="userSettings.membershipId == 'premium'"
               fill="clear"
             >
-              {{userSettings.membershipId == 'premium' ? Your current membership : Choose }}
+              {{
+                userSettings.membershipId == "premium"
+                  ? "Your current membership"
+                  : "Choose"
+              }}
             </ion-button>
           </ion-card>
         </div>
@@ -232,13 +265,6 @@
         <div *ngIf="showSites">
           <div class="col-md-12">
             <div class="media">
-              <img
-                class="align-self-start mr-5 img-thumbnail rounded-circle"
-                src="{{
-                  user.photoURL ? user.photoURL : '/assets/dummy-user.png'
-                }}"
-                alt="{{ user.displayName }}"
-              />
               <div class="media-body">
                 <h1>
                   Welcome,
@@ -259,6 +285,11 @@
 
                 <div *ngIf="!isLoading">
                   <h2>Sites</h2>
+
+                  <p *ngIf="sites.length == 0">
+                    You have no sites created. Start a new site by clicking
+                    below.
+                  </p>
                   <ion-list>
                     <ion-item-sliding
                       *ngFor="let site of sites; let sidx = index"

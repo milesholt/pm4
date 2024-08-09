@@ -44,10 +44,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
     this.action = localStorage.getItem('doAction') ?? false;
     this.isLoading = true;
-    await this.getSites();
+
+    this.service.auth.authState$.subscribe(user => {
+      if (user) {
+        console.log('there is user');
+        console.log(user);
+        console.log(this.service.auth);
+        this.checkUser();
+      }
+    });
+
+
+    /*await this.getSites();
     if (!!this.action) {
       this.doAction(this.action);
-    }
+    }*/
   }
 
   async doAction(action: any = false) {
@@ -78,34 +89,108 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  checkUser() {
+  checkUserSettings() {
+    console.log('checking user settings');
+  
     const userId = this.service.auth.userId;
     const pathSegments = ['users', userId, 'user'];
-    const docName = 'settings';
+    const docId = 'settings';
 
-    this.service.firestore
-      .getDocumentById(pathSegments, <string>docName)
-      .subscribe(
-        (doc) => {
-          if (doc) {
-            this.userSettings = JSON.parse(doc);
-          }
-        },
-        (error) => {
-          console.log('No user found, setting up new user');
-          this.setupUser();
+    console.log(pathSegments);
+  
+    this.service.firestore.getDocumentById(pathSegments, docId).subscribe(
+      (doc) => {
+        if (doc) {
+          this.userSettings = JSON.parse(JSON.stringify(doc));
+          console.log('User settings:', this.userSettings);
+        } else {
+          console.log('No user settings found, setting up new user settings');
+          this.setupUserSettings();
         }
-      );
+      },
+      (error) => {
+        console.error('Error fetching user settings:', error.message);
+        this.setupUserSettings();
+      }
+    );
+  }
+
+  async checkUser() {
+    console.log('checking user');
+  
+  
+        const userId = this.service.auth.userId;
+        console.log(userId);
+        const pathSegments = ['users'];
+    
+        this.service.firestore.getDocumentById(pathSegments, <string>userId).subscribe(
+          async (doc) => {
+            if (doc) {
+              console.log('User found:');
+              console.log(doc);
+              //run user processes
+              await this.checkUserSettings();
+              await this.getSites();
+            }
+          },
+          async (error) => {
+            console.error('Error fetching user settings:', error.message);
+            console.log('Setting up user and user settings');
+            await this.setupUser();
+            await this.setupUserSettings();
+            await this.getSites();
+          }
+        );
+       
   }
 
   setupUser() {
+
+    console.log('setting up user');
+
+    const userId = this.service.auth.userId;
+    const basePath = ['users'];
+    const subcollections = ['user', 'sites', 'campaigns', 'videos'];
+    
+    // Create the main user document if it doesn't exist
+    this.service.firestore.createDocument(basePath, { createdAt: new Date() }, userId)
+      .then(() => {
+        // Create subcollections with a placeholder document
+        console.log('Setting up user collections');
+        subcollections.forEach(subcollection => {
+          const userBasePath = ['users', userId];
+          const subcollectionPath = [...userBasePath, subcollection];
+          this.createPlaceholderDocument(subcollectionPath);
+        });
+        console.log('User database stucture set up');
+        return true;
+      })
+      .catch(error => {
+        console.error('Error setting up user:', error);
+      });
+  }
+  
+  // Helper method to create a placeholder document in a subcollection
+  createPlaceholderDocument(pathSegments: any) {
+    const placeholderData = { isPlaceholder: true };
+    this.service.firestore.createDocument(pathSegments, placeholderData, 'placeholder')
+      .then(() => {
+        console.log(`Created placeholder in ${pathSegments.join('/')}`);
+      })
+      .catch(error => {
+        console.error(`Error creating placeholder in ${pathSegments.join('/')}:`, error);
+      });
+  }
+
+  setupUserSettings() {
+    console.log('setting user settings');
     const userId = this.service.auth.userId;
     const pathSegments = ['users', userId, 'user'];
     const documentName = 'settings';
     const documentData = {
       aiLimit: 100,
       aiCalls: 0,
-      membershipId: 'gold',
+      membershipId: 'starter',
       siteLimit: 5,
       sitesCreated: 0,
     };
@@ -114,6 +199,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .createDocument(pathSegments, documentData, documentName)
       .then(async () => {
         this.message = 'User set up.';
+        this.userSettings = documentData;
       })
       .catch((e: any) => {
         alert('here');
@@ -225,6 +311,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   async getSites() {
+    console.log('getting sites');
     // Example: Fetch documents
     this.message = 'Fetching database...';
     const userId = this.service.auth.userId;

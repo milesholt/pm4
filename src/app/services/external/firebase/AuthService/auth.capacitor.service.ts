@@ -5,6 +5,7 @@ import { User } from '../../../shared/user';
 import { environment } from '../../../../../environments/environment';
 import { initializeApp, getApp } from 'firebase/app';
 import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
+import { BehaviorSubject } from 'rxjs';
 //import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 // Follow this pattern to import other Firebase services
 // import { } from 'firebase/<service>';
@@ -32,6 +33,10 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
+
+  private authState = new BehaviorSubject<any>(null);
+  authState$ = this.authState.asObservable();
+
   userData: any; // Save logged in user data
   userId: string | boolean = false;
   constructor(
@@ -39,6 +44,11 @@ export class AuthService {
     public ngZone: NgZone // NgZone service to remove outside scope warning
   ) {
     this.runAuth();
+  }
+
+
+  getUser() {
+    return this.authState.asObservable();
   }
 
   async runAuth() {
@@ -52,15 +62,17 @@ export class AuthService {
     //After device check and auth initialised, check for user using authState
     auth.onAuthStateChanged((user: any) => {
       if (user) {
-        //If user is logged in, add to localStorage (this might already be done by Capacitor)
         this.userData = user;
-        this.userId = user.id;
+        this.userId = user.uid;
+        //If user is logged in, add to localStorage (this might already be done by Capacitor)
         localStorage.setItem('user', JSON.stringify(this.userData));
         JSON.parse(localStorage.getItem('user')!);
+        this.authState.next(user);
       } else {
         //Otherwise clear userData
         localStorage.setItem('user', 'null');
         JSON.parse(localStorage.getItem('user')!);
+        this.authState.next(null);
       }
     });
   }

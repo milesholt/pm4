@@ -108,14 +108,22 @@ export class FirestoreService {
 
   // Generic method to get a document by ID
   getDocumentById(pathSegments: any[], documentId: string): Observable<any> {
-    const docRef = this.buildDocumentReference(pathSegments, documentId);
-    return docRef.snapshotChanges().pipe(
-      map((action) => {
-        const data: any = action.payload.data();
-        const id = action.payload.id;
-        return { id, ...data };
-      })
-    );
+    try {
+      const docRef = this.buildDocumentReference(pathSegments, documentId);
+      return docRef.snapshotChanges().pipe(
+        map((action) => {
+          if (!action.payload.exists) {
+            throw new Error('Document not found');
+          }
+          const data: any = action.payload.data();
+          const id = action.payload.id;
+          return { id, ...data };
+        })
+      );
+    } catch (error:any) {
+      console.error('Error in getDocumentById:', error.message);
+      throw error;
+    }
   }
 
   // Generic method to create a document
@@ -139,16 +147,21 @@ export class FirestoreService {
   // Generic method to get documents from a collection
   getDocuments(pathSegments: any[]): Observable<any[]> {
     const collectionRef = this.buildCollectionReference(pathSegments);
-    return collectionRef.snapshotChanges().pipe(
-      map((actions) =>
-        actions.map((a) => {
-          const data: any = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return { id, ...data };
-        })
-      )
-    );
+    return collectionRef
+      .snapshotChanges()
+      .pipe(
+        map((actions) =>
+          actions
+            .filter((a:any) => !a.payload.doc.data()['isPlaceholder']) // Filter out placeholders
+            .map((a) => {
+              const data: any = a.payload.doc.data();
+              const id = a.payload.doc.id;
+              return { id, ...data };
+            })
+        )
+      );
   }
+  
 
   getDocumentsPromise(pathSegments: any[]): Promise<any[]> {
     const collectionRef = this.buildCollectionReference(pathSegments);
@@ -156,13 +169,16 @@ export class FirestoreService {
       .get()
       .toPromise()
       .then((snapshot: any) => {
-        return snapshot.docs.map((doc: any) => ({
+        return snapshot.docs
+        .filter((doc:any) => !doc.data()['isPlaceholder']) // Filter out placeholders
+        .map((doc: any) => ({
           id: doc.id,
           ...doc.data(),
         }));
       })
-      .catch((error) => {
-        console.error('Error getting documents: ', error);
+      .catch((error:any) => {
+        console.error('Error getting documents: ');
+        console.log(error);
         throw new Error('Error getting documents, please try again later.');
       });
   }
