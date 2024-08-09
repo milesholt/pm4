@@ -1343,7 +1343,11 @@ export class BrandBuilderComponent
     localStorage.setItem('companyInfo', JSON.stringify(companyInfo));
     localStorage.setItem('doAction', 'createSite');
 
-    this.router.navigate(['dashboard?action=createSite']);
+    //this.router.navigate(['dashboard?action=createSite']);
+
+    const siteurl = ['dashboard'];
+    const queryParams = { action: 'createSite' };
+    this.router.navigate(siteurl, { queryParams });
   }
 
   saveChanges() {

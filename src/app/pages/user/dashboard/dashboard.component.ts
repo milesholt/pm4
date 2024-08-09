@@ -39,13 +39,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
+    this.message = '';
     this.route.queryParams.subscribe(async (params: Params) => {
       if (params['action']) this.action = params['action'];
     });
     this.action = localStorage.getItem('doAction') ?? false;
     this.isLoading = true;
 
-    this.service.auth.authState$.subscribe(user => {
+    this.service.auth.authState$.subscribe((user) => {
       if (user) {
         console.log('there is user');
         console.log(user);
@@ -53,7 +54,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.checkUser();
       }
     });
-
 
     /*await this.getSites();
     if (!!this.action) {
@@ -91,13 +91,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   checkUserSettings() {
     console.log('checking user settings');
-  
+
     const userId = this.service.auth.userId;
     const pathSegments = ['users', userId, 'user'];
     const docId = 'settings';
 
     console.log(pathSegments);
-  
+
     this.service.firestore.getDocumentById(pathSegments, docId).subscribe(
       (doc) => {
         if (doc) {
@@ -117,47 +117,50 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   async checkUser() {
     console.log('checking user');
-  
-  
-        const userId = this.service.auth.userId;
-        console.log(userId);
-        const pathSegments = ['users'];
-    
-        this.service.firestore.getDocumentById(pathSegments, <string>userId).subscribe(
-          async (doc) => {
-            if (doc) {
-              console.log('User found:');
-              console.log(doc);
-              //run user processes
-              await this.checkUserSettings();
-              await this.getSites();
-            }
-          },
-          async (error) => {
-            console.error('Error fetching user settings:', error.message);
-            console.log('Setting up user and user settings');
-            await this.setupUser();
-            await this.setupUserSettings();
+
+    const userId = this.service.auth.userId;
+    console.log(userId);
+    const pathSegments = ['users'];
+
+    this.service.firestore
+      .getDocumentById(pathSegments, <string>userId)
+      .subscribe(
+        async (doc) => {
+          if (doc) {
+            console.log('User found:');
+            console.log(doc);
+            //run user processes
+            await this.checkUserSettings();
             await this.getSites();
+            if (!!this.action) {
+              this.doAction(this.action);
+            }
           }
-        );
-       
+        },
+        async (error) => {
+          console.error('Error fetching user settings:', error.message);
+          console.log('Setting up user and user settings');
+          await this.setupUser();
+          await this.setupUserSettings();
+          await this.getSites();
+        }
+      );
   }
 
   setupUser() {
-
     console.log('setting up user');
 
     const userId = this.service.auth.userId;
     const basePath = ['users'];
     const subcollections = ['user', 'sites', 'campaigns', 'videos'];
-    
+
     // Create the main user document if it doesn't exist
-    this.service.firestore.createDocument(basePath, { createdAt: new Date() }, userId)
+    this.service.firestore
+      .createDocument(basePath, { createdAt: new Date() }, userId)
       .then(() => {
         // Create subcollections with a placeholder document
         console.log('Setting up user collections');
-        subcollections.forEach(subcollection => {
+        subcollections.forEach((subcollection) => {
           const userBasePath = ['users', userId];
           const subcollectionPath = [...userBasePath, subcollection];
           this.createPlaceholderDocument(subcollectionPath);
@@ -165,20 +168,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
         console.log('User database stucture set up');
         return true;
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error setting up user:', error);
       });
   }
-  
+
   // Helper method to create a placeholder document in a subcollection
   createPlaceholderDocument(pathSegments: any) {
     const placeholderData = { isPlaceholder: true };
-    this.service.firestore.createDocument(pathSegments, placeholderData, 'placeholder')
+    this.service.firestore
+      .createDocument(pathSegments, placeholderData, 'placeholder')
       .then(() => {
         console.log(`Created placeholder in ${pathSegments.join('/')}`);
       })
-      .catch(error => {
-        console.error(`Error creating placeholder in ${pathSegments.join('/')}:`, error);
+      .catch((error) => {
+        console.error(
+          `Error creating placeholder in ${pathSegments.join('/')}:`,
+          error
+        );
       });
   }
 
@@ -246,7 +253,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   async createSite() {
-    if (this.userSettings.sitesCreated + 1 > this.userSettings.siteLimit) {
+    /*if (this.userSettings.sitesCreated + 1 > this.userSettings.siteLimit) {
       const details = {
         heading: 'Site limit reached',
         message:
@@ -258,7 +265,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.showSection('memberships');
         }
       });
-    }
+    }*/
     // Example: Add a document
     this.message = 'Preparing to store site...' + this.companyInfo.name;
     const userId = this.service.auth.userId;
@@ -345,11 +352,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     };
     this.createAlert(details).then((res: any) => {
       if (res) {
-        const collectionName = 'sites';
+        //const collectionName = 'sites';
+        const userId = this.service.auth.userId;
+        const pathSegments = ['users', userId, 'sites'];
+
         const documentId = site.id;
 
         this.service.firestore
-          .deleteDocument(collectionName, documentId)
+          .deleteDocument(pathSegments, documentId)
           .then(() => {
             this.message = 'Site deleted';
             console.log('Site deleted successfully!');
@@ -398,30 +408,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
     await alert.present();*/
   }
 
-  async createAlert(details: any) {
-    const alert = await this.alertController.create({
-      header: details.heading,
-      message: details.message,
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Alert operation canceled');
-            return false;
+  async createAlert(details: any): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      const alert = await this.alertController.create({
+        header: details.heading,
+        message: details.message,
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+              console.log('Alert operation canceled');
+              resolve(false); // Resolve with `false` if canceled
+            },
           },
-        },
-        {
-          text: details.confirmLabel,
-          handler: () => {
-            //handle confirm callback
-            return true;
+          {
+            text: details.confirmLabel,
+            handler: () => {
+              // Handle confirm callback
+              resolve(true); // Resolve with `true` if confirmed
+            },
           },
-        },
-      ],
-    });
+        ],
+      });
 
-    await alert.present();
+      await alert.present();
+    });
   }
 
   renameSite(siteName: any = false, sidx: number) {
@@ -488,10 +500,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   genSiteLink(siteId: any = false) {
     if (!!siteId) {
-      const siteurl = '/brandbuilder?site=' + siteId;
+      const siteurl = 'https://siteinanhour.com/brandbuilder?site=' + siteId;
 
       this.message =
-        'Here is your site url: <a href="' + siteurl + '">' + siteurl + '<a/>';
+        'Here is your site url:<br><a href="' +
+        siteurl +
+        '">' +
+        siteurl +
+        '<a/>';
     }
   }
 
