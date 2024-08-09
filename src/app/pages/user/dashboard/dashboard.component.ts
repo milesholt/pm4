@@ -21,6 +21,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   companyInfo: any = false;
   isCreateSite: boolean = false;
   isLoading: boolean = false;
+  userSettings: any;
+
+  showSites: boolean = true;
+  showMemberships: boolean = false;
+  showSettings: boolean = false;
+  showProfile: boolean = false;
+
   private subscription: Subscription | null = null;
 
   constructor(
@@ -46,6 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   async doAction(action: any = false) {
     switch (action) {
       case 'createSite':
+        console.log('creating site');
         this.isCreateSite = true;
         this.message = 'Setting up, one moment...';
         this.generated = localStorage.getItem('generatedSite');
@@ -59,7 +67,58 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
 
         break;
+
+      case 'checkUser':
+        this.checkUser();
+        break;
+
+      case 'newUser':
+        this.setupUser();
+        break;
     }
+  }
+
+  checkUser() {
+    const userId = this.service.auth.userId;
+    const pathSegments = ['users', userId, 'user'];
+    const docName = 'settings';
+
+    this.service.firestore
+      .getDocumentById(pathSegments, <string>docName)
+      .subscribe(
+        (doc) => {
+          if (doc) {
+            this.userSettings = JSON.parse(doc);
+          }
+        },
+        (error) => {
+          console.log('No user found, setting up new user');
+          this.setupUser();
+        }
+      );
+  }
+
+  setupUser() {
+    const userId = this.service.auth.userId;
+    const pathSegments = ['users', userId, 'user'];
+    const documentName = 'settings';
+    const documentData = {
+      aiLimit: 100,
+      aiCalls: 0,
+      membershipId: 'gold',
+      siteLimit: 5,
+      sitesCreated: 0,
+    };
+
+    this.service.firestore
+      .createDocument(pathSegments, documentData, documentName)
+      .then(async () => {
+        this.message = 'User set up.';
+      })
+      .catch((e: any) => {
+        alert('here');
+        this.message = e;
+      });
   }
 
   signOut() {
@@ -71,13 +130,62 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   //Main site functionality
 
+  showSection(section: string) {
+    switch (section) {
+      case 'sites':
+        this.showSites = true;
+        this.showMemberships = false;
+        this.showSettings = false;
+        this.showProfile = false;
+        break;
+      case 'memberships':
+        this.showSites = false;
+        this.showMemberships = true;
+        this.showSettings = false;
+        this.showProfile = false;
+        break;
+      case 'settings':
+        this.showSites = false;
+        this.showMemberships = false;
+        this.showSettings = true;
+        this.showProfile = false;
+        break;
+      case 'profile':
+        this.showSites = false;
+        this.showMemberships = false;
+        this.showSettings = false;
+        this.showProfile = true;
+        break;
+    }
+  }
+
   async createSite() {
+    if (this.userSettings.sitesCreated + 1 > this.userSettings.siteLimit) {
+      const details = {
+        heading: 'Site limit reached',
+        message:
+          "Thanks for using SiteInAnHour. You've now reached your limit for this membership. Upgrade to continue creating more sites.",
+        confirmLabel: 'Upgrade',
+      };
+      this.createAlert(details).then((res: any) => {
+        if (res) {
+          this.showSection('memberships');
+        }
+      });
+    }
     // Example: Add a document
     this.message = 'Preparing to store site...' + this.companyInfo.name;
+    const userId = this.service.auth.userId;
+    const pathSegments = ['users', userId, 'sites'];
+
+    const documentData = {
+      name: this.companyInfo.name,
+      created: new Date(),
+      modified: new Date(),
+    };
+
     this.service.firestore
-      .createDocument('sites', {
-        name: this.companyInfo.name,
-      })
+      .createDocument(pathSegments, documentData)
       .then(async () => {
         this.message = 'Site being setup..';
         //await this.getSites();
@@ -92,31 +200,38 @@ export class DashboardComponent implements OnInit, OnDestroy {
   async observeSites() {
     // Example: Fetch documents
     this.message = 'Fetching database...';
-    this.subscription = this.service.firestore.getDocuments('sites').subscribe({
-      next: (data) => {
-        this.message = 'Got sites';
-        this.sites = data; // Process data here
-        console.log('Documents fetched:', this.sites);
-        this.updateSite();
-      },
-      error: (error) => {
-        this.message = error.message;
-        console.error('Error fetching documents: ', error);
-      },
-      complete: async () => {
-        // Final action after data is processed and observable completes
-        console.log('Subscription complete');
-        this.message = 'done';
-        this.updateSite();
-      },
-    });
+    const userId = this.service.auth.userId;
+    const pathSegments = ['users', userId, 'sites'];
+    this.subscription = this.service.firestore
+      .getDocuments(pathSegments)
+      .subscribe({
+        next: (data) => {
+          this.message = 'Got sites';
+          this.sites = data; // Process data here
+          console.log('Documents fetched:', this.sites);
+          this.updateSite();
+        },
+        error: (error) => {
+          this.message = error.message;
+          console.error('Error fetching documents: ', error);
+        },
+        complete: async () => {
+          // Final action after data is processed and observable completes
+          console.log('Subscription complete');
+          this.message = 'done';
+          this.updateSite();
+        },
+      });
   }
 
   async getSites() {
     // Example: Fetch documents
     this.message = 'Fetching database...';
+    const userId = this.service.auth.userId;
+    const pathSegments = ['users', userId, 'sites'];
+
     this.service.firestore
-      .getDocumentsPromise('sites')
+      .getDocumentsPromise(pathSegments)
       .then(async (data: any) => {
         this.sites = data;
         this.message = '';
@@ -136,7 +251,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   async deleteSite(site: any = false) {
-    const alert = await this.alertController.create({
+    const details = {
+      heading: 'Confirm Delete',
+      message: 'Are you sure you want to delete this site?',
+      confirmLabel: 'Delete',
+    };
+    this.createAlert(details).then((res: any) => {
+      if (res) {
+        const collectionName = 'sites';
+        const documentId = site.id;
+
+        this.service.firestore
+          .deleteDocument(collectionName, documentId)
+          .then(() => {
+            this.message = 'Site deleted';
+            console.log('Site deleted successfully!');
+            this.getSites();
+          })
+          .catch((error) => {
+            this.message = error;
+            console.error('Error deleting document: ', error);
+          });
+      }
+    });
+
+    /*const alert = await this.alertController.create({
       header: 'Confirm Delete',
       message: 'Are you sure you want to delete this site?',
       buttons: [
@@ -169,6 +308,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
       ],
     });
 
+    await alert.present();*/
+  }
+
+  async createAlert(details: any) {
+    const alert = await this.alertController.create({
+      header: details.heading,
+      message: details.message,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Alert operation canceled');
+            return false;
+          },
+        },
+        {
+          text: details.confirmLabel,
+          handler: () => {
+            //handle confirm callback
+            return true;
+          },
+        },
+      ],
+    });
+
     await alert.present();
   }
 
@@ -184,7 +349,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   updateSite(site: any = false) {
     this.message = 'Updating database...';
     // Example usage of updating a document
-    const collectionName = 'sites';
+    //const collectionName = 'sites';
 
     //const documentId = 'eLPOqsKWpPos5c0ezpFW'; // You need to have this ID
     let lastSite = this.sites[this.sites.length - 1];
@@ -192,14 +357,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     console.log(this.sites);
     const documentId = !!site ? site.id : lastSite.id;
 
+    const userId = this.service.auth.userId;
+    const pathSegments = ['users', userId, 'sites'];
+
     //const updatedData = { fieldName: 'new value' };
     const updatedData = {
       data: this.generated,
       name: !!site ? site.name : this.companyInfo.name,
+      modified: new Date(),
     };
 
     this.service.firestore
-      .updateDocument(collectionName, documentId, updatedData)
+      .updateDocument(pathSegments, documentId, updatedData)
       .then(() => {
         if (!site && this.isCreateSite === true) {
           //this.message = 'Site updated';

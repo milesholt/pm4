@@ -33,6 +33,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   userData: any; // Save logged in user data
+  userId: string | boolean = false;
   constructor(
     public router: Router,
     public ngZone: NgZone // NgZone service to remove outside scope warning
@@ -53,6 +54,7 @@ export class AuthService {
       if (user) {
         //If user is logged in, add to localStorage (this might already be done by Capacitor)
         this.userData = user;
+        this.userId = user.id;
         localStorage.setItem('user', JSON.stringify(this.userData));
         JSON.parse(localStorage.getItem('user')!);
       } else {

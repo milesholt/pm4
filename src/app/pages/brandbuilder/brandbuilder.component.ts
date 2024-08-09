@@ -545,7 +545,10 @@ export class BrandBuilderComponent
     } else {
       console.log('getting site remotely');
       this.message = 'Checking for remote version...';
-      this.service.firestore.getDocumentById('sites', docId).subscribe(
+      const userId = this.service.auth.userId;
+      const pathSegments = ['users', userId, 'sites'];
+
+      this.service.firestore.getDocumentById(pathSegments, docId).subscribe(
         (doc) => {
           if (doc) {
             this.showHoldingStatus('success');
@@ -1340,7 +1343,7 @@ export class BrandBuilderComponent
     localStorage.setItem('companyInfo', JSON.stringify(companyInfo));
     localStorage.setItem('doAction', 'createSite');
 
-    this.router.navigate(['dashboard']);
+    this.router.navigate(['dashboard?action=createSite']);
   }
 
   saveChanges() {
@@ -1376,6 +1379,7 @@ export class BrandBuilderComponent
 
     const updatedData = {
       data: JSON.stringify(siteData),
+      modified: new Date(),
     };
 
     if (this.siteId !== '') {
@@ -1383,8 +1387,11 @@ export class BrandBuilderComponent
 
       const collectionName = 'sites';
 
+      const userId = this.service.auth.userId;
+      const pathSegments = ['users', userId, 'sites'];
+
       this.service.firestore
-        .updateDocument(collectionName, this.siteId, updatedData)
+        .updateDocument(pathSegments, this.siteId, updatedData)
         .then(() => {
           //this.message = 'Site updated';
           this.message = 'Changes saved';
