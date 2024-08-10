@@ -242,7 +242,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.userSettings = documentData;
       })
       .catch((e: any) => {
-        alert('here');
         this.message = e;
       });
   }
@@ -323,7 +322,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         await this.updateSite(doc);
       })
       .catch((e: any) => {
-        alert('here');
         this.message = e;
       });
   }

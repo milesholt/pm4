@@ -550,6 +550,8 @@ export class BrandBuilderComponent
   }
 
   loadPublic(docId: string) {
+    this.showSection('holding');
+    this.showHoldingStatus('pending');
     console.log(docId);
     const pathSegments = ['sites'];
     this.service.firestore.getDocumentById(pathSegments, docId).subscribe(
