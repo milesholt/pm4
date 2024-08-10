@@ -111,7 +111,12 @@
 
           <p>
             Not sure?
-            <ion-button size="small" (click)="doDemo()">Try a demo</ion-button>
+            <ion-button size="small" (click)="doDemo(); isDemoClicked = true">
+              <span *ngIf="!isDemoClicked">Try a demo</span>
+              <span *ngIf="isDemoClicked">
+                <ion-icon name="refresh"></ion-icon> Try another
+              </span>
+            </ion-button>
           </p>
 
           <br /><br /><br /><br />

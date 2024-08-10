@@ -94,6 +94,7 @@ export class BrandBuilderComponent
       'flower bouquets, roses, sunflowers, lavender, orchids';
   */
   demoIdx = 0;
+  isDemoClicked: boolean = false;
   demos: any = [
     {
       name: 'Black & Red Tattoo Parlor',
@@ -119,6 +120,15 @@ export class BrandBuilderComponent
         "Based near the region of Death Valley, we're a 24 hour self service gym. We offer high-end premium gym facilites, weights and machines that cover all upper, lower body and core, abdominal areas. Customers can swipe in an out using our mobile app. We offer a range of membership options to suit all needs. We also offer evening and morning yoga and pilates classes for those getting ready or coming back from work. \n",
       products:
         'weight training, yoga, pilates, 24 hour gym service, self service, cardio machines, high intensity training',
+      email: '',
+      instagram: '',
+    },
+    {
+      name: 'Vegas Vinyls',
+      description:
+        'Your one stop shop in Vegas for the authentic, vintage vinyl. We cater to every genre from old skool hip hop, to rnb, to chicago house. From old and new. We also sell original and limited editions. we organise weekend events with live music and djs. we also host launch events for up and coming artists that have releases in vinyl. we also have a small bar where people can hang out, or just listen to great music.',
+      products:
+        'music vinyl collections, live music, rhythm and blues, country music genre, hip hop genre, chicago house, techno genre, rock genre, limited edition vinyl releases, new music releases on vinyl, vinyl turntables',
       email: '',
       instagram: '',
     },
@@ -514,7 +524,11 @@ export class BrandBuilderComponent
       this.siteId = docId;
       if (docId) {
         this.prepareSiteLoad();
-        this.loadDocument(docId);
+        if (this.service.auth.isLoggedIn) {
+          this.loadDocument(docId);
+        } else {
+          this.loadPublic(docId);
+        }
         this.isCreating = false;
       } else {
         this.siteId = false;
@@ -527,6 +541,53 @@ export class BrandBuilderComponent
   prepareSiteLoad() {
     //add class to body to hide elements when viewing a Site
     document.body.classList.add('is-site');
+  }
+
+  loadPublic(docId: string) {
+    const pathSegments = ['sites'];
+    this.service.firestore.getDocumentById(pathSegments, docId).subscribe(
+      (doc) => {
+        if (doc) {
+          const d = JSON.parse(doc.data);
+          const urlSegments = JSON.parse(d.urlSegments);
+          const siteId = d.siteId;
+          const status = d.status;
+
+          if (d.status !== 'published') {
+            throw new Error('site is not public');
+          }
+          this.service.firestore.getDocumentById(urlSegments, siteId).subscribe(
+            (doc) => {
+              if (doc) {
+                this.finishLoadSite(doc, siteId);
+                return true;
+              } else {
+                this.showHoldingStatus('failed');
+                this.message =
+                  "Sorry, we couldn't load the site. Please try again later.";
+                return false;
+              }
+            },
+            (error) => {
+              alert(error);
+              this.message = error.message;
+              console.error('Error fetching document: ', error);
+            }
+          );
+          return true;
+        } else {
+          this.showHoldingStatus('failed');
+          this.message =
+            "Sorry, we couldn't find your site. Please check the ID and try again.";
+          return false;
+        }
+      },
+      (error) => {
+        alert(error);
+        this.message = error.message;
+        console.error('Error fetching document: ', error);
+      }
+    );
   }
 
   loadDocument(docId: string) {
@@ -547,6 +608,12 @@ export class BrandBuilderComponent
       this.message = 'Checking for remote version...';
       const userId = this.service.auth.userId;
       const pathSegments = ['users', userId, 'sites'];
+
+      console.log('userid');
+      console.log(userId);
+
+      console.log('doc id');
+      console.log(docId);
 
       this.service.firestore.getDocumentById(pathSegments, docId).subscribe(
         (doc) => {
@@ -591,7 +658,8 @@ export class BrandBuilderComponent
     this.activePageTitle = this.generated[0].title;
     this.themes = d.themes;
     this.activeTheme = d.themeId ?? 0;
-    await this.loadImages();
+
+    /*await this.loadImages();
     await this.doThemesCSS();
 
     this.showHoldingStatus('success');
@@ -600,7 +668,7 @@ export class BrandBuilderComponent
     localStorage.setItem('bb_' + docId, JSON.stringify(obj));
 
     this.recordChange();
-    this.showSection('preview');
+    this.showSection('preview');*/
 
     /*
     this.generated = d.content;

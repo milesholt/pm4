@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoreService } from '../../../services/core.service';
 import { Library } from '../../../app.library';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params, NavigationEnd } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { AlertController } from '@ionic/angular';
 import { IonItemSliding } from '@ionic/angular';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,6 +29,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   showSettings: boolean = false;
   showProfile: boolean = false;
 
+  publishId: boolean | string = false;
+
   private subscription: Subscription | null = null;
 
   constructor(
@@ -36,7 +39,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public router: Router,
     private route: ActivatedRoute,
     private alertController: AlertController
-  ) {}
+  ) {
+    this.router.events
+      .pipe(filter((event: any) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.ngOnInit(); // Manually call ngOnInit
+      });
+  }
 
   async ngOnInit() {
     this.message = '';
@@ -282,6 +291,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .then(async () => {
         this.message = 'Site being setup..';
         //await this.getSites();
+        await this.publishSite();
         await this.updateSite();
       })
       .catch((e: any) => {
@@ -445,16 +455,51 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return true;
   }
 
+  publishSite(site: any = false) {
+    const documentId = site.id;
+
+    const userId = this.service.auth.userId;
+    const pathSegments = ['sites'];
+    const urlSegments = ['users', userId, 'sites'];
+    const siteId = site.id;
+
+    //const updatedData = { fieldName: 'new value' };
+    const siteData = {
+      urlSegments: urlSegments,
+      siteId: siteId,
+      status: 'published',
+    };
+
+    this.service.firestore
+      .createDocument(pathSegments, siteData)
+      .then((res: any) => {
+        console.log('site published');
+        console.log(res);
+        this.publishId = res.uid;
+        return res;
+      })
+      .catch(() => {
+        console.log('site not pulished');
+      });
+  }
+
   updateSite(site: any = false) {
     this.message = 'Updating database...';
     // Example usage of updating a document
     //const collectionName = 'sites';
 
+    if (!site) {
+      alert('No site to update');
+      return false;
+    }
+
     //const documentId = 'eLPOqsKWpPos5c0ezpFW'; // You need to have this ID
-    let lastSite = this.sites[this.sites.length - 1];
-    console.log('sites');
-    console.log(this.sites);
-    const documentId = !!site ? site.id : lastSite.id;
+    //let lastSite = this.sites[this.sites.length - 1];
+    //console.log('sites');
+    //console.log(this.sites);
+    //const documentId = !!site ? site.id : lastSite.id;
+
+    const documentId = site.id;
 
     const userId = this.service.auth.userId;
     const pathSegments = ['users', userId, 'sites'];
@@ -464,6 +509,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       data: this.generated,
       name: !!site ? site.name : this.companyInfo.name,
       modified: new Date(),
+      publishId: this.publishId,
     };
 
     this.service.firestore
@@ -471,7 +517,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .then(() => {
         if (!site && this.isCreateSite === true) {
           //this.message = 'Site updated';
-          const siteurl = '/brandbuilder?site=' + documentId;
+          const siteurl = '/brandbuilder?site=' + this.publishId;
           this.message =
             'Success, your site url is : <a href="' +
             siteurl +
@@ -496,11 +542,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.message = 'Site could not be updated';
         console.error('Error updating document: ', error);
       });
+
+    return true;
   }
 
-  genSiteLink(siteId: any = false) {
-    if (!!siteId) {
-      const siteurl = 'https://siteinanhour.com/brandbuilder?site=' + siteId;
+  genSiteLink(site: any = false) {
+    if (!!site) {
+      const siteurl =
+        'https://siteinanhour.com/brandbuilder?site=' + site.publishId;
 
       this.message =
         'Here is your site url:<br><a href="' +
