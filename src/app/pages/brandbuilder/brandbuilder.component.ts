@@ -73,6 +73,7 @@ export class BrandBuilderComponent
 
   siteId: any = false;
   isCreating: boolean = true;
+  isEditing: boolean = false;
   activePageTitle: string = '';
   activePage: any = false;
   activeIndex = 0;
@@ -524,9 +525,14 @@ export class BrandBuilderComponent
       this.siteId = docId;
       if (docId) {
         this.prepareSiteLoad();
-        if (this.service.auth.isLoggedIn) {
+        if (this.service.auth.isLoggedIn && params['edit']) {
+          console.log('user logged in');
+          console.log(this.service.auth);
+          this.isEditing = true;
           this.loadDocument(docId);
         } else {
+          this.isEditing = false;
+          console.log('loading public');
           this.loadPublic(docId);
         }
         this.isCreating = false;
@@ -544,12 +550,14 @@ export class BrandBuilderComponent
   }
 
   loadPublic(docId: string) {
+    console.log(docId);
     const pathSegments = ['sites'];
     this.service.firestore.getDocumentById(pathSegments, docId).subscribe(
-      (doc) => {
-        if (doc) {
-          const d = JSON.parse(doc.data);
-          const urlSegments = JSON.parse(d.urlSegments);
+      (d) => {
+        if (d) {
+          console.log('doc:');
+          console.log(d);
+          const urlSegments = d.urlSegments;
           const siteId = d.siteId;
           const status = d.status;
 
@@ -606,7 +614,8 @@ export class BrandBuilderComponent
     } else {
       console.log('getting site remotely');
       this.message = 'Checking for remote version...';
-      const userId = this.service.auth.userId;
+      //user should be logged in
+      const userId = this.service.auth.getUser().uid;
       const pathSegments = ['users', userId, 'sites'];
 
       console.log('userid');
@@ -634,6 +643,7 @@ export class BrandBuilderComponent
         (error) => {
           alert(error);
           this.message = error.message;
+          this.showHoldingStatus('failed');
           console.error('Error fetching document: ', error);
         }
       );
@@ -647,6 +657,11 @@ export class BrandBuilderComponent
     const d = obj.hasOwnProperty('data') ? JSON.parse(obj.data) : obj;
     console.log('Got site:');
     console.log(d);
+    if (!d.hasOwnProperty('content') || !d.content) {
+      this.showHoldingStatus('failed');
+      this.message = 'Uh oh, no data for this site..';
+      return false;
+    }
     this.generated = d.content;
     this.companyName = d.details.companyInfo.companyName;
     this.companyDescription = d.details.companyInfo.companyDescription;
@@ -659,7 +674,7 @@ export class BrandBuilderComponent
     this.themes = d.themes;
     this.activeTheme = d.themeId ?? 0;
 
-    /*await this.loadImages();
+    await this.loadImages();
     await this.doThemesCSS();
 
     this.showHoldingStatus('success');
@@ -668,7 +683,9 @@ export class BrandBuilderComponent
     localStorage.setItem('bb_' + docId, JSON.stringify(obj));
 
     this.recordChange();
-    this.showSection('preview');*/
+    this.showSection('preview');
+
+    return true;
 
     /*
     this.generated = d.content;
@@ -1660,7 +1677,7 @@ export class BrandBuilderComponent
   }*/
 
   async onImageChange(event: any, obj: any) {
-    if (this.service.auth.isLoggedIn) {
+    if (this.isEditing) {
       if (this.photos.length) {
         let allImages = [...this.photos, ...this.media.social.instagram];
         let imageUrl = allImages[this.selectRandom(allImages)].src.large;

@@ -25,7 +25,7 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="showHolding" class="container center full">
+  <div *ngIf="showHolding" id="holdingPanel" class="container center full">
     <div *ngIf="isHoldingPending">
       <ion-spinner class="center" name="circular"></ion-spinner>
       <br /><br />
@@ -283,7 +283,7 @@
                   class="fade-up"
                   appContentEditable
                   [(contenteditableModel)]="activePage.title"
-                  [attr.contenteditable]="service.auth.isLoggedIn"
+                  [attr.contenteditable]="isEditing"
                   data-text="Enter a heading here"
                   (input)="recordChange()"
                   [innerHTML]="
@@ -295,7 +295,7 @@
                 <h2
                   appContentEditable
                   [(contenteditableModel)]="activePage.subheading"
-                  [attr.contenteditable]="service.auth.isLoggedIn"
+                  [attr.contenteditable]="isEditing"
                   data-text="Enter a subheading here"
                   (input)="recordChange()"
                   [innerHTML]="
@@ -317,7 +317,7 @@
                     <div
                       class="page-content col"
                       [(contenteditableModel)]="activePage.content"
-                      [attr.contenteditable]="service.auth.isLoggedIn"
+                      [attr.contenteditable]="isEditing"
                       data-text="Enter some content here"
                       (input)="recordChange()"
                       [innerHTML]="activePage.content"
@@ -332,10 +332,7 @@
                 *ngFor="let layout of activePage.layout; let lidx = index"
               >
                 <div class="row {{ layout.params.classes }}" @rowAnimation>
-                  <div
-                    *ngIf="service.auth.isLoggedIn"
-                    class="editor-panel editor-panel-row"
-                  >
+                  <div *ngIf="isEditing" class="editor-panel editor-panel-row">
                     <ion-button
                       (click)="moveRowUp(lidx)"
                       [disabled]="lidx === 0"
@@ -363,7 +360,7 @@
                     @columnAnimation
                   >
                     <div
-                      *ngIf="service.auth.isLoggedIn"
+                      *ngIf="isEditing"
                       class="editor-panel editor-panel-col"
                     >
                       <ion-button
@@ -401,7 +398,7 @@
                         >
                           <h2
                             appContentEditable
-                            [attr.contenteditable]="service.auth.isLoggedIn"
+                            [attr.contenteditable]="isEditing"
                             [(contenteditableModel)]="mod.heading"
                             (input)="recordChange()"
                             [innerHtml]="mod.heading"
@@ -414,7 +411,7 @@
                           *ngIf="mod.hasOwnProperty('content')"
                           appContentEditable
                           [(contenteditableModel)]="mod.content"
-                          [attr.contenteditable]="service.auth.isLoggedIn"
+                          [attr.contenteditable]="isEditing"
                           (input)="recordChange()"
                           [innerHtml]="mod.content"
                           data-text="Enter some content here"
@@ -436,7 +433,7 @@
                       *ngIf="module.title && module.title !== ''"
                       appContentEditable
                       [(contenteditableModel)]="module.title"
-                      [attr.contenteditable]="service.auth.isLoggedIn"
+                      [attr.contenteditable]="isEditing"
                       (input)="recordChange()"
                       [innerHtml]="module.title"
                       data-text="Enter a heading here"
@@ -544,7 +541,14 @@
 -->
 
       <div class="bottom-panel">
-        <div *ngIf="service.auth.isLoggedIn && siteId !== false && !isCreating">
+        <div
+          *ngIf="
+            service.auth.isLoggedIn &&
+            siteId !== false &&
+            !isCreating &&
+            isEditing
+          "
+        >
           <ion-button (click)="undoChange()" [disabled]="activeVersion == 0"
             ><ion-icon name="arrow-undo-circle-outline"></ion-icon
           ></ion-button>
@@ -603,7 +607,7 @@
           >
         </div>
 
-        <div *ngIf="!service.auth.isLoggedIn">
+        <div *ngIf="!service.auth.isLoggedIn && isCreating">
           <p>What do you think?</p>
           <ion-button (click)="showSection('publish')"
             ><ion-icon name="checkmark-circle"></ion-icon> Publish

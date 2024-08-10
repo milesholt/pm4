@@ -33,7 +33,6 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-
   private authState = new BehaviorSubject<any>(null);
   authState$ = this.authState.asObservable();
 
@@ -46,9 +45,12 @@ export class AuthService {
     this.runAuth();
   }
 
-
   getUser() {
-    return this.authState.asObservable();
+    if (localStorage.getItem('user')) {
+      return JSON.parse(localStorage.getItem('user')!);
+    } else {
+      return this.authState.asObservable();
+    }
   }
 
   async runAuth() {

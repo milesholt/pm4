@@ -153,8 +153,14 @@ export class FirestoreService {
       const docRef = collectionRef.doc(documentId);
       return docRef.set(documentData).then(() => docRef.ref);
     } else {
-      // Create document with an automatically generated ID
-      return collectionRef.add(documentData);
+      // Create document with an automatically ge // If no document ID is provided, let Firestore generate one automatically
+      return collectionRef
+        .add(documentData)
+        .then((docRef: DocumentReference<any>) => docRef)
+        .catch((error) => {
+          console.error('Error creating document: ', error);
+          throw new Error('Error creating document, please try again later.');
+        });
     }
   }
 

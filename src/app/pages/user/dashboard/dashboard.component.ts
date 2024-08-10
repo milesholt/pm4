@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   isCreateSite: boolean = false;
   isLoading: boolean = false;
   userSettings: any;
+  userId: string | boolean = false;
 
   showSites: boolean = true;
   showMemberships: boolean = false;
@@ -30,8 +31,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   showProfile: boolean = false;
 
   publishId: boolean | string = false;
+  initialLoad = true;
 
   private subscription: Subscription | null = null;
+  private authSubscription: Subscription | null = null;
 
   constructor(
     public service: CoreService,
@@ -43,7 +46,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.router.events
       .pipe(filter((event: any) => event instanceof NavigationEnd))
       .subscribe(() => {
-        this.ngOnInit(); // Manually call ngOnInit
+        //if refreshed initialLoad will be true and ngOninit will run anyway, so skip and set to false
+        //ngOnInit does not fire on route changes, but initalLoad will be set to false, so here we can fire it
+        if (this.initialLoad) {
+          this.initialLoad = false; //ngOnInit will be called on page load automatically
+        } else {
+          this.ngOnInit(); // Manually call ngOnInit on route change
+        }
       });
   }
 
@@ -55,14 +64,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.action = localStorage.getItem('doAction') ?? false;
     this.isLoading = true;
 
-    this.service.auth.authState$.subscribe((user) => {
-      if (user) {
-        console.log('there is user');
-        console.log(user);
-        console.log(this.service.auth);
-        this.checkUser();
-      }
-    });
+    // 1. Check if user is already logged in with credentials stored locally
+    const localUser = this.service.auth.getUser(); // Assuming getUser() checks localStorage for user data
+
+    if (localUser.uid) {
+      this.userId = localUser.uid;
+      this.checkUser();
+    } else {
+      // 2. Subscribe to authentication state if no local user is found
+      this.authSubscription = this.service.auth.authState$.subscribe((user) => {
+        if (user) {
+          this.userId = user.uid;
+          this.checkUser();
+
+          // Unsubscribe after the first successful login
+          if (this.authSubscription) {
+            this.authSubscription.unsubscribe();
+            this.authSubscription = null;
+          }
+        }
+      });
+    }
 
     /*await this.getSites();
     if (!!this.action) {
@@ -83,7 +105,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.companyInfo = JSON.parse(this.companyInfo);
           await this.createSite();
         } else {
-          this.message = 'Sorry there was a problem loading your info.';
+          //this.message = 'Sorry there was a problem loading your info.';
+          //onrefresh if query is still there but site could already be created
+          this.isCreateSite = false;
         }
 
         break;
@@ -101,7 +125,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   checkUserSettings() {
     console.log('checking user settings');
 
-    const userId = this.service.auth.userId;
+    const userId = this.userId;
     const pathSegments = ['users', userId, 'user'];
     const docId = 'settings';
 
@@ -127,7 +151,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   async checkUser() {
     console.log('checking user');
 
-    const userId = this.service.auth.userId;
+    const userId = this.userId;
     console.log(userId);
     const pathSegments = ['users'];
 
@@ -159,7 +183,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   setupUser() {
     console.log('setting up user');
 
-    const userId = this.service.auth.userId;
+    const userId = this.userId;
     const basePath = ['users'];
     const subcollections = ['user', 'sites', 'campaigns', 'videos'];
 
@@ -200,7 +224,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   setupUserSettings() {
     console.log('setting user settings');
-    const userId = this.service.auth.userId;
+    const userId = this.userId;
     const pathSegments = ['users', userId, 'user'];
     const documentName = 'settings';
     const documentData = {
@@ -277,7 +301,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }*/
     // Example: Add a document
     this.message = 'Preparing to store site...' + this.companyInfo.name;
-    const userId = this.service.auth.userId;
+    const userId = this.userId;
     const pathSegments = ['users', userId, 'sites'];
 
     const documentData = {
@@ -288,11 +312,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.service.firestore
       .createDocument(pathSegments, documentData)
-      .then(async () => {
+      .then(async (doc) => {
         this.message = 'Site being setup..';
+        console.log('doc:');
+        console.log(doc.id);
         //await this.getSites();
-        await this.publishSite();
-        await this.updateSite();
+        console.log('publishing...');
+        await this.publishSite(doc.id);
+        console.log('updating...');
+        await this.updateSite(doc);
       })
       .catch((e: any) => {
         alert('here');
@@ -303,7 +331,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   async observeSites() {
     // Example: Fetch documents
     this.message = 'Fetching database...';
-    const userId = this.service.auth.userId;
+    const userId = this.userId;
     const pathSegments = ['users', userId, 'sites'];
     this.subscription = this.service.firestore
       .getDocuments(pathSegments)
@@ -331,7 +359,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     console.log('getting sites');
     // Example: Fetch documents
     this.message = 'Fetching database...';
-    const userId = this.service.auth.userId;
+    const userId = this.userId;
     const pathSegments = ['users', userId, 'sites'];
 
     this.service.firestore
@@ -352,6 +380,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
       this.updateSite(); // Finalize data processing
     }
+
+    // Ensure we clean up the subscription if the component is destroyed
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
   }
 
   async deleteSite(site: any = false) {
@@ -363,7 +396,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.createAlert(details).then((res: any) => {
       if (res) {
         //const collectionName = 'sites';
-        const userId = this.service.auth.userId;
+        const userId = this.userId;
         const pathSegments = ['users', userId, 'sites'];
 
         const documentId = site.id;
@@ -455,32 +488,42 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  publishSite(site: any = false) {
-    const documentId = site.id;
+  publishSite(siteId: any = false) {
+    return new Promise((resolve, reject) => {
+      console.log('publishing site');
 
-    const userId = this.service.auth.userId;
-    const pathSegments = ['sites'];
-    const urlSegments = ['users', userId, 'sites'];
-    const siteId = site.id;
+      const userId = this.userId;
 
-    //const updatedData = { fieldName: 'new value' };
-    const siteData = {
-      urlSegments: urlSegments,
-      siteId: siteId,
-      status: 'published',
-    };
+      console.log('userid:');
+      console.log(userId);
 
-    this.service.firestore
-      .createDocument(pathSegments, siteData)
-      .then((res: any) => {
-        console.log('site published');
-        console.log(res);
-        this.publishId = res.uid;
-        return res;
-      })
-      .catch(() => {
-        console.log('site not pulished');
-      });
+      const pathSegments = ['sites'];
+      const urlSegments = ['users', userId, 'sites'];
+
+      //const updatedData = { fieldName: 'new value' };
+      const siteData = {
+        urlSegments: urlSegments,
+        siteId: siteId,
+        status: 'published',
+      };
+
+      console.log(siteData);
+
+      this.service.firestore
+        .createDocument(pathSegments, siteData)
+        .then((doc) => {
+          console.log('site published');
+          console.log(doc.id);
+          this.publishId = doc.id;
+          console.log('publishId:');
+          console.log(this.publishId);
+          resolve(this.publishId);
+        })
+        .catch(() => {
+          console.log('site not pulished');
+          reject();
+        });
+    });
   }
 
   updateSite(site: any = false) {
@@ -501,13 +544,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     const documentId = site.id;
 
-    const userId = this.service.auth.userId;
+    const userId = this.userId;
     const pathSegments = ['users', userId, 'sites'];
 
     //const updatedData = { fieldName: 'new value' };
     const updatedData = {
       data: this.generated,
-      name: !!site ? site.name : this.companyInfo.name,
+      name: !!site && site.name ? site.name : this.companyInfo.name,
       modified: new Date(),
       publishId: this.publishId,
     };
@@ -515,11 +558,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.service.firestore
       .updateDocument(pathSegments, documentId, updatedData)
       .then(() => {
-        if (!site && this.isCreateSite === true) {
+        if (this.isCreateSite === true) {
           //this.message = 'Site updated';
           const siteurl = '/brandbuilder?site=' + this.publishId;
           this.message =
-            'Success, your site url is : <a href="' +
+            'Success, your site url is : <a target="_blank" href="' +
             siteurl +
             '">' +
             siteurl +
@@ -552,7 +595,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         'https://siteinanhour.com/brandbuilder?site=' + site.publishId;
 
       this.message =
-        'Here is your site url:<br><a href="' +
+        'Here is your site url:<br><a target="_blank" href="' +
         siteurl +
         '">' +
         siteurl +
@@ -568,7 +611,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     console.log('previewing site');
     if (siteId) {
       const siteurl = ['brandbuilder'];
-      const queryParams = { site: siteId };
+      const queryParams = { site: siteId, edit: true };
       this.router.navigate(siteurl, { queryParams });
     }
   }
