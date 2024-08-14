@@ -5,14 +5,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { DashboardComponent } from './dashboard.component';
+import { ModalComponentModule } from '../../components/modal/modal.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    RouterLinkWithHref
+    RouterLinkWithHref,
+    ModalComponentModule,
   ],
-  declarations: [DashboardComponent]
+  declarations: [DashboardComponent],
 })
 export class DashboardModule {}

@@ -66,6 +66,26 @@
           <h2>Let's get started</h2>
 
           <p>Just three questions, and let our AI do the rest.</p>
+
+          <p>
+            <ion-button size="small" (click)="doDemo(); isDemoClicked = true">
+              <span *ngIf="!isDemoClicked">Try an example</span>
+              <span *ngIf="isDemoClicked">
+                <ion-icon name="refresh"></ion-icon> Try another
+              </span>
+            </ion-button>
+            <a
+              *ngIf="isDemoClicked"
+              (click)="resetForm()"
+              style="
+                text-decoration: underline;
+                padding-left: 20px;
+                vertical-align: middle;
+              "
+              >Clear all</a
+            >
+          </p>
+
           <br /><br />
 
           <ion-item lines="none">
@@ -108,16 +128,6 @@
               required
             ></ion-textarea>
           </ion-item>
-
-          <p>
-            Not sure?
-            <ion-button size="small" (click)="doDemo(); isDemoClicked = true">
-              <span *ngIf="!isDemoClicked">Try a demo</span>
-              <span *ngIf="isDemoClicked">
-                <ion-icon name="refresh"></ion-icon> Try another
-              </span>
-            </ion-button>
-          </p>
 
           <br /><br /><br /><br />
         </div>
@@ -549,46 +559,56 @@
             isEditing
           "
         >
-          <ion-button (click)="undoChange()" [disabled]="activeVersion == 0"
-            ><ion-icon name="arrow-undo-circle-outline"></ion-icon
-          ></ion-button>
+          <ion-button
+            class="tool-button"
+            fill="clear"
+            (click)="undoChange()"
+            [disabled]="activeVersion == 0"
+          >
+            <ion-icon name="arrow-undo-circle-outline"></ion-icon>
+            <ion-label>Undo</ion-label>
+          </ion-button>
           <ion-button
             (click)="redoChange()"
             [disabled]="activeVersion == versions.length - 1"
-            ><ion-icon name="arrow-redo-circle-outline"></ion-icon
-          ></ion-button>
+            ><ion-icon name="arrow-redo-circle-outline"></ion-icon>
+            <ion-label>Redo</ion-label>
+          </ion-button>
           <ion-button (click)="changeTheme()"
-            ><ion-icon name="color-wand-outline"></ion-icon
-          ></ion-button>
+            ><ion-icon name="color-wand-outline"></ion-icon>
+            <ion-label>Theme</ion-label>
+          </ion-button>
           <ion-button (click)="saveChanges()"
             ><span *ngIf="!isSaving">
               {{ isSaved ? "Saved" : "" }}
-              <ion-icon
-                *ngIf="!isSaved"
-                name="checkmark-outline"
-              ></ion-icon> </span
-            ><ion-spinner
+              <ion-icon *ngIf="!isSaved" name="checkmark-outline"></ion-icon>
+            </span>
+            <ion-spinner
               *ngIf="isSaving"
               class="center"
               name="circular"
-            ></ion-spinner
-          ></ion-button>
-          <ion-button routerDirection="root" [routerLink]="'/dashboard'"
-            ><ion-icon name="home-outline"></ion-icon
-          ></ion-button>
+            ></ion-spinner>
+            <ion-label>Save</ion-label>
+          </ion-button>
+          <ion-button routerDirection="root" [routerLink]="'/dashboard'">
+            <ion-icon name="home-outline"></ion-icon>
+            <ion-label>Dashboard</ion-label>
+          </ion-button>
         </div>
 
         <div *ngIf="service.auth.isLoggedIn && siteId == false && isCreating">
           <p>What do you think?</p>
 
-          <ion-button (click)="changeTheme()"
-            ><ion-icon name="color-wand-outline"></ion-icon> Change
-            theme</ion-button
-          >
+          <ion-button (click)="changeTheme()">
+            <ion-icon name="color-wand-outline"></ion-icon>
+            <ion-label> Change Theme</ion-label>
+          </ion-button>
           <ion-button
             (click)="showSection('create'); generated = false; aiform = false"
-            ><ion-icon name="create"></ion-icon> Edit it</ion-button
           >
+            <ion-icon name="create"></ion-icon>
+            <ion-label>Start Again</ion-label>
+          </ion-button>
           <ion-button
             (click)="
               showSection('create');
@@ -599,20 +619,18 @@
               isFailed = false;
               message = 'Working on it'
             "
-            ><ion-icon name="refresh"></ion-icon> Go again</ion-button
-          >
-          <ion-button (click)="storeSite()"
-            ><ion-icon name="checkmark-circle"></ion-icon> Publish
-            it</ion-button
-          >
+            ><ion-icon name="refresh"></ion-icon>
+            <ion-label>Re-generate</ion-label>
+          </ion-button>
+          <ion-button (click)="storeSite()">
+            <ion-icon name="checkmark-circle"></ion-icon>
+            <ion-label>Save & Publish</ion-label>
+          </ion-button>
         </div>
 
         <div *ngIf="!service.auth.isLoggedIn && isCreating">
           <p>What do you think?</p>
-          <ion-button (click)="showSection('publish')"
-            ><ion-icon name="checkmark-circle"></ion-icon> Publish
-            it</ion-button
-          >
+
           <!--<ion-button
             (click)="
               showSection('create');
@@ -625,14 +643,36 @@
             >Change it</ion-button
           >-->
 
-          <ion-button (click)="changeTheme()"
-            ><ion-icon name="color-wand-outline"></ion-icon> Change
-            theme</ion-button
-          >
+          <ion-button (click)="changeTheme()">
+            <ion-icon name="color-wand-outline"></ion-icon>
+            <ion-label>Change Theme</ion-label>
+          </ion-button>
+
           <ion-button
             (click)="showSection('create'); generated = false; aiform = false"
-            ><ion-icon name="create"></ion-icon> Edit it</ion-button
           >
+            <ion-icon name="create"></ion-icon>
+            <ion-label>Start Again</ion-label>
+          </ion-button>
+          <ion-button
+            (click)="
+              showSection('create');
+              onSubmit();
+              generated = false;
+              generating = true;
+              aiform = false;
+              isFailed = false;
+              message = 'Working on it'
+            "
+          >
+            <ion-icon name="refresh"></ion-icon>
+            <ion-label>Re-generate</ion-label>
+          </ion-button>
+
+          <ion-button (click)="showSection('publish')">
+            <ion-icon name="checkmark-circle"></ion-icon>
+            <ion-label>Save & Publish</ion-label>
+          </ion-button>
         </div>
       </div>
     </div>

@@ -328,8 +328,11 @@
                             ></ion-icon>
                           </ion-item-option>
 
-                          <ion-item-option [disabled]="true">
-                            <ion-icon name="cog"></ion-icon>
+                          <ion-item-option>
+                            <ion-icon
+                              (click)="showSiteSettings(site)"
+                              name="cog"
+                            ></ion-icon>
                           </ion-item-option>
                           <ion-item-option [disabled]="true">
                             <ion-icon name="cloud-download"></ion-icon>

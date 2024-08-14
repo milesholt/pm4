@@ -7,6 +7,8 @@ import { Subscription } from 'rxjs';
 import { AlertController } from '@ionic/angular';
 import { IonItemSliding } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
+import { ModalController } from '@ionic/angular';
+import { ModalComponent } from '../../components/modal/modal.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,7 +43,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public library: Library,
     public router: Router,
     private route: ActivatedRoute,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private modalController: ModalController
   ) {
     this.router.events
       .pipe(filter((event: any) => event instanceof NavigationEnd))
@@ -526,6 +529,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   updateSite(site: any = false) {
     this.message = 'Updating database...';
+    this.isLoading = true;
     // Example usage of updating a document
     //const collectionName = 'sites';
 
@@ -547,10 +551,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     //const updatedData = { fieldName: 'new value' };
     const updatedData = {
-      data: this.generated,
-      name: !!site && site.name ? site.name : this.companyInfo.name,
+      data: !!this.isCreateSite ? this.generated : site.data,
+      name: !!this.isCreateSite ? this.companyInfo.name : site.name,
       modified: new Date(),
-      publishId: this.publishId,
+      publishId: !!this.isCreateSite ? this.publishId : site.publishId,
     };
 
     this.service.firestore
@@ -574,6 +578,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.message = 'Site updated';
           setTimeout(() => {
             this.message = '';
+            this.isLoading = false;
           }, 2000);
         }
 
@@ -581,6 +586,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       })
       .catch((error) => {
         this.message = 'Site could not be updated';
+        this.isLoading = false;
         console.error('Error updating document: ', error);
       });
 
@@ -612,5 +618,97 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const queryParams = { site: siteId, edit: true };
       this.router.navigate(siteurl, { queryParams });
     }
+  }
+
+  async showSiteSettings(site: any) {
+    const siteData = JSON.parse(site.data);
+    console.log(siteData);
+
+    const form = {
+      website: {
+        name: 'Website Domain',
+        value: siteData.details.companyInfo.website ?? '',
+        placeholder: 'eg. www.yourdomain.com',
+      },
+      email: {
+        name: 'Email',
+        value: siteData.details.companyInfo.email ?? '',
+        placeholder: 'eg. name@yourdomain.com',
+      },
+      phone: {
+        name: 'Phone',
+        value: siteData.details.companyInfo.phone ?? '',
+        placeholder: '+1 1234 5678',
+      },
+      address: {
+        name: 'Address',
+        value: siteData.details.companyInfo.address ?? '',
+        placeholder: "Enter your site's address here",
+      },
+      instagram: {
+        name: 'Instagram',
+        value: siteData.details.companyInfo.social.instagram ?? '',
+        placeholder: 'Enter your Instagram username here',
+      },
+      facebook: {
+        name: 'Facebook',
+        value: siteData.details.companyInfo.social.facebook ?? '',
+        placeholder: 'Enter your Facebook username here',
+      },
+      x: {
+        name: 'X',
+        value: siteData.details.companyInfo.social.x ?? '',
+        placeholder: 'Enter your X username here',
+      },
+      youtube: {
+        name: 'Youtube',
+        value: siteData.details.companyInfo.social.youtube ?? '',
+        placeholder: 'Enter your Youtube channel url here',
+      },
+      linkedin: {
+        name: 'LinkedIn',
+        value: siteData.details.companyInfo.social.linkedin ?? '',
+        placeholder: 'Enter your LinkedIn profile url here',
+      },
+    };
+
+    const data = {
+      title: 'Website Settings',
+      form: form,
+    };
+
+    const modal = await this.modalController.create({
+      component: ModalComponent,
+      componentProps: { data },
+    });
+
+    modal.onDidDismiss().then((data) => {
+      if (data.data) {
+        // Handle the updated site object here
+        console.log('Updated site:', data.data);
+
+        console.log(siteData);
+
+        const formData = data.data.form;
+
+        siteData.details.companyInfo.email = formData.email.value;
+        siteData.details.companyInfo.phone = formData.phone.value;
+        siteData.details.companyInfo.address = formData.address.value;
+        siteData.details.companyInfo.website = formData.website.value;
+        siteData.details.companyInfo.social.instagram =
+          formData.instagram.value;
+        siteData.details.companyInfo.social.facebook = formData.facebook.value;
+        siteData.details.companyInfo.social.x = formData.x.value;
+        siteData.details.companyInfo.social.youtube = formData.youtube.value;
+        siteData.details.companyInfo.social.linkedin = formData.linkedin.value;
+
+        site.data = JSON.stringify(siteData);
+        this.updateSite(site);
+
+        // Save the updated site object or perform any necessary actions
+      }
+    });
+
+    return await modal.present();
   }
 }

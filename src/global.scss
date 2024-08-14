@@ -130,12 +130,26 @@ ion-button {
   margin-bottom: 20px;
   min-height: 50px;
   font-weight: 700;
+  color:white;
 }
 
 ion-button.inverse{
   --background: white;
   --background-hover: white;
   --color: black;
+  color:black;
+}
+
+ion-button.inverse *{
+  --background: white;
+  --background-hover: white;
+  --color: black;
+  color:black;
+}
+
+ion-button.clear{
+  --background: rgba(0,0,0,0);
+  --background-hover: rgba(0,0,0,0);
 }
 
 ion-button[size="small"]{

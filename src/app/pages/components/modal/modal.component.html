@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ data.title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button size="small" class="inverse clear" (click)="dismiss()"
+        ><ion-icon name="close"></ion-icon
+      ></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="submitForm()">
+    <ion-item *ngFor="let f of formatData(); let idx = index">
+      <ion-label>{{ data.form[f].name }}</ion-label>
+      <ion-input
+        [(ngModel)]="data.form[f].value"
+        [name]="data.form[f].name"
+        [placeholder]="data.form[f].placeholder"
+      ></ion-input>
+    </ion-item>
+
+    <ion-button class="center" type="submit">Save</ion-button>
+  </form>
+</ion-content>
