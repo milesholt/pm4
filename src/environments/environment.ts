@@ -18,6 +18,12 @@ export const environment = {
     IG_DEMO_PASSWORD: 'Savelli_1986',
     IG_DEMO_API_KEY: '3fe3a5a3a41355df513eda0ec98230da7d7d9a9e',
   },
+  stripe: {
+    publicTestKey:
+      'pk_test_51PnCeRLAUexwVL9foWee6REcNpBUNz4iSKDpaQ4pLNfKHqBi0iKnjFGfvVbEaWhWcsTlLB0LENTilRaEPYz2ccqH00lck5iZAi',
+    publicLiveKey:
+      'pk_live_51PnCeRLAUexwVL9fY0yhq1faiChvjrCgUjvGUurZU3JnoLdqwRxUDp6HaKDzjg33Uk9y9hsKJe9MxT9nRIJCq5If00ai2cdQw5',
+  },
   ai: {
     web: {
       client_id:

@@ -30,12 +30,23 @@ import { BrandBuilderComponent } from './pages/brandbuilder/brandbuilder.compone
 // route guard
 import { AuthGuard } from './services/shared/guard/auth.guard';
 
+// payment
+import { ResponsePaymentComponent } from './pages/components/payment/response/response.payment.component';
+
 const routes: Routes = [
   {
     path: '',
     redirectTo: '/brandbuilder',
     pathMatch: 'full',
     //loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },
+  {
+    path: 'payment-response',
+    component: ResponsePaymentComponent,
+    loadChildren: () =>
+      import(
+        './pages/components/payment/response/response.payment.module'
+      ).then((m) => m.ResponsePaymentModule),
   },
   {
     path: 'test',
@@ -54,7 +65,7 @@ const routes: Routes = [
     component: RegisterComponent,
     loadChildren: () =>
       import('./pages/auth/register/register.module').then(
-        (m) => m.RegisterModule,
+        (m) => m.RegisterModule
       ),
   },
   {
@@ -62,7 +73,7 @@ const routes: Routes = [
     component: DashboardComponent,
     loadChildren: () =>
       import('./pages/user/dashboard/dashboard.module').then(
-        (m) => m.DashboardModule,
+        (m) => m.DashboardModule
       ),
     canActivate: [AuthGuard],
   },
@@ -71,7 +82,7 @@ const routes: Routes = [
     component: ForgotPasswordComponent,
     loadChildren: () =>
       import('./pages/auth/forgot-password/forgot-password.module').then(
-        (m) => m.ForgotPasswordModule,
+        (m) => m.ForgotPasswordModule
       ),
   },
   {
@@ -79,7 +90,7 @@ const routes: Routes = [
     component: VerifyEmailComponent,
     loadChildren: () =>
       import('./pages/auth/verify-email/verify-email.module').then(
-        (m) => m.VerifyEmailModule,
+        (m) => m.VerifyEmailModule
       ),
   },
   {
@@ -99,7 +110,7 @@ const routes: Routes = [
     component: CartShopComponent,
     loadChildren: () =>
       import('./pages/shop/cart/cart.shop.module').then(
-        (m) => m.CartShopModule,
+        (m) => m.CartShopModule
       ),
   },
   {
@@ -107,7 +118,7 @@ const routes: Routes = [
     component: ProductComponent,
     loadChildren: () =>
       import('./pages/shop/product/product.module').then(
-        (m) => m.ProductModule,
+        (m) => m.ProductModule
       ),
   },
   {
@@ -115,7 +126,7 @@ const routes: Routes = [
     component: ContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ContentModule,
+        (m) => m.ContentModule
       ),
   },
   {
@@ -123,7 +134,7 @@ const routes: Routes = [
     component: ContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ContentModule,
+        (m) => m.ContentModule
       ),
   },
   {
@@ -131,7 +142,7 @@ const routes: Routes = [
     component: ContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ContentModule,
+        (m) => m.ContentModule
       ),
   },
   {
@@ -139,7 +150,7 @@ const routes: Routes = [
     component: ContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ContentModule,
+        (m) => m.ContentModule
       ),
   },
   {
@@ -147,7 +158,7 @@ const routes: Routes = [
     component: ContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ContentModule,
+        (m) => m.ContentModule
       ),
   },
   {
@@ -155,7 +166,7 @@ const routes: Routes = [
     component: ContentComponent,
     loadChildren: () =>
       import('./pages/shop/content/content.module').then(
-        (m) => m.ContentModule,
+        (m) => m.ContentModule
       ),
   },
   {
@@ -169,7 +180,7 @@ const routes: Routes = [
     component: BrandBuilderComponent,
     loadChildren: () =>
       import('./pages/brandbuilder/brandbuilder.module').then(
-        (m) => m.BrandBuilderModule,
+        (m) => m.BrandBuilderModule
       ),
   },
   {
