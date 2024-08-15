@@ -70,14 +70,20 @@ export class SubscriptionComponent implements OnInit {
 
   async choosePlan(priceId: string) {
     try {
+      console.log('creating session');
       const sessionId = await this.service.stripe.createCheckoutSession(
         priceId
       );
+
+      console.log('sessionId: ');
+      console.log(sessionId);
       const stripe = await this.stripePromise;
 
       if (!stripe) {
         throw new Error('Stripe.js not loaded');
       }
+
+      console.log(stripe);
 
       //Store subscription data
       const paymentData = {
@@ -86,6 +92,8 @@ export class SubscriptionComponent implements OnInit {
         userId: this.service.auth.getUser().uid,
         paymentType: 'subscription',
       };
+
+      console.log(paymentData);
 
       localStorage.setItem('bb_payment_data', JSON.stringify(paymentData));
 
@@ -96,7 +104,8 @@ export class SubscriptionComponent implements OnInit {
         console.error('Error redirecting to Stripe Checkout:', error);
       }
     } catch (error) {
-      console.error('Error creating checkout session:', error);
+      console.error('Error creating checkout session:');
+      console.log(error);
     }
   }
 }
