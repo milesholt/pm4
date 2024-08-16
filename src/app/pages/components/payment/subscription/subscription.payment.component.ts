@@ -76,11 +76,17 @@ export class SubscriptionComponent implements OnInit {
         throw new Error('Stripe.js not loaded');
       }
 
-      const userData = [...this.service.auth.getUser(), ...this.userSettings];
+      const preData = {
+        ...this.service.auth.getUser(),
+        ...this.userSettings,
+        ...{ productName: productName },
+      };
 
-      console.log(userData);
+      console.log(preData);
 
-      const response = await this.service.stripe.doSubscription(userData);
+      const response = await this.service.stripe.doSubscription(preData);
+
+      console.log(response);
 
       if (response.status == 'checkout') {
         //Store subscription data
@@ -128,7 +134,7 @@ export class SubscriptionComponent implements OnInit {
         this.router.navigate(['/payment_response'], { queryParams });
       }
     } catch (error) {
-      console.error('Error creating subscription');
+      console.error('Error creating subscription...');
       console.log(error);
     }
   }

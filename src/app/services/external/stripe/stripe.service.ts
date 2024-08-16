@@ -83,38 +83,53 @@ export class StripeService {
     return await this.doRequest(postData);
   }
 
-  async doSubscription(user: any) {
+  async doSubscription(data: any) {
     const hostUrl = `${window.location.protocol}//${window.location.host}`;
     let postData: any = {
       action: 'doSubscription',
-      customer_name: user.displayName,
-      customer_email: user.email,
-      user_id: user.uid,
+      customer_name: data.displayName,
+      customer_email: data.email,
+      user_id: data.uid,
       mode: 'subscription',
       payment_type: 'card',
       url: hostUrl,
+      productName: data.productName,
     };
 
-    if (user.hasOwnProperty('stripeCustomerId'))
-      postData.customerId = user.stripeCustomerId;
+    console.log('post data');
+    console.log(postData);
+
+    if (data.hasOwnProperty('stripeCustomerId'))
+      postData.customerId = data.stripeCustomerId;
     return await this.doRequest(postData);
   }
 
   async doRequest(postData: any) {
-    const response = await fetch(this.baseUrl + '/stripe.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(postData),
-    });
+    console.log('doing request');
 
-    const result = await response.json();
+    try {
+      const response = await fetch(this.baseUrl + '/stripe.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      });
 
-    if (result.error) {
-      throw new Error(result.error);
+      const result = await response.json();
+
+      console.log('result:');
+      console.log(result);
+
+      if (result.error) {
+        console.log('request error');
+        throw new Error(result.error);
+      }
+
+      return result;
+    } catch (e) {
+      console.log('request error');
+      console.log(e);
     }
-
-    return result;
   }
 }
