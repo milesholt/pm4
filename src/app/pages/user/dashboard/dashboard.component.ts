@@ -70,6 +70,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     // 1. Check if user is already logged in with credentials stored locally
     const localUser = this.service.auth.getUser(); // Assuming getUser() checks localStorage for user data
+    console.log('local user:');
+    console.log(localUser);
 
     if (localUser.uid) {
       this.userId = localUser.uid;
@@ -194,7 +196,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // Create the main user document if it doesn't exist
     this.service.firestore
       .createDocument(basePath, { createdAt: new Date() }, userId)
-      .then(async() => {
+      .then(async () => {
         // Create subcollections with a placeholder document
         console.log('Setting up user collections');
         subcollections.forEach((subcollection) => {
@@ -204,7 +206,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
         console.log('User database stucture set up');
         //create Stripe customer ID
-        this.stripeId = await this.service.stripe.createCustomer(this.service.auth.getUser());
+        this.stripeId = await this.service.stripe.createCustomer(
+          this.service.auth.getUser()
+        );
         return true;
       })
       .catch((error) => {

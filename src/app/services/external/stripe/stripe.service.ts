@@ -75,7 +75,7 @@ export class StripeService {
   async createCustomer(user: any) {
     const postData = {
       action: 'createCustomer',
-      customer_name: user.name,
+      customer_name: user.displayName,
       customer_email: user.email,
       user_id: user.uid,
     };
@@ -87,7 +87,7 @@ export class StripeService {
     const hostUrl = `${window.location.protocol}//${window.location.host}`;
     let postData: any = {
       action: 'doSubscription',
-      customer_name: user.name,
+      customer_name: user.displayName,
       customer_email: user.email,
       user_id: user.uid,
       mode: 'subscription',
