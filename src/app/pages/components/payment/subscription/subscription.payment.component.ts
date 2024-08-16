@@ -37,7 +37,7 @@ export class SubscriptionComponent implements OnInit {
 
   ngOnInit() {}
 
-  async choosePlanCard(priceId: string) {
+  async choosePlanCard(productName: string) {
     this.isPlanChosen = true;
     const email = 'user@example.com'; // Replace with user email from your app
 
@@ -52,7 +52,7 @@ export class SubscriptionComponent implements OnInit {
       const clientSecret = await this.service.stripe.createSubscription(
         email,
         paymentMethod.id,
-        priceId
+        productName
       );
       const stripe = await this.cardInputComponent['stripePromise'];
 
@@ -68,15 +68,77 @@ export class SubscriptionComponent implements OnInit {
     }
   }
 
-  async choosePlan(priceId: string) {
+  async choosePlan(productName:string){
+
+      try {
+        const userData = [...this.service.auth.getUser(), ...this.userSettings];
+        
+        console.log(userData);
+
+        const response = await this.service.stripe.doSubscription(userData);
+
+        if(response.status == 'checkout'){
+          //Store subscription data
+          const paymentData = {
+            sessionId: response.sessionId,
+            productName: productName,
+            userId: this.service.auth.getUser().uid,
+            paymentType: 'subscription',
+            customerId: response.customerId
+          };
+
+          console.log(paymentData);
+
+          localStorage.setItem('bb_payment_data', JSON.stringify(paymentData));
+
+          // Redirect to Stripe Checkout
+          const { error } = await stripe.redirectToCheckout({ response.sessionId });
+
+          if (error) {
+            console.error('Error redirecting to Stripe Checkout:', error);
+          }
+
+        }
+
+        if(response.status == 'success'){
+
+          //Handle subscription update
+          console.log('Subscription updated');
+          const subscriptionId = response.subscriptionId;
+          console.log(subscriptionId);
+
+          const paymentData = {
+            subscriptionId: response.subscriptionId,
+            productName: productName,
+            userId: this.service.auth.getUser().uid,
+            paymentType: 'subscription'
+          };
+
+          console.log(paymentData);
+
+          localStorage.setItem('bb_payment_data', JSON.stringify(paymentData));
+
+          //update user settings 
+          const queryParams = { status: 'success' };
+          this.router.navigate('/payment_response', { queryParams });
+
+        }
+
+      } catch (error) {
+        console.error('Error creating subscription');
+        console.log(error);
+      }
+  }
+
+  async doCheckout(productName: string) {
     try {
       console.log('creating session');
-      const sessionId = await this.service.stripe.createCheckoutSession(
-        priceId
+      const sessions = await this.service.stripe.createCheckoutSession(
+        productName
       );
 
-      console.log('sessionId: ');
-      console.log(sessionId);
+      console.log('session: ');
+      console.log(session);
       const stripe = await this.stripePromise;
 
       if (!stripe) {
@@ -87,8 +149,8 @@ export class SubscriptionComponent implements OnInit {
 
       //Store subscription data
       const paymentData = {
-        sessionId: sessionId,
-        priceId: priceId,
+        sessionId: session.sessionId,
+        productName: productName,
         userId: this.service.auth.getUser().uid,
         paymentType: 'subscription',
       };
@@ -98,7 +160,7 @@ export class SubscriptionComponent implements OnInit {
       localStorage.setItem('bb_payment_data', JSON.stringify(paymentData));
 
       // Redirect to Stripe Checkout
-      const { error } = await stripe.redirectToCheckout({ sessionId });
+      const { error } = await stripe.redirectToCheckout({ session.sessionId });
 
       if (error) {
         console.error('Error redirecting to Stripe Checkout:', error);

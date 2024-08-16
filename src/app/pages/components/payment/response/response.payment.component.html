@@ -8,12 +8,16 @@
 
 <ion-content>
   <div *ngIf="status == 'success'">
-    <ion-spinner class="center" name="circular"></ion-spinner>
+    <ion-spinner *ngIf="isFinalising" class="center" name="circular"></ion-spinner>
+    <ion-icon *ngIf="isSuccess" name="close-circle-outline"></ion-icon>
+    <ion-icon *ngIf="isFail" name="checkmark-circle-outline"></ion-icon>
+
+   
     <br /><br />
 
-    {{ responseMessage }}
+    <div class="response-message" [innerHTML]="responseMessage"></div>
 
-    {{ responseData }}
+    {{ responseData | json }}
   </div>
 
   <div *ngIf="status == 'cancel'"></div>

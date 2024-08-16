@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   userSettings: any;
   userId: string | boolean = false;
+  stripeId: string | boolean | null | void = false;
 
   showSites: boolean = true;
   showMemberships: boolean = false;
@@ -183,7 +184,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       );
   }
 
-  setupUser() {
+  async setupUser() {
     console.log('setting up user');
 
     const userId = this.userId;
@@ -193,7 +194,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // Create the main user document if it doesn't exist
     this.service.firestore
       .createDocument(basePath, { createdAt: new Date() }, userId)
-      .then(() => {
+      .then(async() => {
         // Create subcollections with a placeholder document
         console.log('Setting up user collections');
         subcollections.forEach((subcollection) => {
@@ -202,6 +203,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.createPlaceholderDocument(subcollectionPath);
         });
         console.log('User database stucture set up');
+        //create Stripe customer ID
+        this.stripeId = await this.service.stripe.createCustomer(this.service.auth.getUser());
         return true;
       })
       .catch((error) => {
@@ -234,6 +237,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       aiLimit: 100,
       aiCalls: 0,
       membershipId: 'starter',
+      stripeCustomerId: this.stripeId,
       siteLimit: 5,
       sitesCreated: 0,
     };
