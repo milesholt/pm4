@@ -72,55 +72,49 @@ export class StripeService {
     return result.id;
   }
 
-async createCustomer(user:any){
+  async createCustomer(user: any) {
     const postData = {
       action: 'createCustomer',
       customer_name: user.name,
       customer_email: user.email,
       user_id: user.uid,
-      productName: productName,
-      hostUrl: hostUrl
-    }
+    };
 
     return await this.doRequest(postData);
- }
-
- async doSubscription(user:any){
-  const hostUrl = `${window.location.protocol}//${window.location.host}`;
-  let postData = {
-    action: 'doSubscription',
-    customer_name: user.name,
-    customer_email: user.email,
-    user_id: user.uid,
-    mode: 'subscription',
-    payment_type: 'card',
-    url: hostUrl
-
   }
 
-  if(user.hasOwnProperty('stripeCustomerId')) postData.customerId = user.stripeCustomerId;
-  return await this.doRequest(postData);
+  async doSubscription(user: any) {
+    const hostUrl = `${window.location.protocol}//${window.location.host}`;
+    let postData: any = {
+      action: 'doSubscription',
+      customer_name: user.name,
+      customer_email: user.email,
+      user_id: user.uid,
+      mode: 'subscription',
+      payment_type: 'card',
+      url: hostUrl,
+    };
 
- }
-
- async doRequest(postData:any) {
-
-  const response = await fetch(this.baseUrl + '/stripe.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(postData)
-  });
-
-  const result = await response.json();
-
-  if (result.error) {
-    throw new Error(result.error);
+    if (user.hasOwnProperty('stripeCustomerId'))
+      postData.customerId = user.stripeCustomerId;
+    return await this.doRequest(postData);
   }
 
-  return result;
-  
- }
+  async doRequest(postData: any) {
+    const response = await fetch(this.baseUrl + '/stripe.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData),
+    });
 
+    const result = await response.json();
+
+    if (result.error) {
+      throw new Error(result.error);
+    }
+
+    return result;
+  }
 }

@@ -68,74 +68,79 @@ export class SubscriptionComponent implements OnInit {
     }
   }
 
-  async choosePlan(productName:string){
+  async choosePlan(productName: string) {
+    try {
+      const stripe = await this.stripePromise;
 
-      try {
-        const userData = [...this.service.auth.getUser(), ...this.userSettings];
-        
-        console.log(userData);
-
-        const response = await this.service.stripe.doSubscription(userData);
-
-        if(response.status == 'checkout'){
-          //Store subscription data
-          const paymentData = {
-            sessionId: response.sessionId,
-            productName: productName,
-            userId: this.service.auth.getUser().uid,
-            paymentType: 'subscription',
-            customerId: response.customerId
-          };
-
-          console.log(paymentData);
-
-          localStorage.setItem('bb_payment_data', JSON.stringify(paymentData));
-
-          // Redirect to Stripe Checkout
-          const { error } = await stripe.redirectToCheckout({ response.sessionId });
-
-          if (error) {
-            console.error('Error redirecting to Stripe Checkout:', error);
-          }
-
-        }
-
-        if(response.status == 'success'){
-
-          //Handle subscription update
-          console.log('Subscription updated');
-          const subscriptionId = response.subscriptionId;
-          console.log(subscriptionId);
-
-          const paymentData = {
-            subscriptionId: response.subscriptionId,
-            productName: productName,
-            userId: this.service.auth.getUser().uid,
-            paymentType: 'subscription'
-          };
-
-          console.log(paymentData);
-
-          localStorage.setItem('bb_payment_data', JSON.stringify(paymentData));
-
-          //update user settings 
-          const queryParams = { status: 'success' };
-          this.router.navigate('/payment_response', { queryParams });
-
-        }
-
-      } catch (error) {
-        console.error('Error creating subscription');
-        console.log(error);
+      if (!stripe) {
+        throw new Error('Stripe.js not loaded');
       }
+
+      const userData = [...this.service.auth.getUser(), ...this.userSettings];
+
+      console.log(userData);
+
+      const response = await this.service.stripe.doSubscription(userData);
+
+      if (response.status == 'checkout') {
+        //Store subscription data
+        const paymentData = {
+          sessionId: response.sessionId,
+          productName: productName,
+          userId: this.service.auth.getUser().uid,
+          paymentType: 'subscription',
+          customerId: response.customerId,
+        };
+
+        const sessionId = response.sessionId;
+
+        console.log(paymentData);
+
+        localStorage.setItem('bb_payment_data', JSON.stringify(paymentData));
+
+        // Redirect to Stripe Checkout
+        const { error } = await stripe.redirectToCheckout({ sessionId });
+
+        if (error) {
+          console.error('Error redirecting to Stripe Checkout:', error);
+        }
+      }
+
+      if (response.status == 'success') {
+        //Handle subscription update
+        console.log('Subscription updated');
+        const subscriptionId = response.subscriptionId;
+        console.log(subscriptionId);
+
+        const paymentData = {
+          subscriptionId: response.subscriptionId,
+          productName: productName,
+          userId: this.service.auth.getUser().uid,
+          paymentType: 'subscription',
+        };
+
+        console.log(paymentData);
+
+        localStorage.setItem('bb_payment_data', JSON.stringify(paymentData));
+
+        //update user settings
+        const queryParams = { status: 'success' };
+        this.router.navigate(['/payment_response'], { queryParams });
+      }
+    } catch (error) {
+      console.error('Error creating subscription');
+      console.log(error);
+    }
   }
 
   async doCheckout(productName: string) {
     try {
       console.log('creating session');
-      const sessions = await this.service.stripe.createCheckoutSession(
+      const session: any = await this.service.stripe.createCheckoutSession(
         productName
       );
+
+      const sessionId = session.sessionId;
 
       console.log('session: ');
       console.log(session);
@@ -149,7 +154,7 @@ export class SubscriptionComponent implements OnInit {
 
       //Store subscription data
       const paymentData = {
-        sessionId: session.sessionId,
+        sessionId: sessionId,
         productName: productName,
         userId: this.service.auth.getUser().uid,
         paymentType: 'subscription',
@@ -160,7 +165,7 @@ export class SubscriptionComponent implements OnInit {
       localStorage.setItem('bb_payment_data', JSON.stringify(paymentData));
 
       // Redirect to Stripe Checkout
-      const { error } = await stripe.redirectToCheckout({ session.sessionId });
+      const { error } = await stripe.redirectToCheckout({ sessionId });
 
       if (error) {
         console.error('Error redirecting to Stripe Checkout:', error);
