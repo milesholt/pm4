@@ -92,10 +92,12 @@ export class SubscriptionComponent implements OnInit {
         //Store subscription data
         const paymentData = {
           sessionId: response.sessionId,
+          subscriptionId: response.subscriptionId,
           productName: productName,
           userId: this.service.auth.getUser().uid,
           paymentType: 'subscription',
           customerId: response.customerId,
+          method: 'checkout',
         };
 
         const sessionId = response.sessionId;
@@ -123,6 +125,7 @@ export class SubscriptionComponent implements OnInit {
           productName: productName,
           userId: this.service.auth.getUser().uid,
           paymentType: 'subscription',
+          method: 'subscription',
         };
 
         console.log(paymentData);

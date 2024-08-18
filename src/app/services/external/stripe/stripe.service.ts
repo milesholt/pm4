@@ -104,8 +104,23 @@ export class StripeService {
     return await this.doRequest(postData);
   }
 
+  async setPaymentMethodSubscription(data: any) {
+    let postData: any = {
+      action: 'setPaymentMethodSubscription',
+      subscriptionId: data.subscriptionId,
+      customerId: data.customerId,
+    };
+
+    console.log('post data');
+    console.log(postData);
+
+    return await this.doRequest(postData);
+  }
+
   async doRequest(postData: any) {
     console.log('doing request');
+
+    console.log(this.baseUrl + '/stripe.php');
 
     try {
       const response = await fetch(this.baseUrl + '/stripe.php', {

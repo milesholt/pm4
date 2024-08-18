@@ -33,8 +33,8 @@ export class ResponsePaymentComponent implements OnInit {
     public lib: Library
   ) {}
 
-  ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
+  async ngOnInit() {
+    this.route.queryParams.subscribe(async (params) => {
       this.status = params['status'] ?? ''; // Get the document ID from query parameters
       this.sessionId = params['session_id'] ?? false; // Get the document ID from query parameters
 
@@ -58,15 +58,24 @@ export class ResponsePaymentComponent implements OnInit {
             aiLimit: 100,
             aiCalls: 0,
             membershipId: paymentData.productName,
-            stripeCustomerId: paymentData.stripeCustomerId,
             siteLimit: 5,
             sitesCreated: 0,
           };
 
-          if (paymentData.sessionId)
+          if ((paymentData.method = 'checkout')) {
             documentData.stripeSessionId = paymentData.sessionId;
+            documentData.stripeCustomerId = paymentData.customerId;
 
-          if (paymentData.subscriptionId)
+            const response =
+              await this.service.stripe.setPaymentMethodSubscription(
+                paymentData
+              );
+            if (response) {
+              console.log('default payment method set');
+            }
+          }
+
+          if ((paymentData.method = 'subscription'))
             documentData.stripeSubscriptionId = paymentData.subscriptionId;
 
           this.service.firestore
