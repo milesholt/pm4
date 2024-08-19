@@ -30,6 +30,7 @@ import { AIGeminiService } from './external/ai/gemini.service';
 import { PexelsService } from './external/pexels/pexels.service';
 import { InstagramService } from './external/instagram/instagram.service';
 import { StripeService } from './external/stripe/stripe.service';
+import { CloudflareService } from './external/cloudflare/cloudflare.service';
 
 /*
 @Injectable()
@@ -60,7 +61,8 @@ export class CoreService {
     public ai: AIGeminiService,
     public pexels: PexelsService,
     public instagram: InstagramService,
-    public stripe: StripeService
+    public stripe: StripeService,
+    public cloudflare: CloudflareService
   ) {}
 }
 
