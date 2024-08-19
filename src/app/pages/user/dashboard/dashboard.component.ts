@@ -713,6 +713,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
         site.data = JSON.stringify(siteData);
         this.updateSite(site);
 
+        if (formData.website.value !== '') {
+          let hostName = formData.website.value;
+          //Add/update custom domain on Cloudflare
+          console.log('adding custom hostname');
+          console.log(hostName);
+          this.service.cloudflare
+            .createHostName(formData.website.value)
+            .then((result) => {
+              console.log('Resolved:', result);
+              //display configuration for domain
+            })
+            .catch((error) => {
+              console.error('Rejected:', error);
+            });
+        }
+
         // Save the updated site object or perform any necessary actions
       }
     });
