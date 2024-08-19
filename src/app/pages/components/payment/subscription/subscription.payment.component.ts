@@ -134,7 +134,7 @@ export class SubscriptionComponent implements OnInit {
 
         //update user settings
         const queryParams = { status: 'success' };
-        this.router.navigate(['/payment_response'], { queryParams });
+        this.router.navigate(['payment-response'], { queryParams });
       }
     } catch (error) {
       console.error('Error creating subscription...');

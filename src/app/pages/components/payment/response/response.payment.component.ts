@@ -62,7 +62,7 @@ export class ResponsePaymentComponent implements OnInit {
             sitesCreated: 0,
           };
 
-          if ((paymentData.method = 'checkout')) {
+          if (paymentData.method == 'checkout') {
             documentData.stripeSessionId = paymentData.sessionId;
             documentData.stripeCustomerId = paymentData.customerId;
 
@@ -75,7 +75,7 @@ export class ResponsePaymentComponent implements OnInit {
             }
           }
 
-          if ((paymentData.method = 'subscription'))
+          if (paymentData.method == 'subscription')
             documentData.stripeSubscriptionId = paymentData.subscriptionId;
 
           this.service.firestore
