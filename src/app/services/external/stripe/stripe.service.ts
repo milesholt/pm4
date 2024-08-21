@@ -96,11 +96,15 @@ export class StripeService {
       productName: data.productName,
     };
 
+    if (data.hasOwnProperty('stripeCustomerId'))
+      postData.customerId = data.stripeCustomerId;
+
+    if (data.hasOwnProperty('stripeSubscriptionId'))
+      postData.subscriptionId = data.stripeSubscriptionId;
+
     console.log('post data');
     console.log(postData);
 
-    if (data.hasOwnProperty('stripeCustomerId'))
-      postData.customerId = data.stripeCustomerId;
     return await this.doRequest(postData);
   }
 
@@ -117,9 +121,20 @@ export class StripeService {
     return await this.doRequest(postData);
   }
 
+  async getActiveSubscription(data: any) {
+    let postData: any = {
+      action: 'getActiveSubscription',
+      customerId: data.customerId,
+    };
+
+    console.log('getting active subscription, post data:');
+    console.log(postData);
+
+    return await this.doRequest(postData);
+  }
+
   async doRequest(postData: any) {
     console.log('doing request');
-
     console.log(this.baseUrl + '/stripe.php');
 
     try {
@@ -131,13 +146,25 @@ export class StripeService {
         body: JSON.stringify(postData),
       });
 
-      const result = await response.json();
+      // Log the raw response text for debugging purposes
+      const responseText = await response.text();
+      console.log('Raw Response Text:', responseText);
+
+      let result;
+      try {
+        // Parse the response text as JSON
+        result = JSON.parse(responseText);
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+        throw new Error('Failed to parse response as JSON.');
+      }
 
       console.log('result:');
       console.log(result);
 
+      // Check if the result contains an error
       if (result.error) {
-        console.log('request error');
+        console.log('result error');
         throw new Error(result.error);
       }
 
@@ -145,6 +172,7 @@ export class StripeService {
     } catch (e) {
       console.log('request error');
       console.log(e);
+      throw e; // rethrow the error to handle it upstream if needed
     }
   }
 }

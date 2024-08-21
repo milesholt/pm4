@@ -66,11 +66,19 @@ export class ResponsePaymentComponent implements OnInit {
             documentData.stripeSessionId = paymentData.sessionId;
             documentData.stripeCustomerId = paymentData.customerId;
 
-            const response =
+            const activeSubscription: any =
+              await this.service.stripe.getActiveSubscription(paymentData);
+            if (activeSubscription !== null) {
+              console.log('found active subscription');
+              const subscriptionId = activeSubscription!.id;
+              documentData.stripeSubscriptionId = subscriptionId;
+            }
+
+            const response: any =
               await this.service.stripe.setPaymentMethodSubscription(
                 paymentData
               );
-            if (response) {
+            if (response !== null) {
               console.log('default payment method set');
             }
           }
