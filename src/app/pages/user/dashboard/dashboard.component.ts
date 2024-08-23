@@ -718,15 +718,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
           //Add/update custom domain on Cloudflare
           console.log('adding custom hostname');
           console.log(hostName);
-          this.service.cloudflare
-            .createHostName(formData.website.value)
-            .then((result) => {
-              console.log('Resolved:', result);
-              //display configuration for domain
-            })
-            .catch((error) => {
-              console.error('Rejected:', error);
-            });
+          const data = {
+            action: 'createHostname',
+            hostname: formData.website.value,
+          };
+
+          this.service.cloudflare.createHostname(data).subscribe(
+            (response) => {
+              console.log(response);
+            },
+            (error) => {
+              console.error(error);
+            }
+          );
         }
 
         // Save the updated site object or perform any necessary actions
