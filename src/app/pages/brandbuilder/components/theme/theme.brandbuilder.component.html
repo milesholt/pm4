@@ -1,1 +1,79 @@
-<p>Theme component</p>
+<h1>Theme Settings</h1>
+
+<ion-content class="theme-container" #modalContainer>
+  <ion-grid>
+    <ion-row>
+      <!-- Color selectors -->
+      <ion-col size="4">
+        <ion-item button (click)="selectColor('primary')">
+          <div class="color-box" [style.background-color]="theme.primary"></div>
+          <ion-label>Primary</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col size="4">
+        <ion-item button (click)="selectColor('secondary')">
+          <div
+            class="color-box"
+            [style.background-color]="theme.secondary"
+          ></div>
+          <ion-label>Secondary</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col size="4">
+        <ion-item button (click)="selectColor('tertiary')">
+          <div
+            class="color-box"
+            [style.background-color]="theme.tertiary"
+          ></div>
+          <ion-label>Tertiary</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <!-- Color picker -->
+    <ion-row>
+      <ion-col size="12">
+        <ng-container *ngIf="modalWidth">
+          <color-picker
+            [(colorPicker)]="theme[selectedColor]"
+            [cpPosition]="'inline'"
+            [cpOutputFormat]="'hex'"
+            [cpPresetColors]="[]"
+            [cpToggle]="true"
+            [cpWidth]="modalWidth + 'px'"
+            [cpCloseClickOutside]="false"
+            [style.display]="'block'"
+          >
+          </color-picker>
+        </ng-container>
+      </ion-col>
+    </ion-row>
+
+    <!-- Font Selector -->
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-select [(ngModel)]="theme.fontFamily">
+            <ion-select-option
+              label="Choose Font Family"
+              labelPosition="floating"
+              *ngFor="let font of fonts"
+              [value]="font"
+              [style.font-family]="font"
+            >
+              {{ font }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <!-- Apply Theme Button -->
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" (click)="applyTheme()"
+          >Apply Theme</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

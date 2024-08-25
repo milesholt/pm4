@@ -10,6 +10,10 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 //import { PexelsService } from '../services/pexels.service';
 
+import { ModalController } from '@ionic/angular';
+import { ModalComponent } from '../components/modal/modal.component';
+import { ThemeBrandBuilderComponent } from './components/theme/theme.brandbuilder.component';
+
 import { Library } from '../../app.library';
 import { CoreService } from '../../services/core.service';
 
@@ -514,7 +518,8 @@ export class BrandBuilderComponent
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
     public router: Router,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    private modalController: ModalController
   ) {
     this.currentYear = new Date().getFullYear();
   }
@@ -1697,9 +1702,25 @@ export class BrandBuilderComponent
     return content;
   }
 
-  changeTheme() {
-    this.activeTheme =
-      this.activeTheme >= this.themes.colours.length ? 0 : this.activeTheme + 1;
+  async changeTheme() {
+    //this.activeTheme = this.activeTheme >= this.themes.colours.length ? 0 : this.activeTheme + 1;
+
+    const data = {
+      title: 'Website Settings',
+    };
+
+    const modal = await this.modalController.create({
+      component: ThemeBrandBuilderComponent,
+      componentProps: { data },
+    });
+
+    modal.onDidDismiss().then((data: any) => {
+      if (data) {
+        console.log(data);
+      }
+    });
+
+    return await modal.present();
   }
 
   async loadImages() {
