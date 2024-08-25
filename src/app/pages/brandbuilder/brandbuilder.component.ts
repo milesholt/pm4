@@ -1722,11 +1722,12 @@ export class BrandBuilderComponent
       componentProps: { data: data },
     });
 
-    modal.onDidDismiss().then((data: any) => {
-      if (data) {
-        console.log(data);
-        this.themes = data.themes;
-        this.activeTheme = data.activeTheme;
+    modal.onDidDismiss().then((res: any) => {
+      if (res) {
+        console.log(res);
+        this.themes = res.data.themes;
+        this.activeTheme = res.data.activeTheme;
+        console.log(this.themes);
         this.doThemesCSS();
       }
     });
