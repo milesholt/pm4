@@ -70,6 +70,16 @@ export class Library {
     return Object.assign({}, object);
   }
 
+  mergeObjects(object1: any, object2: any) {
+    const mergedObject = { ...object1 }; // Start with a copy of object1
+    for (const key in object1) {
+      if (object2.hasOwnProperty(key)) {
+        mergedObject[key] = object2[key]; // Update with values from object2 if key exists
+      }
+    }
+    return mergedObject;
+  }
+
   //duplicates a new instance of an array
   duplicateArray(array: any = []) {
     let arr: any = [];

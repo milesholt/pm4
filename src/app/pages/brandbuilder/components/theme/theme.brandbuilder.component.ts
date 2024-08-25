@@ -66,17 +66,19 @@ export class ThemeBrandBuilderComponent implements OnInit, AfterViewInit {
 
   loadThemeData() {
     this.data.themes.colours.forEach((colour: any, index: number) => {
-      const font = this.data.themes.fonts[index].name;
+      const fontName = this.data.themes.fonts[index].name;
+      const fontUrl = this.data.themes.fonts[index].url;
       const theme = {
         primary: colour.primary,
         secondary: colour.secondary,
         tertiary: colour.tertiary,
-        fontFamily: font,
+        fontFamily: fontName,
+        fontUrl: fontUrl,
       };
-      this.fonts.push(font);
+      this.fonts.push(fontName);
       this.themes.push(theme);
     });
-    this.theme = this.themes[0];
+    this.theme = this.themes[this.data.activeTheme];
   }
 
   selectColor(color: 'primary' | 'secondary' | 'tertiary') {
@@ -98,8 +100,19 @@ export class ThemeBrandBuilderComponent implements OnInit, AfterViewInit {
     }, 300);
   }
 
-  applyTheme() {
-    this.modalController.dismiss(this.theme); //
+  applyChanges() {
+    this.themes.forEach((theme: any, idx: number) => {
+      this.data.themes.colours[idx] = this.lib.mergeObjects(
+        this.data.themes.colours[idx],
+        theme
+      );
+      this.data.themes.fonts[idx].name = theme.fontFamily;
+      this.data.themes.fonts[idx].url = theme.fontUrl;
+    });
+
+    console.log(this.data);
+
+    this.modalController.dismiss(this.data);
   }
 
   async openFontSelector() {
@@ -113,7 +126,8 @@ export class ThemeBrandBuilderComponent implements OnInit, AfterViewInit {
 
     modal.onDidDismiss().then((result) => {
       if (result.data) {
-        this.theme.fontFamily = result.data;
+        this.theme.fontFamily = result.data.name;
+        this.theme.fontUrl = result.data.url;
       }
     });
 

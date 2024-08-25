@@ -3,7 +3,10 @@
 <ion-content class="theme-container" #modalContainer>
   <ion-grid>
     <ion-row>
-      <ion-select [(ngModel)]="theme">
+      <ion-select
+        [(ngModel)]="theme"
+        (ngModelChange)="data.activeTheme = this.themes.indexOf($event)"
+      >
         <ion-select-option
           label="Choose Theme"
           labelPosition="floating"
@@ -89,8 +92,8 @@
     <!-- Apply Theme Button -->
     <ion-row>
       <ion-col>
-        <ion-button expand="block" (click)="applyTheme()"
-          >Apply Theme</ion-button
+        <ion-button expand="block" (click)="applyChanges()"
+          >Apply Changes</ion-button
         >
       </ion-col>
     </ion-row>

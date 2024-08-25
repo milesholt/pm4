@@ -47,8 +47,14 @@ export class FontsBrandBuilderComponent implements OnInit {
     });
   }
 
+  generateFontUrl(fontName: string): string {
+    const formattedName = fontName.replace(/ /g, '+'); // Replace spaces with '+'
+    return `https://fonts.googleapis.com/css2?family=${formattedName}:wght@100;300;400;500;700;900&display=swap`;
+  }
+
   selectFont(font: string) {
-    this.modalCtrl.dismiss(font);
+    const fontUrl = this.generateFontUrl(font);
+    this.modalCtrl.dismiss({ name: font, url: fontUrl });
   }
   closeModal() {
     this.modalCtrl.dismiss();

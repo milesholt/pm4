@@ -1402,10 +1402,16 @@ export class BrandBuilderComponent
   }
 
   async loadStyles(css: string) {
-    const styleElement = document.createElement('style');
-    styleElement.type = 'text/css';
-    styleElement.innerHTML = css;
-    document.getElementsByTagName('head')[0].appendChild(styleElement);
+    const existingStyle = document.getElementById('customStyle');
+    if (existingStyle) {
+      existingStyle.innerHTML = css;
+    } else {
+      const styleElement = document.createElement('style');
+      styleElement.id = 'customStyle';
+      styleElement.type = 'text/css';
+      styleElement.innerHTML = css;
+      document.getElementsByTagName('head')[0].appendChild(styleElement);
+    }
   }
 
   checkJSONContentEmpty(json: any) {
@@ -1719,6 +1725,9 @@ export class BrandBuilderComponent
     modal.onDidDismiss().then((data: any) => {
       if (data) {
         console.log(data);
+        this.themes = data.themes;
+        this.activeTheme = data.activeTheme;
+        this.doThemesCSS();
       }
     });
 
