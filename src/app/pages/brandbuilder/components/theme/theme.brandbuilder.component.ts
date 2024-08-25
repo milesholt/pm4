@@ -2,6 +2,7 @@ import {
   Component,
   OnInit,
   ViewChild,
+  Input,
   AfterViewInit,
   ElementRef,
 } from '@angular/core';
@@ -13,7 +14,8 @@ import { ModalController } from '@ionic/angular';
 
 import { Library } from '../../../../app.library';
 import { CoreService } from '../../../../services/core.service';
-import WebFont from 'webfontloader';
+
+import { FontsBrandBuilderComponent } from '../fonts/fonts.brandbuilder.component';
 
 @Component({
   //standalone: true,
@@ -25,6 +27,7 @@ import WebFont from 'webfontloader';
 })
 export class ThemeBrandBuilderComponent implements OnInit, AfterViewInit {
   selectedColor: string = 'primary';
+  data: any = null;
 
   theme: any = {
     primary: '#3880ff',
@@ -33,7 +36,10 @@ export class ThemeBrandBuilderComponent implements OnInit, AfterViewInit {
     fontFamily: 'Roboto',
   };
 
-  fonts = ['Roboto', 'Open Sans', 'Lato', 'Montserrat', 'Oswald', 'Raleway'];
+  themes: any = [];
+  fonts: any = [];
+
+  selectedFont: string = 'Roboto';
 
   colorPickerVisible: boolean = true;
 
@@ -50,11 +56,26 @@ export class ThemeBrandBuilderComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    this.loadFonts();
+    console.log(this.data);
+    this.loadThemeData();
   }
 
   ngAfterViewInit() {
     this.setColorPickerWidth();
+  }
+
+  loadThemeData() {
+    this.data.themes.colours.forEach((colour: any, index: number) => {
+      const font = this.data.themes.fonts[index].name;
+      const theme = {
+        primary: colour.primary,
+        secondary: colour.secondary,
+        tertiary: colour.tertiary,
+        fontFamily: font,
+      };
+      this.fonts.push(font);
+      this.themes.push(theme);
+    });
   }
 
   selectColor(color: 'primary' | 'secondary' | 'tertiary') {
@@ -80,12 +101,22 @@ export class ThemeBrandBuilderComponent implements OnInit, AfterViewInit {
     this.modalController.dismiss(this.theme); //
   }
 
-  loadFonts() {
-    WebFont.load({
-      google: {
-        families: this.fonts,
+  async openFontSelector() {
+    const modal = await this.modalController.create({
+      component: FontsBrandBuilderComponent,
+      componentProps: {
+        selectedFont: this.selectedFont,
+        themeFonts: this.fonts,
       },
     });
+
+    modal.onDidDismiss().then((result) => {
+      if (result.data) {
+        this.selectedFont = result.data;
+      }
+    });
+
+    return await modal.present();
   }
 
   dismiss() {

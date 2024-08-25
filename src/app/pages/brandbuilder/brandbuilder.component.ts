@@ -1707,11 +1707,13 @@ export class BrandBuilderComponent
 
     const data = {
       title: 'Website Settings',
+      themes: this.themes,
+      activeTheme: this.activeTheme,
     };
 
     const modal = await this.modalController.create({
       component: ThemeBrandBuilderComponent,
-      componentProps: { data },
+      componentProps: { data: data },
     });
 
     modal.onDidDismiss().then((data: any) => {

@@ -7,8 +7,16 @@ import { ColorPickerModule } from 'ngx-color-picker';
 
 import { ThemeBrandBuilderComponent } from './theme.brandbuilder.component';
 
+import { FontsBrandBuilderModule } from '../fonts/fonts.brandbuilder.module';
+
 @NgModule({
-  imports: [IonicModule, CommonModule, FormsModule, ColorPickerModule],
+  imports: [
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    ColorPickerModule,
+    FontsBrandBuilderModule,
+  ],
   declarations: [ThemeBrandBuilderComponent],
   exports: [ThemeBrandBuilderComponent],
 })

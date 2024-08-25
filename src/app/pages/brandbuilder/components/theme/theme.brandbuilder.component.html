@@ -52,7 +52,9 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-select [(ngModel)]="theme.fontFamily">
+          <ion-button (click)="openFontSelector()">Choose Font</ion-button>
+          {{ selectedFont }}
+          <!--<ion-select [(ngModel)]="theme.fontFamily">
             <ion-select-option
               label="Choose Font Family"
               labelPosition="floating"
@@ -62,7 +64,7 @@
             >
               {{ font }}
             </ion-select-option>
-          </ion-select>
+          </ion-select>-->
         </ion-item>
       </ion-col>
     </ion-row>

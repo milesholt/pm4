@@ -79,6 +79,13 @@ export class Library {
     return arr;
   }
 
+  //merge two arrays, keeping only unique values
+  mergeArray(array1: any = [], array2: any = []) {
+    let arr: any = [];
+    arr = [...new Set(array1.concat(array2))];
+    return arr;
+  }
+
   //delete index from array
   delete(index: number, array: any = []) {
     return array.splice(index, 1);
