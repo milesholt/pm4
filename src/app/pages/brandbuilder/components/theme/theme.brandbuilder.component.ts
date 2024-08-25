@@ -76,6 +76,7 @@ export class ThemeBrandBuilderComponent implements OnInit, AfterViewInit {
       this.fonts.push(font);
       this.themes.push(theme);
     });
+    this.theme = this.themes[0];
   }
 
   selectColor(color: 'primary' | 'secondary' | 'tertiary') {
@@ -105,14 +106,14 @@ export class ThemeBrandBuilderComponent implements OnInit, AfterViewInit {
     const modal = await this.modalController.create({
       component: FontsBrandBuilderComponent,
       componentProps: {
-        selectedFont: this.selectedFont,
+        selectedFont: this.theme.fontFamily,
         themeFonts: this.fonts,
       },
     });
 
     modal.onDidDismiss().then((result) => {
       if (result.data) {
-        this.selectedFont = result.data;
+        this.theme.fontFamily = result.data;
       }
     });
 

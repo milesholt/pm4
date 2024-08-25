@@ -3,6 +3,18 @@
 <ion-content class="theme-container" #modalContainer>
   <ion-grid>
     <ion-row>
+      <ion-select [(ngModel)]="theme">
+        <ion-select-option
+          label="Choose Theme"
+          labelPosition="floating"
+          *ngFor="let theme of themes; let idx = index"
+          [value]="theme"
+        >
+          Theme {{ idx + 1 }}
+        </ion-select-option>
+      </ion-select>
+    </ion-row>
+    <ion-row>
       <!-- Color selectors -->
       <ion-col size="4">
         <ion-item button (click)="selectColor('primary')">
@@ -52,8 +64,13 @@
     <ion-row>
       <ion-col>
         <ion-item>
-          <ion-button (click)="openFontSelector()">Choose Font</ion-button>
-          {{ selectedFont }}
+          <span [style.font-family]="theme.fontFamily">{{
+            theme.fontFamily
+          }}</span>
+
+          <ion-button class="inverse" (click)="openFontSelector()"
+            >Change Font</ion-button
+          >
           <!--<ion-select [(ngModel)]="theme.fontFamily">
             <ion-select-option
               label="Choose Font Family"
