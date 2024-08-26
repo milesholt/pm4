@@ -23,6 +23,7 @@ import { GalleryModule } from '../components/gallery/gallery.module';
 import { ContentEditableDirective } from 'src/app/directives/content-editable.directive';
 
 import { ThemeBrandBuilderModule } from './components/theme/theme.brandbuilder.module';
+import { ModulesModule } from './components/modules/modules.brandbuilder.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -41,6 +42,7 @@ import { ThemeBrandBuilderModule } from './components/theme/theme.brandbuilder.m
     RefresherModule,
     GalleryModule,
     ThemeBrandBuilderModule,
+    ModulesModule,
     //BrowserAnimationsModule,
   ],
   declarations: [BrandBuilderComponent, ContentEditableDirective],

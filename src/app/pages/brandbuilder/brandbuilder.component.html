@@ -450,7 +450,12 @@
                     ></h2>
 
                     <div *ngIf="modules[module.id]">
-                      <div [ngSwitch]="modules[module.id].name">
+                      <app-modules-comp
+                        [name]="modules[module.id].name"
+                        [params]="module.params"
+                      ></app-modules-comp>
+
+                      <!-- <div [ngSwitch]="modules[module.id].name">
                         <div *ngSwitchCase="'form'">
                           <app-contactform-comp></app-contactform-comp>
                         </div>
@@ -472,7 +477,7 @@
                           ></app-gallery-comp>
                         </div>
                       </div>
-                    </div>
+                    --></div>
                     <!--let mod-->
                   </div>
                   <!--modules-->

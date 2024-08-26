@@ -1,0 +1,22 @@
+.module-button {
+    height: 100%; /* Make the button fill the entire column */
+    width: 100%; /* Ensure the button is the full width of the column */
+    padding: 10px; /* Add padding around the content */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack the icon and title vertically */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    box-sizing: border-box; /* Include padding in width/height */
+    text-align: center; /* Center the text */
+  }
+  
+  .module-icon {
+    font-size: 2rem; /* Fixed size for the icon */
+ }
+  
+  .module-title {
+    font-size: 10px; /* Adjust font size */
+    margin: 0; /* Remove any default margin */
+    line-height: 1.2; /* Ensure text does not affect icon size */
+  }
+  
