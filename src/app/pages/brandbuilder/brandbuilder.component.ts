@@ -232,6 +232,14 @@ export class BrandBuilderComponent
     { name: 'form', title: '', classes: '' },
     { name: 'faq', title: '', classes: '' },
     { name: 'gallery', title: '', classes: '', params: {} },
+    { name: 'youtube', title: '', classes: '', params: {} },
+    { name: 'video', title: '', classes: '', params: {} },
+    { name: 'slideshow', title: '', classes: '', params: {} },
+    { name: 'embed', title: '', classes: '', params: {} },
+    { name: 'custom', title: '', classes: '', params: {} },
+    { name: 'link', title: '', classes: '', params: {} },
+    { name: 'googledrive', title: '', classes: '', params: {} },
+    { name: 'instagram', title: '', classes: '', params: {} },
   ];
 
   websiteStructure: any = [
@@ -536,6 +544,10 @@ export class BrandBuilderComponent
           this.isEditing = true;
           this.loadDocument(docId);
         } else {
+          //if user has been logged out
+          if (params['edit']) {
+            this.router.navigate(['login']);
+          }
           this.isEditing = false;
           console.log('loading public');
           this.loadPublic(docId);
@@ -1538,7 +1550,7 @@ export class BrandBuilderComponent
 
       const collectionName = 'sites';
 
-      const userId = this.service.auth.userId;
+      const userId = this.service.auth.getUser().uid;
       const pathSegments = ['users', userId, 'sites'];
 
       this.service.firestore
@@ -1625,6 +1637,22 @@ export class BrandBuilderComponent
 
     console.log(v);
     //this.generated[this.activeIndex].layout[ridx].structure[cidx][midx].content = event;
+  }
+
+  onModuleCallback(response: any, module: any) {
+    console.log('module callback');
+    console.log(response);
+    console.log(this.modules);
+    try {
+      module.id = this.modules.findIndex(
+        (mod: any) => mod.name === response.name
+      );
+    } catch (e) {
+      //alert('Error. Could not update module');
+    }
+    module.params = response.params;
+    console.log(module);
+    console.log(this.generated);
   }
 
   onContentInput(event: any, obj: any, prop: string) {

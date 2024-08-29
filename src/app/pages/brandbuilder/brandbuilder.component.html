@@ -453,6 +453,7 @@
                       <app-modules-comp
                         [name]="modules[module.id].name"
                         [params]="module.params"
+                        (callback)="onModuleCallback($event, module)"
                       ></app-modules-comp>
 
                       <!-- <div [ngSwitch]="modules[module.id].name">

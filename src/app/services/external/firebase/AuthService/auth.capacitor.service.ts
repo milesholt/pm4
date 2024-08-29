@@ -53,6 +53,13 @@ export class AuthService {
     }
   }
 
+  isUserLoggedIn() {
+    if (localStorage.getItem('user')) {
+      return true;
+    }
+    return false;
+  }
+
   async runAuth() {
     //Initialise firebase app with config
     const firebaseConfig = environment.firebase;

@@ -4,6 +4,8 @@ import {
   AfterViewInit,
   ViewChild,
   Input,
+  Output,
+  EventEmitter,
   OnInit,
 } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
@@ -41,6 +43,7 @@ export class SomeComponent implements DynamicComponent {
 export class ModulesComponent implements OnInit {
   @Input() name: string | null = null;
   @Input() params: any = {};
+  @Output() callback = new EventEmitter();
 
   @ViewChild('dynamicComponentContainer', {
     read: ViewContainerRef,
@@ -224,5 +227,10 @@ export class ModulesComponent implements OnInit {
 
   handleSettingsCallback(response: any) {
     this.activeModule.params.settings.form = response.data;
+    this.callback.emit({
+      name: this.activeModule.name,
+      params: this.activeModule.params,
+    });
+    this.applySettings();
   }
 }
