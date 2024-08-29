@@ -27,6 +27,8 @@ export class GalleryComponent implements OnInit {
   @Input() type: any;
   @Input() username: any;
 
+  @Input() params: any = {};
+
   constructor(
     public service: CoreService,
     public navCtrl: NavController,

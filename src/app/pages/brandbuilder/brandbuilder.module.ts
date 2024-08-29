@@ -13,7 +13,7 @@ import { FeedModule } from '../components/feed/feed.module';
 import { SliderModule } from '../components/slider/slider.module';
 import { SearchShopModule } from '../shop/components/search/search.shop.module';
 import { FilterShopModule } from '../shop/components/filter/filter.shop.module';
-import { ContactFormModule } from '../components/contactform/contactform.module';
+import { FormModule } from '../components/form/form.module';
 import { AccordionModule } from '../components/accordion/accordion.module';
 import { FooterModule } from '../components/footer/footer.module';
 import { RefresherModule } from '../components/refresher/refresher.module';
@@ -34,7 +34,7 @@ import { ModulesModule } from './components/modules/modules.brandbuilder.module'
     FormsModule,
     SearchShopModule,
     FilterShopModule,
-    ContactFormModule,
+    FormModule,
     FeedModule,
     SliderModule,
     AccordionModule,

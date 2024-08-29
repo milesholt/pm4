@@ -63,7 +63,7 @@
     <ion-list [ngSwitch]="field.type">
       <ion-item *ngSwitchCase="'text'">
         
-          <ion-input label="{{field.name}}" type="text" value="{{field.value }}" autocomplete="{{field.autocomplete ? field.autocomplete : 'true'}}" onpaste="return false;" class="form-control" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary {{field.classes}}"  (keyup)="doForm($event,field.key)" (change)="doForm($event,field.key)" (click)="doForm($event,field.key)" ></ion-input>
+          <ion-input label="{{field.name}}" type="text" value="{{field.value }}" autocomplete="{{field.autocomplete ? field.autocomplete : 'true'}}" class="form-control" id="fld-{{field.name | alias}}" name="{{field.name}}" [required]="field.required" placeholder="{{field.placeholder}}" class="placeholder-primary {{field.classes}}"  (keyup)="doForm($event,field.key)" (change)="doForm($event,field.key)" (click)="doForm($event,field.key)" ></ion-input>
           
       </ion-item>
       <ion-item *ngSwitchCase="'textarea'" lines="none">

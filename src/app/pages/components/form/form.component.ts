@@ -1,4 +1,4 @@
-import { EventEmitter, Component, Input, Output, OnInit } from '@angular/core';
+import { EventEmitter, Component, Input, Output, OnInit, ChangeDetectorRef, AfterViewChecked, AfterContentInit, AfterViewInit } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -15,13 +15,15 @@ import {
 
 @Component({
   //standalone: true,
-  selector: 'app-contactform-comp',
-  templateUrl: './contactform.component.html',
-  styleUrls: ['./contactform.component.scss'],
+  selector: 'app-form-comp',
+  templateUrl: './form.component.html',
+  styleUrls: ['./form.component.scss'],
   providers: [CoreService, Library],
   //imports:[IonicModule]
 })
-export class ContactFormComponent implements OnInit {
+export class FormComponent implements OnInit, AfterViewInit {
+  @Input() params: any = {};
+
   @Input() el: any = {
     action: 'submitcontact',
     classes: 'nocol',
@@ -134,14 +136,57 @@ export class ContactFormComponent implements OnInit {
     public service: CoreService,
     public navCtrl: NavController,
     public router: Router,
-    public lib: Library,
-    //private http: HttpClient,
+    public lib: Library, //private http: HttpClient,
+    public cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    
+  }
 
   ngAfterContentInit() {
     this.url = window.location.href;
+  }
+
+  ngAfterViewChecked() { 
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.doCheck();
+    });
+  }
+
+  doCheck(){
+
+    console.log('doing form check');
+
+    let hasSubmitButton = this.el.fields.some((field:any) => field.type === 'submit');
+
+    console.log(hasSubmitButton);
+
+    if(!hasSubmitButton){
+      const submitField = {
+        key: 'submit',
+        name: 'Send',
+        placeholder: '',
+        value: '',
+        type: 'submit',
+        classes: 'nocol',
+        required: false,
+        autocomplete: false,
+        prefix: '',
+        suffix: '',
+      };;
+
+      this.el.fields.push(submitField);
+
+      this.cdr.detectChanges();
+
+      //this.el.fields.push(test);
+       
+      console.log(this.el);
+    }
   }
 
   /* Callback */
@@ -153,7 +198,7 @@ export class ContactFormComponent implements OnInit {
   /* Contact functions  */
 
   onSubmit(action: any = false, event: any = false) {
-    console.log('submitting contact form');
+    console.log('submitting form');
     let target = this.lib.getTarget(event);
     let nofields = target.elements.length - 1;
 
@@ -247,13 +292,35 @@ export class ContactFormComponent implements OnInit {
           },
           (error: any) => {
             console.error('Error:', error);
-          },
+          }
         );
 
         params = { alias: 'contact', action: 'contactform', event: event };
         this.emit(params);
 
         return this.sent;
+        break;
+      case 'returnform':
+        console.log('returnform');
+
+        let f = this.el.fields;
+
+        
+
+        for (let i = 0, len = nofields; i < nofields; i++) {
+          let el = target.elements[i];
+          console.log(el.value);
+          f[i].value = el.value;
+        }
+
+        console.log(this.el);
+
+
+        params = { action: 'returnform', data: this.el, event: event };
+        console.log(params);
+        this.emit(params);
+        return this.form;
+
         break;
       default:
         return true;

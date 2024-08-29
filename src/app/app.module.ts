@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule, Title, Meta } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 //This had no effect and only works in child component and module
@@ -29,6 +29,9 @@ import { CartShopModule } from './pages/shop/cart/cart.shop.module';
 import { QuantityShopModule } from './pages/shop/cart/components/quantity/quantity.shop.module';
 
 import { FooterModule } from './pages/components/footer/footer.module';
+
+//Error Handling
+import { GlobalErrorHandler } from './error-handling';
 
 //Pipes
 //import { SafeHtmlPipe } from './pipes/safeHtml.pipe';
@@ -62,6 +65,7 @@ import { FooterModule } from './pages/components/footer/footer.module';
     CookieService,
     //FormatPipe,
     //SafeHtmlPipe,
+    { provide: ErrorHandler, useClass: GlobalErrorHandler},
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent],

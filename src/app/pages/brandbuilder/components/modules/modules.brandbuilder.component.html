@@ -7,7 +7,9 @@
   </ion-header>
 
   <div class="admin-panel">
-    <ion-button (click)="isActiveModule = true; loadActiveModule()">Cancel</ion-button>
+    <ion-button (click)="isActiveModule = true; loadActiveModule()"
+      >Cancel</ion-button
+    >
   </div>
 
   <div class="ion-padding">
@@ -16,20 +18,27 @@
     <ion-grid>
       <ion-row>
         <ion-col size="4" *ngFor="let module of modules; let i = index">
-          <ion-button [disabled]="module.component == null" class="module-button" expand="block" (click)="selectModule(module)">
-            <ion-icon name="{{module.icon}}" slot="start" class="module-icon"></ion-icon>
-            <div slot="start" class="module-title">{{module.title}}</div>
+          <ion-button
+            [disabled]="module.component == null"
+            class="module-button"
+            expand="block"
+            (click)="selectModule(module)"
+          >
+            <ion-icon
+              name="{{ module.icon }}"
+              slot="start"
+              class="module-icon"
+            ></ion-icon>
+            <div slot="start" class="module-title">{{ module.title }}</div>
           </ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
-     
   </div>
 </div>
 
 <!--Load module if one is active-->
 <div *ngIf="isActiveModule && !isSettings" class="ion-padding">
-
   <div *ngIf="service.auth.isLoggedIn" class="admin-panel">
     <ion-button (click)="showSettings()">Settings</ion-button>
     <ion-button (click)="removeModule()">Change</ion-button>
@@ -60,7 +69,16 @@
     <ion-button (click)="applySettings()">Done</ion-button>
     <ion-button (click)="isSettings = false">Cancel</ion-button>
   </div>
-  
-  <p>Module settings here </p>
 
+  <p>Module settings here</p>
+
+  {{ activeModule.params | json }}
+
+  <app-form-comp
+    [params]="activeModule.params"
+    [el]="activeModule.params.settings.form"
+    (callback)="handleSettingsCallback($event)"
+  ></app-form-comp>
 </div>
+
+<ng-template #dynamicComponentContainer></ng-template>

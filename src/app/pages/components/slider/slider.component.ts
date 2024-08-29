@@ -29,6 +29,8 @@ import { environment } from 'src/environments/environment';
   //imports:[IonicModule]
 })
 export class SliderComponent implements OnInit {
+  @Input() params: any = {};
+
   @Input() config: any = {};
   @Input() slides: any = [];
 
@@ -50,7 +52,7 @@ export class SliderComponent implements OnInit {
     public service: CoreService,
     public navCtrl: NavController,
     public router: Router,
-    public lib: Library,
+    public lib: Library
   ) {
     this.url = environment.url;
   }

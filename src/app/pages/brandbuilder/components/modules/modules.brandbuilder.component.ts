@@ -1,4 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  ViewContainerRef,
+  AfterViewInit,
+  ViewChild,
+  Input,
+  OnInit,
+} from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -9,10 +16,11 @@ import { CoreService } from '../../../../services/core.service';
 
 import { DynamicComponent } from '../../../components/dynamic/dynamic.component.interface';
 
-import { ContactFormComponent } from 'src/app/pages/components/contactform/contactform.component';
+import { FormComponent } from 'src/app/pages/components/form/form.component';
 import { AccordionComponent } from 'src/app/pages/components/accordion/accordion.component';
 import { GalleryComponent } from 'src/app/pages/components/gallery/gallery.component';
-
+import { VideoComponent } from 'src/app/pages/components/video/video.component';
+import { SliderComponent } from 'src/app/pages/components/slider/slider.component';
 /*
 @Component({
   selector: 'app-some-component',
@@ -31,23 +39,94 @@ export class SomeComponent implements DynamicComponent {
   //imports:[IonicModule]
 })
 export class ModulesComponent implements OnInit {
-
   @Input() name: string | null = null;
   @Input() params: any = {};
 
+  @ViewChild('dynamicComponentContainer', {
+    read: ViewContainerRef,
+    static: true,
+  })
+  dynamicComponentContainer!: ViewContainerRef;
+
   modules: any = [
-    { name: 'form', title: 'Form', component: ContactFormComponent, icon: 'list', params: {} },
-    { name: 'faq', title: 'FAQ', component: AccordionComponent, icon: 'help-circle-outline', params: {} },
-    { name: 'mailinglist', title: 'Mailing List', component: ContactFormComponent, icon: 'mail', params: {} },
-    { name: 'mailchimp', title: 'Mailchimp', component: null, icon: 'mail', params: {} },
-    { name: 'youtube', title: 'Youtube', component:null, icon: 'logo-youtube', params: {} },
-    { name: 'link', title: 'Link', component:null, icon: 'link', params: {} },
-    { name: 'custom-url', title: 'Embed', component:null, icon: 'code-working', params: {} },
-    { name: 'instagram', title: 'Instagram', component: GalleryComponent, icon: 'logo-instagram', params: {} },
-    { name: 'googledrive', title: 'Google Drive', component: null, icon: 'logo-google', params: {} },
-    { name: 'video', title: 'Video', component: null, icon: 'videocam', params: {} },
-    { name: 'slider', title: 'Slideshow', component: null, icon: 'albums', params: {} },
-    { name: 'gallery', title: 'Gallery', component: null, icon: 'images', params: {} },
+    {
+      name: 'form',
+      title: 'Form',
+      component: FormComponent,
+      icon: 'list',
+      params: {},
+    },
+    {
+      name: 'faq',
+      title: 'FAQ',
+      component: AccordionComponent,
+      icon: 'help-circle-outline',
+      params: {},
+    },
+    {
+      name: 'mailinglist',
+      title: 'Mailing List',
+      component: FormComponent,
+      icon: 'mail',
+      params: {},
+    },
+    {
+      name: 'mailchimp',
+      title: 'Mailchimp',
+      component: null,
+      icon: 'mail',
+      params: {},
+    },
+    {
+      name: 'youtube',
+      title: 'Youtube',
+      component: VideoComponent,
+      icon: 'logo-youtube',
+      params: {},
+    },
+    { name: 'link', title: 'Link', component: null, icon: 'link', params: {} },
+    {
+      name: 'custom-url',
+      title: 'Embed',
+      component: null,
+      icon: 'code-working',
+      params: {},
+    },
+    {
+      name: 'instagram',
+      title: 'Instagram',
+      component: GalleryComponent,
+      icon: 'logo-instagram',
+      params: {},
+    },
+    {
+      name: 'googledrive',
+      title: 'Google Drive',
+      component: null,
+      icon: 'logo-google',
+      params: {},
+    },
+    {
+      name: 'video',
+      title: 'Video',
+      component: VideoComponent,
+      icon: 'videocam',
+      params: {},
+    },
+    {
+      name: 'slider',
+      title: 'Slideshow',
+      component: SliderComponent,
+      icon: 'albums',
+      params: {},
+    },
+    {
+      name: 'gallery',
+      title: 'Gallery',
+      component: GalleryComponent,
+      icon: 'images',
+      params: {},
+    },
   ];
   activeModule: any = {};
 
@@ -63,17 +142,45 @@ export class ModulesComponent implements OnInit {
 
   ngOnInit() {
     this.loadActiveModule();
+    this.loadParams();
   }
 
-  loadActiveModule(name:string | null = this.name) {
-    if(name == null) return;
+  loadParams() {
+    console.log('loading params');
+    this.modules.forEach((module: any) => {
+      if (module.component == null) return;
+
+      // Create the component instance dynamically
+      const componentRef: any = this.dynamicComponentContainer.createComponent(
+        module.component
+      );
+
+      console.log(componentRef.instance);
+
+      // Access the params of the child component
+      const modParams = componentRef.instance.params ?? {};
+
+      // Assign params back to the module
+      module.params = modParams;
+
+      // Destroy the component instance since it's not needed anymore
+      componentRef.destroy();
+    });
+
+    // For demonstration, log the modules with the updated params
+    console.log('updated modules:');
+    console.log(this.modules);
+  }
+
+  loadActiveModule(name: string | null = this.name) {
+    if (name == null) return;
 
     console.log('loading module');
 
     this.activeModule = {
       name: this.name,
-      params: this.params
-    }
+      params: this.params,
+    };
 
     console.log(this.activeModule);
 
@@ -86,18 +193,18 @@ export class ModulesComponent implements OnInit {
         console.log(module.component);
       }
     });*/
-
   }
 
   applyModule() {
     this.isActiveModule = true;
   }
 
-  selectModule(module:any){
+  selectModule(module: any) {
     this.activeModule = {
       name: module.name,
-      params: module.params
-    }
+      params: module.params,
+    };
+    console.log(this.activeModule);
     this.showSettings();
   }
 
@@ -110,8 +217,12 @@ export class ModulesComponent implements OnInit {
     this.isSettings = true;
   }
 
-  applySettings(){
+  applySettings() {
     this.isSettings = false;
     this.isActiveModule = true;
+  }
+
+  handleSettingsCallback(response: any) {
+    this.activeModule.params.settings.form = response.data;
   }
 }

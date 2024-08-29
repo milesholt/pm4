@@ -10,18 +10,20 @@ import { ModulesComponent } from './modules.brandbuilder.component';
 import { DynamicWrapperComponent } from 'src/app/pages/components/dynamic/dynamic.component';
 
 //Modules
-import { ContactFormModule } from '../../../components/contactform/contactform.module';
+import { FormModule } from '../../../components/form/form.module';
 import { AccordionModule } from '../../../components/accordion/accordion.module';
 import { GalleryModule } from '../../../components/gallery/gallery.module';
+import { VideoModule } from 'src/app/pages/components/video/video.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    ContactFormModule,
+    FormModule,
     AccordionModule,
     GalleryModule,
+    VideoModule,
   ],
   declarations: [ModulesComponent, DynamicWrapperComponent],
   exports: [ModulesComponent],

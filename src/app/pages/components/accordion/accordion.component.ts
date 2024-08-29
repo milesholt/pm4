@@ -18,11 +18,15 @@ import { CoreService } from '../../../services/core.service';
 export class AccordionComponent implements OnInit {
   @Input() list: any = [];
 
+  @Input() params: any = {
+    a: 'some accordion params',
+  };
+
   constructor(
     public service: CoreService,
     public navCtrl: NavController,
     public router: Router,
-    public lib: Library,
+    public lib: Library
   ) {}
 
   ngOnInit() {}
