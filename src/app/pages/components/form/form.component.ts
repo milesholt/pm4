@@ -1,4 +1,14 @@
-import { EventEmitter, Component, Input, Output, OnInit, ChangeDetectorRef, AfterViewChecked, AfterContentInit, AfterViewInit } from '@angular/core';
+import {
+  EventEmitter,
+  Component,
+  Input,
+  Output,
+  OnInit,
+  ChangeDetectorRef,
+  AfterViewChecked,
+  AfterContentInit,
+  AfterViewInit,
+} from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -22,7 +32,34 @@ import {
   //imports:[IonicModule]
 })
 export class FormComponent implements OnInit, AfterViewInit {
-  @Input() params: any = {};
+  newOption: any = { label: '' };
+
+  @Input() params: any = {
+    to: '',
+    replyto: '',
+    settings: {
+      form: {
+        action: 'returnform',
+        classes: 'nocol',
+        fields: [
+          {
+            key: 'to',
+            name: 'To',
+            value: this.service.auth.getUser().email ?? '',
+            type: 'text',
+            placeholder: 'Enter your recipient address',
+          },
+          {
+            key: 'replyto',
+            name: 'Reply-To',
+            value: '',
+            type: 'text',
+            placeholder: 'Enter your reply-to address (optional)',
+          },
+        ],
+      },
+    },
+  };
 
   @Input() el: any = {
     action: 'submitcontact',
@@ -130,6 +167,22 @@ export class FormComponent implements OnInit, AfterViewInit {
   url: string = window.location.href;
   canSubmit: boolean = false;
 
+  isEditField: boolean = false;
+  editFieldIdx: number = 0;
+
+  fieldTypes: any = [
+    { key: 'text', label: 'Text Field' },
+    { key: 'select', label: 'Dropdown Field' },
+    { key: 'radio', label: 'Radio Buttons' },
+    { key: 'date', label: 'Date' },
+    { key: 'textarea', label: 'Text Area' },
+    { key: 'checkbox', label: 'Checkbox' },
+    { key: 'email', label: 'Email Address' },
+    { key: 'tel', label: 'Telephone' },
+    { key: 'time', label: 'Time' },
+    { key: 'number', label: 'Number' },
+  ];
+
   //constructor(public lib: Library,private http: HttpClient){}
 
   constructor(
@@ -140,16 +193,13 @@ export class FormComponent implements OnInit, AfterViewInit {
     public cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
 
   ngAfterContentInit() {
     this.url = window.location.href;
   }
 
-  ngAfterViewChecked() { 
-  }
+  ngAfterViewChecked() {}
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -157,15 +207,16 @@ export class FormComponent implements OnInit, AfterViewInit {
     });
   }
 
-  doCheck(){
-
+  doCheck() {
     console.log('doing form check');
 
-    let hasSubmitButton = this.el.fields.some((field:any) => field.type === 'submit');
+    let hasSubmitButton = this.el.fields.some(
+      (field: any) => field.type === 'submit'
+    );
 
     console.log(hasSubmitButton);
 
-    if(!hasSubmitButton){
+    if (!hasSubmitButton) {
       const submitField = {
         key: 'submit',
         name: 'Send',
@@ -177,14 +228,14 @@ export class FormComponent implements OnInit, AfterViewInit {
         autocomplete: false,
         prefix: '',
         suffix: '',
-      };;
+      };
 
       this.el.fields.push(submitField);
 
       this.cdr.detectChanges();
 
       //this.el.fields.push(test);
-       
+
       console.log(this.el);
     }
   }
@@ -284,6 +335,10 @@ export class FormComponent implements OnInit, AfterViewInit {
             );
         });*/
 
+        if (this.params.hasOwnProperty('to')) creds.to = this.params.to;
+        if (this.params.hasOwnProperty('replyto'))
+          creds.replyto = this.params.replyto;
+
         this.service.http.post(mailpath, creds).subscribe(
           (res: any) => {
             console.log('Response:', res);
@@ -305,8 +360,6 @@ export class FormComponent implements OnInit, AfterViewInit {
 
         let f = this.el.fields;
 
-        
-
         for (let i = 0, len = nofields; i < nofields; i++) {
           let el = target.elements[i];
           console.log(el.value);
@@ -314,7 +367,6 @@ export class FormComponent implements OnInit, AfterViewInit {
         }
 
         console.log(this.el);
-
 
         params = { action: 'returnform', data: this.el, event: event };
         console.log(params);
@@ -381,5 +433,49 @@ export class FormComponent implements OnInit, AfterViewInit {
   handleCorrectCaptcha(e: any) {
     this.canSubmit = true;
     //console.log(e);
+  }
+
+  copyField(field: any, idx: number) {
+    const copy = this.lib.deepCopy(field);
+    this.el.fields.splice(idx, 0, copy);
+  }
+
+  deleteField(field: any, idx: number) {
+    this.el.fields.splice(1, idx);
+  }
+
+  addField() {
+    const newField = {
+      key: 'customfield-' + this.el.fields.length,
+      name: 'Enter field Name',
+      placeholder: 'Enter placeholder text',
+      value: '',
+      type: 'text',
+      classes: '',
+      options: [],
+      required: false,
+      autocomplete: false,
+      prefix: '',
+      suffix: '',
+    };
+
+    this.el.fields.push(newField);
+    this.isEditField = true;
+  }
+
+  addOption(options: any) {
+    if (this.newOption.label.trim()) {
+      options.push(this.newOption.label.trim());
+      this.newOption.label = ''; // clear the input after adding
+    }
+  }
+
+  removeOption(index: number, options: any) {
+    options.splice(index, 1);
+  }
+
+  editOption(index: number, options: any) {
+    this.newOption.label = options[index].label;
+    this.removeOption(index, options); // Remove the item so it can be edited in the input
   }
 }

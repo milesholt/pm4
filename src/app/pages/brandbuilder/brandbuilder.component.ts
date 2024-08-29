@@ -229,8 +229,10 @@ export class BrandBuilderComponent
   };
 
   modules: any = [
-    { name: 'form', title: '', classes: '' },
-    { name: 'faq', title: '', classes: '' },
+    { name: 'form', title: '', classes: '', params: {} },
+    { name: 'faq', title: '', classes: '', params: {} },
+    { name: 'mailchimp', title: '', classes: '', params: {} },
+    { name: 'mailinglist', title: '', classes: '', params: {} },
     { name: 'gallery', title: '', classes: '', params: {} },
     { name: 'youtube', title: '', classes: '', params: {} },
     { name: 'video', title: '', classes: '', params: {} },

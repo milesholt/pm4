@@ -89,7 +89,7 @@ export class ModulesComponent implements OnInit {
     },
     { name: 'link', title: 'Link', component: null, icon: 'link', params: {} },
     {
-      name: 'custom-url',
+      name: 'embed',
       title: 'Embed',
       component: null,
       icon: 'code-working',
@@ -117,7 +117,7 @@ export class ModulesComponent implements OnInit {
       params: {},
     },
     {
-      name: 'slider',
+      name: 'slideshow',
       title: 'Slideshow',
       component: SliderComponent,
       icon: 'albums',
@@ -149,7 +149,6 @@ export class ModulesComponent implements OnInit {
   }
 
   loadParams() {
-    console.log('loading params');
     this.modules.forEach((module: any) => {
       if (module.component == null) return;
 
@@ -169,33 +168,15 @@ export class ModulesComponent implements OnInit {
       // Destroy the component instance since it's not needed anymore
       componentRef.destroy();
     });
-
-    // For demonstration, log the modules with the updated params
-    console.log('updated modules:');
-    console.log(this.modules);
   }
 
   loadActiveModule(name: string | null = this.name) {
     if (name == null) return;
-
-    console.log('loading module');
-
     this.activeModule = {
       name: this.name,
       params: this.params,
     };
-
-    console.log(this.activeModule);
-
     this.isActiveModule = true;
-    //Pass parameters to active module
-    /*this.modules.forEach((module: any) => {
-      if (module.name === this.activeModule.name) {
-        console.log(module.params);
-        module.component.params = module.params;
-        console.log(module.component);
-      }
-    });*/
   }
 
   applyModule() {
