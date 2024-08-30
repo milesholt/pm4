@@ -76,13 +76,14 @@
   <!-- Form Builder -->
   <!-- Field admin controls -->
   <div *ngIf="service.auth.isLoggedIn">
-    <ion-button (click)="isEditField = true; editFieldIdx = idx"
+    <ion-button size="small" (click)="isEditField = true; editFieldIdx = idx"
       ><ion-icon name="create"></ion-icon
     ></ion-button>
-    <ion-button (click)="copyField(field, idx)"
+    <ion-button size="small" (click)="copyField(field, idx)"
       ><ion-icon name="copy"></ion-icon
     ></ion-button>
     <ion-button
+      size="small"
       [disabled]="field.type == 'submit'"
       (click)="deleteField(field, idx)"
       ><ion-icon name="trash"></ion-icon
@@ -98,8 +99,7 @@
           [label]="key"
           labelPosition="floating"
           [(ngModel)]="field[key]"
-          >{{ field[key] }}</ion-input
-        >
+        ></ion-input>
 
         <ion-select *ngIf="key == 'type'" [(ngModel)]="field.type">
           <ion-select-option *ngFor="let type of fieldTypes" [value]="type.key">
