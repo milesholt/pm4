@@ -472,10 +472,7 @@ export class FormComponent implements OnInit, AfterViewInit {
 
     console.log(this.modalTemplate);
 
-    this.service.modal.openModal(this.modalTemplate, {
-      title: 'Dynamic Title',
-      description: 'Dynamic Description',
-    });
+    this.service.modal.openModal(this.modalTemplate, newField);
   }
 
   addOption(options: any) {

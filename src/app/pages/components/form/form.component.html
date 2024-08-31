@@ -277,8 +277,10 @@
 </ng-template>
 
 <!--Edit / Add Field Modal Template -->
-<ng-template #modalTemplate let-field="data">
-  <ion-list>
+<ng-template #modalTemplate let-data="data">
+  template
+  {{ data | json }}
+  <!--<ion-list>
     <ion-item *ngFor="let key of lib.objKeys(field); let pidx = index">
       <ion-input
         *ngIf="!['type', 'required'].includes(key)"
@@ -319,6 +321,6 @@
         </ion-chip>
       </ion-list>
     </ion-item>
-  </ion-list>
+  </ion-list>-->
   <ion-button (click)="isEditField = false">Done</ion-button>
 </ng-template>

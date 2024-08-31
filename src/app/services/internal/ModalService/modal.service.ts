@@ -19,6 +19,8 @@ export class ModalService {
         return;
       }
 
+      console.log(data);
+
       const modal = await this.modalController.create({
         component: ModalDynamicComponent,
         componentProps: {
