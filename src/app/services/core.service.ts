@@ -32,6 +32,8 @@ import { InstagramService } from './external/instagram/instagram.service';
 import { StripeService } from './external/stripe/stripe.service';
 import { CloudflareService } from './external/cloudflare/cloudflare.service';
 
+import { ModalService } from './internal/ModalService/modal.service';
+
 /*
 @Injectable()
 export class CoreService {
@@ -62,7 +64,8 @@ export class CoreService {
     public pexels: PexelsService,
     public instagram: InstagramService,
     public stripe: StripeService,
-    public cloudflare: CloudflareService
+    public cloudflare: CloudflareService,
+    public modal: ModalService
   ) {}
 }
 

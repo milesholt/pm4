@@ -58,6 +58,7 @@ export class Library {
 
   //returns keys in object
   objKeys(object: any) {
+    if (!this.isObject(object)) return [];
     return Object.keys(object);
   }
 

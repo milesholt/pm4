@@ -90,53 +90,6 @@
     ></ion-button>
   </div>
 
-  <!-- Edit field properties -->
-  <div *ngIf="service.auth.isLoggedIn && isEditField && editFieldIdx == idx">
-    <ion-list>
-      <ion-item *ngFor="let key of lib.objKeys(field); let pidx = index">
-        <ion-input
-          *ngIf="!['type', 'required'].includes(key)"
-          [label]="key"
-          labelPosition="floating"
-          [(ngModel)]="field[key]"
-        ></ion-input>
-
-        <ion-select *ngIf="key == 'type'" [(ngModel)]="field.type">
-          <ion-select-option *ngFor="let type of fieldTypes" [value]="type.key">
-            {{ type.label }}
-          </ion-select-option>
-        </ion-select>
-
-        <ion-toggle
-          *ngIf="['autocomplete', 'required'].includes(key)"
-          [(ngModel)]="field[key]"
-          >{{ key }}</ion-toggle
-        >
-
-        <ion-list *ngIf="key == 'options'">
-          <ion-item>
-            <ion-input
-              [(ngModel)]="newOption.label"
-              (keydown.enter)="addOption(field.options)"
-              placeholder="Type and hit Enter"
-            ></ion-input>
-          </ion-item>
-
-          <ion-chip *ngFor="let option of field.options; let i = index">
-            <ion-label (click)="editOption(i, field.options)">{{
-              option.label
-            }}</ion-label>
-            <ion-icon
-              name="close-circle"
-              (click)="removeOption(i, field.options)"
-            ></ion-icon>
-          </ion-chip>
-        </ion-list>
-      </ion-item>
-    </ion-list>
-    <ion-button (click)="isEditField = false">Done</ion-button>
-  </div>
-
   <div *ngIf="field.prefix !== ''">
     <br />
     <p style="font-size: 12px">{{ field.prefix }}</p>
@@ -321,4 +274,51 @@
   <div *ngIf="field.suffix !== ''">
     <p style="font-size: 12px">{{ field.suffix }}</p>
   </div>
+</ng-template>
+
+<!--Edit / Add Field Modal Template -->
+<ng-template #modalTemplate let-field="data">
+  <ion-list>
+    <ion-item *ngFor="let key of lib.objKeys(field); let pidx = index">
+      <ion-input
+        *ngIf="!['type', 'required'].includes(key)"
+        [label]="key"
+        labelPosition="floating"
+        [(ngModel)]="field[key]"
+      ></ion-input>
+
+      <ion-select *ngIf="key == 'type'" [(ngModel)]="field.type">
+        <ion-select-option *ngFor="let type of fieldTypes" [value]="type.key">
+          {{ type.label }}
+        </ion-select-option>
+      </ion-select>
+
+      <ion-toggle
+        *ngIf="['autocomplete', 'required'].includes(key)"
+        [(ngModel)]="field[key]"
+        >{{ key }}</ion-toggle
+      >
+
+      <ion-list *ngIf="key == 'options'">
+        <ion-item>
+          <ion-input
+            [(ngModel)]="newOption.label"
+            (keydown.enter)="addOption(field.options)"
+            placeholder="Type and hit Enter"
+          ></ion-input>
+        </ion-item>
+
+        <ion-chip *ngFor="let option of field.options; let i = index">
+          <ion-label (click)="editOption(i, field.options)">{{
+            option.label
+          }}</ion-label>
+          <ion-icon
+            name="close-circle"
+            (click)="removeOption(i, field.options)"
+          ></ion-icon>
+        </ion-chip>
+      </ion-list>
+    </ion-item>
+  </ion-list>
+  <ion-button (click)="isEditField = false">Done</ion-button>
 </ng-template>

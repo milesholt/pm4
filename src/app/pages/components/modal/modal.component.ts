@@ -1,4 +1,4 @@
-import { Input, Output, Component, OnInit } from '@angular/core';
+import { Input, Output, Component, OnInit, TemplateRef } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { CoreService } from '../../../services/core.service';
 
 @Component({
   //standalone: true,
-  selector: 'app-nav',
+  selector: 'app-modal-comp',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss'],
   providers: [CoreService, Library],
@@ -42,4 +42,5 @@ export class ModalComponent implements OnInit {
     // You can also perform any validation here before dismissing
     this.modalController.dismiss(this.data);
   }
+
 }

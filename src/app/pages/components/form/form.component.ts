@@ -8,11 +8,16 @@ import {
   AfterViewChecked,
   AfterContentInit,
   AfterViewInit,
+  ViewChild,
+  TemplateRef,
 } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+
+import { ModalController } from '@ionic/angular';
+import { ModalComponent } from '../../components/modal/modal.component';
 
 import { Library } from '../../../app.library';
 import { CoreService } from '../../../services/core.service';
@@ -161,6 +166,8 @@ export class FormComponent implements OnInit, AfterViewInit {
   };
   @Output() callback = new EventEmitter();
 
+  @ViewChild('modalTemplate') modalTemplate!: TemplateRef<any>;
+
   form: any = {};
   sent: boolean | null = null;
   data: any;
@@ -190,7 +197,8 @@ export class FormComponent implements OnInit, AfterViewInit {
     public navCtrl: NavController,
     public router: Router,
     public lib: Library, //private http: HttpClient,
-    public cdr: ChangeDetectorRef
+    public cdr: ChangeDetectorRef,
+    private modalController: ModalController
   ) {}
 
   ngOnInit() {}
@@ -461,6 +469,13 @@ export class FormComponent implements OnInit, AfterViewInit {
 
     this.el.fields.push(newField);
     this.isEditField = true;
+
+    console.log(this.modalTemplate);
+
+    this.service.modal.openModal(this.modalTemplate, {
+      title: 'Dynamic Title',
+      description: 'Dynamic Description',
+    });
   }
 
   addOption(options: any) {
