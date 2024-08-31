@@ -10,22 +10,22 @@ import { TemplateRef } from '@angular/core';
 export class ModalService {
   constructor(private modalController: ModalController) {}
 
-  async openModal(template: TemplateRef<any>, data: any) {
+  async openModal(template: TemplateRef<any>, context: any) {
     try {
-      if (!template || !data) {
+      if (!template || !context) {
         console.error('Template or data is missing');
         console.log(template);
-        console.log(data);
+        console.log(context);
         return;
       }
 
-      console.log(data);
+      console.log(context);
 
       const modal = await this.modalController.create({
         component: ModalDynamicComponent,
         componentProps: {
           template: template,
-          context: data,
+          context: { context },
         },
       });
 
