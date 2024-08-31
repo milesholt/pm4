@@ -7,5 +7,5 @@ import { Component, Input, TemplateRef } from '@angular/core';
 })
 export class ModalDynamicComponent {
   @Input() template!: TemplateRef<any>;
-  @Input() context?: any;
+  @Input() context: any;
 }
