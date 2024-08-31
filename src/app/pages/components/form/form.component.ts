@@ -443,6 +443,13 @@ export class FormComponent implements OnInit, AfterViewInit {
     //console.log(e);
   }
 
+  loadKeys(field: any) {
+    let keys = this.lib
+      .objKeys(field)
+      .filter((key: any) => !['classes'].includes(key));
+    return keys;
+  }
+
   copyField(field: any, idx: number) {
     const copy = this.lib.deepCopy(field);
     this.el.fields.splice(idx, 0, copy);
@@ -450,6 +457,13 @@ export class FormComponent implements OnInit, AfterViewInit {
 
   deleteField(field: any, idx: number) {
     this.el.fields.splice(1, idx);
+  }
+
+  editField(field: any, idx: number) {
+    this.isEditField = true;
+    this.editFieldIdx = idx;
+
+    this.service.modal.openModal(this.modalTemplate, field);
   }
 
   addField() {

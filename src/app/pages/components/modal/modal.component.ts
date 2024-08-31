@@ -42,5 +42,4 @@ export class ModalComponent implements OnInit {
     // You can also perform any validation here before dismissing
     this.modalController.dismiss(this.data);
   }
-
 }

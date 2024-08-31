@@ -76,7 +76,7 @@
   <!-- Form Builder -->
   <!-- Field admin controls -->
   <div *ngIf="service.auth.isLoggedIn">
-    <ion-button size="small" (click)="isEditField = true; editFieldIdx = idx"
+    <ion-button size="small" (click)="editField(field, idx)"
       ><ion-icon name="create"></ion-icon
     ></ion-button>
     <ion-button size="small" (click)="copyField(field, idx)"
@@ -241,7 +241,6 @@
         class="form-control {{ field.classes }}"
         id="fld-{{ field.name | alias }}"
         name="{{ field.name }}"
-        name="{{ field.name }}"
       ></ion-input>
       <p class="checkbox-label">{{ field.value }}</p>
     </ion-item>
@@ -279,24 +278,26 @@
 <!--Edit / Add Field Modal Template -->
 <ng-template #modalTemplate let-field="context">
   <ion-list>
-    <ion-item *ngFor="let key of lib.objKeys(field); let pidx = index">
+    <ion-item *ngFor="let key of loadKeys(field); let pidx = index">
       <ion-input
         *ngIf="!['type', 'required'].includes(key)"
-        [label]="key"
+        [label]="lib.capitalise(key)"
         labelPosition="floating"
         [(ngModel)]="field[key]"
       ></ion-input>
 
       <ion-select *ngIf="key == 'type'" [(ngModel)]="field.type">
         <ion-select-option *ngFor="let type of fieldTypes" [value]="type.key">
-          {{ type.label }}
+          {{ lib.capitalise(type.label) }}
         </ion-select-option>
       </ion-select>
 
       <ion-toggle
-        *ngIf="['autocomplete', 'required'].includes(key)"
+        *ngIf="
+          ['autocomplete', 'required', 'autogrow', 'counter'].includes(key)
+        "
         [(ngModel)]="field[key]"
-        >{{ key }}</ion-toggle
+        >{{ lib.capitalise(key) }}</ion-toggle
       >
 
       <ion-list *ngIf="key == 'options'">
@@ -320,5 +321,7 @@
       </ion-list>
     </ion-item>
   </ion-list>
-  <ion-button (click)="isEditField = false">Done</ion-button>
+  <ion-button (click)="service.modal.dismiss(); isEditField = false"
+    >Done</ion-button
+  >
 </ng-template>

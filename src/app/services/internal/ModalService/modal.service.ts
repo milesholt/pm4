@@ -29,9 +29,19 @@ export class ModalService {
         },
       });
 
+      modal.onDidDismiss().then((res: any) => {
+        if (res) {
+          console.log(res);
+        }
+      });
+
       return await modal.present();
     } catch (error) {
       console.error('Error creating modal:', error);
     }
+  }
+
+  dismiss() {
+    this.modalController.dismiss();
   }
 }
