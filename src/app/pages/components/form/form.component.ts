@@ -446,7 +446,10 @@ export class FormComponent implements OnInit, AfterViewInit {
   loadKeys(field: any) {
     let keys = this.lib
       .objKeys(field)
-      .filter((key: any) => !['classes'].includes(key));
+      .filter((key: any) => !['classes'].includes(key))
+      .filter((key: any) =>
+        field.type == 'checkbox' ? !['value'].includes(key) : key
+      );
     return keys;
   }
 
@@ -456,7 +459,8 @@ export class FormComponent implements OnInit, AfterViewInit {
   }
 
   deleteField(field: any, idx: number) {
-    this.el.fields.splice(1, idx);
+    console.log(this.el);
+    this.el.fields.splice(idx, 1);
   }
 
   editField(field: any, idx: number) {
@@ -489,9 +493,24 @@ export class FormComponent implements OnInit, AfterViewInit {
     this.service.modal.openModal(this.modalTemplate, newField);
   }
 
+  moveFieldUp(index: number) {
+    //define rows
+    const rows = this.el.fields;
+    if (index > 0) {
+      [rows[index - 1], rows[index]] = [rows[index], rows[index - 1]];
+    }
+  }
+
+  moveFieldDown(index: number) {
+    const rows = this.el.fields;
+    if (index < rows.length - 1) {
+      [rows[index + 1], rows[index]] = [rows[index], rows[index + 1]];
+    }
+  }
+
   addOption(options: any) {
     if (this.newOption.label.trim()) {
-      options.push(this.newOption.label.trim());
+      options.push(this.lib.deepCopy(this.newOption));
       this.newOption.label = ''; // clear the input after adding
     }
   }
