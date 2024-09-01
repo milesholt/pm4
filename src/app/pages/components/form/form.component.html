@@ -260,6 +260,21 @@
         </ion-item>
       </ion-list>
     </ion-item>
+    <ion-item *ngSwitchCase="'radio'">
+      <ion-radio-group
+        class="form-control {{ field.classes }}"
+        id="fld-{{ field.name | alias }}"
+        name="{{ field.name }}"
+        value="{{ field.value }}"
+      >
+        <ion-radio
+          *ngFor="let opt of field.options"
+          labelPlacement="end"
+          value="{{ opt.label }}"
+          >{{ opt.label }}</ion-radio
+        >
+      </ion-radio-group>
+    </ion-item>
     <ion-item *ngSwitchCase="'submit'" lines="none">
       <ion-button
         type="submit"
@@ -297,9 +312,14 @@
     <ion-item *ngFor="let key of loadKeys(field); let pidx = index">
       <ion-input
         *ngIf="
-          !['type', 'required', 'autocomplete', 'autogrow', 'counter'].includes(
-            key
-          )
+          ![
+            'type',
+            'required',
+            'autocomplete',
+            'autogrow',
+            'counter',
+            'options'
+          ].includes(key)
         "
         [label]="lib.capitalise(key)"
         labelPosition="floating"
