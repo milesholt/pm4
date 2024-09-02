@@ -9,7 +9,12 @@ export class ModalDynamicComponent implements OnInit {
   @Input() template!: TemplateRef<any>;
   @Input() context: any;
 
+  modalContext: any;
+  isModal = true;
+
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.modalContext = { ...this.context, isModal: this.isModal };
+  }
 }

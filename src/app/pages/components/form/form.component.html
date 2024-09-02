@@ -1,9 +1,28 @@
 <div #f class="{{ el.classes }}">
+  <div *ngIf="service.auth.isLoggedIn">
+    <ion-button size="small" (click)="editForm()"
+      ><ion-icon name="create"></ion-icon
+    ></ion-button>
+  </div>
+
+  <ng-template #formTemplate let-fields="context" let-isModal="isModal">
+    <form>
+      <div *ngFor="let field of fields; let idx = index" class="form-group">
+        <ng-container
+          *ngTemplateOutlet="
+            fieldTemplate;
+            context: { field: field, idx: idx, isModal: isModal }
+          "
+        ></ng-container>
+      </div>
+    </form>
+  </ng-template>
+
   <form
     *ngIf="sent == null"
     (ngSubmit)="onSubmit(el.action, $event)"
     class="{{ el.boxclasses }}"
-    autocomplete="off"
+    autocomplete="on"
     role="presentation"
   >
     <div *ngIf="f.classList.contains('twocol')">
@@ -16,7 +35,10 @@
         >
           <div *ngIf="fld.classList.contains('col1')">
             <ng-container
-              *ngTemplateOutlet="fields; context: { field: field, idx: idx }"
+              *ngTemplateOutlet="
+                fieldTemplate;
+                context: { field: field, idx: idx }
+              "
             ></ng-container>
           </div>
         </div>
@@ -30,7 +52,10 @@
         >
           <div *ngIf="fld.classList.contains('col2')">
             <ng-container
-              *ngTemplateOutlet="fields; context: { field: field, idx: idx }"
+              *ngTemplateOutlet="
+                fieldTemplate;
+                context: { field: field, idx: idx }
+              "
             ></ng-container>
           </div>
         </div>
@@ -43,7 +68,10 @@
       >
         <div *ngIf="fld.classList.contains('nocol')">
           <ng-container
-            *ngTemplateOutlet="fields; context: { field: field, idx: idx }"
+            *ngTemplateOutlet="
+              fieldTemplate;
+              context: { field: field, idx: idx, isModal: isModal }
+            "
           ></ng-container>
         </div>
       </div>
@@ -51,7 +79,7 @@
     <div *ngIf="!f.classList.contains('twocol')">
       <div *ngFor="let field of el.fields; let idx = index" class="form-group">
         <ng-container
-          *ngTemplateOutlet="fields; context: { field: field, idx: idx }"
+          *ngTemplateOutlet="fieldTemplate; context: { field: field, idx: idx }"
         ></ng-container>
       </div>
     </div>
@@ -72,10 +100,15 @@
   </ion-button>
 </div>
 
-<ng-template #fields let-field="field" let-idx="idx">
+<ng-template
+  #fieldTemplate
+  let-field="field"
+  let-idx="idx"
+  let-isModal="isModal"
+>
   <!-- Form Builder -->
   <!-- Field admin controls -->
-  <div *ngIf="service.auth.isLoggedIn">
+  <div *ngIf="service.auth.isLoggedIn && isEditForm && isModal">
     <ion-button size="small" (click)="editField(field, idx)"
       ><ion-icon name="create"></ion-icon
     ></ion-button>
@@ -102,7 +135,7 @@
     ></ion-button>
   </div>
 
-  <div *ngIf="field.prefix !== ''">
+  <div *ngIf="field.prefix">
     <br />
     <p style="font-size: 12px">{{ field.prefix }}</p>
   </div>
@@ -265,12 +298,13 @@
         class="form-control {{ field.classes }}"
         id="fld-{{ field.name | alias }}"
         name="{{ field.name }}"
-        value="{{ field.value }}"
+        [(ngModel)]="field.value"
+        value="{{ field.options[0].label }}"
       >
         <ion-radio
           *ngFor="let opt of field.options"
           labelPlacement="end"
-          value="{{ opt.label }}"
+          [value]="opt.label"
           >{{ opt.label }}</ion-radio
         >
       </ion-radio-group>
@@ -301,7 +335,7 @@
         <re-captcha (resolved)="handleCorrectCaptcha($event)" siteKey="6LfA0DcUAAAAAAvH9jHrtpvWebFikY5hdnUDYtLD"></re-captcha>
      </div>-->
   </ion-list>
-  <div *ngIf="field.suffix !== ''">
+  <div *ngIf="field.suffix">
     <p style="font-size: 12px">{{ field.suffix }}</p>
   </div>
 </ng-template>

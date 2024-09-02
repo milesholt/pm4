@@ -39,6 +39,8 @@ import {
 export class FormComponent implements OnInit, AfterViewInit {
   newOption: any = { label: '' };
 
+  isModal: boolean = false;
+
   @Input() params: any = {
     to: '',
     replyto: '',
@@ -167,6 +169,7 @@ export class FormComponent implements OnInit, AfterViewInit {
   @Output() callback = new EventEmitter();
 
   @ViewChild('modalTemplate') modalTemplate!: TemplateRef<any>;
+  @ViewChild('formTemplate') formTemplate!: TemplateRef<any>;
 
   form: any = {};
   sent: boolean | null = null;
@@ -175,6 +178,7 @@ export class FormComponent implements OnInit, AfterViewInit {
   canSubmit: boolean = false;
 
   isEditField: boolean = false;
+  isEditForm: boolean = false;
   editFieldIdx: number = 0;
 
   fieldTypes: any = [
@@ -441,6 +445,23 @@ export class FormComponent implements OnInit, AfterViewInit {
   handleCorrectCaptcha(e: any) {
     this.canSubmit = true;
     //console.log(e);
+  }
+
+  async editForm() {
+    this.isEditForm = true;
+    const result = await this.service.modal.openModal(
+      this.formTemplate,
+      this.el.fields
+    );
+
+    if (result) {
+      console.log('Modal dismissed with data:', result);
+      this.closeEditForm(result); // Call a function to handle the result
+    }
+  }
+
+  closeEditForm(data: any) {
+    this.isEditForm = false;
   }
 
   loadKeys(field: any) {

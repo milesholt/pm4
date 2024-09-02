@@ -26,22 +26,26 @@ export class ModalService {
         componentProps: {
           template: template,
           context: { context },
+          isModal: true,
         },
       });
 
-      modal.onDidDismiss().then((res: any) => {
+      /*modal.onDidDismiss().then((res: any) => {
         if (res) {
           console.log(res);
         }
-      });
+      });*/
 
-      return await modal.present();
+      await modal.present();
+
+      const { data } = await modal.onDidDismiss(); // Wait for the modal to be dismissed
+      return data; // Return the data to the caller
     } catch (error) {
       console.error('Error creating modal:', error);
     }
   }
 
-  dismiss() {
-    this.modalController.dismiss();
+  dismiss(returnData?: any) {
+    this.modalController.dismiss(returnData);
   }
 }
