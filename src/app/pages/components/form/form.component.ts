@@ -14,7 +14,12 @@ import {
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 
 import { ModalController } from '@ionic/angular';
 import { ModalComponent } from '../../components/modal/modal.component';
@@ -40,6 +45,8 @@ export class FormComponent implements OnInit, AfterViewInit {
   newOption: any = { label: '' };
 
   isModal: boolean = false;
+
+  fields: FormGroup;
 
   @Input() params: any = {
     to: '',
@@ -202,8 +209,26 @@ export class FormComponent implements OnInit, AfterViewInit {
     public router: Router,
     public lib: Library, //private http: HttpClient,
     public cdr: ChangeDetectorRef,
-    private modalController: ModalController
-  ) {}
+    private modalController: ModalController,
+    private fb: FormBuilder
+  ) {
+    this.fields = this.fb.group({
+      name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9\s]*$/)]],
+      key: ['', Validators.required],
+      placeholder: [''],
+      suffix: [''],
+      prefix: [''],
+      type: [''],
+      value: [''],
+      classes: [''],
+      options: [''],
+      required: [''],
+      autocomplete: [''],
+      autgrow: [''],
+      counter: [''],
+      maxlength: [''],
+    });
+  }
 
   ngOnInit() {}
 
@@ -474,6 +499,49 @@ export class FormComponent implements OnInit, AfterViewInit {
     return keys;
   }
 
+  async onPropChange(key: string, value: string, field: any) {
+    //change key property depending on Name property
+    if (key == 'name') {
+      let nameValue = this.fields.get('name')?.value || '';
+      nameValue = nameValue.replace(/[^a-zA-Z0-9 ]/g, '');
+      let keyValue = await this.generateKey(nameValue, field);
+
+      this.fields.get('key')?.setValue(keyValue);
+      this.fields.get('name')?.setValue(nameValue);
+    }
+  }
+
+  async generateKey(name: string, field: any) {
+    // If the Name is blank, use 'customfield' with an index
+    if (!name.trim()) {
+      return await this.generateUniqueKey('customfield', field);
+    }
+
+    // Generate the key based on the Name value, converting it to lowercaseS
+    let baseKey = name.trim().toLowerCase().replace(/\s+/g, '');
+
+    // Generate a unique key by checking for duplicates
+    return await this.generateUniqueKey(baseKey, field);
+  }
+
+  async generateUniqueKey(baseKey: string, field: any) {
+    let uniqueKey = baseKey;
+    let index = 1;
+
+    const existingKeys = Object.keys(field);
+
+    // Ensure the key is unique by checking the list of existing keys
+    while (existingKeys.includes(uniqueKey)) {
+      uniqueKey = `${baseKey}${index}`;
+      index++;
+    }
+
+    // Add the generated key to the existing keys
+    //existingKeys.push(uniqueKey);
+
+    return uniqueKey;
+  }
+
   copyField(field: any, idx: number) {
     const copy = this.lib.deepCopy(field);
     this.el.fields.splice(idx, 0, copy);
@@ -484,11 +552,38 @@ export class FormComponent implements OnInit, AfterViewInit {
     this.el.fields.splice(idx, 1);
   }
 
-  editField(field: any, idx: number) {
+  async editField(field: any, idx: number) {
     this.isEditField = true;
     this.editFieldIdx = idx;
 
-    this.service.modal.openModal(this.modalTemplate, field);
+    this.generateFieldsForm(field);
+
+    const result = await this.service.modal.openModal(
+      this.modalTemplate,
+      field
+    );
+
+    if (result) {
+      console.log('closed field edit');
+      console.log(result);
+      console.log(this.fields.value);
+      this.el.fields[idx] = this.lib.mergeObjects(field, this.fields.value);
+      //field = this.fields.value;
+      console.log(field);
+      //this.closeEditForm(result); // Call a function to handle the result
+    }
+  }
+
+  generateFieldsForm(formData: any) {
+    const formGroup: any = {};
+
+    // Loop through the object and create form controls for each field
+    Object.keys(formData).forEach((key) => {
+      formGroup[key] = new FormControl(formData[key], Validators.required);
+    });
+
+    // Assign the generated form group to the form
+    this.fields = this.fb.group(formGroup);
   }
 
   addField() {

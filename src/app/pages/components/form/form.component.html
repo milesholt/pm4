@@ -342,7 +342,7 @@
 
 <!--Edit / Add Field Modal Template -->
 <ng-template #modalTemplate let-field="context">
-  <ion-list>
+  <form [formGroup]="fields">
     <ion-item *ngFor="let key of loadKeys(field); let pidx = index">
       <ion-input
         *ngIf="
@@ -355,26 +355,41 @@
             'options'
           ].includes(key)
         "
+        (ionInput)="onPropChange(key, field[key], field)"
         [label]="lib.capitalise(key)"
         labelPosition="floating"
-        [(ngModel)]="field[key]"
+        [formControlName]="key"
       ></ion-input>
 
-      <ion-select *ngIf="key == 'type'" [(ngModel)]="field.type">
+      <div
+        *ngIf="
+          fields.get('name')?.hasError('pattern') && fields.get('name')?.touched
+        "
+      >
+        <ion-text color="danger"
+          >Name can only contain letters and numbers.</ion-text
+        >
+      </div>
+
+      <ion-select
+        *ngIf="key == 'type'"
+        [formControlName]="key"
+        [value]="field[key]"
+      >
         <ion-select-option *ngFor="let type of fieldTypes" [value]="type.key">
           {{ lib.capitalise(type.label) }}
         </ion-select-option>
       </ion-select>
 
-      <ion-toggle
+      <!-- <ion-toggle
         *ngIf="
           ['autocomplete', 'required', 'autogrow', 'counter'].includes(key)
         "
         [(ngModel)]="field[key]"
         >{{ lib.capitalise(key) }}</ion-toggle
-      >
+      >-->
 
-      <ion-list *ngIf="key == 'options'">
+      <!-- <ion-list *ngIf="key == 'options'">
         <ion-item>
           <ion-input
             [(ngModel)]="newOption.label"
@@ -392,10 +407,11 @@
             (click)="removeOption(i, field.options)"
           ></ion-icon>
         </ion-chip>
-      </ion-list>
+      </ion-list>-->
     </ion-item>
-  </ion-list>
-  <ion-button (click)="service.modal.dismiss(); isEditField = false"
+  </form>
+
+  <ion-button (click)="service.modal.dismiss(field); isEditField = false"
     >Done</ion-button
   >
 </ng-template>

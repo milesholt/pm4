@@ -1,5 +1,6 @@
 // modal-content.component.ts
 import { Component, Input, TemplateRef, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-modal-dynamic',
