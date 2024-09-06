@@ -355,7 +355,7 @@
             'options'
           ].includes(key)
         "
-        (ionInput)="onPropChange(key, field[key], field)"
+        (ionInput)="onPropChange(key, field[key], field, pidx)"
         [label]="lib.capitalise(key)"
         labelPosition="floating"
         [formControlName]="key"
@@ -373,26 +373,27 @@
 
       <ion-select
         *ngIf="key == 'type'"
+        (ionChange)="onPropChange(key, field[key], field, pidx)"
         [formControlName]="key"
-        [value]="field[key]"
       >
         <ion-select-option *ngFor="let type of fieldTypes" [value]="type.key">
           {{ lib.capitalise(type.label) }}
         </ion-select-option>
       </ion-select>
 
-      <!-- <ion-toggle
+      <ion-toggle
         *ngIf="
           ['autocomplete', 'required', 'autogrow', 'counter'].includes(key)
         "
-        [(ngModel)]="field[key]"
+        [formControlName]="key"
         >{{ lib.capitalise(key) }}</ion-toggle
-      >-->
+      >
 
-      <!-- <ion-list *ngIf="key == 'options'">
+      <ion-list *ngIf="key == 'options'">
         <ion-item>
           <ion-input
             [(ngModel)]="newOption.label"
+            [ngModelOptions]="{ standalone: true }"
             (keydown.enter)="addOption(field.options)"
             placeholder="Type and hit Enter"
           ></ion-input>
@@ -407,7 +408,7 @@
             (click)="removeOption(i, field.options)"
           ></ion-icon>
         </ion-chip>
-      </ion-list>-->
+      </ion-list>
     </ion-item>
   </form>
 

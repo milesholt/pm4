@@ -90,6 +90,7 @@ export class FormComponent implements OnInit, AfterViewInit {
         autocomplete: true,
         prefix: '',
         suffix: '',
+        options: [],
       },
       {
         key: 'email',
@@ -102,6 +103,7 @@ export class FormComponent implements OnInit, AfterViewInit {
         autocomplete: true,
         prefix: '',
         suffix: '',
+        options: [],
       },
       {
         key: 'phone',
@@ -114,6 +116,7 @@ export class FormComponent implements OnInit, AfterViewInit {
         autocomplete: true,
         prefix: '',
         suffix: '',
+        options: [],
       },
       {
         key: 'subject',
@@ -158,6 +161,7 @@ export class FormComponent implements OnInit, AfterViewInit {
         counter: true,
         maxlength: 500,
         autogrow: true,
+        options: [],
       },
       {
         key: 'submit',
@@ -170,6 +174,7 @@ export class FormComponent implements OnInit, AfterViewInit {
         autocomplete: false,
         prefix: '',
         suffix: '',
+        options: [],
       },
     ],
   };
@@ -221,7 +226,7 @@ export class FormComponent implements OnInit, AfterViewInit {
       type: [''],
       value: [''],
       classes: [''],
-      options: [''],
+      options: [{ label: 'Some option' }],
       required: [''],
       autocomplete: [''],
       autgrow: [''],
@@ -499,7 +504,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     return keys;
   }
 
-  async onPropChange(key: string, value: string, field: any) {
+  async onPropChange(key: string, value: string, field: any, idx: number) {
     //change key property depending on Name property
     if (key == 'name') {
       let nameValue = this.fields.get('name')?.value || '';
@@ -508,6 +513,12 @@ export class FormComponent implements OnInit, AfterViewInit {
 
       this.fields.get('key')?.setValue(keyValue);
       this.fields.get('name')?.setValue(nameValue);
+    }
+    if (key == 'type') {
+      console.log('type changed');
+      console.log(field);
+      if (!field.hasOwnProperty('options'))
+        field.options = this.fields.get('options')?.value;
     }
   }
 
@@ -564,13 +575,8 @@ export class FormComponent implements OnInit, AfterViewInit {
     );
 
     if (result) {
-      console.log('closed field edit');
-      console.log(result);
-      console.log(this.fields.value);
+      //update field
       this.el.fields[idx] = this.lib.mergeObjects(field, this.fields.value);
-      //field = this.fields.value;
-      console.log(field);
-      //this.closeEditForm(result); // Call a function to handle the result
     }
   }
 
