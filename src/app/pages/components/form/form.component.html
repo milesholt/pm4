@@ -312,6 +312,7 @@
     <ion-item *ngSwitchCase="'submit'" lines="none">
       <ion-button
         type="submit"
+        [disabled]="service.auth.isLoggedIn && isEditForm && isModal"
         class="form-control btn rel {{ field.classes }}"
         [ngClass]="canSubmit ? '' : 'cta-disabled'"
         id="fld-{{ field.name | alias }}"
@@ -352,10 +353,11 @@
             'autocomplete',
             'autogrow',
             'counter',
-            'options'
+            'options',
+            'key'
           ].includes(key)
         "
-        (ionInput)="onPropChange(key, field[key], field, pidx)"
+        (ionInput)="onPropChange($event, key, field[key], field, pidx)"
         [label]="lib.capitalise(key)"
         labelPosition="floating"
         [formControlName]="key"
@@ -373,7 +375,8 @@
 
       <ion-select
         *ngIf="key == 'type'"
-        (ionChange)="onPropChange(key, field[key], field, pidx)"
+        [label]="lib.capitalise(key)"
+        (ionChange)="onPropChange($event, key, field[key], field, pidx)"
         [formControlName]="key"
       >
         <ion-select-option *ngFor="let type of fieldTypes" [value]="type.key">
@@ -389,15 +392,20 @@
         >{{ lib.capitalise(key) }}</ion-toggle
       >
 
-      <ion-list *ngIf="key == 'options'">
-        <ion-item>
-          <ion-input
-            [(ngModel)]="newOption.label"
-            [ngModelOptions]="{ standalone: true }"
-            (keydown.enter)="addOption(field.options)"
-            placeholder="Type and hit Enter"
-          ></ion-input>
-        </ion-item>
+      <div
+        *ngIf="
+          key == 'options' &&
+          ['select', 'radio', 'checkbox'].includes(field.type)
+        "
+      >
+        <ion-input
+          [label]="lib.capitalise(key)"
+          labelPosition="floating"
+          [(ngModel)]="newOption.label"
+          [ngModelOptions]="{ standalone: true }"
+          (keydown.enter)="addOption(field.options)"
+          placeholder="Type and hit Enter"
+        ></ion-input>
 
         <ion-chip *ngFor="let option of field.options; let i = index">
           <ion-label (click)="editOption(i, field.options)">{{
@@ -408,7 +416,7 @@
             (click)="removeOption(i, field.options)"
           ></ion-icon>
         </ion-chip>
-      </ion-list>
+      </div>
     </ion-item>
   </form>
 

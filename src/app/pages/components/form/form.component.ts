@@ -204,6 +204,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     { key: 'tel', label: 'Telephone' },
     { key: 'time', label: 'Time' },
     { key: 'number', label: 'Number' },
+    { key: 'submit', label: 'Submit' },
   ];
 
   //constructor(public lib: Library,private http: HttpClient){}
@@ -223,7 +224,7 @@ export class FormComponent implements OnInit, AfterViewInit {
       placeholder: [''],
       suffix: [''],
       prefix: [''],
-      type: [''],
+      type: ['text'],
       value: [''],
       classes: [''],
       options: [{ label: 'Some option' }],
@@ -504,7 +505,13 @@ export class FormComponent implements OnInit, AfterViewInit {
     return keys;
   }
 
-  async onPropChange(key: string, value: string, field: any, idx: number) {
+  async onPropChange(
+    event: any,
+    key: string,
+    value: string,
+    field: any,
+    idx: number
+  ) {
     //change key property depending on Name property
     if (key == 'name') {
       let nameValue = this.fields.get('name')?.value || '';
@@ -515,11 +522,21 @@ export class FormComponent implements OnInit, AfterViewInit {
       this.fields.get('name')?.setValue(nameValue);
     }
     if (key == 'type') {
+      console.log(event.target.value);
+      if (
+        this.el.fields.some((obj: any) => obj.type === 'submit') &&
+        event.target.value == 'submit'
+      ) {
+        alert('You cannot add more than one submit field');
+        this.fields.get('type')?.setValue('text');
+      }
+
       console.log('type changed');
       console.log(field);
       if (!field.hasOwnProperty('options'))
         field.options = this.fields.get('options')?.value;
     }
+    return true;
   }
 
   async generateKey(name: string, field: any) {
@@ -613,6 +630,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     console.log(this.modalTemplate);
 
     this.service.modal.openModal(this.modalTemplate, newField);
+    return true;
   }
 
   moveFieldUp(index: number) {
