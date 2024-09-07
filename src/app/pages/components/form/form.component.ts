@@ -183,6 +183,8 @@ export class FormComponent implements OnInit, AfterViewInit {
   @ViewChild('modalTemplate') modalTemplate!: TemplateRef<any>;
   @ViewChild('formTemplate') formTemplate!: TemplateRef<any>;
 
+  @ViewChild('selectOptionRef') selectOptionRef: any;
+
   form: any = {};
   sent: boolean | null = null;
   data: any;
@@ -207,6 +209,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     { key: 'submit', label: 'Submit' },
   ];
 
+  filteredOptions: any[] = [];
   //constructor(public lib: Library,private http: HttpClient){}
 
   constructor(
@@ -526,6 +529,17 @@ export class FormComponent implements OnInit, AfterViewInit {
       this.fields.get('key')?.setValue(keyValue);
       this.fields.get('name')?.setValue(nameValue);
     }
+    if (key == 'value') {
+      const inputValue = event.target.value.toLowerCase();
+
+      // Filter options based on user input
+      this.filteredOptions = field.options.filter((option: any) =>
+        option.label.toLowerCase().includes(inputValue)
+      );
+
+      // Set the custom input value to the form control
+      this.fields.get('value')?.setValue(inputValue);
+    }
     if (key == 'type') {
       console.log(event.target.value);
       if (
@@ -695,5 +709,17 @@ export class FormComponent implements OnInit, AfterViewInit {
   editOption(index: number, options: any) {
     this.newOption.label = options[index].label;
     this.removeOption(index, options); // Remove the item so it can be edited in the input
+  }
+
+  // Select an option from the filtered list
+  selectOption(event: any, field: any, idx: number) {
+    const option = event.target.value;
+    field.value = option;
+    this.fields.get('value')?.setValue(option);
+    this.filteredOptions = []; // Clear the filtered options list
+  }
+
+  openSelect() {
+    this.selectOptionRef.open();
   }
 }

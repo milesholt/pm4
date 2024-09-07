@@ -363,6 +363,33 @@
         [formControlName]="key"
       ></ion-input>
 
+      <ion-button
+        *ngIf="
+          key == 'value' &&
+          filteredOptions.length > 0 &&
+          ['select', 'radio', 'checkbox'].includes(field.type)
+        "
+        size="small"
+        expand="block"
+        (click)="openSelect()"
+      >
+        Select
+      </ion-button>
+
+      <!-- Filtered options list -->
+      <ion-select
+        #selectOptionRef
+        style="display: none"
+        (ionChange)="selectOption($event, field, pidx)"
+      >
+        <ion-select-option
+          *ngFor="let option of filteredOptions"
+          [value]="option.label"
+        >
+          {{ option.label }}
+        </ion-select-option>
+      </ion-select>
+
       <div
         *ngIf="
           fields.get('name')?.hasError('pattern') && fields.get('name')?.touched
