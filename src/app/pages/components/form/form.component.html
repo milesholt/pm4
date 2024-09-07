@@ -407,7 +407,10 @@
           placeholder="Type and hit Enter"
         ></ion-input>
 
-        <ion-chip *ngFor="let option of field.options; let i = index">
+        <ion-chip
+          [disabled]="field.options.length == 1"
+          *ngFor="let option of field.options; let i = index"
+        >
           <ion-label (click)="editOption(i, field.options)">{{
             option.label
           }}</ion-label>

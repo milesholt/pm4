@@ -227,13 +227,18 @@ export class FormComponent implements OnInit, AfterViewInit {
       type: ['text'],
       value: [''],
       classes: [''],
-      options: [{ label: 'Some option' }],
+      options: this.fb.array([
+        this.fb.group({ label: ['One option required'] }),
+      ]),
       required: [''],
       autocomplete: [''],
       autgrow: [''],
       counter: [''],
       maxlength: [''],
     });
+
+    console.log('this fields');
+    console.log(this.fields);
   }
 
   ngOnInit() {}
@@ -530,10 +535,15 @@ export class FormComponent implements OnInit, AfterViewInit {
         alert('You cannot add more than one submit field');
         this.fields.get('type')?.setValue('text');
       }
-
+      field.type = event.target.value;
       console.log('type changed');
       console.log(field);
-      if (!field.hasOwnProperty('options'))
+      if (field.options.length == 0) {
+        console.log('no options');
+        field.options = this.fields.get('options')?.value;
+        console.log(this.fields);
+      }
+      if (!field.hasOwnProperty('options') || field.options.length == 0)
         field.options = this.fields.get('options')?.value;
     }
     return true;
@@ -600,13 +610,36 @@ export class FormComponent implements OnInit, AfterViewInit {
   generateFieldsForm(formData: any) {
     const formGroup: any = {};
 
-    // Loop through the object and create form controls for each field
-    Object.keys(formData).forEach((key) => {
-      formGroup[key] = new FormControl(formData[key], Validators.required);
+    // Loop through the default form controls
+    Object.keys(this.fields.controls).forEach((key) => {
+      const control = this.fields.get(key); // Get the current form control
+      const defaultValue = control?.value;
+      const validators = control?.validator ? [control.validator] : []; // Get existing validators
+      const formDataValue = formData[key];
+
+      // Check if the formDataValue is non-empty (using your helper function `isNotEmpty`)
+      if (this.lib.isNotEmpty(formDataValue)) {
+        formGroup[key] = new FormControl(formDataValue, validators);
+      } else {
+        formGroup[key] = new FormControl(defaultValue, validators);
+      }
+
+      // Special handling for arrays or nested objects if needed
+      if (Array.isArray(formDataValue)) {
+        if (formDataValue.length > 0) {
+          formGroup[key] = this.fb.array(
+            formDataValue.map((item) => this.fb.group(item))
+          );
+        }
+      } else if (typeof formDataValue === 'object' && formDataValue !== null) {
+        formGroup[key] = this.fb.group(formDataValue);
+      }
     });
 
-    // Assign the generated form group to the form
+    // Assign the dynamically generated form group to the form
     this.fields = this.fb.group(formGroup);
+    console.log('field form built');
+    console.log(this.fields);
   }
 
   addField() {

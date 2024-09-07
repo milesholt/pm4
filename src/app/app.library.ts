@@ -148,6 +148,33 @@ export class Library {
     }
   }
 
+  isNotEmpty(value: any) {
+    // Check for null or undefined
+    if (value === null || value === undefined) {
+      return false;
+    }
+
+    // Check if it's a string and not empty
+    if (typeof value === 'string' && value.trim().length === 0) {
+      return false;
+    }
+
+    // Check if it's an array and not empty
+    if (Array.isArray(value) && value.length === 0) {
+      return false;
+    }
+
+    // Check if it's an object and has no keys
+    if (typeof value === 'object' && !Array.isArray(value)) {
+      if (Object.keys(value).length === 0) {
+        return false;
+      }
+    }
+
+    // For all other cases (non-empty values), return true
+    return true;
+  }
+
   //get target element
   getTargetElement(event: any) {
     return event.target.localName;
