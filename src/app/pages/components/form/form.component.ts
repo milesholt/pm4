@@ -257,6 +257,8 @@ export class FormComponent implements OnInit, AfterViewInit {
     });
   }
   
+  
+  
   test(){
     console.log('test');
   }
@@ -697,6 +699,13 @@ export class FormComponent implements OnInit, AfterViewInit {
     if (index < rows.length - 1) {
       [rows[index + 1], rows[index]] = [rows[index], rows[index + 1]];
     }
+  }
+  
+  
+  reorderFields(event:any){
+    const movedItem = this.el.fields.splice(event.detail.from, 1)[0]; // Remove the item
+  this.el.fields.splice(event.detail.to, 0, movedItem); // Insert it at the new position
+  event.detail.complete(); 
   }
 
   addOption(options: any) {

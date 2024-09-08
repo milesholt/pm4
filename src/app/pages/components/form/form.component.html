@@ -21,20 +21,26 @@
   </ng-template>
 
   <ng-template #formEditTemplate let-fields="context" let-isModal="isModal">
-    <ion-list>
-      <!-- Loop through fields --><ion-item-sliding
+     <ion-list>
+     
+     <ion-reorder-group (ionItemReorder)="reorderFields($event)" disabled="false">
+     <ion-item-sliding
         *ngFor="let field of fields; let idx = index"
         #slidingItem
       >
+      
+      
         <ion-item>
         
-        
        
+          <!-- Reorder Handle -->
+          <ion-reorder slot="start"></ion-reorder>
               
-            {{ field.name }}
+            <ion-label (click)="editField(field, idx)">{{ field.name }}</ion-label>
             
             <ion-button
                             class="inverse"
+                            slot="end"
                             size="small"
                             (click)="slidingItem.open('end')"
                           >
@@ -70,6 +76,7 @@
           </ion-item-options>
         
       </ion-item-sliding>
+        </ion-reorder-group>
     </ion-list>
   </ng-template>
 
