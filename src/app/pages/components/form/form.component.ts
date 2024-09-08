@@ -5,8 +5,6 @@ import {
   Output,
   OnInit,
   ChangeDetectorRef,
-  AfterViewChecked,
-  AfterContentInit,
   AfterViewInit,
   ViewChild,
   TemplateRef,
@@ -182,6 +180,7 @@ export class FormComponent implements OnInit, AfterViewInit {
 
   @ViewChild('modalTemplate') modalTemplate!: TemplateRef<any>;
   @ViewChild('formTemplate') formTemplate!: TemplateRef<any>;
+  @ViewChild('formEditTemplate') formEditTemplate!: TemplateRef<any>;
 
   @ViewChild('selectOptionRef') selectOptionRef: any;
 
@@ -256,6 +255,10 @@ export class FormComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.doCheck();
     });
+  }
+  
+  test(){
+    console.log('test');
   }
 
   doCheck() {
@@ -489,7 +492,7 @@ export class FormComponent implements OnInit, AfterViewInit {
   async editForm() {
     this.isEditForm = true;
     const result = await this.service.modal.openModal(
-      this.formTemplate,
+      this.formEditTemplate,
       this.el.fields
     );
 
@@ -595,6 +598,7 @@ export class FormComponent implements OnInit, AfterViewInit {
   }
 
   copyField(field: any, idx: number) {
+    console.log('copy field');
     const copy = this.lib.deepCopy(field);
     this.el.fields.splice(idx, 0, copy);
   }
