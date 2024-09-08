@@ -617,6 +617,9 @@ export class FormComponent implements OnInit, AfterViewInit {
   async editField(field: any, idx: number) {
     this.isEditField = true;
     this.editFieldIdx = idx;
+    
+    //clear before preparing form
+    //field.value = this.el.fields[idx].value;
 
     this.generateFieldsForm(field);
 
@@ -633,6 +636,8 @@ export class FormComponent implements OnInit, AfterViewInit {
 
   generateFieldsForm(formData: any) {
     const formGroup: any = {};
+    
+    console.log(formData);
 
     // Loop through the default form controls
     Object.keys(this.fields.controls).forEach((key) => {
@@ -642,10 +647,15 @@ export class FormComponent implements OnInit, AfterViewInit {
       const formDataValue = formData[key];
 
       // Check if the formDataValue is non-empty (using your helper function `isNotEmpty`)
-      if (this.lib.isNotEmpty(formDataValue)) {
+      /*if (this.lib.isNotEmpty(formDataValue)) {
         formGroup[key] = new FormControl(formDataValue, validators);
       } else {
         formGroup[key] = new FormControl(defaultValue, validators);
+      }*/
+      
+      formGroup[key] = '';
+      if (this.lib.isNotEmpty(formDataValue)) {
+        formGroup[key] = new FormControl(formDataValue, validators);
       }
 
       // Special handling for arrays or nested objects if needed
