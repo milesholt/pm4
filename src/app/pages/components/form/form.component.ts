@@ -234,7 +234,7 @@ export class FormComponent implements OnInit, AfterViewInit {
       ]),
       required: [''],
       autocomplete: [''],
-      autgrow: [''],
+      autogrow: [''],
       counter: [''],
       maxlength: [''],
     });
@@ -511,9 +511,13 @@ export class FormComponent implements OnInit, AfterViewInit {
   loadKeys(field: any) {
     let keys = this.lib
       .objKeys(field)
-      .filter((key: any) => !['classes'].includes(key))
+      .filter((key: any) => !['classes', 'key'].includes(key))
       .filter((key: any) =>
+        ['textarea','text'].includes(field.type) ? !['options'].includes(key) : key
+      ).filter((key: any) =>
         field.type == 'checkbox' ? !['value'].includes(key) : key
+      ).filter((key: any) =>
+        field.type == 'submit' ? !['autogrow','options','autocomplete','required','placeholder','value'].includes(key) : key
       );
     return keys;
   }

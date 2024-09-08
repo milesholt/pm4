@@ -7,18 +7,7 @@
   
   
 
-  <ng-template #formTemplate let-fields="context" let-isModal="isModal">
-    <form>
-      <div *ngFor="let field of fields; let idx = index" class="form-group">
-        <ng-container
-          *ngTemplateOutlet="
-            fieldTemplate;
-            context: { field: field, idx: idx, isModal: isModal }
-          "
-        ></ng-container>
-      </div>
-    </form>
-  </ng-template>
+ <!-- Form Edit Template -->
 
   <ng-template #formEditTemplate let-fields="context" let-isModal="isModal">
      <ion-list>
@@ -78,6 +67,16 @@
       </ion-item-sliding>
         </ion-reorder-group>
     </ion-list>
+    
+    
+    <ion-button (click)="service.modal.dismiss(fields); isEditForm = false">
+    Done
+    </ion-button>
+    
+    <ion-button (click)="addField()">
+    <ion-icon name="add"></ion-icon>
+    Add field
+  </ion-button>
   </ng-template>
 
   <form
@@ -155,12 +154,7 @@
   </p>
 </div>
 
-<div *ngIf="service.auth.isLoggedIn">
-  <ion-button (click)="addField()">
-    <ion-icon name="add"></ion-icon>
-    Add field
-  </ion-button>
-</div>
+
 
 <ng-template
   #fieldTemplate
@@ -472,6 +466,8 @@
           {{ lib.capitalise(type.label) }}
         </ion-select-option>
       </ion-select>
+      
+    
 
       <ion-toggle
         *ngIf="
