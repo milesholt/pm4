@@ -529,17 +529,19 @@ export class FormComponent implements OnInit, AfterViewInit {
     field: any,
     idx: number
   ) {
+  let inputValue = event.target.value;
+    
     //change key property depending on Name property
     if (key == 'name') {
-      let nameValue = this.fields.get('name')?.value || '';
-      nameValue = nameValue.replace(/[^a-zA-Z0-9 ]/g, '');
-      let keyValue = await this.generateKey(nameValue, field);
+      inputValue = this.fields.get('name')?.value || '';
+      inputValue = inputValue.replace(/[^a-zA-Z0-9 ]/g, '');
+      let keyValue = await this.generateKey(inputValue, field);
 
       this.fields.get('key')?.setValue(keyValue);
-      this.fields.get('name')?.setValue(nameValue);
+      this.fields.get('name')?.setValue(inputValue);
     }
     if (key == 'value') {
-      const inputValue = event.target.value.toLowerCase();
+      inputValue = inputValue.toLowerCase();
 
       // Filter options based on user input
       this.filteredOptions = field.options.filter((option: any) =>
@@ -553,12 +555,12 @@ export class FormComponent implements OnInit, AfterViewInit {
       console.log(event.target.value);
       if (
         this.el.fields.some((obj: any) => obj.type === 'submit') &&
-        event.target.value == 'submit'
+        inputValue == 'submit'
       ) {
         alert('You cannot add more than one submit field');
         this.fields.get('type')?.setValue('text');
       }
-      field.type = event.target.value;
+      field.type = inputValue;
       console.log('type changed');
       console.log(field);
       if (field.options.length == 0) {
@@ -569,7 +571,10 @@ export class FormComponent implements OnInit, AfterViewInit {
       if (!field.hasOwnProperty('options') || field.options.length == 0)
         field.options = this.fields.get('options')?.value;
     }
-    return true;
+    
+    this.fields.get(key)?.setValue(inputValue);
+    
+    return true;    
   }
 
   async generateKey(name: string, field: any) {
