@@ -7,6 +7,7 @@ import {
   Output,
   EventEmitter,
   OnInit,
+  TemplateRef
 } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
@@ -23,6 +24,10 @@ import { AccordionComponent } from 'src/app/pages/components/accordion/accordion
 import { GalleryComponent } from 'src/app/pages/components/gallery/gallery.component';
 import { VideoComponent } from 'src/app/pages/components/video/video.component';
 import { SliderComponent } from 'src/app/pages/components/slider/slider.component';
+
+import { ModalController } from '@ionic/angular';
+import { ModalComponent } from '../../../components/modal/modal.component';
+
 /*
 @Component({
   selector: 'app-some-component',
@@ -44,6 +49,9 @@ export class ModulesComponent implements OnInit {
   @Input() name: string | null = null;
   @Input() params: any = {};
   @Output() callback = new EventEmitter();
+  
+  @ViewChild('settingsTemplate') settingsTemplate!: TemplateRef<any>;
+  @ViewChild('libraryTemplate') libraryTemplate!: TemplateRef<any>;
 
   @ViewChild('dynamicComponentContainer', {
     read: ViewContainerRef,
@@ -140,7 +148,8 @@ export class ModulesComponent implements OnInit {
     public service: CoreService,
     public navCtrl: NavController,
     public router: Router,
-    public lib: Library
+    public lib: Library,
+    private modalController: ModalController
   ) {}
 
   ngOnInit() {
@@ -189,6 +198,7 @@ export class ModulesComponent implements OnInit {
       params: module.params,
     };
     console.log(this.activeModule);
+    this.service.modal.dismiss();
     this.showSettings();
   }
 
@@ -196,22 +206,46 @@ export class ModulesComponent implements OnInit {
     this.isActiveModule = false;
     this.activeModule = {};
   }
+  
+  async openLibrary(){
+    const result = await this.service.modal.openModal(
+      this.libraryTemplate,
+      this.modules
+    );
 
-  showSettings() {
-    this.isSettings = true;
+    if (result) {
+      console.log('Library closed with data:', result);
+      
+    }
   }
 
-  applySettings() {
+  async showSettings() {
+    this.isSettings = true;
+    const result = await this.service.modal.openModal(
+      this.settingsTemplate,
+      this.activeModule
+    );
+
+    if (result) {
+      console.log('Modal dismissed with data:', result);
+      this.isSettings = false;
+    }
+  }
+
+  closeSettings() {
+    console.log('applying settings');
     this.isSettings = false;
     this.isActiveModule = true;
+    this.service.modal.dismiss();
   }
 
   handleSettingsCallback(response: any) {
+    console.log('handle settings callback');
     this.activeModule.params.settings.form = response.data;
     this.callback.emit({
       name: this.activeModule.name,
       params: this.activeModule.params,
     });
-    this.applySettings();
+    this.closeSettings();
   }
 }

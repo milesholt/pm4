@@ -47,6 +47,12 @@ export class VideoComponent implements OnInit, OnDestroy {
             type: 'text',
             placeholder: 'Enter height (eg. auto)',
           },
+          {
+            key: 'submit',
+            name: 'Apply',
+            type: 'submit',
+            
+          },
         ],
       },
     },
