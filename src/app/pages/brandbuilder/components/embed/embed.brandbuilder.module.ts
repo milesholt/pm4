@@ -8,5 +8,6 @@ import { EmbedComponent } from './embed.brandbuilder.component';
 @NgModule({
   imports: [IonicModule, CommonModule, FormsModule],
   declarations: [EmbedComponent],
+  exports: [EmbedComponent]
 })
   export class EmbedModule {}
