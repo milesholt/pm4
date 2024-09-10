@@ -19,6 +19,8 @@ import { CoreService } from '../../../../services/core.service';
 
 import { DynamicComponent } from '../../../components/dynamic/dynamic.component.interface';
 
+import { DynamicWrapperComponent  } from 'src/app/pages/components/dynamic/dynamic.component';
+
 import { FormComponent } from 'src/app/pages/components/form/form.component';
 import { AccordionComponent } from 'src/app/pages/components/accordion/accordion.component';
 import { GalleryComponent } from 'src/app/pages/components/gallery/gallery.component';
@@ -58,6 +60,8 @@ export class ModulesComponent implements OnInit {
     static: true,
   })
   dynamicComponentContainer!: ViewContainerRef;
+  
+  @ViewChild('dynamicMod', { static: false }) dynamicMod!: DynamicWrapperComponent;
 
   modules: any = [
     {
@@ -186,6 +190,19 @@ export class ModulesComponent implements OnInit {
       params: this.params,
     };
     this.isActiveModule = true;
+  }
+  
+  callDynamicMethod(methodName: string) {
+    if (this.dynamicMod && this.dynamicMod.componentRef) {
+      const componentInstance = this.dynamicMod.componentRef.instance;
+      
+      // Ensure the method exists on the component
+      if (typeof componentInstance[methodName] === 'function') {
+        componentInstance[methodName](); // Dynamically call the method
+      } else {
+        console.error(`${methodName} is not available on the dynamic component`);
+      }
+    }
   }
 
   applyModule() {

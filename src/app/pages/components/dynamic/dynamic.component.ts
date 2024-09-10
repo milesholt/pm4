@@ -16,17 +16,18 @@ export class DynamicWrapperComponent implements OnInit {
   @Input() params: any;
   @ViewChild('container', { read: ViewContainerRef, static: true })
   container!: ViewContainerRef;
+  componentRef: any;
 
   ngOnInit() {
     // Clear previous component if any
     this.container.clear();
 
     // Create the component dynamically
-    const componentRef = this.container.createComponent(this.component);
+    this.componentRef = this.container.createComponent(this.component);
 
     // Pass the @Input() parameters
     //Object.assign(componentRef.instance as DynamicComponent, this.params);
-    const instance = componentRef.instance as DynamicComponent;
+    const instance = this.componentRef.instance as DynamicComponent;
     instance.params = this.params;
   }
 }

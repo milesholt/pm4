@@ -1,17 +1,31 @@
 
 <!--Load module if one is active-->
 <div *ngIf="isActiveModule && !isSettings" class="ion-padding">
-  <div *ngIf="service.auth.isLoggedIn" class="admin-panel">
-    <ion-button (click)="showSettings()">Settings</ion-button>
-    <ion-button (click)="removeModule(); openLibrary()">Change</ion-button>
-  </div>
+  
 
   <div
     *ngFor="let module of modules; let midx = index"
     class="module-container"
   >
     <div *ngIf="module.name == activeModule.name" class="module">
+    
+    <div *ngIf="service.auth.isLoggedIn" class="admin-panel">
+    <ion-button size="small" (click)="callDynamicMethod('edit')">
+      <ion-icon name="create"></ion-icon>
+      Edit
+    </ion-button>
+    <ion-button size="small" (click)="showSettings()">
+    <ion-icon name="cog-outline"></ion-icon>
+    Settings</ion-button>
+    <ion-button size="small" (click)="removeModule(); openLibrary()">
+    <ion-icon name="grid-outline"></ion-icon>
+    Change</ion-button>
+    
+  </div>
+    
+    
       <app-dynamic-wrapper
+      #dynamicMod
         [component]="module.component"
         [params]="activeModule.params"
       ></app-dynamic-wrapper>

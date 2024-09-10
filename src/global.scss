@@ -156,6 +156,10 @@ ion-button[size="small"]{
   min-width:0;
 }
 
+ion-button ion-icon{
+ margin-right:10px;
+}
+
 /*Slider */
 swiper-container {
   --swiper-navigation-color: var(--ion-color-primary);

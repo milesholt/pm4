@@ -490,6 +490,12 @@ export class FormComponent implements OnInit, AfterViewInit {
     this.canSubmit = true;
     //console.log(e);
   }
+  
+  //generic edit function
+  async edit(){
+    console.log('edit comp');
+    this.editForm();
+  }
 
   async editForm() {
     this.isEditForm = true;
