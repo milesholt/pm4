@@ -75,18 +75,19 @@ export class EmbedComponent implements OnInit {
     // Wait for the API to be ready
     if (this.params == null) return;
 
-    console.log('ngoninit: video');
+    console.log('ngoninit: embed');
     
-    this.doForm();
+    await this.doForm();
 
     console.log(this.params);
 
 
     switch (this.params.type) {
       case 'default':
-        this.doEmbed();
         break;
     }
+    
+    this.doEmbed();
   }
   
   
