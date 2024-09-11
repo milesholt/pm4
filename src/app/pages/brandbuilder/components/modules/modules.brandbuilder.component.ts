@@ -92,7 +92,7 @@ export class ModulesComponent implements OnInit {
     {
       name: 'mailchimp',
       title: 'Mailchimp',
-      component: Mailchimp,
+      component: MailchimpComponent,
       icon: 'mail',
       params: {},
     },
