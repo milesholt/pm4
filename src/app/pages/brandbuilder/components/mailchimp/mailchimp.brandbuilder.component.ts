@@ -1,4 +1,4 @@
-import { Input, Component, OnInit } from '@angular/core';
+ import { Input, Component, OnInit } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -85,14 +85,13 @@ export class MailchimpComponent implements OnInit {
   ) {}
   
   
-
-  async ngOnInit() {
+ async ngOnInit() {
     // Wait for the API to be ready
     if (this.params == null) return;
 
     console.log('ngoninit: mailchimp');
     
-    await this.doForm();
+    this.doForm();
 
     console.log(this.params);
 
@@ -101,8 +100,7 @@ export class MailchimpComponent implements OnInit {
       case 'default':
         break;
     }
-    
-    //this.doMailchimp();
+   
   
   }
   
@@ -114,15 +112,5 @@ export class MailchimpComponent implements OnInit {
     });
   }
   
-  doMailchimp(){
-   const listid= this.params.listid;
-    const email = this.params.email;
-
-    // Sanitize and generate the embed HTML
-    this.html = this.sanitizer.bypassSecurityTrustHtml(`
-      <div style="width: ${width}; height: ${height};">
-        ${embedCode}
-      </div>
-    `);
-  }
+ 
 }
