@@ -1,4 +1,4 @@
-import {
+  import {
   Component,
   ViewContainerRef,
   AfterViewInit,
@@ -28,6 +28,8 @@ import { VideoComponent } from 'src/app/pages/components/video/video.component';
 import { SliderComponent } from 'src/app/pages/components/slider/slider.component';
 
 import { EmbedComponent  } from '../embed/embed.brandbuilder.component';
+
+import { MailchimpComponent } from '../mailchimp/mailchimp.brandbuilder.component'; 
 
 import { ModalController } from '@ionic/angular';
 import { ModalComponent } from '../../../components/modal/modal.component';
@@ -90,7 +92,7 @@ export class ModulesComponent implements OnInit {
     {
       name: 'mailchimp',
       title: 'Mailchimp',
-      component: null,
+      component: Mailchimp,
       icon: 'mail',
       params: {},
     },

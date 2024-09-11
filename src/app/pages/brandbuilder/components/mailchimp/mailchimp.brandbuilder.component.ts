@@ -100,10 +100,8 @@ export class MailchimpComponent implements OnInit {
       case 'default':
         break;
     }
-   
-  
+    
   }
-  
   
   doForm(){
     //Handle any input values from form
