@@ -1,0 +1,123 @@
+<!-- Ionic Dashboard -->
+<ion-split-pane when="sm" contentId="main">
+
+<!-- Sidemenu -->
+<ion-menu contentId="main">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Menu Content</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+
+    <ion-menu-toggle [autoHide]="false">
+      <ion-item button>
+        <ion-icon slot="start" name='home'></ion-icon>
+        <ion-label>
+          Home
+        </ion-label>
+      </ion-item>
+    </ion-menu-toggle>
+
+    <ion-accordion-group [multiple]="true" [value]="['first', 'third']">
+      <ion-accordion value="first">
+        <ion-item slot="header" color="light">
+          <ion-label>Services</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <ion-button expand="block">
+            <ion-icon slot="start" name="document"></ion-icon>
+            <ion-label>Notes</ion-label>
+          </ion-button>
+          <ion-button expand="block">
+            <ion-icon slot="start" name="briefcase"></ion-icon>
+            <ion-label>Projects</ion-label>
+          </ion-button>
+          <ion-button expand="block" routerLink="/shop">
+            <ion-icon slot="start" name="storefront"></ion-icon>
+            <ion-label>Shop</ion-label>
+          </ion-button>
+          <ion-button expand="block">
+            <ion-icon slot="start" name="time"></ion-icon>
+            <ion-label>Bookings</ion-label>
+          </ion-button>
+          <ion-button expand="block">
+            <ion-icon slot="start" name="calendar"></ion-icon>
+            <ion-label>Calendar</ion-label>
+          </ion-button>
+          <ion-button expand="block">
+            <ion-icon slot="start" name="person-circle"></ion-icon>
+            <ion-label>Users</ion-label>
+          </ion-button>
+        </div>
+      </ion-accordion>
+      <ion-accordion value="second">
+        <ion-item slot="header" color="light">
+          <ion-label>Admin</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+         
+          <ion-button fill="outline" expand="block">
+            <ion-icon slot="start" name="list"></ion-icon>
+            <ion-label> Fields </ion-label>
+          </ion-button>
+
+          <ion-button fill="outline" expand="block">
+            <ion-icon slot="start" name="layers"></ion-icon>
+            <ion-label> Properties </ion-label>
+          </ion-button>
+
+          <ion-button fill="outline" expand="block">
+            <ion-icon slot="start" name="shapes"></ion-icon>
+            <ion-label>Items</ion-label>
+          </ion-button>
+
+          <ion-button fill="outline" expand="block">
+            <ion-icon slot="start" name="add-circle"></ion-icon>
+           <ion-label> Service</ion-label>
+          </ion-button>
+
+          <ion-button fill="outline" expand="block" (click)="signOut()">
+            <ion-icon slot="start" name="arrow-back-circle-outline"></ion-icon>
+           <ion-label> Sign Out</ion-label>
+          </ion-button>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+
+  </ion-content>
+</ion-menu>
+
+<!-- Main page -->
+<div class="ion-page" id="main">
+  <ion-header>
+    <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-menu-toggle>
+              <ion-button>
+                <ion-icon slot="icon-only" name="menu"></ion-icon>
+              </ion-button>
+            </ion-menu-toggle>
+          </ion-buttons>
+      <ion-title>Dashboard</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding"> 
+    <div class="row" *ngIf="service.auth.userData as user">
+          <div class="col-md-12">
+            <div class="media">
+              <img class="align-self-start mr-5 img-thumbnail rounded-circle" src="{{(user.photoURL) ? user.photoURL : '/assets/dummy-user.png'}}"
+                alt="{{user.displayName}}">
+              <div class="media-body">
+                <h1>Hello: <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
+                <p>User ID: <strong>{{user.uid}}</strong></p>
+                <p>Email: <strong>{{user.email}}</strong></p>
+                <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
+              </div>
+            </div>
+          </div>
+    </div>
+  </ion-content>
+</div>
+
+</ion-split-pane>

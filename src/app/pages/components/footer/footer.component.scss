@@ -1,0 +1,38 @@
+#copyright-notice {
+  padding: 40px 0px;
+  border-top: solid 1px white;
+  width: 100%;
+  display: table;
+  margin-top: 40px;
+}
+
+#footer {
+  margin-top: 0px !important;
+  display: table !important;
+  position: relative !important;
+  height: 500px;
+  width: 100%;
+  background: black;
+  * {
+    color: white;
+  }
+}
+
+#footer-wrap {
+  position: absolute;
+  bottom: 50px;
+  padding: 20px;
+  width: 100%;
+}
+
+.col-2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.col-2 .social-icon-link {
+  text-align: right;
+  float: right;
+  display: block;
+  padding-bottom: 3px;
+}

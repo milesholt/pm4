@@ -1,0 +1,100 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Free</ion-card-title>
+    <ion-card-subtitle>Forever</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <p>Need a quick landing page? Try us out for free</p>
+
+    <ul>
+      <li>3 free landing pages</li>
+      <li>100 AI calls</li>
+      <li>Contact form</li>
+      <li>Youtube integration</li>
+      <li>Instagram integration</li>
+      <li>Mailchimp integration</li>
+      <li>Fully SE0 optimised</li>
+      <li>Analytics integration</li>
+      <li>Add your social media channels</li>
+      <li>Shop with 5 products (integrated with Stripe)</li>
+    </ul>
+  </ion-card-content>
+
+  <ion-button
+    [disabled]="userSettings.subscriptionId == 'free'"
+    fill="clear"
+    (click)="choosePlan('free')"
+  >
+    {{
+      userSettings.membershipId == "free" ? "Your current membership" : "Choose"
+    }}
+  </ion-button>
+</ion-card>
+
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Starter</ion-card-title>
+    <ion-card-subtitle>$6.99/month</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <p>Enough to get your business up and running.</p>
+
+    <ul>
+      <li>3x Essential websites</li>
+      <li>500 AI calls</li>
+      <li>3 campaigns / month</li>
+      <li>All integrations from Free, plus more</li>
+      <li>Shop with 20 products (integrated with Stripe)</li>
+    </ul>
+  </ion-card-content>
+
+  <ion-button
+    [disabled]="userSettings.subscriptionId == 'starter'"
+    fill="clear"
+    (click)="choosePlan('starter')"
+  >
+    {{
+      userSettings.membershipId == "starter"
+        ? "Your current membership"
+        : "Choose"
+    }}
+  </ion-button>
+</ion-card>
+
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Premium</ion-card-title>
+    <ion-card-subtitle>$14.99/month</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <p>Everything, unlimited.</p>
+
+    <ul>
+      <li>Unlimited Premium websites</li>
+      <li>Unlimited pages</li>
+      <li>Unlimited AI calls</li>
+      <li>Unlimited campaigns</li>
+      <li>All integrations from Free, plus more</li>
+      <li>Shop with unlimited products (integrated with Stripe)</li>
+    </ul>
+  </ion-card-content>
+
+  <ion-button
+    [disabled]="userSettings.subscriptionId == 'premium'"
+    fill="clear"
+    (click)="choosePlan('premium')"
+  >
+    {{
+      userSettings.membershipId == "premium"
+        ? "Your current membership"
+        : "Choose"
+    }}
+  </ion-button>
+</ion-card>
+
+<div *ngIf="isPlanChosen">
+  <app-card-payment-comp></app-card-payment-comp>
+</div>

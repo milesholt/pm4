@@ -1,0 +1,40 @@
+<swiper-container *ngIf="!type || type == 'hero'" #mainSwiper id="mainSlider" class="swiper {{classes}}" init="false" >
+  <swiper-slide class="main-slide" *ngFor="let slide of slides; index as imgidx"> 
+    <div class="swiper-zoom-container">     
+      <div *ngIf="slide.title || slide.description" class="slide-content">
+            <h1 [ngClass]="setWordClass(slide.title)" [innerHtml]="slide.title"></h1>
+            <p [innerHtml]="slide.description"></p>
+            <div *ngIf="!!cta"><ion-button id="slider-cta" (click)="doCTA()">{{cta.label}}</ion-button></div>
+          </div>   
+
+
+          <img *ngIf="type !== 'hero'" src="{{ slide[slideSuffix] }}" alt="{{slide.title}}" class="slide-image" width="100%" height="auto" /> 
+
+          <!--<img *ngIf="classes.includes('hero')" src="{{ slide[slideSuffix] }}" srcset="image-small.jpg 320w, image-medium.jpg 768w, image-large.jpg 1200w" sizes="(max-width: 320px) 280px, (max-width: 768px) 720px, 1200px" alt="Example Image">-->
+ 
+          <picture *ngIf="type == 'hero'">
+            <source media="(min-width:1200px)" srcset="{{url}}/assets/images/WEBP/2400/{{slide[slideSuffix]}}">
+         
+            <source media="(min-width:600px)" srcset="{{url}}/assets/images/WEBP/1200/{{slide[slideSuffix]}}">
+            <source media="(min-width:300px)" srcset="{{url}}/assets/images/WEBP/600/{{slide[slideSuffix]}}">
+            <source media="(min-width:0px)" srcset="{{url}}/assets/images/WEBP/300/{{slide[slideSuffix]}}">
+            <img src="{{url}}/assets/images/WEBP/1200/{{ slide[slideSuffix] }}" loading="eager" priority="high" alt="{{slide.title}}" class="slide-image">
+          </picture>
+
+      </div>
+  </swiper-slide>
+</swiper-container>
+
+<swiper-container *ngIf="!!thumbs" id="thumbsSlider" class="thumbs-swiper {{classes}}" [navigation]="navigation" [slidesPerView]="thumbs">
+  <swiper-slide *ngFor="let thumb of slides; index as imgidx">    
+          <img src="{{ thumb[slideSuffix] }}" class="thumb-image" width="100%" height="auto" />       
+  </swiper-slide>
+</swiper-container>
+
+<swiper-container *ngIf="type == 'listing'" id="listingSlider" class="listing-swiper {{classes}}" [navigation]="navigation" [slidesPerView]="slidesPerView">
+  <swiper-slide routerLink="./product/{{item.handle}}" *ngFor="let item of slides; index as imgidx">           
+          <img src="{{ item.images[0].src }}" class="item-image" width="100%" height="auto" />       
+          <h4>{{item.title}}</h4>
+          <p>{{item.variants[0].price.amount}} {{item.variants[0].price.currencyCode }}</p> 
+  </swiper-slide>
+</swiper-container>

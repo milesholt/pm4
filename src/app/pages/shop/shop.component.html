@@ -1,0 +1,169 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Shop</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="service.shop.checkoutComplete == null">
+
+  <app-refresher></app-refresher>
+
+  <div class="product-type container" *ngIf="filterProducts.length && !heroSlides[filterCategory] && search !== false && search !== 'all' && search !== 'featured' && search !== 'false'">
+    <h1>{{search}}</h1>
+  </div>
+  
+<div class="no-products" *ngIf="filterProducts.length == 0 && !heroSlides[filterCategory]">
+  <p [innerHtml]="statusMessage"></p>
+  <ion-spinner *ngIf="statusMessage == ''" class="center" name="circular"></ion-spinner>
+</div>
+
+
+<div *ngIf="heroSlides[filterCategory]">
+  <app-slider-comp 
+      [slides]="heroSlides[filterCategory].slides"
+      [slidesPerView]="1"
+      [slideSuffix]="'image'"
+      [navigation]="false"
+      [classes]="'hero'"
+      [cta]="{'label': 'Shop Now', 'anchor': '#searchBar'}"
+      [type]="'hero'"
+      >
+  </app-slider-comp>
+</div>
+
+
+<!--search component-->
+<app-search-shop-comp id="searchBar" [feed]="products" (searchChange)="handleSearchCallback($event)"></app-search-shop-comp>
+<!-- filter component-->
+<app-filter-shop-comp [feed]="filterProducts" (filterChange)="handleFilterCallback($event)"></app-filter-shop-comp>
+
+
+<!--<app-feed-comp [feedData]="products"></app-feed-comp>-->
+
+
+
+<ion-grid [fixed]="true" id="productsGrid" class="anim" #item>
+    <ion-row>
+      
+     <ion-col [routerLink]="['/shop/product/'+product.handle]" [queryParams]="{ 'filterCategory' : filterCategory}" size="6"  size-sm="3" 
+      *ngFor="let product of filterProducts; index as idx">
+      
+      
+      <img src="{{product.variants[0].image.src}}" class="product-image" width="100%" height="auto" />
+    
+      <h4>{{product.title}}</h4>
+    
+      <div class="product-price">{{product.variants[0].price.amount}} {{ product.variants[0].price.currencyCode }}</div>
+        
+      <div class="product-type">{{product.productType}}</div>
+     </ion-col>
+  </ion-row>
+  </ion-grid>
+
+ <!-- Show all products, for main or featured landing page --> 
+  <div *ngIf="search == 'featured' && !showMoreClicked " class="container" style="margin-top:40px;">
+    <ion-button id="showMore" (click)="showAll()" class="center">Show more</ion-button>
+  </div>
+
+  <!-- Reveal excluded products -->
+  <div *ngIf="search !== 'featured' && !showMoreClicked && filterProducts.length &&filterProducts.length !== products.length && (filterProducts.length + excludedProducts.length) > 1" class="container" style="margin-top:40px;">
+    <ion-button id="showMore" (click)="showExcluded()" class="center">Show more</ion-button>
+  </div>
+
+  <div *ngIf="filterProducts.length == 0 && heroSlides[filterCategory]" class="container">
+    <p [innerHtml]="statusMessage"></p>
+    <ion-spinner *ngIf="statusMessage == ''" class="center" name="circular"></ion-spinner>
+  </div>
+
+
+<div *ngIf="heroSlides[filterCategory]" class="container">
+  <!-- Additional Content --> 
+  <div class="content-section {{page.template}}" *ngFor="let page of heroSlides[filterCategory].content; index as idx" #item>
+    
+    <div class="row anim" *ngIf="page.template == 'col-1' || page.template == 'col-2'">
+      <div *ngIf="page.image" class="col col-image">
+        <!--<img src="{{url}}{page.image}}"  />-->
+
+        <picture>
+          
+          <source media="(min-width:1200px)" srcset="{{url}}/assets/images/WEBP/2400/{{page.image}}">
+          <source media="(min-width:600px)" srcset="{{url}}/assets/images/WEBP/1200/{{page.image}}">
+          <source media="(min-width:300px)" srcset="{{url}}/assets/images/WEBP/600/{{page.image}}">
+          <source media="(min-width:0px)" srcset="{{url}}/assets/images/WEBP/300/{{page.image}}">
+          <img src="{{url}}/assets/images/WEBP/1200/{{ page.image }}" loading="lazy" alt="{{page.title}}">
+        </picture>
+ 
+      </div>
+      <div class="col col-content">
+        <div class="col-wrap">
+          <h2>{{page.title}}</h2>
+          <div [innerHtml]="page.content"></div>
+          <ion-button *ngIf="page.link" [routerLink]="[page.link.path]" [queryParams]="page.link.query">{{page.link.label}}</ion-button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="page.template == 'col-3'" class="space-top">
+      
+     <div class="row"> <h2>{{page.title}}</h2></div>
+      <div class="row">
+       <div class="col anim" *ngFor="let col of page.content">
+         <img alt="{{col.title}}" src="{{url}}{{col.image}}" loading="lazy" alt="{{col.title}}" class="{{col.classes}}" />
+         <h3>{{col.title}}</h3>
+         <div class="content" [innerHtml]="col.content"></div>
+       </div>
+      </div>
+    </div>   
+  </div>
+
+  <!-- Featured-->
+  <div *ngIf="heroSlides[filterCategory] && featuredProducts.length">
+
+    <h2>Bestsellers</h2>
+
+    <app-slider-comp 
+        [slides]="featuredProducts"
+        [slidesPerView]="2"
+        [slideSuffix]="'image'"
+        [navigation]="true"
+        [type]="'listing'"
+        [details]="['price']"
+        >
+    </app-slider-comp>
+  </div>
+  
+
+  <!-- FAQ -->
+<h2>Frequently Asked Questions</h2>
+<p>Below are list of questions that are popular from existing customers</p>
+
+<app-accordion-comp [list]="heroSlides[filterCategory].questions"></app-accordion-comp>  
+
+  <!-- filter component-->
+  <h2>Get In Touch</h2>
+  <app-contactform-comp></app-contactform-comp>
+
+  <br><br><br><br>
+
+</div>
+
+
+
+<app-footer></app-footer>
+
+</ion-content>
+
+<ion-content *ngIf="service.shop.checkoutComplete == true">
+  <h1>Order success!</h1>
+  <p>Your order number is <strong>{{service.shop.checkout.order.orderNumber}}</strong>, please keep this for your records.</p>
+  <ion-button (click)="service.shop.checkoutComplete = null">Continue</ion-button>
+</ion-content>
+
+<ion-content *ngIf="service.shop.checkoutComplete == false">
+  <h1>Order cancelled</h1>
+  <p>Your order was cancelled due to a declined transaction or gateway failure.</p>
+  <ion-button (click)="service.shop.checkoutComplete = null">Continue</ion-button>
+</ion-content>

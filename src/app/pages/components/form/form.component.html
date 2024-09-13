@@ -1,0 +1,507 @@
+<div #f class="{{ el.classes }}">
+
+ <!-- Form Edit Template -->
+
+  <ng-template #formEditTemplate let-fields="context" let-isModal="isModal">
+     <ion-list>
+     
+     <ion-reorder-group (ionItemReorder)="reorderFields($event)" disabled="false">
+     <ion-item-sliding
+        *ngFor="let field of fields; let idx = index"
+        #slidingItem
+      >
+      
+      
+        <ion-item>
+        
+       
+          <!-- Reorder Handle -->
+          <ion-reorder slot="start"></ion-reorder>
+              
+            <ion-label (click)="editField(field, idx)">{{ field.name }}</ion-label>
+            
+            <ion-button
+                            class="inverse"
+                            slot="end"
+                            size="small"
+                            (click)="slidingItem.open('end')"
+                          >
+                            <ion-icon
+                              name="ellipsis-vertical-outline"
+                            ></ion-icon>
+                          </ion-button>
+           </ion-item>
+           
+          <ion-item-options side="end">
+          <ion-item-option>
+          <ion-button size="small" (click)="editField(field, idx); slidingItem.close()"
+      ><ion-icon name="create"></ion-icon
+    ></ion-button>
+          </ion-item-option>
+            <ion-item-option>
+              <ion-button
+                size="small"
+                [disabled]="field.type === 'submit'"
+                (click)="copyField(field, idx); slidingItem.close()"
+              >
+                <ion-icon name="copy"></ion-icon>
+              </ion-button>
+            </ion-item-option>
+            <ion-item-option>
+             <ion-button
+      size="small"
+      [disabled]="field.type == 'submit'"
+      (click)="deleteField(field, idx)"
+      ><ion-icon name="trash"></ion-icon
+    ></ion-button>
+            </ion-item-option>
+          </ion-item-options>
+        
+      </ion-item-sliding>
+        </ion-reorder-group>
+    </ion-list>
+    
+    
+    <ion-button (click)="service.modal.dismiss(fields); isEditForm = false">
+    Done
+    </ion-button>
+    
+    <ion-button (click)="addField()">
+    <ion-icon name="add"></ion-icon>
+    Add field
+  </ion-button>
+  </ng-template>
+
+  <form
+    *ngIf="sent == null"
+    (ngSubmit)="onSubmit(el.action, $event)"
+    class="{{ el.boxclasses }}"
+    autocomplete="on"
+    role="presentation"
+  >
+    <div *ngIf="f.classList.contains('twocol')">
+      <div class="col1 form-cols">
+        <div
+          *ngFor="let field of el.fields; let idx = index"
+          class="form-group"
+          [ngClass]="field.classes.indexOf('col1') !== -1 ? 'col1' : ''"
+          #fld
+        >
+          <div *ngIf="fld.classList.contains('col1')">
+            <ng-container
+              *ngTemplateOutlet="
+                fieldTemplate;
+                context: { field: field, idx: idx }
+              "
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="col2 form-cols">
+        <div
+          *ngFor="let field of el.fields; let idx = index"
+          class="form-group"
+          [ngClass]="field.classes.indexOf('col2') !== -1 ? 'col2' : ''"
+          #fld
+        >
+          <div *ngIf="fld.classList.contains('col2')">
+            <ng-container
+              *ngTemplateOutlet="
+                fieldTemplate;
+                context: { field: field, idx: idx }
+              "
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+      <div
+        *ngFor="let field of el.fields; let idx = index"
+        class="form-group"
+        [ngClass]="field.classes.indexOf('nocol') !== -1 ? 'nocol' : ''"
+        #fld
+      >
+        <div *ngIf="fld.classList.contains('nocol')">
+          <ng-container
+            *ngTemplateOutlet="
+              fieldTemplate;
+              context: { field: field, idx: idx, isModal: isModal }
+            "
+          ></ng-container>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!f.classList.contains('twocol')">
+      <div *ngFor="let field of el.fields; let idx = index" class="form-group">
+        <ng-container
+          *ngTemplateOutlet="fieldTemplate; context: { field: field, idx: idx }"
+        ></ng-container>
+      </div>
+    </div>
+  </form>
+
+  <p *ngIf="sent == true">
+    Thank you for your enquiry, we'll be in touch shortly.
+  </p>
+  <p *ngIf="sent == false">
+    Sorry there was a problem sending your enquiry, please try again.
+  </p>
+</div>
+
+
+
+<ng-template
+  #fieldTemplate
+  let-field="field"
+  let-idx="idx"
+  let-isModal="isModal"
+>
+  <!-- Form Builder -->
+  <!-- Field admin controls -->
+  <div *ngIf="service.auth.isLoggedIn && isEditForm && isModal">
+    <ion-button size="small" (click)="editField(field, idx)"
+      ><ion-icon name="create"></ion-icon
+    ></ion-button>
+    <ion-button
+      size="small"
+      [disabled]="field.type == 'submit'"
+      (click)="copyField(field, idx)"
+      ><ion-icon name="copy"></ion-icon
+    ></ion-button>
+    <ion-button
+      size="small"
+      [disabled]="field.type == 'submit'"
+      (click)="deleteField(field, idx)"
+      ><ion-icon name="trash"></ion-icon
+    ></ion-button>
+    <ion-button size="small" [disabled]="idx === 0" (click)="moveFieldUp(idx)"
+      ><ion-icon name="chevron-up-outline"></ion-icon
+    ></ion-button>
+    <ion-button
+      size="small"
+      [disabled]="idx === el.fields.length - 1"
+      (click)="moveFieldDown(idx)"
+      ><ion-icon name="chevron-down-outline"></ion-icon
+    ></ion-button>
+  </div>
+
+  <div *ngIf="field.prefix">
+    <br />
+    <p style="font-size: 12px">{{ field.prefix }}</p>
+  </div>
+  <ion-list [ngSwitch]="field.type">
+    <ion-item *ngSwitchCase="'text'">
+      <ion-input
+        label="{{ field.name }}"
+        type="text"
+        value="{{ field.value }}"
+        autocomplete="{{ field.autocomplete ? field.autocomplete : 'true' }}"
+        class="form-control"
+        id="fld-{{ field.name | alias }}"
+        name="{{ field.name }}"
+        [required]="field.required"
+        placeholder="{{ field.placeholder }}"
+        class="placeholder-primary {{ field.classes }}"
+        (keyup)="doForm($event, field.key)"
+        (change)="doForm($event, field.key)"
+        (click)="doForm($event, field.key)"
+      ></ion-input>
+    </ion-item>
+    <ion-item *ngSwitchCase="'textarea'" lines="none">
+      <ion-textarea
+        label="{{ field.name }}"
+        class="form-control"
+        id="fld-{{ field.name | alias }}"
+        name="{{ field.name }}"
+        [required]="field.required"
+        placeholder="{{ field.placeholder }}"
+        class="placeholder-primary {{ field.classes }}"
+        [(ngModel)]="form[field.key]"
+        (keyup)="doForm($event, field.key)"
+        (change)="doForm($event, field.key)"
+        (click)="doForm($event, field.key)"
+        [counter]="field.counter"
+        maxlength="{{ field.maxlength }}"
+        [autoGrow]="field.autogrow"
+      ></ion-textarea>
+    </ion-item>
+
+    <ion-item *ngSwitchCase="'select'">
+      <ion-select
+        label="{{ field.name }}"
+        value="{{ field.value }}"
+        class="form-control"
+        id="fld-{{ field.name | alias }}"
+        [attr.name]="field.name"
+        [required]="field.required"
+        placeholder="{{ field.placeholder }}"
+        class="placeholder-primary {{ field.classes }}"
+        [(ngModel)]="form[field.key] ? form[field.key] : field.value"
+        (ngModelChange)="doForm($event, field.key)"
+      >
+        <ion-select-option
+          *ngFor="let opt of field.options"
+          [value]="opt.label"
+        >
+          {{ opt.label }}
+        </ion-select-option>
+
+        <!--<ng-container *ngFor="let opt of field.options | format : 'json'">
+                
+                <optgroup *ngIf="opt.sublist" label="{{opt.name}}">
+                  {{opt.name}}
+                  <option *ngFor="let subopt of opt.sublist">
+                    {{subopt.name}}
+                  </option>
+                 </optgroup>
+
+                 <ion-select-option *ngIf="!opt.sublist">
+                   {{opt.value}}
+                 </ion-select-option>
+               </ng-container>-->
+      </ion-select>
+    </ion-item>
+
+    <ion-item *ngSwitchCase="'number'">
+      <ion-input
+        label="{{ field.name }}"
+        type="number"
+        class="form-control {{ field.classes }}"
+        id="fld-{{ field.name | alias }}"
+        name="{{ field.name }}"
+        [required]="field.required"
+        placeholder="{{ field.placeholder }}"
+        class="placeholder-primary"
+        [(ngModel)]="form[field.key]"
+      ></ion-input>
+    </ion-item>
+    <ion-item *ngSwitchCase="'email'">
+      <ion-input
+        label="{{ field.name }}"
+        type="email"
+        class="form-control {{ field.classes }}"
+        onpaste="return false;"
+        id="fld-{{ field.name | alias }}"
+        name="{{ field.name }}"
+        [required]="field.required"
+        placeholder="{{ field.placeholder }}"
+        class="placeholder-primary"
+        [(ngModel)]="form[field.key]"
+        (keyup)="doForm($event, field.key)"
+      ></ion-input>
+    </ion-item>
+    <ion-item *ngSwitchCase="'tel'">
+      <ion-input
+        label="{{ field.name }}"
+        type="tel"
+        class="form-control {{ field.classes }}"
+        id="fld-{{ field.name | alias }}"
+        name="{{ field.name }}"
+        [required]="field.required"
+        placeholder="{{ field.placeholder }}"
+        class="placeholder-primary"
+        [(ngModel)]="form[field.key]"
+      ></ion-input>
+    </ion-item>
+    <ion-item *ngSwitchCase="'date'">
+      <ion-input
+        label="{{ field.name }}"
+        type="date"
+        class="form-control {{ field.classes }}"
+        id="fld-{{ field.name | alias }}"
+        name="{{ field.name }}"
+        [required]="field.required"
+        placeholder="{{ field.placeholder }}"
+        class="text-primary"
+        [(ngModel)]="form[field.key]"
+      ></ion-input>
+    </ion-item>
+    <ion-item *ngSwitchCase="'time'">
+      <ion-input
+        label="{{ field.name }}"
+        type="time"
+        class="form-control {{ field.classes }}"
+        id="fld-{{ field.name | alias }}"
+        name="{{ field.name }}"
+        [required]="field.required"
+        placeholder="{{ field.placeholder }}"
+        class="text-primary"
+        [(ngModel)]="form[field.key]"
+      ></ion-input>
+    </ion-item>
+    <ion-item *ngSwitchCase="'checkbox'">
+      <ion-list>
+        <ion-item *ngFor="let opt of field.options">
+          <ion-checkbox
+            labelPlacement="end"
+            class="form-control {{ field.classes }}"
+            id="fld-{{ field.name | alias }}"
+            name="{{ field.name }}"
+          >
+            {{ opt.label }}
+          </ion-checkbox>
+        </ion-item>
+      </ion-list>
+    </ion-item>
+    <ion-item *ngSwitchCase="'radio'">
+      <ion-radio-group
+        class="form-control {{ field.classes }}"
+        id="fld-{{ field.name | alias }}"
+        name="{{ field.name }}"
+        [(ngModel)]="field.value"
+        value="{{ field.options[0].label }}"
+      >
+        <ion-radio
+          *ngFor="let opt of field.options"
+          labelPlacement="end"
+          [value]="opt.label"
+          >{{ opt.label }}</ion-radio
+        >
+      </ion-radio-group>
+    </ion-item>
+    <ion-item *ngSwitchCase="'submit'" lines="none">
+      <ion-button
+        type="submit"
+        [disabled]="service.auth.isLoggedIn && isEditForm && isModal"
+        class="form-control btn rel {{ field.classes }}"
+        [ngClass]="canSubmit ? '' : 'cta-disabled'"
+        id="fld-{{ field.name | alias }}"
+        >{{ field.name }}</ion-button
+      >
+    </ion-item>
+    <ion-item *ngSwitchCase="'hidden'">
+      <ion-input
+        type="hidden"
+        class="form-control btn rel {{ field.classes }}"
+        id="fld-{{ field.name | alias }}"
+        name="{{ field.name }}"
+      ></ion-input>
+
+      <!-- <div *ngIf="field.name == 'address-finder'" class="">
+           <comp-addressfinder (callback)="fillAddress($event)" [form]="form"></comp-addressfinder>
+        </div>-->
+    </ion-item>
+
+    <!-- <div *ngSwitchCase="'recaptcha'" class="{{field.classes}}">
+        <re-captcha (resolved)="handleCorrectCaptcha($event)" siteKey="6LfA0DcUAAAAAAvH9jHrtpvWebFikY5hdnUDYtLD"></re-captcha>
+     </div>-->
+  </ion-list>
+  <div *ngIf="field.suffix">
+    <p style="font-size: 12px">{{ field.suffix }}</p>
+  </div>
+</ng-template>
+
+<!--Edit / Add Field Modal Template -->
+<ng-template #modalTemplate let-field="context">
+  <form [formGroup]="fields">
+    <ion-item *ngFor="let key of loadKeys(field); let pidx = index">
+      <ion-input
+        *ngIf="
+          ![
+            'type',
+            'required',
+            'autocomplete',
+            'autogrow',
+            'counter',
+            'options',
+            'key'
+          ].includes(key)
+        "
+        (ionInput)="onPropChange($event, key, field[key], field, pidx)"
+        [label]="lib.capitalise(key)"
+        labelPosition="floating"
+        [formControlName]="key"
+      ></ion-input>
+
+      <ion-button
+        *ngIf="
+          key == 'value' &&
+          filteredOptions.length > 0 &&
+          ['select', 'radio', 'checkbox'].includes(field.type)
+        "
+        size="small"
+        expand="block"
+        (click)="openSelect()"
+      >
+        Select
+      </ion-button>
+
+      <!-- Filtered options list -->
+      <ion-select
+        #selectOptionRef
+        style="display: none"
+        (ionChange)="selectOption($event, field, pidx)"
+      >
+        <ion-select-option
+          *ngFor="let option of filteredOptions"
+          [value]="option.label"
+        >
+          {{ option.label }}
+        </ion-select-option>
+      </ion-select>
+
+      <div
+        *ngIf="
+          fields.get('name')?.hasError('pattern') && fields.get('name')?.touched
+        "
+      >
+        <ion-text color="danger"
+          >Name can only contain letters and numbers.</ion-text
+        >
+      </div>
+
+      <ion-select
+        *ngIf="key == 'type'"
+        [label]="lib.capitalise(key)"
+        (ionChange)="onPropChange($event, key, field[key], field, pidx)"
+        [formControlName]="key"
+      >
+        <ion-select-option *ngFor="let type of fieldTypes" [value]="type.key">
+          {{ lib.capitalise(type.label) }}
+        </ion-select-option>
+      </ion-select>
+      
+    
+
+      <ion-toggle
+        *ngIf="
+          ['autocomplete', 'required', 'autogrow', 'counter'].includes(key)
+        "
+        [formControlName]="key"
+        >{{ lib.capitalise(key) }}</ion-toggle
+      >
+
+      <div
+        *ngIf="
+          key == 'options' &&
+          ['select', 'radio', 'checkbox'].includes(field.type)
+        "
+      >
+        <ion-input
+          [label]="lib.capitalise(key)"
+          labelPosition="floating"
+          [(ngModel)]="newOption.label"
+          [ngModelOptions]="{ standalone: true }"
+          (keydown.enter)="addOption(field.options)"
+          placeholder="Type and hit Enter"
+        ></ion-input>
+
+        <ion-chip
+          [disabled]="field.options.length == 1"
+          *ngFor="let option of field.options; let i = index"
+        >
+          <ion-label (click)="editOption(i, field.options)">{{
+            option.label
+          }}</ion-label>
+          <ion-icon
+            name="close-circle"
+            (click)="removeOption(i, field.options)"
+          ></ion-icon>
+        </ion-chip>
+      </div>
+    </ion-item>
+  </form>
+
+  <ion-button (click)="service.modal.dismiss(field); isEditField = false"
+    >Done</ion-button
+  >
+</ng-template>

@@ -1,0 +1,31 @@
+ion-select-option {
+    font-size: 16px;
+    padding: 8px 0;
+    background-color:red;
+    --background-color:red;
+  }
+
+  /*ion-item{
+    overflow: visible;
+    --background: rgba(255, 255, 255, 0);
+  }*/
+
+  .color-box {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 8px;
+    border: 1px solid #ccc;
+  }
+  
+  ion-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  ion-col {
+    padding: 0;
+  }
+  
+ 
+  

@@ -1,0 +1,24 @@
+<ion-header class="main-header">
+  <ion-toolbar class="toolbar">
+    <ion-title style="text-align: center; color: white">
+      Payment Response
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="status == 'success'">
+    <ion-spinner *ngIf="isFinalising" class="center" name="circular"></ion-spinner>
+    <ion-icon *ngIf="isSuccess" name="close-circle-outline"></ion-icon>
+    <ion-icon *ngIf="isFail" name="checkmark-circle-outline"></ion-icon>
+
+   
+    <br /><br />
+
+    <div class="response-message" [innerHTML]="responseMessage"></div>
+
+    {{ responseData | json }}
+  </div>
+
+  <div *ngIf="status == 'cancel'"></div>
+</ion-content>

@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Financial Market Research</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-textarea [ngModel]="prompt" label="Text to Analyze" labelPlacemenet="stacked" #textInput></ion-textarea>
+  </ion-item>
+  <ion-button (click)="useGeminiPro(textInput.value)">Analyze</ion-button>
+
+  <ion-item *ngIf="analysisResult">
+    <ion-label>Analysis Result</ion-label>
+    <!--<pre>{{ analysisResult | json }}</pre>-->
+    <div [innerHtml]="analysisResult"></div>
+  </ion-item>
+</ion-content>

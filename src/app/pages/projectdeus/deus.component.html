@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Project Deus</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <p>Welcome to Project Deus</p>
+
+  {{epic}}
+
+ <pre> {{results | json}} </pre>
+
+ <pre> {{findings | json}} </pre>
+
+<pre> {{tradeResponse | json }}</pre>
+ <pre> {{session | json}} </pre>
+
+ {{service.ai.message}}
+
+ <p *ngIf="go == true">Open trade - {{findings.decision}}</p>
+ <p *ngIf="go == false">Don't open trade</p>
+</ion-content>

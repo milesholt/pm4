@@ -1,0 +1,478 @@
+ion-content {
+  --padding: 0px;
+  --margin: 0px;
+}
+
+#previewPanel {
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  overflow-y: auto;
+}
+
+.button-icon {
+  padding-right: 10px;
+}
+
+.bottom-panel {
+  position: fixed;
+  bottom: 0px;
+  background: #000;
+  width: 100%;
+  color: white;
+  height: auto;
+  text-align: center;
+
+  p {
+    margin: 10px 0 0;
+    padding: 0px;
+  }
+
+  ion-button {
+    margin: 0px;
+    --margin: 0px;
+  }
+}
+
+.toolbar {
+  --background: #000;
+}
+
+ion-input {
+  margin-bottom: 30px;
+}
+
+ion-textarea {
+  min-height: 100px;
+  margin-bottom: 30px;
+}
+
+.menu-container {
+  width: 100%;
+}
+
+.no-products {
+  padding: 20px;
+}
+
+/* Hero */
+#hero {
+  background-color: #000;
+  min-height: 300px;
+  height: 70vh;
+  max-height: 500px;
+  position: relative;
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+}
+
+#hero-container {
+  margin: 0 auto;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  z-index: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    font-size: 2.5rem;
+    padding: 0px;
+  }
+
+  h1,
+  h2 {
+    color: white;
+  }
+}
+
+#hero-image {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  object-fit: cover;
+  display: block;
+  z-index: 0;
+  zoom: 1.5;
+  transform: scale(1.5);
+  transition: all 0.5s ease-out;
+}
+
+.is-changing #hero-image {
+  transform: scale(1.5);
+  opacity: 0;
+  zoom: 1.5;
+}
+
+.is-changed #hero-image {
+  transform: scale(1);
+  zoom: 0;
+  opacity: 0.7 !important;
+}
+
+/*Add spacing to element before footer */
+/*ion-content ::ng-deep > *:nth-last-child(2) {
+  padding-bottom: 60px;
+}*/
+
+#main-content {
+  /*max-width: 1200px;*/
+  margin: 0 auto;
+}
+
+.mod-heading {
+  & > h1,
+  & > h2,
+  & > h3 {
+    padding: 40px 0px 10px;
+    margin: 0px;
+  }
+}
+
+.mod-content {
+  padding: 10px 0px 40px;
+}
+
+.col{
+  position:relative;
+}
+
+.row{
+  position:relative;
+}
+
+.col-1 {
+  .row {
+    .col {
+      flex: 1 100%;
+      text-align: center;
+      padding: 20vh 0px;
+      margin: 0px auto;
+      max-width: 500px;
+
+      h2 {
+        padding-top: 0px;
+        padding-bottom: 20px;
+        max-width: 300px;
+        margin: 0 auto;
+      }
+    }
+  }
+}
+
+.col-2 {
+  .row {
+    .col {
+      flex: 1 50%; // Adjust as needed
+      // other column styles...
+    }
+  }
+
+  /*&:nth-child(even) .row {
+      flex-direction: row-reverse;
+      .col {
+      }
+    }*/
+}
+
+.col-3 {
+  ion-card {
+    width: 33%;
+    margin: 1%;
+    max-width: 220px;
+    text-align: center;
+  }
+  .icon {
+    padding: 60px;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+  .row {
+    margin: 0 auto;
+    justify-content: center;
+    padding: 0px;
+
+    .col {
+      flex: 1 33%;
+      text-align: center;
+      padding: 0px;
+      margin: 0px;
+
+      h2 {
+        padding-top: 0px;
+        padding-bottom: 20px;
+      }
+
+      h3 {
+        font-size: 18px;
+        border-bottom: 2px black solid;
+        width: auto;
+        display: table;
+        text-align: center;
+        margin: 0 auto;
+        height: 50px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+
+      .content {
+        padding: 20px;
+        font-size: 12px;
+      }
+
+      .content p {
+        font-size: 6px !important;
+      }
+    }
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%; // Adjust as needed
+  // other row styles...
+
+  .col-image {
+    width: 50%;
+    img {
+      object-fit: cover;
+      width: 100%;
+      min-height: 500px;
+      max-height: 700px;
+      vertical-align: top;
+    }
+  }
+  .col-content {
+    padding: 20px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; // Horizontally center the content
+    align-items: center; // Vertically center the content
+    .content-wrap {
+      max-width: 350px;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    flex-direction: column; // Stack columns underneath each other for mobile devices
+
+    &.col-2-left-content {
+      flex-direction: column-reverse !important;
+    }
+
+    &:nth-child(even) {
+      flex-direction: column;
+    }
+    h2 {
+      text-align: center;
+    }
+    .col {
+      width: 100% !important;
+      flex: 1 100% !important;
+    }
+
+    .col-image {
+      width: 100% !important;
+      img {
+        object-fit: cover;
+        width: 100%;
+        max-height: 350px;
+      }
+    }
+    .col-content {
+      text-align: center;
+    }
+  }
+}
+
+/* footer */
+
+#copyright-notice {
+  padding: 40px 0px;
+  border-top: solid 1px white;
+  width: 100%;
+  display: table;
+  margin-top: 40px;
+}
+
+#footer {
+  margin-top: 0px !important;
+  display: table !important;
+  position: relative !important;
+  height: 500px;
+  width: 100%;
+  background: black;
+  * {
+    color: white;
+  }
+}
+
+#footer-wrap {
+  position: absolute;
+  bottom: 50px;
+  padding: 20px;
+  width: 100%;
+}
+
+#footer .col-2 {
+  display: flex;
+  flex-direction: column;
+}
+
+#footer .col-2 .social-icon-link {
+  text-align: right;
+  float: right;
+  display: block;
+  padding-bottom: 3px;
+}
+
+$colors: #ff7e5f, #feb47b, #ff7e5f, #86a8e7, #91eae4, #86a8e7;
+
+@mixin gradient-animation() {
+  background: linear-gradient(270deg, $colors);
+  background-size: 400% 400%;
+
+  animation: gradient 15s ease infinite;
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+}
+
+.generating,
+.generated {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  @include gradient-animation;
+}
+
+/* Modules */
+
+.mod-faq, .mod-form{
+  width:50vw;
+  max-width:500px;
+  margin:0 auto;
+}
+
+.mod-video, .mod-youtube{
+  width:100%;
+  margin:0 auto;
+  padding:0px;
+  min-height:350px;
+}
+
+.module > div{
+  margin: 0 auto;
+}
+
+/* Editor */
+
+.editor-panel{
+  position:absolute;
+  top:0;
+  z-index:100000;
+
+  ion-button{
+    min-width:50px!important;
+  }
+}
+
+.editor-panel-col{
+  right:0;
+}
+
+.editor-panel-row{
+  left:0;
+}
+
+/* Site */
+
+::ng-deep .is-site .main-header{
+  display:none!important;
+}
+
+[contentEditable=true]:empty:not(:focus):before {
+  content: attr(data-text);
+  opacity:0.5;
+}
+
+.row.col-1-empty{
+  display:none;
+}
+
+.layout.col-1 .row.module{
+  padding-bottom: 20vh;
+}
+
+/* Form */
+
+
+
+/* Form Navigation */
+
+.form-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background-color:black;
+  margin:0;
+  padding:0;
+  left:0;
+  z-index:10000;
+}
+
+.form-nav ion-button:first-child {
+  order: 1;
+}
+
+.form-nav ion-button:nth-child(2) {
+  order: 2;
+  //margin-left: auto;
+}
+
+.form-nav ion-button:nth-child(3) {
+  order: 3;
+}
+
+.form-nav ion-button:last-child {
+  order: 4;
+}
+
+form h2, form p{
+  text-align:center;
+}
+
+form h2{
+  padding-top:0px;
+}
+
+/* Holding */
+
+#holdingPanel{
+  ion-icon{
+    font-size:40px;
+    text-align:center;
+  }
+  text-align:center;
+} 
