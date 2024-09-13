@@ -1,4 +1,4 @@
- import { Input, Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -17,7 +17,6 @@ import { CoreService } from '../../../../services/core.service';
   //imports:[IonicModule]
 })
 export class MailchimpComponent implements OnInit {
-  
   @Input() params: any = {
     type: 'default',
     heading: '',
@@ -67,48 +66,43 @@ export class MailchimpComponent implements OnInit {
             key: 'submit',
             name: 'Apply',
             type: 'submit',
-            
           },
         ],
       },
     },
   };
-  
+
   public html: SafeHtml = '';
-  
+
   constructor(
     public service: CoreService,
     public navCtrl: NavController,
     public router: Router,
     public lib: Library,
-    private sanitizer: DomSanitizer,
+    private sanitizer: DomSanitizer
   ) {}
-  
-  
- async ngOnInit() {
+
+  async ngOnInit() {
     // Wait for the API to be ready
     if (this.params == null) return;
 
     console.log('ngoninit: mailchimp');
-    
+
     this.doForm();
 
     console.log(this.params);
-
 
     switch (this.params.type) {
       case 'default':
         break;
     }
-    
   }
-  
-  doForm(){
+
+  doForm() {
     //Handle any input values from form
-    this.params.settings.form.fields.forEach((field:any) => {
-      if(this.params.hasOwnProperty(field.key)) this.params[field.key] = field.value;
+    this.params.settings.form.fields.forEach((field: any) => {
+      if (this.params.hasOwnProperty(field.key))
+        this.params[field.key] = field.value;
     });
   }
-  
- 
 }
