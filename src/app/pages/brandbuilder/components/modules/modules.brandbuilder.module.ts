@@ -14,6 +14,7 @@ import { FormModule } from '../../../components/form/form.module';
 import { AccordionModule } from '../../../components/accordion/accordion.module';
 import { GalleryModule } from '../../../components/gallery/gallery.module';
 import { VideoModule } from 'src/app/pages/components/video/video.module';
+import { MailchimpModule  } from '../mailchimp/mailchimp.brandbuilder.module'; 
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { VideoModule } from 'src/app/pages/components/video/video.module';
     AccordionModule,
     GalleryModule,
     VideoModule,
+    MailchimpModule
   ],
   declarations: [ModulesComponent, DynamicWrapperComponent],
   exports: [ModulesComponent],

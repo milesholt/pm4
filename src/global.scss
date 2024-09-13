@@ -131,6 +131,8 @@ ion-button, .main-button{
   min-height: 50px;
   font-weight: 700;
   color:white;
+  background-color:black;
+  border:none;
 }
 
 ion-button.inverse{
@@ -267,4 +269,10 @@ ion-textarea.form-input textarea{
   top:inherit!important;
   left:inherit!important;
   position:relative!important;
+}
+
+/* Input */
+
+input{
+ color:black;
 }
