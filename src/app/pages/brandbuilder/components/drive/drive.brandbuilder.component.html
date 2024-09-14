@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Select Google Drive Image</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button (click)="signIn()">Login with Google</ion-button>
+  <ion-list *ngIf="files.length > 0">
+    <ion-item *ngFor="let file of files" (click)="selectFile(file)">
+      <img [src]="file.webContentLink" width="100px" />
+      <ion-label>{{ file.name }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div *ngIf="selectedFile">
+    <h3>Selected Image:</h3>
+    <img [src]="selectedFile.webContentLink" width="300px" />
+  </div>
+</ion-content>

@@ -31,6 +31,7 @@ import { PexelsService } from './external/pexels/pexels.service';
 import { InstagramService } from './external/instagram/instagram.service';
 import { StripeService } from './external/stripe/stripe.service';
 import { CloudflareService } from './external/cloudflare/cloudflare.service';
+import { GoogleDriveService } from './external/drive/drive.service';
 
 import { ModalService } from './internal/ModalService/modal.service';
 
@@ -65,7 +66,8 @@ export class CoreService {
     public instagram: InstagramService,
     public stripe: StripeService,
     public cloudflare: CloudflareService,
-    public modal: ModalService
+    public modal: ModalService,
+    public drive: GoogleDriveService
   ) {}
 }
 

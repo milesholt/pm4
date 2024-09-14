@@ -68,6 +68,11 @@ export class FormComponent implements OnInit, AfterViewInit {
             type: 'text',
             placeholder: 'Enter your reply-to address (optional)',
           },
+          {
+            key: 'submit',
+            name: 'Apply',
+            type: 'submit',
+          },
         ],
       },
     },
@@ -256,10 +261,8 @@ export class FormComponent implements OnInit, AfterViewInit {
       this.doCheck();
     });
   }
-  
-  
-  
-  test(){
+
+  test() {
     console.log('test');
   }
 
@@ -490,9 +493,9 @@ export class FormComponent implements OnInit, AfterViewInit {
     this.canSubmit = true;
     //console.log(e);
   }
-  
+
   //generic edit function
-  async edit(){
+  async edit() {
     console.log('edit comp');
     this.editForm();
   }
@@ -519,11 +522,24 @@ export class FormComponent implements OnInit, AfterViewInit {
       .objKeys(field)
       .filter((key: any) => !['classes', 'key'].includes(key))
       .filter((key: any) =>
-        ['textarea','text'].includes(field.type) ? !['options'].includes(key) : key
-      ).filter((key: any) =>
+        ['textarea', 'text'].includes(field.type)
+          ? !['options'].includes(key)
+          : key
+      )
+      .filter((key: any) =>
         field.type == 'checkbox' ? !['value'].includes(key) : key
-      ).filter((key: any) =>
-        field.type == 'submit' ? !['autogrow','options','autocomplete','required','placeholder','value'].includes(key) : key
+      )
+      .filter((key: any) =>
+        field.type == 'submit'
+          ? ![
+              'autogrow',
+              'options',
+              'autocomplete',
+              'required',
+              'placeholder',
+              'value',
+            ].includes(key)
+          : key
       );
     return keys;
   }
@@ -535,8 +551,8 @@ export class FormComponent implements OnInit, AfterViewInit {
     field: any,
     idx: number
   ) {
-  let inputValue = event.target.value;
-    
+    let inputValue = event.target.value;
+
     //change key property depending on Name property
     if (key == 'name') {
       inputValue = this.fields.get('name')?.value || '';
@@ -577,10 +593,10 @@ export class FormComponent implements OnInit, AfterViewInit {
       if (!field.hasOwnProperty('options') || field.options.length == 0)
         field.options = this.fields.get('options')?.value;
     }
-    
+
     this.fields.get(key)?.setValue(inputValue);
-    
-    return true;    
+
+    return true;
   }
 
   async generateKey(name: string, field: any) {
@@ -628,7 +644,7 @@ export class FormComponent implements OnInit, AfterViewInit {
   async editField(field: any, idx: number) {
     this.isEditField = true;
     this.editFieldIdx = idx;
-    
+
     //clear before preparing form
     //field.value = this.el.fields[idx].value;
 
@@ -647,7 +663,7 @@ export class FormComponent implements OnInit, AfterViewInit {
 
   generateFieldsForm(formData: any) {
     const formGroup: any = {};
-    
+
     console.log(formData);
 
     // Loop through the default form controls
@@ -663,7 +679,7 @@ export class FormComponent implements OnInit, AfterViewInit {
       } else {
         formGroup[key] = new FormControl(defaultValue, validators);
       }*/
-      
+
       formGroup[key] = '';
       if (this.lib.isNotEmpty(formDataValue)) {
         formGroup[key] = new FormControl(formDataValue, validators);
@@ -725,12 +741,11 @@ export class FormComponent implements OnInit, AfterViewInit {
       [rows[index + 1], rows[index]] = [rows[index], rows[index + 1]];
     }
   }
-  
-  
-  reorderFields(event:any){
+
+  reorderFields(event: any) {
     const movedItem = this.el.fields.splice(event.detail.from, 1)[0]; // Remove the item
-  this.el.fields.splice(event.detail.to, 0, movedItem); // Insert it at the new position
-  event.detail.complete(); 
+    this.el.fields.splice(event.detail.to, 0, movedItem); // Insert it at the new position
+    event.detail.complete();
   }
 
   addOption(options: any) {

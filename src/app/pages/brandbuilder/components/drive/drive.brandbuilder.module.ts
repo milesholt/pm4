@@ -3,14 +3,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { EmbedComponent } from './embed.brandbuilder.component';
-
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { DriveComponent } from './drive.brandbuilder.component';
 
 @NgModule({
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [IonicModule, CommonModule, FormsModule],
-  declarations: [EmbedComponent],
-  exports: [EmbedComponent],
+  declarations: [DriveComponent],
+  exports: [DriveComponent],
 })
-export class EmbedModule {}
+export class DriveModule {}

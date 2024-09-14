@@ -1,4 +1,4 @@
-  import {
+import {
   Component,
   ViewContainerRef,
   AfterViewInit,
@@ -7,7 +7,7 @@
   Output,
   EventEmitter,
   OnInit,
-  TemplateRef
+  TemplateRef,
 } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
@@ -19,7 +19,7 @@ import { CoreService } from '../../../../services/core.service';
 
 import { DynamicComponent } from '../../../components/dynamic/dynamic.component.interface';
 
-import { DynamicWrapperComponent  } from 'src/app/pages/components/dynamic/dynamic.component';
+import { DynamicWrapperComponent } from 'src/app/pages/components/dynamic/dynamic.component';
 
 import { FormComponent } from 'src/app/pages/components/form/form.component';
 import { AccordionComponent } from 'src/app/pages/components/accordion/accordion.component';
@@ -27,9 +27,11 @@ import { GalleryComponent } from 'src/app/pages/components/gallery/gallery.compo
 import { VideoComponent } from 'src/app/pages/components/video/video.component';
 import { SliderComponent } from 'src/app/pages/components/slider/slider.component';
 
-import { EmbedComponent  } from '../embed/embed.brandbuilder.component';
+import { DriveComponent } from '../drive/drive.brandbuilder.component';
 
-import { MailchimpComponent } from '../mailchimp/mailchimp.brandbuilder.component'; 
+import { EmbedComponent } from '../embed/embed.brandbuilder.component';
+
+import { MailchimpComponent } from '../mailchimp/mailchimp.brandbuilder.component';
 
 import { ModalController } from '@ionic/angular';
 import { ModalComponent } from '../../../components/modal/modal.component';
@@ -53,9 +55,9 @@ export class SomeComponent implements DynamicComponent {
 })
 export class ModulesComponent implements OnInit {
   @Input() name: string | null = null;
-  @Input() params: any = {};
+  @Input() params: any | null = null;
   @Output() callback = new EventEmitter();
-  
+
   @ViewChild('settingsTemplate') settingsTemplate!: TemplateRef<any>;
   @ViewChild('libraryTemplate') libraryTemplate!: TemplateRef<any>;
 
@@ -64,8 +66,9 @@ export class ModulesComponent implements OnInit {
     static: true,
   })
   dynamicComponentContainer!: ViewContainerRef;
-  
-  @ViewChild('dynamicMod', { static: false }) dynamicMod!: DynamicWrapperComponent;
+
+  @ViewChild('dynamicMod', { static: false })
+  dynamicMod!: DynamicWrapperComponent;
 
   modules: any = [
     {
@@ -121,7 +124,7 @@ export class ModulesComponent implements OnInit {
     {
       name: 'googledrive',
       title: 'Google Drive',
-      component: null,
+      component: DriveComponent,
       icon: 'logo-google',
       params: {},
     },
@@ -160,12 +163,14 @@ export class ModulesComponent implements OnInit {
     private modalController: ModalController
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.loadParams();
     this.loadActiveModule();
-    this.loadParams();
   }
 
   loadParams() {
+    //console.log('loading params');
+
     this.modules.forEach((module: any) => {
       if (module.component == null) return;
 
@@ -174,13 +179,16 @@ export class ModulesComponent implements OnInit {
         module.component
       );
 
-      console.log(componentRef.instance);
+      //console.log(componentRef.instance);
 
       // Access the params of the child component
       const modParams = componentRef.instance.params ?? {};
 
       // Assign params back to the module
       module.params = modParams;
+
+      //console.log('mod should have params');
+      //console.log(module);
 
       // Destroy the component instance since it's not needed anymore
       componentRef.destroy();
@@ -189,22 +197,35 @@ export class ModulesComponent implements OnInit {
 
   loadActiveModule(name: string | null = this.name) {
     if (name == null) return;
+
+    //load related module from list
+    const mod: any =
+      this.modules.filter((mod: any) => mod.name === name)[0] ?? null;
+
+    //load set params, otherwise copy default loaded params from module component
+    this.params =
+      this.params !== null && !this.lib.isEmpty(this.params)
+        ? this.params
+        : this.lib.deepCopy(mod?.params || {});
+
     this.activeModule = {
       name: this.name,
       params: this.params,
     };
     this.isActiveModule = true;
   }
-  
+
   callDynamicMethod(methodName: string) {
     if (this.dynamicMod && this.dynamicMod.componentRef) {
       const componentInstance = this.dynamicMod.componentRef.instance;
-      
+
       // Ensure the method exists on the component
       if (typeof componentInstance[methodName] === 'function') {
         componentInstance[methodName](); // Dynamically call the method
       } else {
-        console.error(`${methodName} is not available on the dynamic component`);
+        console.error(
+          `${methodName} is not available on the dynamic component`
+        );
       }
     }
   }
@@ -227,8 +248,8 @@ export class ModulesComponent implements OnInit {
     this.isActiveModule = false;
     this.activeModule = {};
   }
-  
-  async openLibrary(){
+
+  async openLibrary() {
     const result = await this.service.modal.openModal(
       this.libraryTemplate,
       this.modules
@@ -236,7 +257,6 @@ export class ModulesComponent implements OnInit {
 
     if (result) {
       console.log('Library closed with data:', result);
-      
     }
   }
 

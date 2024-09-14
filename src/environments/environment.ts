@@ -38,6 +38,29 @@ export const environment = {
       API_KEY: 'AIzaSyBSBb3MeOjZVv3Jv5iWmqN-InCRj3mcnf8',
     },
   },
+  google: {
+    apiKey: 'AIzaSyA4MovvYg4hn40t78B8rFYY2CN4yequ1I0',
+    drive: {
+      web: {
+        client_id:
+          '398310527509-ui04p8ppukh1tsmhq1b4nqonpekq6d0n.apps.googleusercontent.com',
+        project_id: 'brand-builder-ai',
+        auth_uri: 'https://accounts.google.com/o/oauth2/auth',
+        token_uri: 'https://oauth2.googleapis.com/token',
+        auth_provider_x509_cert_url:
+          'https://www.googleapis.com/oauth2/v1/certs',
+        client_secret: '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',
+        redirect_uris: [
+          'https://brand-builder-ai.firebaseapp.com/__/auth/handler',
+        ],
+        javascript_origins: [
+          'http://localhost',
+          'http://localhost:5000',
+          'https://brand-builder-ai.firebaseapp.com',
+        ],
+      },
+    },
+  },
   url: 'https://obscura.solutions',
   title: 'Obscura Solutions',
 };

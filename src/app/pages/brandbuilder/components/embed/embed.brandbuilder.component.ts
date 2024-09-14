@@ -10,25 +10,25 @@ import { CoreService } from '../../../../services/core.service';
 
 @Component({
   //standalone: true,
-  selector: 'app-nav',
+  selector: 'app-embed-comp',
   templateUrl: './embed.brandbuilder.component.html',
   styleUrls: ['./embed.brandbuilder.component.scss'],
   providers: [CoreService, Library],
   //imports:[IonicModule]
 })
 export class EmbedComponent implements OnInit {
-  
   public embedHtml: SafeHtml = '';
-  
+
   constructor(
     public service: CoreService,
     public navCtrl: NavController,
     public router: Router,
     public lib: Library,
-    private sanitizer: DomSanitizer,
+    private sanitizer: DomSanitizer
   ) {}
-  
-    @Input() params: any = {
+
+  @Input() code: string | boolean = false;
+  @Input() params: any = {
     type: 'default',
     code: '',
     width: '100%',
@@ -63,43 +63,41 @@ export class EmbedComponent implements OnInit {
             key: 'submit',
             name: 'Apply',
             type: 'submit',
-            
           },
         ],
       },
     },
   };
-  
 
   async ngOnInit() {
     // Wait for the API to be ready
     if (this.params == null) return;
 
     console.log('ngoninit: embed');
-    
+
     await this.doForm();
 
     console.log(this.params);
-
 
     switch (this.params.type) {
       case 'default':
         break;
     }
-    
+
     this.doEmbed();
   }
-  
-  
-  doForm(){
+
+  doForm() {
     //Handle any input values from form
-    this.params.settings.form.fields.forEach((field:any) => {
-      if(this.params.hasOwnProperty(field.key)) this.params[field.key] = field.value;
+    this.params.settings.form.fields.forEach((field: any) => {
+      if (this.params.hasOwnProperty(field.key))
+        this.params[field.key] = field.value;
     });
   }
-  
-  doEmbed(){
-   const embedCode = this.params.code;
+
+  doEmbed() {
+    let embedCode = this.params.code;
+    if (!!this.code) embedCode = this.code;
     const width = this.params.width;
     const height = this.params.height;
 

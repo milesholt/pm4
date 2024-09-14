@@ -1,38 +1,33 @@
-
 <!--Load module if one is active-->
 <div *ngIf="isActiveModule && !isSettings" class="ion-padding">
-  
-
   <div
     *ngFor="let module of modules; let midx = index"
     class="module-container"
   >
     <div *ngIf="module.name == activeModule.name" class="module">
-    
-    <div *ngIf="service.auth.isLoggedIn" class="admin-panel">
-    <ion-button size="small" (click)="callDynamicMethod('edit')">
-      <ion-icon name="create"></ion-icon>
-      Edit
-    </ion-button>
-    <ion-button size="small" (click)="showSettings()">
-    <ion-icon name="cog-outline"></ion-icon>
-    Settings</ion-button>
-    <ion-button size="small" (click)="removeModule(); openLibrary()">
-    <ion-icon name="grid-outline"></ion-icon>
-    Change</ion-button>
-    
-  </div>
-    
-    
+      <div *ngIf="service.auth.isLoggedIn" class="admin-panel">
+        <ion-button size="small" (click)="callDynamicMethod('edit')">
+          <ion-icon name="create"></ion-icon>
+          Edit
+        </ion-button>
+        <ion-button size="small" (click)="showSettings()">
+          <ion-icon name="cog-outline"></ion-icon>
+          Settings</ion-button
+        >
+        <ion-button size="small" (click)="removeModule(); openLibrary()">
+          <ion-icon name="grid-outline"></ion-icon>
+          Change</ion-button
+        >
+      </div>
+
       <app-dynamic-wrapper
-      #dynamicMod
+        #dynamicMod
         [component]="module.component"
         [params]="activeModule.params"
       ></app-dynamic-wrapper>
     </div>
   </div>
 </div>
-
 
 <!-- Load module library if none active-->
 <ng-template #libraryTemplate let-modules="context">
@@ -43,7 +38,10 @@
   </ion-header>
 
   <div class="admin-panel">
-    <ion-button (click)="isActiveModule = true; loadActiveModule(); service.modal.dismiss()"
+    <ion-button
+      (click)="
+        isActiveModule = true; loadActiveModule(); service.modal.dismiss()
+      "
       >Cancel</ion-button
     >
   </div>
@@ -73,10 +71,8 @@
   </div>
 </ng-template>
 
-
 <!-- Show module settings-->
 <ng-template #settingsTemplate let-activeModule="context">
-
   <ion-header>
     <ion-toolbar>
       <ion-title>Module settings</ion-title>
@@ -88,20 +84,16 @@
   </div>
 
   <p>Module settings here</p>
-  
+
   <div *ngIf="activeModule.params">
-
-  {{ activeModule.params | json }}
-
-  <app-form-comp
-    [params]="activeModule.params"
-    [el]="activeModule.params.settings.form"
-    (callback)="handleSettingsCallback($event)"
-  ></app-form-comp>
-  
- </div>
+    <app-form-comp
+      #formComp
+      [params]="activeModule.params"
+      [el]="activeModule.params.settings.form"
+      (callback)="handleSettingsCallback($event)"
+    ></app-form-comp>
+  </div>
 </ng-template>
-
 
 <!-- This is to create dynamic component for module -->
 <ng-template #dynamicComponentContainer></ng-template>

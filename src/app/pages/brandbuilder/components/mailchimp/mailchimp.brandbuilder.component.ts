@@ -22,6 +22,7 @@ export class MailchimpComponent implements OnInit {
     heading: '',
     userid: '',
     listid: '',
+    code: '',
     settings: {
       form: {
         action: 'returnform',
@@ -47,6 +48,13 @@ export class MailchimpComponent implements OnInit {
             value: '',
             type: 'text',
             placeholder: 'Enter your Mailing List ID',
+          },
+          {
+            key: 'code',
+            name: 'Embedded Form Code',
+            value: '',
+            type: 'text',
+            placeholder: 'Or enter your Mailchimp Embedded Form code here',
           },
           {
             key: 'width',

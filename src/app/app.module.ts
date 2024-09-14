@@ -30,6 +30,8 @@ import { QuantityShopModule } from './pages/shop/cart/components/quantity/quanti
 
 import { FooterModule } from './pages/components/footer/footer.module';
 
+import { ContentModule } from './pages/content/content.module';
+
 //Error Handling
 import { GlobalErrorHandler } from './error-handling';
 
@@ -54,6 +56,7 @@ import { GlobalErrorHandler } from './error-handling';
     FooterModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    ContentModule,
     //QuantityShopModule,
     //SafeHtmlPipe,
   ],
@@ -65,7 +68,7 @@ import { GlobalErrorHandler } from './error-handling';
     CookieService,
     //FormatPipe,
     //SafeHtmlPipe,
-    { provide: ErrorHandler, useClass: GlobalErrorHandler},
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent],

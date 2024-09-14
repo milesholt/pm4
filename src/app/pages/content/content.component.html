@@ -143,9 +143,9 @@
                   <div class="mod-form">
                     <h2>{{ mod.title }}</h2>
                     <div *ngIf="mod.value" [innerHTML]="mod.value"></div>
-                    <app-contactform-comp
+                    <app-form-comp
                       [el]="mod.form ? mod.form : false"
-                    ></app-contactform-comp>
+                    ></app-form-comp>
                   </div>
                 </div>
               </div>
