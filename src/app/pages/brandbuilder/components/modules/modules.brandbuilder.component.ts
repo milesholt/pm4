@@ -126,7 +126,7 @@ export class ModulesComponent implements OnInit {
       title: 'Google Drive',
       component: DriveComponent,
       icon: 'logo-google',
-      params: {},
+      params: { skipSettings: true },
     },
     {
       name: 'video',
@@ -241,7 +241,14 @@ export class ModulesComponent implements OnInit {
     };
     console.log(this.activeModule);
     this.service.modal.dismiss();
-    this.showSettings();
+    const skipSettings = this.activeModule.params?.skipSettings ?? false;
+    console.log(this.activeModule.params);
+    if (!skipSettings) {
+      this.showSettings();
+    } else {
+      this.isActiveModule = true;
+    }
+    //
   }
 
   removeModule() {

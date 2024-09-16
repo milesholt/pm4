@@ -17,10 +17,10 @@ export class GoogleDriveService {
   ];
   private SCOPES = 'https://www.googleapis.com/auth/drive.readonly';
 
-  private gapiLoaded$ = new BehaviorSubject<boolean>(false);
+  public gapiLoaded$ = new BehaviorSubject<boolean>(false);
 
   constructor() {
-    this.loadGapi();
+    this.loadGapiClient();
   }
 
   private loadGapi(): void {
@@ -40,6 +40,34 @@ export class GoogleDriveService {
     });
   }
 
+  private loadGapiClient() {
+    // Load gapi client
+    const script = document.createElement('script');
+    script.src = 'https://apis.google.com/js/api.js';
+    script.onload = () => this.initializeGapiClient();
+    document.body.appendChild(script);
+  }
+
+  public initializeGapiClient() {
+    gapi.load('client:auth2', () => {
+      gapi.client
+        .init({
+          apiKey: this.API_KEY,
+          clientId: this.CLIENT_ID,
+          discoveryDocs: this.DISCOVERY_DOCS,
+          scope: this.SCOPES,
+        })
+        .then(() => {
+          console.log('GAPI client initialized');
+          this.gapiLoaded$.next(true);
+        })
+        .catch((error: any) => {
+          console.error('Error initializing GAPI client', error);
+          this.gapiLoaded$.next(false);
+        });
+    });
+  }
+
   login() {
     return gapi.auth2.getAuthInstance().signIn();
   }
@@ -56,6 +84,13 @@ export class GoogleDriveService {
     return gapi.client.drive.files.list({
       q: "mimeType contains 'image/'",
       fields: 'files(id, name, mimeType, webViewLink, webContentLink)',
+    });
+  }
+
+  listFileContent(fileId: string) {
+    return gapi.client.drive.files.get({
+      fileId: fileId,
+      alt: 'media',
     });
   }
 }
