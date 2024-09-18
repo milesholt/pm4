@@ -12,6 +12,7 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 import { Library } from '../../../../app.library';
 import { CoreService } from '../../../../services/core.service';
+import { response } from 'express';
 
 @Component({
   //standalone: true,
@@ -24,8 +25,13 @@ import { CoreService } from '../../../../services/core.service';
 export class DriveComponent implements OnInit {
   files: any[] = [];
   selectedFile: string | null = null;
+  selectedImage: string | null = null;
+
   isGapiInitialized = false;
   accessToken: string = '';
+
+  recentFolders: any[] = [];
+  navigationStack: any[] = [];
 
   @Input() params: any = {
     type: 'default',
@@ -116,17 +122,75 @@ export class DriveComponent implements OnInit {
     });
   }
 
-  listFiles() {
+  listImages() {
     this.service.drive.listImages().then((response: any) => {
       this.files = response.result.files;
     });
+  }
+
+  listFiles(folderId: string = 'root') {
+    this.service.drive
+      .listFiles()
+      .then((response: any) => {
+        this.files = response.result.files;
+        this.updateRecentFolders(folderId); // Keep track of recent folders
+      })
+      .catch((error: any) => {
+        console.error('Error fetching files:', error);
+      });
+  }
+
+  openFolder(file: any) {
+    if (file.mimeType === 'application/vnd.google-apps.folder') {
+      this.listFiles(file.id); // Open the folder
+      this.navigationStack.push(file.id); // Keep track of navigation
+    }
+  }
+
+  back() {
+    if (this.navigationStack.length > 1) {
+      this.navigationStack.pop(); // Remove the current folder
+      const previousFolderId =
+        this.navigationStack[this.navigationStack.length - 1];
+      this.listFiles(previousFolderId); // Navigate back to the previous folder
+    }
+  }
+
+  updateRecentFolders(folderId: string) {
+    const existingIndex = this.recentFolders.findIndex((id) => id === folderId);
+    if (existingIndex > -1) {
+      this.recentFolders.splice(existingIndex, 1); // Remove duplicate
+    }
+    this.recentFolders.unshift(folderId); // Add to the top of the list
+    if (this.recentFolders.length > 10) {
+      this.recentFolders.pop(); // Keep the list limited to 10
+    }
+  }
+
+  checkFile(file: any) {
+    if (file.mimeType === 'application/vnd.google-apps.folder') {
+      // It's a folder
+      this.openFolder(file);
+    } else if (file.mimeType.startsWith('image/')) {
+      // It's an image
+      //this.selectImage(file);
+      this.selectedFile = file;
+      this.doImage(file);
+    } else if (file.mimeType.startsWith('video/')) {
+      // It's a video
+      this.selectedFile = file;
+    }
   }
 
   /*selectFile(file: any) {
     this.selectedFile = file;
   }*/
 
-  selectFile(file: any) {
+  getFileUrl(file: any): string {
+    return `https://www.googleapis.com/drive/v3/files/${file.id}?alt=media&access_token=${this.accessToken}`;
+  }
+
+  doImage(file: any) {
     //alert('selected file');
     /* this.service.drive.listFileContent(file.id).then((response: any) => {
       //alert(response.body);
@@ -166,7 +230,7 @@ export class DriveComponent implements OnInit {
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      this.selectedFile = reader.result as string; // Base64 string
+      this.selectedImage = reader.result as string; // Base64 string
     };
 
     reader.onerror = () => {

@@ -80,6 +80,14 @@ export class GoogleDriveService {
     return gapi.auth2.getAuthInstance().isSignedIn.get();
   }
 
+  listFiles(folderId: string = 'root') {
+    return gapi.client.drive.files.list({
+      q: `'${folderId}' in parents and trashed = false`, // List files in a folder
+      fields: 'files(id, name, mimeType, parents)', // Fetch only necessary fields
+      pageSize: 100, // You can adjust this for pagination if needed
+    });
+  }
+
   listImages() {
     return gapi.client.drive.files.list({
       q: "mimeType contains 'image/'",
