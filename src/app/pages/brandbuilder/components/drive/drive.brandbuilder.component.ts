@@ -24,7 +24,7 @@ import { response } from 'express';
 })
 export class DriveComponent implements OnInit {
   files: any[] = [];
-  selectedFile: string | null = null;
+  selectedFile: any = null;
   selectedImage: string | null = null;
 
   isGapiInitialized = false;
@@ -130,7 +130,7 @@ export class DriveComponent implements OnInit {
 
   listFiles(folderId: string = 'root') {
     this.service.drive
-      .listFiles()
+      .listFiles(folderId)
       .then((response: any) => {
         this.files = response.result.files;
         this.updateRecentFolders(folderId); // Keep track of recent folders

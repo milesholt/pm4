@@ -22,15 +22,14 @@
     >Go Back</ion-button
   >
 
-  <select (change)="listFiles($event.target.value)">
+  <!--  <select (change)="listFiles($event.target.value)">
     <option *ngFor="let folderId of recentFolders" [value]="folderId">
       {{ folderId }}
-      <!-- You need a method to map folderId to names -->
-    </option>
-  </select>
+     </option>
+  </select>-->
 
   <ion-list>
-    <ion-item *ngFor="let file of files" (click)="selectFile(file)">
+    <ion-item *ngFor="let file of files" (click)="checkFile(file)">
       <ion-label>{{ file.name }}</ion-label>
     </ion-item>
   </ion-list>
