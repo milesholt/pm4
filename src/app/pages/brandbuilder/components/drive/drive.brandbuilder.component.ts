@@ -33,6 +33,8 @@ export class DriveComponent implements OnInit {
   recentFolders: any[] = [];
   navigationStack: any[] = [];
 
+  viewMode: string = 'grid';
+
   @Input() params: any = {
     type: 'default',
     fileid: '',
@@ -132,12 +134,22 @@ export class DriveComponent implements OnInit {
     this.service.drive
       .listFiles(folderId)
       .then((response: any) => {
-        this.files = response.result.files;
+        //this.files = response.result.files;
+        this.files = response.result.files.map((file: any) => ({
+          ...file,
+          thumbnail:
+            file.thumbnailLink ||
+            `https://drive.google.com/thumbnail?sz=w80-h80&id=${file.id}`,
+        }));
         this.updateRecentFolders(folderId); // Keep track of recent folders
       })
       .catch((error: any) => {
         console.error('Error fetching files:', error);
       });
+  }
+
+  getFileThumbnail(file: any): string {
+    return file.thumbnail;
   }
 
   openFolder(file: any) {
@@ -167,7 +179,7 @@ export class DriveComponent implements OnInit {
     }
   }
 
-  checkFile(file: any) {
+  doFile(file: any) {
     if (file.mimeType === 'application/vnd.google-apps.folder') {
       // It's a folder
       this.openFolder(file);
@@ -185,6 +197,10 @@ export class DriveComponent implements OnInit {
   /*selectFile(file: any) {
     this.selectedFile = file;
   }*/
+
+  toggleView(mode: string) {
+    this.viewMode = mode;
+  }
 
   getFileUrl(file: any): string {
     return `https://www.googleapis.com/drive/v3/files/${file.id}?alt=media&access_token=${this.accessToken}`;

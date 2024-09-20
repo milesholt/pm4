@@ -28,30 +28,93 @@
      </option>
   </select>-->
 
+  <!--<div class="view-toggle">
+    <button (click)="toggleView('grid')">Grid View</button>
+    <button (click)="toggleView('list')">List View</button>
+  </div>
+
   <ion-list>
     <ion-item *ngFor="let file of files" (click)="checkFile(file)">
       <ion-label>{{ file.name }}</ion-label>
     </ion-item>
   </ion-list>
-</div>
+</div>-->
 
-<div *ngIf="selectedFile !== null">
-  <!--<img
+  <!-- View Toggle Buttons -->
+  <ion-segment [(ngModel)]="viewMode" class="view-toggle">
+    <ion-segment-button value="grid">
+      <ion-icon name="grid-outline"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="list">
+      <ion-icon name="list-outline"></ion-icon>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- File Navigation Container -->
+  <ion-grid [ngClass]="viewMode">
+    <ion-row>
+      <ion-col
+        size="6"
+        size-md="3"
+        *ngFor="let file of files"
+        (click)="doFile(file)"
+      >
+        <ion-card class="file-item">
+          <!-- Folder Icon -->
+          <ng-container
+            *ngIf="file.mimeType === 'application/vnd.google-apps.folder'"
+          >
+            <ion-thumbnail>
+              <ion-icon name="folder" class="folder-icon"></ion-icon>
+            </ion-thumbnail>
+            <ion-card-title>{{ file.name }}</ion-card-title>
+          </ng-container>
+
+          <!-- Image or Video Thumbnail with Type Icon -->
+          <ng-container
+            *ngIf="
+              file.mimeType.startsWith('image/') ||
+              file.mimeType.startsWith('video/')
+            "
+          >
+            <ion-thumbnail class="file-thumbnail">
+              <img [src]="getFileThumbnail(file)" alt="File Thumbnail" />
+              <ion-icon
+                *ngIf="file.mimeType.startsWith('image/')"
+                name="image-outline"
+                class="type-icon"
+              ></ion-icon>
+              <ion-icon
+                *ngIf="file.mimeType.startsWith('video/')"
+                name="videocam-outline"
+                class="type-icon"
+              ></ion-icon>
+            </ion-thumbnail>
+            <ion-card-title>{{ file.name }}</ion-card-title>
+          </ng-container>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div *ngIf="selectedFile !== null">
+    <!--<img
     *ngIf="selectedFile.mimeType.startsWith('image/')"
     [src]="selectedFile"
     width="100%"
   />-->
 
-  <img
-    *ngIf="selectedFile.mimeType.startsWith('image/')"
-    [src]="selectedImage"
-    width="100%"
-  />
-
-  <video *ngIf="selectedFile.mimeType.startsWith('video/')" controls>
-    <source
-      [src]="getFileUrl(selectedFile)"
-      type="{{ selectedFile.mimeType }}"
+    <img
+      *ngIf="selectedFile.mimeType.startsWith('image/')"
+      [src]="selectedImage"
+      width="100%"
     />
-  </video>
+
+    <video *ngIf="selectedFile.mimeType.startsWith('video/')" controls>
+      <source
+        [src]="getFileUrl(selectedFile)"
+        type="{{ selectedFile.mimeType }}"
+      />
+    </video>
+  </div>
 </div>

@@ -81,9 +81,31 @@ export class GoogleDriveService {
   }
 
   listFiles(folderId: string = 'root') {
+    // Define mime types for folders, images, and videos
+    const mimeTypeFilters = [
+      `'application/vnd.google-apps.folder'`, // Folder
+      `'image/jpeg'`, // JPEG image
+      `'image/png'`, // PNG image
+      `'image/gif'`, // GIF image
+      `'image/bmp'`, // BMP image
+      `'image/webp'`, // WebP image
+      `'image/tiff'`, // TIFF image
+      `'video/mp4'`, // MP4 video
+      `'video/x-matroska'`, // MKV video
+      `'video/quicktime'`, // MOV video
+      `'video/x-msvideo'`, // AVI video
+      `'video/mpeg'`, // MPEG video
+    ];
+
+    // Create the query string to filter files
+    const query = `'${folderId}' in parents and trashed = false and (${mimeTypeFilters
+      .map((type) => `mimeType = ${type}`)
+      .join(' or ')})`;
+
     return gapi.client.drive.files.list({
-      q: `'${folderId}' in parents and trashed = false`, // List files in a folder
-      fields: 'files(id, name, mimeType, parents)', // Fetch only necessary fields
+      //q: `'${folderId}' in parents and trashed = false`, // List files in a folder
+      q: query,
+      fields: 'files(id, name, mimeType, thumbnailLink, parents)', // Fetch only necessary fields
       pageSize: 100, // You can adjust this for pagination if needed
     });
   }

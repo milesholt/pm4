@@ -1,0 +1,48 @@
+/* Container Styles */
+.file-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .grid .file-item {
+    margin: 10px;
+  }
+  
+  .list .file-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .file-thumbnail {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  
+  .type-icon {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 20px;
+    height: 20px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+  }
+  
+  .folder-icon {
+    font-size: 60px;
+    color: #3b82f6;
+  }
+  
+  .view-toggle {
+    margin: 16px;
+  }
+  
