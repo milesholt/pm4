@@ -26,6 +26,7 @@ import { response } from 'express';
 export class DriveComponent implements OnInit, AfterViewInit {
   files: any[] = [];
   isFiles: boolean = false;
+  isLoadingFile: boolean = false;
   currentFolderName: string = 'root';
   selectedFile: any = null;
   selectedFileTemp: any = null;
@@ -227,6 +228,7 @@ export class DriveComponent implements OnInit, AfterViewInit {
     } else if (file.mimeType.startsWith('image/')) {
       // It's an image
       //this.selectImage(file);
+      this.isLoadingFile = true;
       this.selectedFile = file;
       this.doImage(file);
     } else if (file.mimeType.startsWith('video/')) {
@@ -287,6 +289,7 @@ export class DriveComponent implements OnInit, AfterViewInit {
 
     reader.onloadend = () => {
       this.selectedImage = reader.result as string; // Base64 string
+      this.isLoadingFile = false;
     };
 
     reader.onerror = () => {

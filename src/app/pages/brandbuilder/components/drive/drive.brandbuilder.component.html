@@ -1,5 +1,4 @@
 <ng-template #iniTemplate let-data="context">
-  <p>Modal</p>
   <ion-button
     *ngIf="selectedFile == null && isGapiInitialized && !isFiles"
     (click)="signIn()"
@@ -21,14 +20,14 @@
     </select>-->
 
     <!-- View Toggle Buttons -->
-    <ion-segment [(ngModel)]="viewMode" class="view-toggle">
+    <!--<ion-segment [(ngModel)]="viewMode" class="view-toggle">
       <ion-segment-button value="grid">
         <ion-icon name="grid-outline"></ion-icon>
       </ion-segment-button>
       <ion-segment-button value="list">
         <ion-icon name="list-outline"></ion-icon>
       </ion-segment-button>
-    </ion-segment>
+    </ion-segment>-->
 
     <div *ngIf="files.length == 0">No images or video in this folder.</div>
 
@@ -83,15 +82,25 @@
 
 <div *ngIf="selectedFile !== null">
   <img
-    *ngIf="selectedFile.mimeType.startsWith('image/')"
+    *ngIf="selectedFile.mimeType.startsWith('image/') && !isLoadingFile"
     [src]="selectedImage"
     width="100%"
   />
 
-  <video *ngIf="selectedFile.mimeType.startsWith('video/')" controls>
+  <video
+    *ngIf="selectedFile.mimeType.startsWith('video/') && !isLoadingFile"
+    controls
+  >
     <source
       [src]="getFileUrl(selectedFile)"
       type="{{ selectedFile.mimeType }}"
     />
   </video>
+
+  <!-- Loading File -->
+  <ion-spinner
+    *ngIf="isLoadingFile"
+    class="center"
+    name="circular"
+  ></ion-spinner>
 </div>
