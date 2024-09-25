@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: true,
+  production: false,
   firebase: {
     apiKey: 'AIzaSyA4MovvYg4hn40t78B8rFYY2CN4yequ1I0',
     authDomain: 'brand-builder-ai.firebaseapp.com',
@@ -18,6 +18,12 @@ export const environment = {
     IG_DEMO_PASSWORD: 'Savelli_1986',
     IG_DEMO_API_KEY: '3fe3a5a3a41355df513eda0ec98230da7d7d9a9e',
   },
+  stripe: {
+    publicTestKey:
+      'pk_test_51PnCeRLAUexwVL9foWee6REcNpBUNz4iSKDpaQ4pLNfKHqBi0iKnjFGfvVbEaWhWcsTlLB0LENTilRaEPYz2ccqH00lck5iZAi',
+    publicLiveKey:
+      'pk_live_51PnCeRLAUexwVL9fY0yhq1faiChvjrCgUjvGUurZU3JnoLdqwRxUDp6HaKDzjg33Uk9y9hsKJe9MxT9nRIJCq5If00ai2cdQw5',
+  },
   ai: {
     web: {
       client_id:
@@ -30,6 +36,29 @@ export const environment = {
     },
     gemini: {
       API_KEY: 'AIzaSyBSBb3MeOjZVv3Jv5iWmqN-InCRj3mcnf8',
+    },
+  },
+  google: {
+    apiKey: 'AIzaSyA4MovvYg4hn40t78B8rFYY2CN4yequ1I0',
+    drive: {
+      web: {
+        client_id:
+          '398310527509-ui04p8ppukh1tsmhq1b4nqonpekq6d0n.apps.googleusercontent.com',
+        project_id: 'brand-builder-ai',
+        auth_uri: 'https://accounts.google.com/o/oauth2/auth',
+        token_uri: 'https://oauth2.googleapis.com/token',
+        auth_provider_x509_cert_url:
+          'https://www.googleapis.com/oauth2/v1/certs',
+        client_secret: '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',
+        redirect_uris: [
+          'https://brand-builder-ai.firebaseapp.com/__/auth/handler',
+        ],
+        javascript_origins: [
+          'http://localhost',
+          'http://localhost:5000',
+          'https://brand-builder-ai.firebaseapp.com',
+        ],
+      },
     },
   },
   url: 'https://obscura.solutions',

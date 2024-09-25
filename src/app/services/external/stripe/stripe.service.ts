@@ -12,7 +12,7 @@ export class StripeService {
   baseUrl = 'https://siteinanhour.com/server';
 
   constructor() {
-    this.stripePromise = loadStripe(environment.stripe.publicTestKey);
+    this.stripePromise = loadStripe(environment.stripe.publicLiveKey);
   }
 
   async createSubscription(

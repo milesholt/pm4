@@ -17,5 +17,7 @@ export class ModalDynamicComponent implements OnInit {
 
   ngOnInit(): void {
     this.modalContext = { ...this.context, isModal: this.isModal };
+    console.log('modalContext');
+    console.log(this.modalContext);
   }
 }

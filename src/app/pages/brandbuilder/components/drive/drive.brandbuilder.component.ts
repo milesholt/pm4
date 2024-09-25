@@ -2,6 +2,7 @@ import {
   Input,
   Component,
   OnInit,
+  AfterViewInit,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
@@ -22,14 +23,17 @@ import { response } from 'express';
   providers: [CoreService, Library],
   //imports:[IonicModule]
 })
-export class DriveComponent implements OnInit {
+export class DriveComponent implements OnInit, AfterViewInit {
   files: any[] = [];
+  isFiles: boolean = false;
+  currentFolderName: string = 'root';
   selectedFile: any = null;
+  selectedFileTemp: any = null;
   selectedImage: string | null = null;
 
   isGapiInitialized = false;
   accessToken: string = '';
-
+  //
   recentFolders: any[] = [];
   navigationStack: any[] = [];
 
@@ -87,8 +91,6 @@ export class DriveComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.selectedFile == null) this.iniModule();
-
     // Subscribe to the initialization status of gapi
     this.service.drive.gapiLoaded$.subscribe((isInitialized: any) => {
       console.log('is initialized');
@@ -102,14 +104,40 @@ export class DriveComponent implements OnInit {
     }, 2000);
   }
 
+  ngAfterViewInit(): void {
+    if (this.selectedFile == null) this.iniModule();
+  }
+
+  async edit() {
+    //temporarily store existing File
+    this.selectedFileTemp = this.lib.deepCopy(this.selectedFile);
+    this.selectedFile = null;
+
+    //If for some reason drive is not initialised
+    if (!this.isGapiInitialized) {
+      this.service.drive.initializeGapiClient();
+    }
+
+    //Show modal
+    this.iniModule();
+  }
+
   async iniModule() {
-    const result = await this.service.modal.openModal(
+    console.log('loading drive module');
+    console.log(this.iniTemplate);
+    console.log(this.files);
+    const data = await this.service.modal.openModal(
       this.iniTemplate,
       this.files
     );
 
-    if (result) {
-      //this.service.modal.dismiss();
+    if (data) {
+      //handle selected data
+    } else {
+      //handle no data
+      //restore previous set file
+      this.selectedFile = this.lib.deepCopy(this.selectedFileTemp);
+      this.selectedFileTemp = null;
     }
   }
 
@@ -130,10 +158,16 @@ export class DriveComponent implements OnInit {
     });
   }
 
-  listFiles(folderId: string = 'root') {
+  listFiles(folderId: string = 'root', event: any = null) {
+    if (event !== null) {
+      const selectElement = event.target as HTMLSelectElement;
+      folderId = selectElement.value;
+    }
+
     this.service.drive
       .listFiles(folderId)
       .then((response: any) => {
+        this.isFiles = true;
         //this.files = response.result.files;
         this.files = response.result.files.map((file: any) => ({
           ...file,
@@ -144,6 +178,7 @@ export class DriveComponent implements OnInit {
         this.updateRecentFolders(folderId); // Keep track of recent folders
       })
       .catch((error: any) => {
+        alert(error);
         console.error('Error fetching files:', error);
       });
   }
@@ -156,6 +191,7 @@ export class DriveComponent implements OnInit {
     if (file.mimeType === 'application/vnd.google-apps.folder') {
       this.listFiles(file.id); // Open the folder
       this.navigationStack.push(file.id); // Keep track of navigation
+      this.currentFolderName = file.name;
     }
   }
 
@@ -165,15 +201,20 @@ export class DriveComponent implements OnInit {
       const previousFolderId =
         this.navigationStack[this.navigationStack.length - 1];
       this.listFiles(previousFolderId); // Navigate back to the previous folder
+    } else {
+      //go to root if index is 0
+      this.listFiles('root');
     }
   }
 
   updateRecentFolders(folderId: string) {
-    const existingIndex = this.recentFolders.findIndex((id) => id === folderId);
+    const existingIndex = this.recentFolders.findIndex(
+      (folder) => folder.id === folderId
+    );
     if (existingIndex > -1) {
       this.recentFolders.splice(existingIndex, 1); // Remove duplicate
     }
-    this.recentFolders.unshift(folderId); // Add to the top of the list
+    this.recentFolders.unshift({ id: folderId, name: this.currentFolderName }); // Add to the top of the list
     if (this.recentFolders.length > 10) {
       this.recentFolders.pop(); // Keep the list limited to 10
     }
@@ -213,7 +254,7 @@ export class DriveComponent implements OnInit {
       this.convertToBase64(response.body);
     });*/
 
-    this.service.modal.dismiss();
+    this.service.modal.dismiss(file);
 
     // Fetch the file from the webContentLink as a Blob
     fetch(`https://www.googleapis.com/drive/v3/files/${file.id}?alt=media`, {
@@ -238,7 +279,6 @@ export class DriveComponent implements OnInit {
 
   convertToBase64(binaryData: Blob) {
     if (!binaryData || !(binaryData instanceof Blob)) {
-      alert('Invalid Blob');
       console.error('Invalid Blob:', binaryData);
       return;
     }
