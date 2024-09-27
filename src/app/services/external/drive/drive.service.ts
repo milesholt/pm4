@@ -123,4 +123,26 @@ export class GoogleDriveService {
       alt: 'media',
     });
   }
+
+  generateDirectLink(googleDriveLink: string) {
+    const fileId = googleDriveLink.match(/[-\w]{25,}/); // Extracts the file ID from the link
+    if (fileId) {
+      return `https://drive.google.com/uc?export=view&id=${fileId[0]}`;
+    } else {
+      throw new Error('Invalid Google Drive link');
+    }
+  }
+
+  getExtensionFromMimeType(mimeType: string | null): string | null {
+    switch (mimeType) {
+      case 'image/jpeg':
+        return 'jpg';
+      case 'image/png':
+        return 'png';
+      case 'image/gif':
+        return 'gif';
+      default:
+        return null;
+    }
+  }
 }

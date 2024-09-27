@@ -1650,9 +1650,11 @@ export class BrandBuilderComponent
         (mod: any) => mod.name === response.name
       );
     } catch (e) {
-      //alert('Error. Could not update module');
+      alert('Error. Could not update module');
     }
+
     module.params = response.params;
+
     console.log(module);
     console.log(this.generated);
   }

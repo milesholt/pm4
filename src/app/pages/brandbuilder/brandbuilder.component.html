@@ -439,6 +439,7 @@
                     class="mod-{{ modules[module.id].name }}"
                     *ngFor="let module of layout.modules; let midx = index"
                   >
+                    {{ module | json }}
                     <h2
                       *ngIf="module.title && module.title !== ''"
                       appContentEditable

@@ -1,6 +1,8 @@
 import {
   Component,
   Input,
+  Output,
+  EventEmitter,
   OnInit,
   ViewChild,
   ViewContainerRef,
@@ -9,11 +11,14 @@ import { DynamicComponent } from './dynamic.component.interface';
 
 @Component({
   selector: 'app-dynamic-wrapper',
-  template: '<ng-container #container></ng-container>',
+  template: '<ng-container #container ></ng-container>',
 })
 export class DynamicWrapperComponent implements OnInit {
   @Input() component: any;
   @Input() params: any;
+
+  @Output() callback = new EventEmitter();
+
   @ViewChild('container', { read: ViewContainerRef, static: true })
   container!: ViewContainerRef;
   componentRef: any;
@@ -29,5 +34,12 @@ export class DynamicWrapperComponent implements OnInit {
     //Object.assign(componentRef.instance as DynamicComponent, this.params);
     const instance = this.componentRef.instance as DynamicComponent;
     instance.params = this.params;
+
+    // Subscribe to the dynamic component's output event if it exists
+    if (instance.callback) {
+      instance.callback.subscribe((data: any) => {
+        this.callback.emit(data); // Emit the event back to the parent component
+      });
+    }
   }
 }

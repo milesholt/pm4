@@ -331,6 +331,11 @@
                   class="mod-{{ modules[module.id].name }}"
                   *ngFor="let module of layout.modules; let midx = index"
                 >
+                  <pre>
+                  {{module | json}}
+                </pre
+                  >
+
                   <h2
                     *ngIf="module.title && module.title !== ''"
                     appContentEditable
@@ -442,8 +447,7 @@
 
       <div class="bottom-panel">
         <div *ngIf="service.auth.isLoggedIn">
-          {{ activeVersion }}
-          {{ versions.length }}
+          {{ activeVersion }} {{ versions.length }}
           <ion-button (click)="undoChange()" [disabled]="activeVersion == 0"
             ><ion-icon name="arrow-undo-circle-outline"></ion-icon
           ></ion-button>

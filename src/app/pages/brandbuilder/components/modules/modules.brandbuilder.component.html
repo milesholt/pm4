@@ -24,6 +24,7 @@
         #dynamicMod
         [component]="module.component"
         [params]="activeModule.params"
+        (callback)="handleModuleCallback($event)"
       ></app-dynamic-wrapper>
     </div>
   </div>

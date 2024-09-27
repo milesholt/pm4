@@ -8,13 +8,23 @@ import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+
 import { DocumentData } from '@angular/fire/compat/firestore/interfaces';
+
+import { finalize } from 'rxjs/operators'; // Import finalize for completion handling
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirestoreService {
-  constructor(private firestore: AngularFirestore) {}
+  uploadPercent!: Observable<number | undefined>;
+  downloadURL!: Observable<string>;
+
+  constructor(
+    private firestore: AngularFirestore,
+    private storage: AngularFireStorage
+  ) {}
 
   // Create a new document
   createDocumentOff(collection: string, data: any): Promise<any> {
@@ -225,5 +235,45 @@ export class FirestoreService {
   private buildDocumentReference(pathSegments: string[], documentId: string) {
     const collectionRef = this.buildCollectionReference(pathSegments);
     return collectionRef.doc(documentId);
+  }
+
+  uploadToStorage(
+    blob: Blob,
+    folderPath: string,
+    fileName: string
+  ): Promise<string> {
+    return new Promise((resolve, reject) => {
+      // Define the full path in Firebase Storage (folderPath + fileName)
+      const filePath = `${folderPath}/${fileName}`;
+      const fileRef = this.storage.ref(filePath); // Reference to the file
+
+      // Start the upload task
+      const task = this.storage.upload(filePath, blob, {
+        contentType: blob.type,
+      });
+
+      // Monitor the upload progress if needed (optional)
+      this.uploadPercent = task.percentageChanges().pipe(
+        map((percentage) => percentage ?? 0) // Fallback of 0 if undefined
+      );
+
+      // Handle the upload completion and resolve the download URL
+      task
+        .snapshotChanges()
+        .pipe(
+          finalize(() => {
+            // Get the download URL once the upload is complete
+            fileRef.getDownloadURL().subscribe({
+              next: (url: string) => {
+                resolve(url); // Resolve the URL promise
+              },
+              error: (err) => {
+                reject(err); // Reject the promise in case of an error
+              },
+            });
+          })
+        )
+        .subscribe();
+    });
   }
 }

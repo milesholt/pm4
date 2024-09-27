@@ -303,4 +303,12 @@ export class ModulesComponent implements OnInit {
     });
     this.closeSettings();
   }
+
+  handleModuleCallback(response: any) {
+    this.activeModule.params = response;
+    this.callback.emit({
+      name: this.activeModule.name,
+      params: this.activeModule.params,
+    });
+  }
 }

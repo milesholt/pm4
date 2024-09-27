@@ -1,7 +1,9 @@
 import {
   Input,
+  Output,
   Component,
   OnInit,
+  EventEmitter,
   AfterViewInit,
   TemplateRef,
   ViewChild,
@@ -33,16 +35,20 @@ export class DriveComponent implements OnInit, AfterViewInit {
   selectedImage: string | null = null;
 
   isGapiInitialized = false;
-  accessToken: string = '';
-  //
+  accessToken: string | null = null;
+
   recentFolders: any[] = [];
   navigationStack: any[] = [];
 
   viewMode: string = 'grid';
 
+  @Output() callback = new EventEmitter();
+
   @Input() params: any = {
     type: 'default',
     fileid: '',
+    fileData: '',
+    file: {},
     width: '100%',
     height: '100%',
     skipSettings: true,
@@ -91,12 +97,29 @@ export class DriveComponent implements OnInit, AfterViewInit {
     public lib: Library
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     // Subscribe to the initialization status of gapi
-    this.service.drive.gapiLoaded$.subscribe((isInitialized: any) => {
+    this.service.drive.gapiLoaded$.subscribe(async (isInitialized: any) => {
       console.log('is initialized');
       console.log(isInitialized);
       this.isGapiInitialized = isInitialized;
+
+      //check for access token
+      //await this.getToken();
+      //console.log(this.accessToken);
+      if (this.service.drive.isSignedIn()) {
+        //already signed in
+        //refresh access token in case it expired
+        const authInstance = gapi.auth2.getAuthInstance();
+        authInstance.currentUser
+          .get()
+          .reloadAuthResponse()
+          .then((authResponse) => {
+            this.accessToken = authResponse.access_token;
+            this.storeToken(); // Save new token
+            this.iniDrive(); // Retry API call
+          });
+      }
     });
     setTimeout(() => {
       if (!this.isGapiInitialized) {
@@ -106,7 +129,12 @@ export class DriveComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.selectedFile == null) this.iniModule();
+    if (!this.lib.isEmpty(this.params.file)) {
+      this.loadFile(this.params.file);
+      //this.doFile(this.params.file);
+    } else {
+      if (this.selectedFile == null) this.iniModule();
+    }
   }
 
   async edit() {
@@ -121,6 +149,10 @@ export class DriveComponent implements OnInit, AfterViewInit {
 
     //Show modal
     this.iniModule();
+  }
+
+  emit(params: any) {
+    this.callback.emit(params);
   }
 
   async iniModule() {
@@ -142,15 +174,92 @@ export class DriveComponent implements OnInit, AfterViewInit {
     }
   }
 
-  signIn() {
-    console.log('logging into drive');
-    this.service.drive.login().then((user: any) => {
-      console.log('lising files');
-      const accessToken = user.getAuthResponse().access_token;
-      // Store the access token for later use in the API call
-      this.accessToken = accessToken;
+  async signIn() {
+    //check token
+
+    console.log('getting access token');
+
+    if (!this.service.drive.isSignedIn()) {
+      if (this.accessToken == null) {
+        await this.service.drive.login().then(async (user: any) => {
+          console.log('lising files');
+          const accessToken = user.getAuthResponse().access_token;
+          // Store the access token for later use in the API call
+          this.accessToken = accessToken;
+          this.storeToken();
+          this.iniDrive();
+        });
+      }
+    } else {
+      //already signed in
+      //refresh access token in case it expired
+      const authInstance = gapi.auth2.getAuthInstance();
+      authInstance.currentUser
+        .get()
+        .reloadAuthResponse()
+        .then((authResponse) => {
+          this.accessToken = authResponse.access_token;
+          this.storeToken(); // Save new token
+          this.iniDrive(); // Retry API call
+        });
+    }
+  }
+
+  async iniDrive() {
+    if (this.accessToken !== null) {
+      await gapi.client.setToken({ access_token: this.accessToken });
       this.listFiles();
+    } else {
+      console.log('No access token or not signed in');
+    }
+  }
+
+  async getToken(): Promise<void> {
+    const documentId = 'settings';
+    const userId = this.service.auth.getUser().uid;
+    const pathSegments = ['users', userId, 'user'];
+
+    return new Promise<void>((resolve, reject) => {
+      this.service.firestore
+        .getDocumentById(pathSegments, documentId)
+        .subscribe(
+          (document) => {
+            const googleDriveToken = document.tokens?.access?.googleDrive;
+            if (googleDriveToken) {
+              console.log('found token');
+              this.accessToken = googleDriveToken;
+              console.log(this.accessToken);
+              resolve(); // Resolve the promise when the token is found
+            } else {
+              console.log('could not find access token');
+              resolve(); // Resolve even if the token is not found (optional: handle this case differently)
+            }
+          },
+          (error) => {
+            console.error('Error retrieving document:', error);
+            reject(error); // Reject the promise if there's an error
+          }
+        );
     });
+  }
+
+  async storeToken() {
+    const documentId = 'settings'; // Adjust if needed
+    const userId = this.service.auth.getUser().uid; // The current user ID
+    const pathSegments = ['users', userId, 'user']; // Path to the document
+
+    const updatedData = {
+      'tokens.access.googleDrive': this.accessToken,
+    };
+
+    this.service.firestore
+      .updateDocument(pathSegments, documentId, updatedData)
+      .then(() => {
+        console.log('Document successfully updated!');
+      })
+      .catch((error) => {
+        console.error('Error updating document: ', error);
+      });
   }
 
   listImages() {
@@ -179,7 +288,6 @@ export class DriveComponent implements OnInit, AfterViewInit {
         this.updateRecentFolders(folderId); // Keep track of recent folders
       })
       .catch((error: any) => {
-        alert(error);
         console.error('Error fetching files:', error);
       });
   }
@@ -221,7 +329,22 @@ export class DriveComponent implements OnInit, AfterViewInit {
     }
   }
 
+  loadFile(file: any) {
+    if (file.mimeType.startsWith('image/')) {
+      if (file.hasOwnProperty('url') && file.url !== '') {
+        this.selectedImage = file.url;
+        this.selectedFile = file;
+        this.isLoadingFile = false;
+      }
+    } else if (file.mimeType.startsWith('video/')) {
+      // It's a video
+      this.selectedFile = file;
+    }
+  }
+
   doFile(file: any) {
+    //attach accesstoken to file
+
     if (file.mimeType === 'application/vnd.google-apps.folder') {
       // It's a folder
       this.openFolder(file);
@@ -250,33 +373,63 @@ export class DriveComponent implements OnInit, AfterViewInit {
   }
 
   doImage(file: any) {
-    //alert('selected file');
-    /* this.service.drive.listFileContent(file.id).then((response: any) => {
-      //alert(response.body);
-      this.convertToBase64(response.body);
-    });*/
-
     this.service.modal.dismiss(file);
+    this.params.file = file;
+    this.params.fileid = file.id;
 
-    // Fetch the file from the webContentLink as a Blob
-    fetch(`https://www.googleapis.com/drive/v3/files/${file.id}?alt=media`, {
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.blob(); // Get the file as a Blob
+    if (this.accessToken !== null) {
+      // Fetch the file from the webContentLink as a Blob
+      fetch(`https://www.googleapis.com/drive/v3/files/${file.id}?alt=media`, {
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+        },
       })
-      .then((blob) => {
-        this.convertToBase64(blob); // Convert Blob to Base64
-      })
-      .catch((error) => {
-        alert('Error fetching Blob');
-        console.error('Error fetching Blob:', error);
-      });
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.blob(); // Get the file as a Blob
+        })
+        .then((blob) => {
+          //this.convertToBase64(blob); // Convert Blob to Base64
+          //upload to storage
+
+          // Determine the file extension based on MIME type (e.g., image/jpeg -> .jpg)
+          const mimeType = blob.type;
+          const extension =
+            this.service.drive.getExtensionFromMimeType(mimeType);
+
+          if (!extension) {
+            throw new Error('Unable to determine file extension'); // Handle invalid extension
+          }
+
+          // Create the file name using mod_id.[ext]
+          const fileName = `mod_id.${extension}`;
+
+          // Upload to Firebase Storage
+          const folderPath = this.service.auth.getUser().uid + '/images/';
+
+          // Call uploadToStorage and get the download URL
+          this.service.firestore
+            .uploadToStorage(blob, folderPath, fileName)
+            .then((downloadURL: string) => {
+              alert(downloadURL);
+
+              // Store the download URL or use it to load in an image element
+              file.url = downloadURL;
+              this.selectedImage = downloadURL;
+              this.isLoadingFile = false;
+              this.emit(this.params);
+            })
+            .catch((error: any) => {
+              alert(error);
+            });
+        })
+        .catch((error) => {
+          alert('Error fetching Blob');
+          console.error('Error fetching Blob:', error);
+        });
+    }
   }
 
   convertToBase64(binaryData: Blob) {
@@ -290,6 +443,8 @@ export class DriveComponent implements OnInit, AfterViewInit {
     reader.onloadend = () => {
       this.selectedImage = reader.result as string; // Base64 string
       this.isLoadingFile = false;
+      //this.params.fileData = this.selectedImage;
+      this.emit(this.params);
     };
 
     reader.onerror = () => {
