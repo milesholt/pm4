@@ -53,20 +53,13 @@ export class DriveComponent implements OnInit, AfterViewInit {
     fileData: '',
     file: {},
     width: '100%',
-    height: '100%',
+    height: 'auto',
     skipSettings: true,
     settings: {
       form: {
         action: 'returnform',
         classes: 'nocol',
         fields: [
-          {
-            key: 'fileid',
-            name: 'File ID',
-            value: '',
-            type: 'text',
-            placeholder: 'Enter your File ID here',
-          },
           {
             key: 'width',
             name: 'Width',

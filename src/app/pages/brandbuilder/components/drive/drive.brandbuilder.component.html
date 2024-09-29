@@ -84,7 +84,8 @@
   <img
     *ngIf="selectedFile.mimeType.startsWith('image/') && !isLoadingFile"
     [src]="selectedImage"
-    width="100%"
+    [style.width]="params.width"
+    [style.height]="params.height"
   />
 
   <video
@@ -94,6 +95,8 @@
     <source
       [src]="getFileUrl(selectedFile)"
       type="{{ selectedFile.mimeType }}"
+      [style.width]="params.width"
+      [style.height]="params.height"
     />
   </video>
 
