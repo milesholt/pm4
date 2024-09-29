@@ -7,6 +7,8 @@ import {
   AfterViewInit,
   TemplateRef,
   ViewChild,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
@@ -122,6 +124,13 @@ export class DriveComponent implements OnInit, AfterViewInit {
         this.service.drive.initializeGapiClient();
       }
     }, 2000);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['params'] && changes['params'].currentValue) {
+      console.log('Params changed:', changes['params'].currentValue);
+      // Respond to the change (if needed, manually handle logic here)
+    }
   }
 
   ngAfterViewInit(): void {

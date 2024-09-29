@@ -8,6 +8,7 @@ import {
   EventEmitter,
   OnInit,
   TemplateRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
@@ -168,7 +169,8 @@ export class ModulesComponent implements OnInit {
     public navCtrl: NavController,
     public router: Router,
     public lib: Library,
-    private modalController: ModalController
+    private modalController: ModalController,
+    public cdr: ChangeDetectorRef
   ) {}
 
   async ngOnInit() {
@@ -299,8 +301,25 @@ export class ModulesComponent implements OnInit {
   }
 
   handleSettingsCallback(response: any) {
-    console.log('handle settings callback');
-    this.activeModule.params.settings.form = response.data;
+    console.log('updated settings callback');
+    console.log(response);
+
+    let modParams = this.activeModule.params;
+
+    //Update form
+    modParams.settings.form = this.lib.deepCopy(response.data);
+
+    console.log('modParams form');
+    console.log(modParams.settings.form);
+    //Update values
+    modParams.settings.form.fields.forEach((field: any) => {
+      if (modParams.hasOwnProperty(field.key)) {
+        modParams[field.key] = field.value;
+      }
+    });
+
+    console.log(modParams);
+
     this.callback.emit({
       name: this.activeModule.name,
       params: this.activeModule.params,
