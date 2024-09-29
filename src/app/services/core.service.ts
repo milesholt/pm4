@@ -34,7 +34,8 @@ import { CloudflareService } from './external/cloudflare/cloudflare.service';
 import { GoogleDriveService } from './external/drive/drive.service';
 
 import { ModalService } from './internal/ModalService/modal.service';
-
+import { PicaService } from './external/pica/pica.service';
+import { CompressService } from './external/compress/compress.service';
 /*
 @Injectable()
 export class CoreService {
@@ -67,7 +68,9 @@ export class CoreService {
     public stripe: StripeService,
     public cloudflare: CloudflareService,
     public modal: ModalService,
-    public drive: GoogleDriveService
+    public drive: GoogleDriveService,
+    public pica: PicaService,
+    public compress: CompressService
   ) {}
 }
 

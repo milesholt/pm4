@@ -16,6 +16,7 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Library } from '../../../../app.library';
 import { CoreService } from '../../../../services/core.service';
 import { response } from 'express';
+import { firstValueFrom } from 'rxjs'; // Import this function from RxJS
 
 @Component({
   //standalone: true,
@@ -39,6 +40,8 @@ export class DriveComponent implements OnInit, AfterViewInit {
 
   recentFolders: any[] = [];
   navigationStack: any[] = [];
+
+  errorMessage: any = {};
 
   viewMode: string = 'grid';
 
@@ -372,63 +375,109 @@ export class DriveComponent implements OnInit, AfterViewInit {
     return `https://www.googleapis.com/drive/v3/files/${file.id}?alt=media&access_token=${this.accessToken}`;
   }
 
-  doImage(file: any) {
+  async doImage(file: any) {
     this.service.modal.dismiss(file);
     this.params.file = file;
     this.params.fileid = file.id;
+    this.errorMessage = {};
 
     if (this.accessToken !== null) {
-      // Fetch the file from the webContentLink as a Blob
-      fetch(`https://www.googleapis.com/drive/v3/files/${file.id}?alt=media`, {
-        headers: {
-          Authorization: `Bearer ${this.accessToken}`,
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
+      try {
+        // Fetch the file from Google Drive as a Blob
+        const response = await fetch(
+          `https://www.googleapis.com/drive/v3/files/${file.id}?alt=media`,
+          {
+            headers: {
+              Authorization: `Bearer ${this.accessToken}`,
+            },
           }
-          return response.blob(); // Get the file as a Blob
-        })
-        .then((blob) => {
-          //this.convertToBase64(blob); // Convert Blob to Base64
-          //upload to storage
+        );
 
-          // Determine the file extension based on MIME type (e.g., image/jpeg -> .jpg)
-          const mimeType = blob.type;
-          const extension =
-            this.service.drive.getExtensionFromMimeType(mimeType);
+        if (!response.ok) {
+          alert('network error');
+          throw new Error(
+            `Network response was not ok: ${response.status} ${response.statusText}`
+          );
+        }
 
-          if (!extension) {
-            throw new Error('Unable to determine file extension'); // Handle invalid extension
-          }
+        const blob = await response.blob(); // Get the file as a Blob
 
-          // Create the file name using mod_id.[ext]
-          const fileName = `mod_id.${extension}`;
+        if (blob.size === 0) {
+          alert('blob size is 0');
+          throw new Error('Received an empty Blob');
+        }
 
-          // Upload to Firebase Storage
-          const folderPath = this.service.auth.getUser().uid + '/images/';
+        const mimeType = blob.type;
+        const extension = this.service.drive.getExtensionFromMimeType(mimeType);
 
-          // Call uploadToStorage and get the download URL
-          this.service.firestore
-            .uploadToStorage(blob, folderPath, fileName)
-            .then((downloadURL: string) => {
-              alert(downloadURL);
+        if (!extension) {
+          throw new Error('Unable to determine file extension');
+        }
 
-              // Store the download URL or use it to load in an image element
-              file.url = downloadURL;
-              this.selectedImage = downloadURL;
-              this.isLoadingFile = false;
-              this.emit(this.params);
-            })
-            .catch((error: any) => {
-              alert(error);
-            });
-        })
-        .catch((error) => {
-          alert('Error fetching Blob');
-          console.error('Error fetching Blob:', error);
+        // Create the folder path using user ID
+        const folderPath = `${this.service.auth.getUser().uid}/images/`;
+        const targetWidths = [480, 720, 1080]; // Different widths for different screen sizes
+
+        const fileFromBlob = new File([blob], `mod_id.${extension}`, {
+          type: mimeType,
         });
+
+        // Use FormData to properly send the file
+        const formData = new FormData();
+        formData.append('file', fileFromBlob, 'mod_id.' + extension); // Add the file blob to FormData
+        formData.append('widths', JSON.stringify(targetWidths)); // Send widths as a JSON string
+
+        let downloadURL = '';
+
+        // Use firstValueFrom instead of toPromise
+
+        try {
+          const res = await firstValueFrom(
+            this.service.http.post(
+              'https://siteinanhour.com/server/imageconvert.php',
+              formData
+            )
+          );
+
+          const compressedBlobs = res.blobs;
+
+          for (let index = 0; index < targetWidths.length; index++) {
+            const width = targetWidths[index];
+            const fileName = `mod_id_${width}.webp`; // Name with width suffix
+
+            const blobData = compressedBlobs[index].blob;
+            const byteCharacters = atob(blobData); // Decode base64
+
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+              byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: 'image/webp' });
+
+            downloadURL = await this.service.firestore.uploadToStorage(
+              blob,
+              folderPath,
+              fileName
+            );
+          }
+
+          //
+
+          // Return the largest image URL
+          file.url = downloadURL;
+          this.selectedImage = file.url;
+          this.isLoadingFile = false;
+          this.emit(this.params);
+        } catch (e) {
+          //post error
+          //alert(JSON.stringify(e));
+          this.errorMessage = e;
+        }
+      } catch (error) {
+        console.error('Error compressing or uploading images:', error);
+        alert('Error fetching or processing image');
+      }
     }
   }
 
