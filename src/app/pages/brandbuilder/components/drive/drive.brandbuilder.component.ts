@@ -429,8 +429,7 @@ export class DriveComponent implements OnInit, AfterViewInit {
 
         let downloadURL = '';
 
-        // Use firstValueFrom instead of toPromise
-
+        // Convert to webp format and return blob data
         try {
           const res = await firstValueFrom(
             this.service.http.post(
@@ -443,8 +442,9 @@ export class DriveComponent implements OnInit, AfterViewInit {
 
           for (let index = 0; index < targetWidths.length; index++) {
             const width = targetWidths[index];
-            const fileName = `mod_id_${width}.webp`; // Name with width suffix
+            const fileName = this.params.id + `_${width}.webp`; // Name with width suffix
 
+            //make sure blob data is formatted correctly
             const blobData = compressedBlobs[index].blob;
             const byteCharacters = atob(blobData); // Decode base64
 
@@ -455,14 +455,13 @@ export class DriveComponent implements OnInit, AfterViewInit {
             const byteArray = new Uint8Array(byteNumbers);
             const blob = new Blob([byteArray], { type: 'image/webp' });
 
+            //upload webp images to Firebase Storage
             downloadURL = await this.service.firestore.uploadToStorage(
               blob,
               folderPath,
               fileName
             );
           }
-
-          //
 
           // Return the largest image URL
           file.url = downloadURL;

@@ -453,6 +453,7 @@
                     <div *ngIf="modules[module.id]">
                       <app-modules-comp
                         [name]="modules[module.id].name"
+                        [id]="'mod_' + midx"
                         [params]="module.params"
                         (callback)="onModuleCallback($event, module)"
                       ></app-modules-comp>

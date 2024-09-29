@@ -55,6 +55,7 @@ export class SomeComponent implements DynamicComponent {
 })
 export class ModulesComponent implements OnInit {
   @Input() name: string | null = null;
+  @Input() id: string | null = null;
   @Input() params: any | null = null;
   @Output() callback = new EventEmitter();
 
@@ -193,6 +194,7 @@ export class ModulesComponent implements OnInit {
 
       // Assign params back to the module
       module.params = modParams;
+      module.params.id = this.id;
 
       //console.log('mod should have params');
       //console.log(module);
@@ -214,6 +216,8 @@ export class ModulesComponent implements OnInit {
       this.params !== null && !this.lib.isEmpty(this.params)
         ? this.params
         : this.lib.deepCopy(mod?.params || {});
+
+    this.params.id = mod?.params.id;
 
     this.activeModule = {
       name: this.name,
