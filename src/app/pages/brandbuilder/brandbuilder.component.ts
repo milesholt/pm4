@@ -1820,10 +1820,8 @@ export class BrandBuilderComponent
               mod.image = img;
               mod.params = {
                 ...mod.params,
-                ...{ url: img, images: [] },
+                ...{ url: img, images: allImages },
               };
-              console.log('mod params');
-              console.log(mod);
             }
           });
         });

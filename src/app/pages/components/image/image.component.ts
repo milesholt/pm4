@@ -73,7 +73,7 @@ export class ImageComponent implements OnInit {
   async ngOnInit() {
     //this.params = { ...this.defaultProperties, ...this.params };
 
-    //await this.doForm();
+    await this.doForm();
 
     console.log('params for image module');
     console.log(this.params);
