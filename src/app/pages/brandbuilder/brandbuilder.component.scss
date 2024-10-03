@@ -365,6 +365,8 @@ $colors: #ff7e5f, #feb47b, #ff7e5f, #86a8e7, #91eae4, #86a8e7;
 
 /* Modules */
 
+
+
 .mod-faq, .mod-form{
   width:50vw;
   max-width:500px;
@@ -399,8 +401,10 @@ $colors: #ff7e5f, #feb47b, #ff7e5f, #86a8e7, #91eae4, #86a8e7;
 }
 
 .editor-panel-row{
-  left:0;
+  left:3px;
 }
+
+
 
 /* Site */
 
@@ -476,3 +480,5 @@ form h2{
   }
   text-align:center;
 } 
+
+

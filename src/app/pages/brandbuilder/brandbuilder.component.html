@@ -395,11 +395,19 @@
                         *ngFor="let mod of col; let midx = index"
                       >
                         <div *ngIf="mod.image">
-                          <img
+                          <!--<img
                             (click)="onImageChange($event, mod)"
                             [src]="mod.image"
                             style="display: block; width: 100%; height: auto"
-                          />
+                          />-->
+                          <app-modules-comp
+                            [name]="mod.id ? modules[mod.id].name : 'image'"
+                            [id]="
+                              'row_' + lidx + '_col_' + cidx + '_mod_' + midx
+                            "
+                            [params]="mod.params"
+                            (callback)="onModuleCallback($event, mod)"
+                          ></app-modules-comp>
                         </div>
 
                         <div

@@ -37,6 +37,8 @@ import { MailchimpComponent } from '../mailchimp/mailchimp.brandbuilder.componen
 import { ModalController } from '@ionic/angular';
 import { ModalComponent } from '../../../components/modal/modal.component';
 
+import { ImageComponent } from 'src/app/pages/components/image/image.component';
+
 /*
 @Component({
   selector: 'app-some-component',
@@ -73,6 +75,13 @@ export class ModulesComponent implements OnInit {
   dynamicMod!: DynamicWrapperComponent;
 
   modules: any = [
+    {
+      name: 'image',
+      title: 'Image',
+      component: ImageComponent,
+      icon: 'picture',
+      params: {},
+    },
     {
       name: 'form',
       title: 'Form',
@@ -216,8 +225,13 @@ export class ModulesComponent implements OnInit {
     //load set params, otherwise copy default loaded params from module component
     this.params =
       this.params !== null && !this.lib.isEmpty(this.params)
-        ? this.params
+        ? { ...mod?.params, ...this.params }
         : this.lib.deepCopy(mod?.params || {});
+
+    console.log('active module');
+    console.log(name);
+
+    console.log(this.params);
 
     this.params.id = mod?.params.id;
 

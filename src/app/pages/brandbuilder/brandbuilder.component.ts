@@ -242,6 +242,7 @@ export class BrandBuilderComponent
     { name: 'link', title: '', classes: '', params: {} },
     { name: 'googledrive', title: '', classes: '', params: {} },
     { name: 'instagram', title: '', classes: '', params: {} },
+    { name: 'image', title: '', classes: '', params: {} },
   ];
 
   websiteStructure: any = [
@@ -626,6 +627,10 @@ export class BrandBuilderComponent
 
     let site: any = false;
     var local = localStorage.getItem('bb_' + docId);
+
+    console.log(docId);
+    console.log(JSON.stringify(local));
+
     if (local) {
       console.log('got site locally');
       site = JSON.parse(local);
@@ -701,7 +706,7 @@ export class BrandBuilderComponent
     this.showHoldingStatus('success');
     this.message = 'Your site is ready!';
 
-    localStorage.setItem('bb_' + docId, JSON.stringify(obj));
+    //localStorage.setItem('bb_' + docId, JSON.stringify(obj));
 
     this.recordChange();
     this.showSection('preview');
@@ -1567,7 +1572,18 @@ export class BrandBuilderComponent
             this.isSaving = false;
           }, 1000);
           console.log('Site updated successfully.');
-          localStorage.setItem('bb_' + this.siteId, updatedData.data);
+          //localStorage.setItem('bb_' + this.siteId, updatedData.data);
+          localStorage.setItem('bb_test', updatedData.data);
+          const isUpdated = this.updateLocalStorageItem(
+            'bb_' + this.siteId,
+            updatedData.data
+          );
+          if (isUpdated) {
+            console.log('The item was updated successfully.');
+          } else {
+            console.log('No change was made; the value was already set.');
+          }
+
           return false;
         })
         .catch((error) => {
@@ -1576,6 +1592,23 @@ export class BrandBuilderComponent
         });
     } else {
       alert('No site ID is set. Cannot save.');
+    }
+  }
+
+  updateLocalStorageItem(key: string, newValue: string): boolean {
+    // Step 1: Retrieve the current value
+    const oldValue = localStorage.getItem(key);
+
+    // Step 2: Set the new value
+    localStorage.setItem(key, newValue);
+
+    // Step 3: Compare old and new values
+    if (oldValue === newValue) {
+      console.log('Item was already set to this value, no update made.');
+      return false; // No update occurred, value was the same
+    } else {
+      console.log('Item has been updated.');
+      return true; // Update occurred
     }
   }
 
@@ -1657,6 +1690,7 @@ export class BrandBuilderComponent
 
     console.log(module);
     console.log(this.generated);
+    this.recordChange();
   }
 
   onContentInput(event: any, obj: any, prop: string) {
@@ -1781,7 +1815,15 @@ export class BrandBuilderComponent
             if (mod.image) {
               //console.log('base64 encoding module image:');
               //console.log(mod.image);
-              mod.image = await this.loadImage(mod.image);
+              let img = await this.loadImage(mod.image);
+              let allImages = [...this.photos, ...this.media.social.instagram];
+              mod.image = img;
+              mod.params = {
+                ...mod.params,
+                ...{ url: img, images: [] },
+              };
+              console.log('mod params');
+              console.log(mod);
             }
           });
         });

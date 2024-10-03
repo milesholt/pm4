@@ -311,4 +311,16 @@ export class Library {
       return false;
     }
   }
+
+  selectRandom(arr: any[], currentIndex?: number): number {
+    let randomIndex: number;
+    if (currentIndex === undefined) {
+      randomIndex = Math.floor(Math.random() * arr.length);
+    } else {
+      do {
+        randomIndex = Math.floor(Math.random() * arr.length);
+      } while (randomIndex === currentIndex);
+    }
+    return randomIndex;
+  }
 }
