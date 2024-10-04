@@ -400,12 +400,15 @@
                             [src]="mod.image"
                             style="display: block; width: 100%; height: auto"
                           />-->
+
                           <app-modules-comp
                             [name]="mod.id ? modules[mod.id].name : 'image'"
                             [id]="
                               'row_' + lidx + '_col_' + cidx + '_mod_' + midx
                             "
                             [params]="mod.params"
+                            [photos]="photos"
+                            [media]="media"
                             (callback)="onModuleCallback($event, mod)"
                           ></app-modules-comp>
                         </div>

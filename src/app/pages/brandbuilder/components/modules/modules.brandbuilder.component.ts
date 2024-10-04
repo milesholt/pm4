@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 import { Library } from '../../../../app.library';
@@ -60,6 +60,9 @@ export class ModulesComponent implements OnInit {
   @Input() name: string | null = null;
   @Input() id: string | null = null;
   @Input() params: any | null = null;
+  @Input() photos: any | null = null;
+  @Input() media: any | null = null;
+
   @Output() callback = new EventEmitter();
 
   @ViewChild('settingsTemplate') settingsTemplate!: TemplateRef<any>;
@@ -80,7 +83,7 @@ export class ModulesComponent implements OnInit {
       title: 'Image',
       component: ImageComponent,
       icon: 'picture',
-      params: {},
+      params: { skipSettings: true },
     },
     {
       name: 'form',
@@ -172,17 +175,29 @@ export class ModulesComponent implements OnInit {
 
   isActiveModule: boolean = false;
   isSettings: boolean = false;
+  isEditing: boolean = false;
 
   constructor(
     public service: CoreService,
     public navCtrl: NavController,
     public router: Router,
+    public route: ActivatedRoute,
     public lib: Library,
     private modalController: ModalController,
     public cdr: ChangeDetectorRef
   ) {}
 
+
+  
   async ngOnInit() {
+
+    this.route.queryParams.subscribe((params) => {
+      if (this.service.auth.isLoggedIn && params['edit']) {
+          this.isEditing = true;
+      }
+    });
+    
+
     await this.loadParams();
     this.loadActiveModule();
   }
@@ -204,8 +219,10 @@ export class ModulesComponent implements OnInit {
       const modParams = componentRef.instance.params ?? {};
 
       // Assign params back to the module
-      module.params = modParams;
+      module.params = {...module.params, ...modParams};
       module.params.id = this.id;
+      module.params.media = this.media;
+      module.params.images = this.photos;
 
       //console.log('mod should have params');
       //console.log(module);

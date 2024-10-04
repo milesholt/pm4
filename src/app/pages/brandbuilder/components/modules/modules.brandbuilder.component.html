@@ -1,11 +1,20 @@
 <!--Load module if one is active-->
+<div *ngIf="!isActiveModule && !isSettings" class="ion-padding">
+  <div *ngIf="isEditing" class="admin-panel">
+  <ion-button size="small" (click)="openLibrary()">
+    <ion-icon name="plus-circle-outline"></ion-icon>
+    Add module
+  </ion-button>
+  </div>
+</div>
+
 <div *ngIf="isActiveModule && !isSettings" class="ion-padding">
   <div
     *ngFor="let module of modules; let midx = index"
     class="module-container"
   >
     <div *ngIf="module.name == activeModule.name" class="module">
-      <div *ngIf="service.auth.isLoggedIn" class="admin-panel">
+      <div *ngIf="isEditing" class="admin-panel">
         <ion-button size="small" (click)="callDynamicMethod('edit')">
           <ion-icon name="create"></ion-icon>
           Edit
@@ -17,6 +26,11 @@
         <ion-button size="small" (click)="removeModule(); openLibrary()">
           <ion-icon name="grid-outline"></ion-icon>
           Change</ion-button
+        >
+
+        <ion-button size="small" (click)="removeModule();">
+          <ion-icon name="close-circle-outline"></ion-icon>
+          Delete</ion-button
         >
       </div>
 
