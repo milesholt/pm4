@@ -187,16 +187,12 @@ export class ModulesComponent implements OnInit {
     public cdr: ChangeDetectorRef
   ) {}
 
-
-  
   async ngOnInit() {
-
     this.route.queryParams.subscribe((params) => {
       if (this.service.auth.isLoggedIn && params['edit']) {
-          this.isEditing = true;
+        this.isEditing = true;
       }
     });
-    
 
     await this.loadParams();
     this.loadActiveModule();
@@ -219,10 +215,9 @@ export class ModulesComponent implements OnInit {
       const modParams = componentRef.instance.params ?? {};
 
       // Assign params back to the module
-      module.params = {...module.params, ...modParams};
+      module.params = { ...module.params, ...modParams };
       module.params.id = this.id;
       module.params.media = this.media;
-      module.params.images = this.photos;
 
       //console.log('mod should have params');
       //console.log(module);
@@ -257,20 +252,50 @@ export class ModulesComponent implements OnInit {
       params: this.params,
     };
     this.isActiveModule = true;
+
+    console.log(this.activeModule);
   }
 
   callDynamicMethod(methodName: string) {
-    if (this.dynamicMod && this.dynamicMod.componentRef) {
-      const componentInstance = this.dynamicMod.componentRef.instance;
+    console.log('calling dynamic method');
+    console.log(methodName);
+    let componentInstance: any = null;
+    let componentRef: any = null;
 
+    if (this.dynamicMod && this.dynamicMod.componentRef) {
+      console.log('dynamicMod ref');
+      componentInstance = this.dynamicMod.componentRef.instance;
+    } else {
+      console.log('No dynamicMod comp ref');
+      if (this.activeModule.component !== null) {
+        componentRef = this.dynamicComponentContainer.createComponent(
+          this.activeModule.component
+        );
+        componentInstance = componentRef.instance;
+      }
+    }
+
+    if (componentInstance !== null) {
       // Ensure the method exists on the component
       if (typeof componentInstance[methodName] === 'function') {
-        componentInstance[methodName](); // Dynamically call the method
+        console.log('component instance has function');
+        console.log(this.activeModule);
+
+        componentInstance[methodName](this.activeModule.params); // Dynamically call the method
+
+        // Destroy the component after invoking the method
+        setTimeout(() => {
+          console.log('Destroying dynamic component instance');
+          componentRef.destroy();
+          //this.dynamicMod = null; // Reset dynamicMod for future use
+        }, 0);
       } else {
         console.error(
           `${methodName} is not available on the dynamic component`
         );
       }
+    } else {
+      console.log('component instance is null');
     }
   }
 
@@ -279,9 +304,11 @@ export class ModulesComponent implements OnInit {
   }
 
   selectModule(module: any) {
+    console.log('select module');
     this.activeModule = {
       name: module.name,
       params: module.params,
+      component: module.component,
     };
     console.log(this.activeModule);
     this.service.modal.dismiss();
@@ -292,7 +319,7 @@ export class ModulesComponent implements OnInit {
     } else {
       this.isActiveModule = true;
     }
-    //
+    this.callDynamicMethod('load');
   }
 
   removeModule() {
@@ -358,11 +385,30 @@ export class ModulesComponent implements OnInit {
     this.closeSettings();
   }
 
-  handleModuleCallback(response: any) {
-    this.activeModule.params = response;
-    this.callback.emit({
-      name: this.activeModule.name,
-      params: this.activeModule.params,
-    });
+  async handleModuleCallback(response: any) {
+    console.log(response);
+    if (response.hasOwnProperty('action')) {
+      switch (response.action) {
+        case 'loadmodule':
+          console.log('loading module');
+          //await this.loadActiveModule(response.moduleName);
+          //this.service.modal.dismiss();
+          //this.selectModule(this.activeModule);
+          const mod: any =
+            this.modules.filter(
+              (mod: any) => mod.name === response.moduleName
+            )[0] ?? null;
+          if (mod !== null) this.selectModule(mod);
+
+          break;
+      }
+    } else {
+      //default callback if no action
+      this.activeModule.params = response;
+      this.callback.emit({
+        name: this.activeModule.name,
+        params: this.activeModule.params,
+      });
+    }
   }
 }

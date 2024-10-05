@@ -1,5 +1,13 @@
 <ng-template #iniTemplate let-data="context">
-  <ion-grid>
+  <p>Choose an image from the following options</p>
+
+  <ion-buttons>
+    <ion-button (click)="doGallery()">Pexels Gallery</ion-button>
+    <ion-button (click)="doGoogleDrive()">Google Drive</ion-button>
+    <ion-button (click)="doCustom()">Custom Url</ion-button>
+  </ion-buttons>
+
+  <ion-grid *ngIf="showGallery">
     <ion-row>
       <ion-col
         size="6"
@@ -7,12 +15,26 @@
         *ngFor="let image of data"
         (click)="selectImage(image)"
       >
-      <ion-thumbnail class="image-thumbnail">
-        <img [src]="image.src.medium" alt="File Thumbnail" />
-       </ion-thumbnail>
-     </ion-col>
-  </ion-row>
-</ion-grid>
+        <ion-thumbnail class="image-thumbnail">
+          <img [src]="image.src.medium" alt="File Thumbnail" />
+        </ion-thumbnail>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div *ngIf="showCustom">
+    <p>
+      Paste your image url here. Make sure it is publicly available and that you
+      have permission to use it.
+    </p>
+    <ion-input
+      #customUrl
+      type="text"
+      placeholder="Enter Custom URL"
+    ></ion-input>
+
+    <ion-button (click)="selectImage(customUrl.value)">Update</ion-button>
+  </div>
 </ng-template>
 
 <img

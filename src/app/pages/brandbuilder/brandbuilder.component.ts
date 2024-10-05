@@ -628,8 +628,8 @@ export class BrandBuilderComponent
     let site: any = false;
     var local = localStorage.getItem('bb_' + docId);
 
-    console.log(docId);
-    console.log(JSON.stringify(local));
+    //console.log(docId);
+    //console.log(JSON.stringify(local));
 
     if (local) {
       console.log('got site locally');

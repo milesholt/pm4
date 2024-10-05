@@ -8,7 +8,7 @@ import {
   EventEmitter,
   ViewChild,
   AfterViewInit,
-  TemplateRef
+  TemplateRef,
 } from '@angular/core';
 
 import { Library } from '../../../app.library';
@@ -29,7 +29,6 @@ interface ParamsType {
 export class ImageComponent implements OnInit {
   @Output() callback = new EventEmitter();
   @ViewChild('iniTemplate') iniTemplate!: TemplateRef<any>;
-
 
   @Input() params: any = {
     type: 'default',
@@ -72,6 +71,10 @@ export class ImageComponent implements OnInit {
     },
   };
 
+  showCustom: boolean = false;
+  showGallery: boolean = true;
+  selectedItem: any = null;
+
   constructor(
     private el: ElementRef,
     public lib: Library,
@@ -82,29 +85,34 @@ export class ImageComponent implements OnInit {
     //this.params = { ...this.defaultProperties, ...this.params };
 
     await this.doForm();
-    
 
     console.log('params for image module');
     console.log(this.params);
   }
 
-  async edit(){
+  async edit() {
     this.iniModule();
   }
 
-  async iniModule() {
+  async load(params: any = this.params) {
+    console.log('loading image module');
+    this.iniModule(params);
+  }
+
+  async iniModule(params: any = this.params) {
+    this.params = params;
     console.log('ini image mod');
+    console.log(this.params);
     switch (this.params.type) {
       case 'googledrive':
         this.doGoogleDrive();
         break;
       case 'default':
         //await this.iniModule();
-        await this.doCustom();
+        await this.loadModal(params);
         break;
     }
   }
-
 
   doForm() {
     //Handle any input values from form
@@ -116,8 +124,8 @@ export class ImageComponent implements OnInit {
 
   async changeImage(event: any) {
     if (this.service.auth.isLoggedIn) {
-      if (this.params['images'].length) {
-        let allImages = this.params['images'];
+      if (this.params['media']['photoData'].length) {
+        let allImages = this.params['media']['photoData'];
         let imageUrl = allImages[this.lib.selectRandom(allImages)].src.large;
         this.params['url'] = await this.loadImage(imageUrl);
       }
@@ -130,26 +138,52 @@ export class ImageComponent implements OnInit {
     return 'https://siteinanhour.com/server/imageloader.php?url=' + base64Url;
   }
 
-  async doCustom() {
-    const data = await this.service.modal.openModal(
-      this.iniTemplate,
-      this.params.images
-    );
+  async loadModal(params: any = this.params) {
+    console.log('load modal');
+    console.log(this.params.media.photoData);
+    console.log(this.iniTemplate);
+    if (!this.iniTemplate) {
+      console.log('no template found');
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    }
 
-    if (data) {
-      //handle selected data
+    if (this.iniTemplate) {
+      const data = await this.service.modal.openModal(
+        this.iniTemplate,
+        this.params.media.photoData
+      );
+
+      if (data) {
+        //handle selected data
+      } else {
+        //handle no data
+      }
     } else {
-      //handle no data
+      console.log('Template or data still missing after delay');
     }
   }
 
-  doGoogleDrive() {}
+  async doCustom() {
+    this.showGallery = false;
+    this.showCustom = true;
+  }
+
+  doGallery() {
+    this.showGallery = true;
+    this.showCustom = false;
+  }
+
+  doGoogleDrive() {
+    const p = { action: 'loadmodule', moduleName: 'googledrive' };
+    this.emit(p);
+    //this.service.modal.dismiss();
+  }
 
   onImageChange(e: any) {}
 
-  selectImage(image:any){
+  selectImage(image: any) {
     console.log(image);
-    const imageUrl = image.src.large;
+    const imageUrl = typeof image == 'string' ? image : image.src.large;
     this.params.url = imageUrl;
     this.params.settings.form.fields.forEach((field: any) => {
       if (field.key == 'url') field.value = imageUrl;
@@ -161,5 +195,4 @@ export class ImageComponent implements OnInit {
   emit(params: any) {
     this.callback.emit(params);
   }
-
 }
