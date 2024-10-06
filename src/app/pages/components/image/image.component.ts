@@ -82,6 +82,8 @@ export class ImageComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.showCustom = false;
+    this.showGallery = true;
     //this.params = { ...this.defaultProperties, ...this.params };
 
     await this.doForm();
@@ -173,10 +175,12 @@ export class ImageComponent implements OnInit {
     this.showCustom = false;
   }
 
-  doGoogleDrive() {
+  async doGoogleDrive() {
+    console.log('emit google drive');
     const p = { action: 'loadmodule', moduleName: 'googledrive' };
-    this.emit(p);
-    //this.service.modal.dismiss();
+    //this.callback.emit(p);
+    this.service.modal.dismiss();
+    this.callback.emit(p);
   }
 
   onImageChange(e: any) {}

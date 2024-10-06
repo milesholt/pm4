@@ -156,6 +156,11 @@ export class DriveComponent implements OnInit, AfterViewInit {
     this.iniModule();
   }
 
+  async load(params: any = this.params) {
+    console.log('loading drive module');
+    this.iniModule();
+  }
+
   emit(params: any) {
     this.callback.emit(params);
   }

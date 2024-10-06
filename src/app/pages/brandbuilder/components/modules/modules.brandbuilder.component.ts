@@ -386,6 +386,7 @@ export class ModulesComponent implements OnInit {
   }
 
   async handleModuleCallback(response: any) {
+    console.log('callback');
     console.log(response);
     if (response.hasOwnProperty('action')) {
       switch (response.action) {
