@@ -1,4 +1,13 @@
 <ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title></ion-title>
+      <ion-button (click)="dismiss()" size="small">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-toolbar>
+  </ion-header>
+
   <ng-container
     *ngTemplateOutlet="template; context: modalContext"
   ></ng-container>

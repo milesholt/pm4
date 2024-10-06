@@ -3,7 +3,7 @@
 
   <ion-buttons>
     <ion-button (click)="doGallery()">Pexels Gallery</ion-button>
-    <ion-button (click)="doGoogleDrive()">Google Drive</ion-button>
+    <!--<ion-button (click)="doGoogleDrive()">Google Drive</ion-button>-->
     <ion-button (click)="doCustom()">Custom Url</ion-button>
   </ion-buttons>
 
@@ -30,6 +30,7 @@
     <ion-input
       #customUrl
       type="text"
+      [(ngModel)]="params.url"
       placeholder="Enter Custom URL"
     ></ion-input>
 

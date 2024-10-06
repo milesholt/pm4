@@ -181,6 +181,7 @@ export class ImageComponent implements OnInit {
     //this.callback.emit(p);
     this.service.modal.dismiss();
     this.callback.emit(p);
+    this.service.modal.dismissAllExceptTop();
   }
 
   onImageChange(e: any) {}

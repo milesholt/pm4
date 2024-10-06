@@ -46,21 +46,6 @@
 
 <!-- Load module library if none active-->
 <ng-template #libraryTemplate let-modules="context">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Modules Library</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div class="admin-panel">
-    <ion-button
-      (click)="
-        isActiveModule = true; loadActiveModule(); service.modal.dismiss()
-      "
-      >Cancel</ion-button
-    >
-  </div>
-
   <div class="ion-padding">
     <p>Select a module below</p>
 

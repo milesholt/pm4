@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewChild,
   ViewContainerRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { DynamicComponent } from './dynamic.component.interface';
 
@@ -23,7 +24,18 @@ export class DynamicWrapperComponent implements OnInit {
   container!: ViewContainerRef;
   componentRef: any;
 
+  constructor(public cdr: ChangeDetectorRef) {}
+
   ngOnInit() {
+    this.createComponent();
+  }
+
+  createComponent() {
+    this.cdr.detectChanges();
+
+    console.log('creating component');
+    console.log(this.params);
+
     // Clear previous component if any
     this.container.clear();
 
@@ -41,5 +53,7 @@ export class DynamicWrapperComponent implements OnInit {
         this.callback.emit(data); // Emit the event back to the parent component
       });
     }
+
+    return this.componentRef;
   }
 }

@@ -97,28 +97,36 @@ export class DriveComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     // Subscribe to the initialization status of gapi
-    this.service.drive.gapiLoaded$.subscribe(async (isInitialized: any) => {
-      console.log('is initialized');
-      console.log(isInitialized);
-      this.isGapiInitialized = isInitialized;
+    await this.service.drive.gapiLoaded$.subscribe(
+      async (isInitialized: any) => {
+        console.log(isInitialized);
+        this.isGapiInitialized = isInitialized;
 
-      //check for access token
-      //await this.getToken();
-      //console.log(this.accessToken);
-      if (this.service.drive.isSignedIn()) {
-        //already signed in
-        //refresh access token in case it expired
-        const authInstance = gapi.auth2.getAuthInstance();
-        authInstance.currentUser
-          .get()
-          .reloadAuthResponse()
-          .then((authResponse) => {
-            this.accessToken = authResponse.access_token;
-            this.storeToken(); // Save new token
-            this.iniDrive(); // Retry API call
-          });
+        if (this.isGapiInitialized) {
+          //check for access token
+          //await this.getToken();
+          //console.log(this.accessToken);
+          if (this.service.drive.isSignedIn()) {
+            //already signed in
+            //refresh access token in case it expired
+            try {
+              const authInstance = gapi.auth2.getAuthInstance();
+              authInstance.currentUser
+                .get()
+                .reloadAuthResponse()
+                .then((authResponse) => {
+                  this.accessToken = authResponse.access_token;
+                  this.storeToken(); // Save new token
+                  this.iniDrive(); // Retry API call
+                })
+                .catch((e: any) => {});
+            } catch (e) {}
+          } else {
+            alert('not signed in');
+          }
+        }
       }
-    });
+    );
     setTimeout(() => {
       if (!this.isGapiInitialized) {
         this.service.drive.initializeGapiClient();
@@ -149,7 +157,7 @@ export class DriveComponent implements OnInit, AfterViewInit {
 
     //If for some reason drive is not initialised
     if (!this.isGapiInitialized) {
-      this.service.drive.initializeGapiClient();
+      await this.service.drive.initializeGapiClient();
     }
 
     //Show modal
@@ -169,18 +177,33 @@ export class DriveComponent implements OnInit, AfterViewInit {
     console.log('loading drive module');
     console.log(this.iniTemplate);
     console.log(this.files);
-    const data = await this.service.modal.openModal(
-      this.iniTemplate,
-      this.files
-    );
 
-    if (data) {
-      //handle selected data
-    } else {
-      //handle no data
-      //restore previous set file
-      this.selectedFile = this.lib.deepCopy(this.selectedFileTemp);
-      this.selectedFileTemp = null;
+    if (this.files.length == 0) {
+      await this.listFiles();
+    }
+
+    if (!this.iniTemplate) {
+      console.log('no template found');
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    }
+
+    if (this.iniTemplate && this.files) {
+      //be sure selected
+      this.selectedFileTemp = this.lib.deepCopy(this.selectedFile);
+      this.selectedFile = null;
+      const data = await this.service.modal.openModal(
+        this.iniTemplate,
+        this.files
+      );
+
+      if (data) {
+        //handle selected data
+      } else {
+        //handle no data
+        //restore previous set file
+        this.selectedFile = this.lib.deepCopy(this.selectedFileTemp);
+        this.selectedFileTemp = null;
+      }
     }
   }
 
@@ -203,15 +226,20 @@ export class DriveComponent implements OnInit, AfterViewInit {
     } else {
       //already signed in
       //refresh access token in case it expired
-      const authInstance = gapi.auth2.getAuthInstance();
-      authInstance.currentUser
-        .get()
-        .reloadAuthResponse()
-        .then((authResponse) => {
-          this.accessToken = authResponse.access_token;
-          this.storeToken(); // Save new token
-          this.iniDrive(); // Retry API call
-        });
+
+      if (!this.isGapiInitialized) {
+        this.service.drive.initializeGapiClient();
+      } else {
+        const authInstance = gapi.auth2.getAuthInstance();
+        authInstance.currentUser
+          .get()
+          .reloadAuthResponse()
+          .then((authResponse) => {
+            this.accessToken = authResponse.access_token;
+            this.storeToken(); // Save new token
+            this.iniDrive(); // Retry API call
+          });
+      }
     }
   }
 
@@ -278,13 +306,13 @@ export class DriveComponent implements OnInit, AfterViewInit {
     });
   }
 
-  listFiles(folderId: string = 'root', event: any = null) {
+  async listFiles(folderId: string = 'root', event: any = null) {
     if (event !== null) {
       const selectElement = event.target as HTMLSelectElement;
       folderId = selectElement.value;
     }
 
-    this.service.drive
+    await this.service.drive
       .listFiles(folderId)
       .then((response: any) => {
         this.isFiles = true;
@@ -295,7 +323,9 @@ export class DriveComponent implements OnInit, AfterViewInit {
             file.thumbnailLink ||
             `https://drive.google.com/thumbnail?sz=w80-h80&id=${file.id}`,
         }));
+
         this.updateRecentFolders(folderId); // Keep track of recent folders
+        return this.files;
       })
       .catch((error: any) => {
         console.error('Error fetching files:', error);
