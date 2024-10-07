@@ -122,7 +122,7 @@ export class DriveComponent implements OnInit, AfterViewInit {
                 .catch((e: any) => {});
             } catch (e) {}
           } else {
-            alert('not signed in');
+            //not signed in
           }
         }
       }
@@ -431,7 +431,6 @@ export class DriveComponent implements OnInit, AfterViewInit {
         );
 
         if (!response.ok) {
-          alert('network error');
           throw new Error(
             `Network response was not ok: ${response.status} ${response.statusText}`
           );
