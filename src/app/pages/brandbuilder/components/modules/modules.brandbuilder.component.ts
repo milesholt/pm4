@@ -38,6 +38,7 @@ import { ModalController } from '@ionic/angular';
 import { ModalComponent } from '../../../components/modal/modal.component';
 
 import { ImageComponent } from 'src/app/pages/components/image/image.component';
+import { LinkComponent } from '../link/link.brandbuilder.component';
 
 /*
 @Component({
@@ -122,7 +123,13 @@ export class ModulesComponent implements OnInit {
       icon: 'logo-youtube',
       params: {},
     },
-    { name: 'link', title: 'Link', component: null, icon: 'link', params: {} },
+    {
+      name: 'link',
+      title: 'Link',
+      component: LinkComponent,
+      icon: 'link',
+      params: {},
+    },
     {
       name: 'embed',
       title: 'Embed',

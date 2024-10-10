@@ -1,43 +1,42 @@
 <div #f class="{{ el.classes }}">
-
- <!-- Form Edit Template -->
+  <!-- Form Edit Template -->
 
   <ng-template #formEditTemplate let-fields="context" let-isModal="isModal">
-     <ion-list>
-     
-     <ion-reorder-group (ionItemReorder)="reorderFields($event)" disabled="false">
-     <ion-item-sliding
-        *ngFor="let field of fields; let idx = index"
-        #slidingItem
+    <ion-list>
+      <ion-reorder-group
+        (ionItemReorder)="reorderFields($event)"
+        disabled="false"
       >
-      
-      
-        <ion-item>
-        
-       
-          <!-- Reorder Handle -->
-          <ion-reorder slot="start"></ion-reorder>
-              
-            <ion-label (click)="editField(field, idx)">{{ field.name }}</ion-label>
-            
+        <ion-item-sliding
+          *ngFor="let field of fields; let idx = index"
+          #slidingItem
+        >
+          <ion-item>
+            <!-- Reorder Handle -->
+            <ion-reorder slot="start"></ion-reorder>
+
+            <ion-label (click)="editField(field, idx)">{{
+              field.name
+            }}</ion-label>
+
             <ion-button
-                            class="inverse"
-                            slot="end"
-                            size="small"
-                            (click)="slidingItem.open('end')"
-                          >
-                            <ion-icon
-                              name="ellipsis-vertical-outline"
-                            ></ion-icon>
-                          </ion-button>
-           </ion-item>
-           
+              class="inverse"
+              slot="end"
+              size="small"
+              (click)="slidingItem.open('end')"
+            >
+              <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+
           <ion-item-options side="end">
-          <ion-item-option>
-          <ion-button size="small" (click)="editField(field, idx); slidingItem.close()"
-      ><ion-icon name="create"></ion-icon
-    ></ion-button>
-          </ion-item-option>
+            <ion-item-option>
+              <ion-button
+                size="small"
+                (click)="editField(field, idx); slidingItem.close()"
+                ><ion-icon name="create"></ion-icon
+              ></ion-button>
+            </ion-item-option>
             <ion-item-option>
               <ion-button
                 size="small"
@@ -48,28 +47,26 @@
               </ion-button>
             </ion-item-option>
             <ion-item-option>
-             <ion-button
-      size="small"
-      [disabled]="field.type == 'submit'"
-      (click)="deleteField(field, idx)"
-      ><ion-icon name="trash"></ion-icon
-    ></ion-button>
+              <ion-button
+                size="small"
+                [disabled]="field.type == 'submit'"
+                (click)="deleteField(field, idx)"
+                ><ion-icon name="trash"></ion-icon
+              ></ion-button>
             </ion-item-option>
           </ion-item-options>
-        
-      </ion-item-sliding>
-        </ion-reorder-group>
+        </ion-item-sliding>
+      </ion-reorder-group>
     </ion-list>
-    
-    
+
     <ion-button (click)="service.modal.dismiss(fields); isEditForm = false">
-    Done
+      Done
     </ion-button>
-    
+
     <ion-button (click)="addField()">
-    <ion-icon name="add"></ion-icon>
-    Add field
-  </ion-button>
+      <ion-icon name="add"></ion-icon>
+      Add field
+    </ion-button>
   </ng-template>
 
   <form
@@ -146,8 +143,6 @@
     Sorry there was a problem sending your enquiry, please try again.
   </p>
 </div>
-
-
 
 <ng-template
   #fieldTemplate
@@ -240,7 +235,7 @@
       >
         <ion-select-option
           *ngFor="let opt of field.options"
-          [value]="opt.label"
+          [value]="opt.value ? opt.value : opt.label"
         >
           {{ opt.label }}
         </ion-select-option>
@@ -353,7 +348,7 @@
         <ion-radio
           *ngFor="let opt of field.options"
           labelPlacement="end"
-          [value]="opt.label"
+          [value]="opt.value ? opt.value : opt.label"
           >{{ opt.label }}</ion-radio
         >
       </ion-radio-group>
@@ -459,8 +454,6 @@
           {{ lib.capitalise(type.label) }}
         </ion-select-option>
       </ion-select>
-      
-    
 
       <ion-toggle
         *ngIf="

@@ -17,6 +17,7 @@ import { VideoModule } from 'src/app/pages/components/video/video.module';
 import { MailchimpModule } from '../mailchimp/mailchimp.brandbuilder.module';
 import { DriveModule } from '../drive/drive.brandbuilder.module';
 import { ImageModule } from 'src/app/pages/components/image/image.module';
+import { LinkModule } from '../link/link.brandbuilder.module';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { ImageModule } from 'src/app/pages/components/image/image.module';
     MailchimpModule,
     DriveModule,
     ImageModule,
+    LinkModule,
   ],
   declarations: [ModulesComponent, DynamicWrapperComponent],
   exports: [ModulesComponent],

@@ -1,0 +1,14 @@
+<h3 *ngIf="params.heading !== ''">{{ params.heading }}</h3>
+<p *ngIf="params.description !== ''">{{ params.description }}</p>
+
+<div [ngSwitch]="params.type">
+  <div *ngSwitchCase="'button'">
+    <ion-button (click)="doButton()">{{ params.label }}</ion-button>
+  </div>
+
+  <div *ngSwitchCase="'text'">
+    <a href="{{ params.link }}" target="_{{ params.window }}">{{
+      params.label
+    }}</a>
+  </div>
+</div>
