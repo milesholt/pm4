@@ -1,0 +1,30 @@
+<div *ngIf="isEditing" class="admin-panel ion-padding">
+  <ion-button size="small" (click)="loadLayouts()">
+    <ion-icon name="add-circle-outline"></ion-icon>
+    Add a layout
+  </ion-button>
+</div>
+
+<ng-template #layoutTemplate let-modules="context">
+  <div class="ion-padding">
+    <p>Select a layout below</p>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4" *ngFor="let layout of layouts; let i = index">
+          <ion-button
+            class="layout-button"
+            expand="block"
+            (click)="selectLayout(layout)"
+          >
+            <!--<ion-icon
+              name="{{ module.icon }}"
+              slot="start"
+              class="module-icon"
+            ></ion-icon>-->
+            <div slot="start" class="layout-title">{{ layout.title }}</div>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ng-template>

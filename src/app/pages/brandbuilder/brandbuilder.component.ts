@@ -466,6 +466,7 @@ export class BrandBuilderComponent
 
   contentLayouts = [
     {
+      name: '',
       structure: [[{ heading: '' }, { content: '' }], [{ image: '' }]],
       params: {
         classes: 'col-2-left-content',
@@ -1691,6 +1692,29 @@ export class BrandBuilderComponent
     console.log(module);
     console.log(this.generated);
     this.recordChange();
+  }
+
+  onLayoutCallback(response: any) {
+    let layout: any = response;
+    try {
+      /*layout = this.contentLayouts.findIndex(
+        (layout: any) => layout.name === layout.name
+      );*/
+
+      //let layout = this.cloneObject(this.contentLayouts[layoutIndex]);
+
+      /*//copy modules
+              if (section.hasOwnProperty('modules')) {
+                console.log('section has modules');
+                layout.modules = this.lib.deepCopy(section.modules);
+              }*/
+
+      //clone a random layout
+
+      this.activePage.layout.push(layout);
+    } catch (e) {
+      alert('Error. Could not add layout');
+    }
   }
 
   onContentInput(event: any, obj: any, prop: string) {

@@ -25,6 +25,8 @@ import { ContentEditableDirective } from 'src/app/directives/content-editable.di
 import { ThemeBrandBuilderModule } from './components/theme/theme.brandbuilder.module';
 import { ModulesModule } from './components/modules/modules.brandbuilder.module';
 
+import { LayoutsModule } from './components/layouts/layouts.brandbuilder.module';
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -43,6 +45,7 @@ import { ModulesModule } from './components/modules/modules.brandbuilder.module'
     GalleryModule,
     ThemeBrandBuilderModule,
     ModulesModule,
+    LayoutsModule,
     //BrowserAnimationsModule,
   ],
   declarations: [BrandBuilderComponent, ContentEditableDirective],

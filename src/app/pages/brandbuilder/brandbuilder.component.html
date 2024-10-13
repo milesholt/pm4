@@ -412,6 +412,18 @@
                           ></app-modules-comp>
                         </div>
 
+                        <div *ngIf="mod.hasOwnProperty('module')">
+                          <app-modules-comp
+                            [name]="mod.module"
+                            [id]="
+                              'row_' + lidx + '_col_' + cidx + '_mod_' + midx
+                            "
+                            [params]="mod.params"
+                            [media]="media"
+                            (callback)="onModuleCallback($event, mod)"
+                          ></app-modules-comp>
+                        </div>
+
                         <div
                           class="mod-heading"
                           *ngIf="mod.hasOwnProperty('heading')"
@@ -496,6 +508,13 @@
                 </div>
               </div>
               <!--layout-->
+
+              <!-- Layout component-->
+              <app-layouts-comp
+                class="center"
+                (callback)="onLayoutCallback($event)"
+                [isEditing]="isEditing"
+              ></app-layouts-comp>
             </div>
             <!--main content-->
 
