@@ -690,6 +690,12 @@ export class BrandBuilderComponent
       return false;
     }
     this.generated = d.content;
+
+    //check for any missing properties that should be there
+    this.generated.forEach((page: any) => {
+      if (!page.hasOwnProperty('published')) page.published = true;
+    });
+
     this.companyName = d.details.companyInfo.companyName;
     this.companyDescription = d.details.companyInfo.companyDescription;
     this.companyProducts = d.details.companyInfo.companyProducts;
@@ -1857,5 +1863,25 @@ export class BrandBuilderComponent
     if (url.includes('imageloader.php')) url = url.split('?url=')[1];
     const base64Url = this.lib.base64Url(url); // Encode the URL to Base64
     return 'https://siteinanhour.com/server/imageloader.php?url=' + base64Url;
+  }
+
+  reorderItems(event: any, array: any = []) {
+    const movedItem = array.splice(event.detail.from, 1)[0]; // Remove the item
+    array.splice(event.detail.to, 0, movedItem); // Insert it at the new position
+    event.detail.complete();
+  }
+
+  togglePagePublish(page: any) {
+    page.published = !page.published;
+  }
+
+  renamePage(event: any, i: number) {
+    let title = event.target.value;
+    if (title == '') title = 'Page Title';
+    this.generated[i].title = title;
+  }
+
+  stopEvents(event: Event): void {
+    event.stopPropagation(); // This should stop the event from bubbling up to `ion-item`
   }
 }

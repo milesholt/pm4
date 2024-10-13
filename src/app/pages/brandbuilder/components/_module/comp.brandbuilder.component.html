@@ -1,0 +1,23 @@
+<div *ngIf="isEditing" class="admin-panel ion-padding">
+  <ion-button size="small" (click)="loadItems()">
+    <ion-icon name="add-circle-outline"></ion-icon>
+    Add an item
+  </ion-button>
+</div>
+
+<ng-template #itemsTemplate let-modules="context">
+  <div class="ion-padding">
+    <p></p>
+    <ion-grid *ngIf="params.itemsLayout == 'grid'">
+      <ion-row>
+        <ion-col size="4" *ngFor="let item of items; let i = index"> </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-list *ngIf="params.itemsLayout == 'list'">
+      <ion-item>
+        <ion-label>{{ item.name }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ng-template>

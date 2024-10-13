@@ -246,24 +246,52 @@
           <!--menu content-->
           <ion-content class="ion-padding">
             <ion-list>
-              <ion-item *ngFor="let page of generated; let i = index">
-                <div class="menu-container">
-                  <ion-menu-toggle auto-hide="false">
-                    <!--<ion-item (click)="changePage(i)" routerDirection="root" [routerLink]="[page.url]" [queryParams]="getSearchParams(false)" lines="none"
-               detail="false" [class.selected]="activeIndex == i">         
-               <ion-label>{{ page.title }}</ion-label>    
-             </ion-item>-->
-                    <ion-item
-                      (click)="changePage(i)"
-                      lines="none"
-                      detail="false"
-                      [class.selected]="activeIndex == i"
-                    >
-                      <ion-label>{{ page.title }}</ion-label>
-                    </ion-item>
-                  </ion-menu-toggle>
-                </div>
-              </ion-item>
+              <ion-reorder-group
+                (ionItemReorder)="reorderItems($event, generated)"
+                disabled="false"
+              >
+                <ion-item
+                  [ngClass]="{
+                    hide: !page.published && !isEditing
+                  }"
+                  *ngFor="let page of generated; let i = index"
+                >
+                  <!-- Reorder Handle -->
+                  <ion-reorder *ngIf="isEditing" slot="start"></ion-reorder>
+
+                  <div class="menu-container">
+                    <ion-menu-toggle auto-hide="false">
+                      <ion-item
+                        (click)="changePage(i)"
+                        lines="none"
+                        detail="false"
+                        [class.selected]="activeIndex == i"
+                      >
+                        <div (click)="stopEvents($event)">
+                          <ion-input
+                            *ngIf="isEditing"
+                            [value]="page.title"
+                            (ionChange)="renamePage($event, i)"
+                            placeholder="Enter page title"
+                          ></ion-input>
+                        </div>
+
+                        <ion-label *ngIf="!isEditing">{{
+                          page.title
+                        }}</ion-label>
+                      </ion-item>
+                    </ion-menu-toggle>
+                  </div>
+
+                  <ion-icon
+                    *ngIf="isEditing"
+                    slot="end"
+                    name="{{ page.published ? 'eye' : 'eye-off' }}"
+                    (click)="togglePagePublish(page)"
+                    style="cursor: pointer"
+                  ></ion-icon>
+                </ion-item>
+              </ion-reorder-group>
             </ion-list>
           </ion-content>
         </ion-menu>
