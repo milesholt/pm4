@@ -304,10 +304,24 @@
               <!--<ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
           </ion-buttons>-->
+
               <ion-buttons slot="start">
                 <ion-menu-button menu="builderMain"></ion-menu-button>
               </ion-buttons>
-              <ion-title>{{ companyName }}</ion-title>
+
+              {{ companyName }}
+
+              <ion-title
+                *ngIf="!activePage.logoUrl || activePage.logoUrl !== ''"
+                >{{ companyName }}</ion-title
+              >
+
+              <app-image
+                [params]="{ type: 'upload', url: activePage.logoUrl, width: '150px', height: 'auto', media: media }"
+                [isEditing]="isEditing"
+                (callback)="activePage.logoUrl = $event"
+                class="center logo"
+              ></app-image>
             </ion-toolbar>
           </ion-header>
           <!--page content-->

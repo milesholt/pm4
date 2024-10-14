@@ -3,6 +3,7 @@
 
   <ion-buttons>
     <ion-button (click)="doGallery()">Pexels Gallery</ion-button>
+    <ion-button (click)="doUpload()">Upload Image</ion-button>
     <!--<ion-button (click)="doGoogleDrive()">Google Drive</ion-button>-->
     <ion-button (click)="doCustom()">Custom Url</ion-button>
   </ion-buttons>
@@ -22,6 +23,20 @@
     </ion-row>
   </ion-grid>
 
+  <div *ngIf="showUpload">
+    <p>Upload an image</p>
+    <input
+      type="file"
+      (change)="onFileSelected($event)"
+      accept="image/jpeg, image/png, image/svg+xml"
+    />
+
+    <div *ngIf="imageUrl">
+      <p>Uploaded Image:</p>
+      <img [src]="imageUrl" alt="Uploaded Logo" width="150" />
+    </div>
+  </div>
+
   <div *ngIf="showCustom">
     <p>
       Paste your image url here. Make sure it is publicly available and that you
@@ -37,6 +52,13 @@
     <ion-button (click)="selectImage(customUrl.value)">Update</ion-button>
   </div>
 </ng-template>
+
+<div *ngIf="isEditing" class="admin-panel">
+  <ion-button (click)="iniModule()">Choose Image</ion-button>
+  <ion-button *ngIf="params.url !== ''" (click)="removeImage()"
+    >Delete Image</ion-button
+  >
+</div>
 
 <img
   (click)="changeImage($event)"

@@ -27,6 +27,8 @@ import { ModulesModule } from './components/modules/modules.brandbuilder.module'
 
 import { LayoutsModule } from './components/layouts/layouts.brandbuilder.module';
 
+import { ImageModule } from '../components/image/image.module';
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
@@ -46,6 +48,7 @@ import { LayoutsModule } from './components/layouts/layouts.brandbuilder.module'
     ThemeBrandBuilderModule,
     ModulesModule,
     LayoutsModule,
+    ImageModule,
     //BrowserAnimationsModule,
   ],
   declarations: [BrandBuilderComponent, ContentEditableDirective],
