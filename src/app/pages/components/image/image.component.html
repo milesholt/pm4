@@ -53,15 +53,22 @@
   </div>
 </ng-template>
 
-<div *ngIf="isEditing" class="admin-panel">
-  <ion-button (click)="iniModule()">Choose Image</ion-button>
-  <ion-button *ngIf="params.url !== ''" (click)="removeImage()"
+<!--<ion-button *ngIf="params.url !== ''" (click)="removeImage()"
     >Delete Image</ion-button
-  >
-</div>
+  >-->
 
-<img
-  (click)="changeImage($event)"
-  [src]="params['url']"
-  style="display: block; width: 100%; height: auto"
-/>
+<div class="image-container flex-center">
+  <ion-button
+    *ngIf="isEditing"
+    size="small"
+    class="edit-image"
+    (click)="iniModule()"
+    ><ion-icon name="create"></ion-icon
+  ></ion-button>
+
+  <img
+    (click)="changeImage($event)"
+    [src]="params['url']"
+    style="display: block; width: 100%; height: auto"
+  />
+</div>

@@ -9,13 +9,13 @@ import {
   ViewChild,
   AfterViewInit,
   TemplateRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 
 import { Library } from '../../../app.library';
 import { CoreService } from '../../../services/core.service';
 import { response } from 'express';
 import { firstValueFrom } from 'rxjs'; // Import this function from RxJS
-
 
 interface ParamsType {
   type: string;
@@ -87,7 +87,8 @@ export class ImageComponent implements OnInit {
   constructor(
     private el: ElementRef,
     public lib: Library,
-    public service: CoreService
+    public service: CoreService,
+    public cdr: ChangeDetectorRef
   ) {}
 
   async ngOnInit() {
@@ -148,9 +149,24 @@ export class ImageComponent implements OnInit {
   }
 
   async loadImage(url: string) {
-    if (url.includes('imageloader.php')) url = url.split('?url=')[1];
-    const base64Url = this.lib.base64Url(url); // Encode the URL to Base64
-    return 'https://siteinanhour.com/server/imageloader.php?url=' + base64Url;
+    let imageUrl = '';
+    if (url.includes('imageloader.php')) {
+      url = url.split('?url=')[1];
+      const base64Url = this.lib.base64Url(url); // Encode the URL to Base64
+      imageUrl =
+        'https://siteinanhour.com/server/imageloader.php?url=' + base64Url;
+    } else {
+      imageUrl = String(url);
+    }
+    return imageUrl;
+  }
+
+  loadImage2(url: any) {
+    this.cdr.detectChanges();
+    setTimeout(() => {
+      this.params['url'] = String(url);
+    }, 2000);
+    return String(url);
   }
 
   async loadModal(params: any = this.params) {
@@ -208,14 +224,23 @@ export class ImageComponent implements OnInit {
   onImageChange(e: any) {}
 
   selectImage(image: any) {
-    console.log(image);
-    const imageUrl = typeof image == 'string' ? image : image.src.large;
-    this.params.url = imageUrl;
-    this.params.settings.form.fields.forEach((field: any) => {
+    console.log('selecting image');
+
+    let imageUrl = typeof image == 'string' ? image : image.src.large;
+
+    console.log(imageUrl);
+    console.log(typeof image);
+
+    imageUrl = String(imageUrl);
+
+    this.params['url'] = imageUrl;
+    this.params?.settings?.form?.fields?.forEach((field: any) => {
       if (field.key == 'url') field.value = imageUrl;
     });
     this.emit(this.params);
     this.service.modal.dismiss();
+
+    //this.loadImage2(this.params['url']);
   }
 
   emit(params: any) {
@@ -227,42 +252,52 @@ export class ImageComponent implements OnInit {
     if (!file) return;
 
     const fileType = file.type;
-    const maxFileSize = fileType === 'image/svg+xml' ? 1 * 1024 * 1024 : 10 * 1024 * 1024;
+    const maxFileSize =
+      fileType === 'image/svg+xml' ? 1 * 1024 * 1024 : 10 * 1024 * 1024;
 
     // Check file size limit
     if (file.size > maxFileSize) {
-      alert(`File is too large! Max allowed size is ${maxFileSize / (1024 * 1024)}MB.`);
+      alert(
+        `File is too large! Max allowed size is ${
+          maxFileSize / (1024 * 1024)
+        }MB.`
+      );
       return;
     }
 
     let uploadBlob: Blob | null = null; // Initialize with null
     //const folderPath = 'images/';
     //const fileName = `${new Date().getTime()}_${file.name}.webp`;
-    let fileName = 'logo.webp';
+    let fileName = this.params.id + `.webp`;
+
+    //let fileName = 'logo.webp';
     const folderPath = `${this.service.auth.getUser().uid}/images/`;
-    
-
-
 
     const extension = this.service.drive.getExtensionFromMimeType(fileType);
 
     try {
       // Process only jpg and png files for compression
       if (fileType === 'image/jpeg' || fileType === 'image/png') {
-        const targetWidths = [500];
+        const targetWidths = [150, 480, 720, 1080];
         const formData = new FormData();
         formData.append('file', file, 'image.' + extension);
-        formData.append('widths', JSON.stringify(targetWidths)); 
+        formData.append('widths', JSON.stringify(targetWidths));
+
+        //fileName = this.params.id + `_${targetWidths[targetWidths.length - 1]}.webp`; // Name with width suffix
 
         console.log('converting image');
 
         // Convert to WebP format on the server
         const res = await firstValueFrom(
-          this.service.http.post('https://siteinanhour.com/server/imageconvert.php', formData)
+          this.service.http.post(
+            'https://siteinanhour.com/server/imageconvert.php',
+            formData
+          )
         );
 
         const compressedBlobs = res.blobs;
-        if (compressedBlobs.length > 0) {
+
+        /*if (compressedBlobs.length > 0) {
           const blobData = compressedBlobs[0].blob;
           const byteCharacters = atob(blobData); // Decode base64
           const byteNumbers = new Array(byteCharacters.length);
@@ -273,11 +308,26 @@ export class ImageComponent implements OnInit {
 
           const byteArray = new Uint8Array(byteNumbers);
           uploadBlob = new Blob([byteArray], { type: 'image/webp' });
-        }
+        }*/
 
+        for (let index = 0; index < targetWidths.length; index++) {
+          const width = targetWidths[index];
+          fileName = this.params.id + `_${width}.webp`; // Name with width suffix
+
+          //make sure blob data is formatted correctly
+          const blobData = compressedBlobs[index].blob;
+          const byteCharacters = atob(blobData); // Decode base64
+
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          uploadBlob = new Blob([byteArray], { type: 'image/webp' });
+        }
       } else if (fileType === 'image/svg+xml') {
         uploadBlob = file; // No compression for SVG
-        fileName = 'logo.svg';
+        fileName = this.params.id + '.svg';
       } else {
         alert('Unsupported file format. Only JPG, PNG, and SVG are allowed.');
         return;
@@ -287,20 +337,36 @@ export class ImageComponent implements OnInit {
         // Upload to Firebase Storage
         console.log('got blob, uploading to firestore');
 
-        const downloadUrl = await this.service.firestore.uploadToStorage(uploadBlob, folderPath, fileName);
-        this.params['url'] = downloadUrl; // Set the URL to display in an image element
-        this.emit(this.params['url']);
-        this.service.modal.dismiss();
+        const downloadUrl = await this.service.firestore.uploadToStorage(
+          uploadBlob,
+          folderPath,
+          fileName
+        );
+
+        //this.params['url'] = downloadUrl; // Set the URL to display in an image element
+        //this.emit(this.params['url']);
+        //this.service.modal.dismiss();
+        //console.log(downloadUrl);
+
+        this.selectImage(downloadUrl);
+
+        /*this.params['url'] = downloadUrl;
+        this.params?.settings?.form?.fields?.forEach((field: any) => {
+          if (field.key == 'url') field.value = downloadUrl;
+        });
+        this.emit(this.params);
+        this.service.modal.dismiss();*/
+
         console.log('Image uploaded successfully:', downloadUrl);
       } else {
-        throw new Error("Upload blob could not be created.");
+        throw new Error('Upload blob could not be created.');
       }
     } catch (error) {
       console.error('Error during file upload:', error);
       alert('An error occurred while uploading the image.');
     }
-}
-           
+  }
+
   removeImage() {
     this.params['url'] = '';
     this.emit('');

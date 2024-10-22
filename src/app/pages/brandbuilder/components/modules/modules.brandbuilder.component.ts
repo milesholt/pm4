@@ -225,9 +225,10 @@ export class ModulesComponent implements OnInit {
       module.params = { ...module.params, ...modParams };
       module.params.id = this.id;
       module.params.media = this.media;
+      //module.params.media = [];
 
       //console.log('mod should have params');
-      //console.log(module);
+      console.log(module);
 
       // Destroy the component instance since it's not needed anymore
       componentRef.destroy();
@@ -251,6 +252,15 @@ export class ModulesComponent implements OnInit {
     console.log(name);
 
     console.log(this.params);
+
+    //update param settings if blank values and param fields not blank
+    this.params.settings?.form?.fields.forEach((field: any) => {
+      if (this.params.hasOwnProperty(field.key)) {
+        if (field.value == '' && this.params[field.key] !== '') {
+          field.value = this.params[field.key];
+        }
+      }
+    });
 
     this.params.id = mod?.params.id;
 

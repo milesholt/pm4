@@ -485,7 +485,37 @@ form h2{
 
 .logo{
   max-width:150px;
-  max-height:150px;
+  height:50px;
   overflow:hidden;
   padding:5px;
+  display:block;
 }
+
+
+::ng-deep app-image.logo{
+
+  left:-20px;
+  position:relative;
+
+  img{
+    object-fit: contain;
+    height:100%!important;
+  }
+
+  .image-container{
+    position:relative;
+  }
+
+  .edit-image{
+    position:absolute;
+    margin:0 auto;
+    left:0%;
+
+    ion-icon{
+      padding:0px;
+      margin:0px;
+    }
+  }
+
+  
+} 

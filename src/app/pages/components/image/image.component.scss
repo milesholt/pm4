@@ -11,3 +11,8 @@
     --size: 140px;
     --border-radius: 14px;
   }
+
+  .image-container{
+    object-fit:contain;
+    height:100%;
+  }

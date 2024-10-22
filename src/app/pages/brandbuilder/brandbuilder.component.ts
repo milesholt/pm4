@@ -1210,7 +1210,7 @@ export class BrandBuilderComponent
           //its possible ai does not return complete website structure with sections on each page
           if (page.sections) {
             //loop through sections
-            page.sections.forEach((section: any) => {
+            page.sections.forEach((section: any, sidx: number) => {
               // Update the layout index to loop from 1 to 5
               console.log(section);
 
@@ -1233,50 +1233,112 @@ export class BrandBuilderComponent
             ],*/
 
               let layout = this.cloneObject(this.contentLayouts[layoutIndex]);
+              layout.sectionId = sidx;
 
               //copy modules
+              let modlayout = {};
               if (section.hasOwnProperty('modules')) {
                 console.log('section has modules');
                 layout.modules = this.lib.deepCopy(section.modules);
+
+                //layout is row, structure is cols, cols is array of modules
+                //for modules we create 1 row, 1 column and then modules
+                modlayout = {
+                  structure: [section.modules],
+                  params: {
+                    classes: 'col-1-center-content',
+                    parentclasses: 'col-1',
+                  },
+                };
               }
+              //
 
               //clone a random layout
               page.layout.push(layout);
+              if (!this.lib.isEmpty(modlayout)) page.layout.push(modlayout);
             });
 
             //
-            //loop through layouts and
+            //loop through layouts and skip module layouts
             page.layout.forEach((layout: any, index: number) => {
               layout.structure.forEach((row: any) => {
                 row.forEach((col: any) => {
-                  var sectionName = page.sections[index].name;
+                  if (!layout.hasOwnProperty('sectionId')) {
+                    //return; // Skip this iteration of the outer forEach
+                    console.log('module, skipping');
+                  } else {
+                    //console.log('sectionId:');
+                    //console.log(layout.sectionId);
+                    var sectionName = page.sections[layout.sectionId].name;
+                    //console.log(sectionName);
 
-                  //console.log(sectionName);
+                    if (typeof this.aiform[sectionName] !== 'undefined') {
+                      //console.log(typeof col.heading);
+                      if (typeof col.heading !== 'undefined') {
+                        if (
+                          typeof this.aiform[sectionName].title !== 'undefined'
+                        )
+                          col.heading = this.aiform[sectionName].title;
+                      }
 
-                  if (typeof this.aiform[sectionName] !== 'undefined') {
-                    //console.log(typeof col.heading);
-                    if (typeof col.heading !== 'undefined') {
-                      if (typeof this.aiform[sectionName].title !== 'undefined')
-                        col.heading = this.aiform[sectionName].title;
-                    }
-                    if (typeof col.content !== 'undefined')
-                      if (
-                        typeof this.aiform[sectionName].content !== 'undefined'
-                      )
-                        col.content = this.aiform[sectionName].content;
+                      if (typeof col.content !== 'undefined') {
+                        if (
+                          typeof this.aiform[sectionName].content !==
+                          'undefined'
+                        )
+                          col.content = this.aiform[sectionName].content;
+                      }
 
-                    if (typeof col.image !== 'undefined') {
-                      let allImages = [
-                        ...this.photos,
-                        ...this.media.social.instagram,
-                      ];
-                      console.log('all images');
-                      console.log(allImages);
+                      if (typeof col.image !== 'undefined') {
+                        let allImages = [
+                          ...this.photos,
+                          ...this.media.social.instagram,
+                        ];
+                        console.log('all images');
+                        console.log(allImages);
 
-                      col.image =
-                        allImages[this.selectRandom(allImages)].src.large;
+                        col.image =
+                          allImages[this.selectRandom(allImages)].src.large;
+                      }
                     }
                   }
+
+                  /*if (!layout.hasOwnProperty('sectionId')) {
+                    //return; // Skip this iteration of the outer forEach
+                    console.log('module, skipping');
+                  } else {
+                    var sectionName = page.sections[index].name;
+
+                    console.log(sectionName);
+
+                    if (typeof this.aiform[sectionName] !== 'undefined') {
+                      //console.log(typeof col.heading);
+                      if (typeof col.heading !== 'undefined') {
+                        if (
+                          typeof this.aiform[sectionName].title !== 'undefined'
+                        )
+                          col.heading = this.aiform[sectionName].title;
+                      }
+                      if (typeof col.content !== 'undefined')
+                        if (
+                          typeof this.aiform[sectionName].content !==
+                          'undefined'
+                        )
+                          col.content = this.aiform[sectionName].content;
+
+                      if (typeof col.image !== 'undefined') {
+                        let allImages = [
+                          ...this.photos,
+                          ...this.media.social.instagram,
+                        ];
+                        console.log('all images');
+                        console.log(allImages);
+
+                        col.image =
+                          allImages[this.selectRandom(allImages)].src.large;
+                      }
+                    }
+                  }*/
                 });
               });
             });
@@ -1846,7 +1908,8 @@ export class BrandBuilderComponent
               //console.log('base64 encoding module image:');
               //console.log(mod.image);
               let img = await this.loadImage(mod.image);
-              let allImages = [...this.photos, ...this.media.social.instagram];
+              //let allImages = [...this.photos, ...this.media.social.instagram];
+              let allImages: any = [];
               mod.image = img;
               mod.params = {
                 ...mod.params,

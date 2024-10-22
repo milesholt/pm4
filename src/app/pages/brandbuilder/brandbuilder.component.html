@@ -317,9 +317,16 @@
               >
 
               <app-image
-                [params]="{ type: 'upload', url: activePage.logoUrl, width: '150px', height: 'auto', media: media }"
+                [params]="{
+                  id: 'logo',
+                  type: 'upload',
+                  url: activePage.logoUrl,
+                  width: '150px',
+                  height: 'auto',
+                  media: media
+                }"
                 [isEditing]="isEditing"
-                (callback)="activePage.logoUrl = $event"
+                (callback)="activePage.logoUrl = $event.url"
                 class="center logo"
               ></app-image>
             </ion-toolbar>
@@ -437,26 +444,8 @@
                         *ngFor="let mod of col; let midx = index"
                       >
                         <div *ngIf="mod.image">
-                          <!--<img
-                            (click)="onImageChange($event, mod)"
-                            [src]="mod.image"
-                            style="display: block; width: 100%; height: auto"
-                          />-->
-
                           <app-modules-comp
                             [name]="mod.id ? modules[mod.id].name : 'image'"
-                            [id]="
-                              'row_' + lidx + '_col_' + cidx + '_mod_' + midx
-                            "
-                            [params]="mod.params"
-                            [media]="media"
-                            (callback)="onModuleCallback($event, mod)"
-                          ></app-modules-comp>
-                        </div>
-
-                        <div *ngIf="mod.hasOwnProperty('module')">
-                          <app-modules-comp
-                            [name]="mod.module"
                             [id]="
                               'row_' + lidx + '_col_' + cidx + '_mod_' + midx
                             "
@@ -490,6 +479,41 @@
                           [innerHtml]="mod.content"
                           data-text="Enter some content here"
                         ></div>
+
+                        <div *ngIf="mod.hasOwnProperty('module')">
+                          <app-modules-comp
+                            [name]="mod.module"
+                            [id]="
+                              'row_' + lidx + '_col_' + cidx + '_mod_' + midx
+                            "
+                            [params]="mod.params"
+                            [media]="media"
+                            (callback)="onModuleCallback($event, mod)"
+                          ></app-modules-comp>
+                        </div>
+
+                        <div
+                          *ngIf="
+                            (mod.hasOwnProperty('module') ||
+                              mod.hasOwnProperty('id')) &&
+                            !mod.hasOwnProperty('image')
+                          "
+                        >
+                          <app-modules-comp
+                            [name]="
+                              modules[mod.id]
+                                ? modules[mod.id].name
+                                : mod.module
+                            "
+                            [id]="
+                              'row_' + lidx + '_col_' + cidx + '_mod_' + midx
+                            "
+                            [params]="mod.params"
+                            [media]="media"
+                            (callback)="onModuleCallback($event, mod)"
+                          ></app-modules-comp>
+                        </div>
+
                         <!--<ion-button *ngIf="col.link" [routerLink]="[col.link.path]" [queryParams]="col.link.query">{{col.link.label}}</ion-button>-->
                       </div>
                     </div>
@@ -498,6 +522,7 @@
                 </div>
                 <!--row-->
 
+                <!--
                 <div *ngIf="layout.modules" class="row module">
                   <div
                     class="mod-{{ modules[module.id].name }}"
@@ -520,34 +545,10 @@
                         [params]="module.params"
                         (callback)="onModuleCallback($event, module)"
                       ></app-modules-comp>
-
-                      <!-- <div [ngSwitch]="modules[module.id].name">
-                        <div *ngSwitchCase="'form'">
-                          <app-contactform-comp></app-contactform-comp>
-                        </div>
-
-                        <div *ngSwitchCase="'faq'">
-                          <app-accordion-comp></app-accordion-comp>
-                        </div>
-
-                        <div *ngSwitchCase="'gallery'">
-                          <app-gallery-comp
-                            [type]="
-                              module.params.type ? module.params.type : false
-                            "
-                            [username]="
-                              module.params.username
-                                ? module.params.username
-                                : false
-                            "
-                          ></app-gallery-comp>
-                        </div>
-                      </div>
-                    --></div>
-                    <!--let mod-->
+                    </div>
+                    </div>
                   </div>
-                  <!--modules-->
-                </div>
+                -->
               </div>
               <!--layout-->
 

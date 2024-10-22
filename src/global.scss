@@ -109,15 +109,22 @@ h4 {
   height:100%;
 }
 
-.full.center{
+.full.center,  .flex-center{
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
+
 .hide{
   display:none;
 }
+
+.absolute{
+  position:absolute;
+}
+
+
 
 /* Buttons */
 
