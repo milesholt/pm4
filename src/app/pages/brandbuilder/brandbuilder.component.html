@@ -443,18 +443,6 @@
                         class="mod"
                         *ngFor="let mod of col; let midx = index"
                       >
-                        <div *ngIf="mod.image">
-                          <app-modules-comp
-                            [name]="mod.id ? modules[mod.id].name : 'image'"
-                            [id]="
-                              'row_' + lidx + '_col_' + cidx + '_mod_' + midx
-                            "
-                            [params]="mod.params"
-                            [media]="media"
-                            (callback)="onModuleCallback($event, mod)"
-                          ></app-modules-comp>
-                        </div>
-
                         <div
                           class="mod-heading"
                           *ngIf="mod.hasOwnProperty('heading')"
@@ -480,42 +468,42 @@
                           data-text="Enter some content here"
                         ></div>
 
-                        <div *ngIf="mod.hasOwnProperty('module')">
-                          <app-modules-comp
-                            [name]="mod.module"
-                            [id]="
-                              'row_' + lidx + '_col_' + cidx + '_mod_' + midx
-                            "
-                            [params]="mod.params"
-                            [media]="media"
-                            (callback)="onModuleCallback($event, mod)"
-                          ></app-modules-comp>
-                        </div>
-
                         <div
                           *ngIf="
-                            (mod.hasOwnProperty('module') ||
-                              mod.hasOwnProperty('id')) &&
-                            !mod.hasOwnProperty('image')
+                            mod.hasOwnProperty('module') ||
+                            mod.hasOwnProperty('id') ||
+                            mod.hasOwnProperty('image')
                           "
                         >
                           <app-modules-comp
                             [name]="
-                              modules[mod.id]
+                              mod.hasOwnProperty('id')
                                 ? modules[mod.id].name
                                 : mod.module
+                                ? mod.module
+                                : 'image'
                             "
                             [id]="
                               'row_' + lidx + '_col_' + cidx + '_mod_' + midx
                             "
                             [params]="mod.params"
                             [media]="media"
-                            (callback)="onModuleCallback($event, mod)"
+                            (callback)="
+                              onModuleCallback($event, mod, lidx, cidx, midx)
+                            "
                           ></app-modules-comp>
                         </div>
 
                         <!--<ion-button *ngIf="col.link" [routerLink]="[col.link.path]" [queryParams]="col.link.query">{{col.link.label}}</ion-button>-->
                       </div>
+
+                      <ion-button
+                        (click)="col.push({ module: 'new', params: {} })"
+                        size="small"
+                        class="center"
+                        ><ion-icon name="add-circle-outline"></ion-icon> Add
+                        module</ion-button
+                      >
                     </div>
                   </div>
                   <!--cols-->
@@ -667,7 +655,7 @@
               class="center"
               name="circular"
             ></ion-spinner>
-            <ion-label>Save</ion-label>
+            <ion-label *ngIf="!isSaving && !isSaved">Save</ion-label>
           </ion-button>
           <ion-button routerDirection="root" [routerLink]="'/dashboard'">
             <ion-icon name="home-outline"></ion-icon>

@@ -36,6 +36,11 @@ export class DynamicWrapperComponent implements OnInit {
     console.log('creating component');
     console.log(this.params);
 
+    console.log('container:');
+    console.log(this.container);
+    console.log('component:');
+    console.log(this.component);
+
     // Clear previous component if any
     this.container.clear();
 

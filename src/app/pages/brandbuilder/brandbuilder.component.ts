@@ -1743,10 +1743,30 @@ export class BrandBuilderComponent
     //this.generated[this.activeIndex].layout[ridx].structure[cidx][midx].content = event;
   }
 
-  onModuleCallback(response: any, module: any) {
+  onModuleCallback(
+    response: any,
+    module: any,
+    ridx: number = 0,
+    cidx: number = 0,
+    midx: number = 0
+  ) {
     console.log('module callback');
     console.log(response);
     console.log(this.modules);
+
+    if (response.hasOwnProperty('action')) {
+      switch (response.action) {
+        case 'remove':
+          this.generated[this.activeIndex].layout[ridx].structure[cidx].splice(
+            midx,
+            1
+          );
+          console.log('module removed');
+          break;
+      }
+      return;
+    }
+
     try {
       module.id = this.modules.findIndex(
         (mod: any) => mod.name === response.name
@@ -1813,6 +1833,8 @@ export class BrandBuilderComponent
     //push new version
     this.versions.push(p);
     this.activeVersion = this.versions.length - 1;
+
+    console.log('change recorded');
     //console.log(this.versions);
     //console.log(this.activeVersion);
   }
@@ -1922,6 +1944,7 @@ export class BrandBuilderComponent
     });
   }
 
+  //
   async loadImage(url: string) {
     if (url.includes('imageloader.php')) url = url.split('?url=')[1];
     const base64Url = this.lib.base64Url(url); // Encode the URL to Base64

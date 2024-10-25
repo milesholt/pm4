@@ -75,8 +75,9 @@ export class ModulesComponent implements OnInit {
   })
   dynamicComponentContainer!: ViewContainerRef;
 
-  @ViewChild('dynamicMod', { static: false })
+  /*@ViewChild('dynamicMod', { static: false })
   dynamicMod!: DynamicWrapperComponent;
+*/
 
   modules: any = [
     {
@@ -205,6 +206,8 @@ export class ModulesComponent implements OnInit {
     this.loadActiveModule();
   }
 
+  ngAfterViewInit() {}
+
   loadParams() {
     //console.log('loading params');
 
@@ -236,6 +239,10 @@ export class ModulesComponent implements OnInit {
   }
 
   loadActiveModule(name: string | null = this.name) {
+    if (name == 'new') {
+      this.openLibrary();
+      return;
+    }
     if (name == null) return;
 
     //load related module from list
@@ -280,24 +287,15 @@ export class ModulesComponent implements OnInit {
     let componentInstance: any = null;
     let componentRef: any = null;
 
-    /*if (this.dynamicMod && this.dynamicMod.componentRef) {
-      console.log('dynamicMod ref');
-      componentInstance = this.dynamicMod.componentRef.instance;
-    } else {
-      console.log('No dynamicMod comp ref');
-      if (this.activeModule.component !== null) {
-        componentRef = this.dynamicMod.createComponent();
-        componentInstance = componentRef.instance;
-      }
-    }*/
-
     if (this.activeModule.component == null) {
       console.log('active component not set');
       console.log(this.activeModule);
       return;
     }
 
-    componentRef = await this.dynamicMod.createComponent();
+    componentRef = this.dynamicComponentContainer.createComponent(
+      this.activeModule.component
+    );
     componentInstance = componentRef.instance;
 
     console.log('component ref2:');
@@ -310,16 +308,13 @@ export class ModulesComponent implements OnInit {
 
         componentInstance[methodName](this.activeModule.params); // Dynamically call the method
 
-        // Destroy the component after invoking the method
-        /*setTimeout(() => {
-          if (this.dynamicMod && this.dynamicMod.componentRef) {
-            console.log('Destroying dynamic component instance');
-            this.dynamicMod.componentRef.destroy();
-            //this.dynamicMod = null; // Reset dynamicMod for future use
-          } else {
-            console.error('No componentRef available to destroy');
-          }
-        }, 0);*/
+        // Subscribe to the dynamic component's output event if it exists
+        if (componentInstance.callback) {
+          componentInstance.callback.subscribe((data: any) => {
+            //this.callback.emit(data); // Emit the event back to the parent component
+            this.handleModuleCallback(data);
+          });
+        }
       } else {
         console.error(
           `${methodName} is not available on the dynamic component`
@@ -336,6 +331,8 @@ export class ModulesComponent implements OnInit {
 
   selectModule(module: any) {
     console.log('select module');
+    console.log(module);
+
     this.activeModule = {
       name: module.name,
       params: module.params,
@@ -356,6 +353,7 @@ export class ModulesComponent implements OnInit {
   removeModule() {
     this.isActiveModule = false;
     this.activeModule = {};
+    this.callback.emit({ action: 'remove' });
   }
 
   async openLibrary() {
@@ -421,6 +419,7 @@ export class ModulesComponent implements OnInit {
   }
 
   async handleModuleCallback(response: any) {
+    console.log('module callback');
     if (response.hasOwnProperty('action')) {
       switch (response.action) {
         case 'loadmodule':
@@ -437,6 +436,8 @@ export class ModulesComponent implements OnInit {
           break;
       }
     } else {
+      console.log('module callback');
+      console.log(response);
       //default callback if no action
       this.activeModule.params = response;
       this.callback.emit({

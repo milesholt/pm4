@@ -97,9 +97,6 @@ export class ImageComponent implements OnInit {
     //this.params = { ...this.defaultProperties, ...this.params };
 
     await this.doForm();
-
-    console.log('params for image module');
-    console.log(this.params);
   }
 
   async edit() {
@@ -114,7 +111,7 @@ export class ImageComponent implements OnInit {
   async iniModule(params: any = this.params) {
     this.params = params;
     console.log('ini image mod');
-    console.log(this.params);
+    console.log(this.params.type);
     switch (this.params.type) {
       case 'googledrive':
         this.doGoogleDrive();
@@ -186,8 +183,10 @@ export class ImageComponent implements OnInit {
 
       if (data) {
         //handle selected data
+        console.log('image modal dismissed with data');
       } else {
         //handle no data
+        console.log('image modal dismissed with no data');
       }
     } else {
       console.log('Template or data still missing after delay');
@@ -237,8 +236,10 @@ export class ImageComponent implements OnInit {
     this.params?.settings?.form?.fields?.forEach((field: any) => {
       if (field.key == 'url') field.value = imageUrl;
     });
+
+    console.log('emitting');
     this.emit(this.params);
-    this.service.modal.dismiss();
+    this.service.modal.dismiss(this.params);
 
     //this.loadImage2(this.params['url']);
   }

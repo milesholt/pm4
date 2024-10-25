@@ -1,5 +1,5 @@
 <!--Load module if one is active-->
-<div *ngIf="!isActiveModule && !isSettings" class="ion-padding">
+<div *ngIf="activeModule.name == 'new'" class="ion-padding">
   <div *ngIf="isEditing" class="admin-panel">
     <ion-button size="small" (click)="openLibrary()">
       <ion-icon name="plus-circle-outline"></ion-icon>
@@ -96,4 +96,6 @@
 </ng-template>
 
 <!-- This is to create dynamic component for module -->
-<ng-template #dynamicComponentContainer></ng-template>
+<div style="display: none">
+  <ng-template #dynamicComponentContainer></ng-template>
+</div>
