@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_milesholt_pm4_1713630642387-push-trigger-input-set
+  identifier: Build_milesholt_pm4_1713630642387pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_milesholt_pm4_1713630642387
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
