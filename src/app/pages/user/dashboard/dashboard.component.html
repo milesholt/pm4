@@ -25,6 +25,12 @@
               <ion-icon slot="start" name="document"></ion-icon>
               <ion-label>Sites</ion-label>
             </ion-button>
+
+            <ion-button (click)="showSection('users')" expand="block">
+              <ion-icon slot="start" name="document"></ion-icon>
+              <ion-label>Users</ion-label>
+            </ion-button>
+
             <ion-button expand="block" [disabled]="true">
               <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
               <ion-label>Campaigns</ion-label>
@@ -273,6 +279,11 @@
           </div>
         </div>
         <!--sites-->
+
+        <!-- Sites -->
+        <div *ngIf="showUsers">
+          <app-users-back></app-users-back>
+        </div>
       </div>
       <!--if user-->
     </ion-content>

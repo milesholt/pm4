@@ -76,6 +76,8 @@ export class BrandBuilderComponent
   currentStage: number = 1;
 
   siteId: any = false;
+  vendorId:any = false;
+
   isCreating: boolean = true;
   isEditing: boolean = false;
   activePageTitle: string = '';
@@ -643,6 +645,7 @@ export class BrandBuilderComponent
       this.message = 'Checking for remote version...';
       //user should be logged in
       const userId = this.service.auth.getUser().uid;
+      this.vendorId = this.service.auth.getUser().uid;
       const pathSegments = ['users', userId, 'sites'];
 
       console.log('userid');

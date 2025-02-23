@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   showMemberships: boolean = false;
   showSettings: boolean = false;
   showProfile: boolean = false;
+  showUsers: boolean = false;
 
   publishId: boolean | string = false;
   initialLoad = true;
@@ -273,24 +274,35 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.showMemberships = false;
         this.showSettings = false;
         this.showProfile = false;
+        this.showUsers = false;
+        break;
+      case 'users':
+        this.showUsers = true;
+        this.showSites = false;
+        this.showMemberships = false;
+        this.showSettings = false;
+        this.showProfile = false;
         break;
       case 'memberships':
         this.showSites = false;
         this.showMemberships = true;
         this.showSettings = false;
         this.showProfile = false;
+        this.showUsers = false;
         break;
       case 'settings':
         this.showSites = false;
         this.showMemberships = false;
         this.showSettings = true;
         this.showProfile = false;
+        this.showUsers = false;
         break;
       case 'profile':
         this.showSites = false;
         this.showMemberships = false;
         this.showSettings = false;
         this.showProfile = true;
+        this.showUsers = false;
         break;
     }
   }

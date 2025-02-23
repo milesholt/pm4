@@ -9,6 +9,8 @@ import { ModalComponentModule } from '../../components/modal/modal.module';
 import { SubscriptionComponentModule } from '../../components/payment/subscription/subscription.payment.module';
 import { CardPaymentModule } from '../../components/payment/card/card.payment.module';
 
+import { UsersBackendComponentModule } from '../../components/users/backend/users.module';
+
 @NgModule({
   imports: [
     IonicModule,
@@ -18,6 +20,7 @@ import { CardPaymentModule } from '../../components/payment/card/card.payment.mo
     ModalComponentModule,
     SubscriptionComponentModule,
     CardPaymentModule,
+    UsersBackendComponentModule,
   ],
   declarations: [DashboardComponent],
 })
