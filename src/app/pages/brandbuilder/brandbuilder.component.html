@@ -333,11 +333,16 @@
               <!--users-->
 
               <ion-buttons slot="end">
+
+                {{vendorId}}
+
+                {{siteId}}
+                
                   
                 <ion-item
                   routerDirection="root"
                   [routerLink]="'/login'"
-                  [queryParams]="{'vendorId': vendorId, siteId: siteId}"
+                  [queryParams]="{'vendorId': vendorId, 'siteId': siteId}"
                   lines="none"
                   detail="false"
                 >

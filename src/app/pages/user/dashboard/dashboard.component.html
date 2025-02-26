@@ -282,7 +282,8 @@
 
         <!-- Sites -->
         <div *ngIf="showUsers">
-          <app-users-back></app-users-back>
+          {{ user.uid }}
+          <app-users-back [sites]="sites"></app-users-back>
         </div>
       </div>
       <!--if user-->

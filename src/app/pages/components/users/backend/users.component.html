@@ -1,3 +1,17 @@
 <h1>Users Backend Component</h1>
 
 <p>User list to go here</p>
+
+<ion-select [(ngModel)]="filterSite">
+   <ion-select-option>All</ion-select-option>
+   <ion-select-option *ngFor="let site of sites; let sidx = index">{{site.name}}</ion-select-option>
+</ion-select>
+
+<ion-list *ngFor="let user of users; let idx = index">
+    <ion-item *ngIf="user.siteName == filterSite || filterSite == 'All'">
+        {{user.name}}
+        {{user.email}}
+        {{user.siteName}}
+        {{user.createdAt}}
+    </ion-item>
+</ion-list>

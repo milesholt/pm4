@@ -210,6 +210,25 @@ export class FirestoreService {
       });
   }
 
+  getDocumentPromise(pathSegments: any[], documentId: string): Promise<any> {
+    const docRef = this.buildDocumentReference(pathSegments, documentId);
+  
+    return docRef
+      .get()
+      .toPromise()
+      .then((docSnapshot: any) => {
+        if (!docSnapshot.exists) {
+          throw new Error('Document not found');
+        }
+        return { id: docSnapshot.id, ...docSnapshot.data() };
+      })
+      .catch((error: any) => {
+        console.error('Error getting document:', error);
+        throw new Error('Error retrieving document, please try again later.');
+      });
+  }
+  
+
   // Generic method to update a document
   updateDocument(
     pathSegments: any[],

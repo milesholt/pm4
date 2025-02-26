@@ -9,6 +9,7 @@ import { AuthService } from '../../../services/external/firebase/AuthService/aut
 
 import { Library } from '../../../app.library';
 import { CoreService } from '../../../services/core.service';
+import { throwError } from 'rxjs';
 
 @Component({
   //standalone: true,
@@ -24,10 +25,9 @@ export class LoginComponent implements OnInit {
   greeting: string = '';
   loginForm: any;
   errorMessage: string = '';
-  vendorId:string | null = null;
-  siteId:string | null = null;
-  routeParams:any;
-  
+  vendorId: string | null = null;
+  siteId: string | null = null;
+  routeParams: any;
 
   constructor(
     public authService: AuthService,
@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     // Get vendorId from route/query params
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.routeParams = params;
       this.vendorId = params['vendorId'] || null;
       this.siteId = params['siteId'] || null;
@@ -112,55 +112,93 @@ export class LoginComponent implements OnInit {
   async handleLogin(res: any) {
     console.log('handle login:');
     console.log(res);
+
+    const user = res.user;
+
     //Handle logged in user data here before directing
     //Check if new user, user permissions, if user verified
     //res.user.isEmailVerified
     //res.additionalUserInfo.isNewUser
-    const isNewUser = res.additionalUserInfo.isNewUser;
+    //const isNewUser = res.additionalUserInfo.isNewUser;
 
     // Check if vendorId is available
     if (this.vendorId) {
       // Path to the customers collection for this vendor and site
-      const pathSegments = ['users', this.vendorId, 'sites', this.routeParams.siteId, 'customers'];
+      const pathSegments = [
+        'users',
+        this.vendorId,
+        'sites',
+        this.siteId,
+        'customers',
+      ];
+      const pathSegments2 = ['users', this.vendorId, 'sites'];
 
       try {
         // Use Firestore service to check if user exists in the "customers" collection
-        const userDoc = await this.service.firestore.getDocumentById(pathSegments, res.uid).toPromise();
+        const userDoc = await this.service.firestore
+          .getDocumentById(pathSegments, res.user.uid)
+          .subscribe({
+            next: async (userDoc) => {
+              //userid exists in vendor's site
+              //continue to vendor site or customer dashboard
+              if (this.siteId) {
+                const siteDoc = await this.service.firestore.getDocumentPromise(
+                  ['users', this.vendorId, 'sites'],
+                  this.siteId
+                );
 
-        if (userDoc) {
-          console.log('Existing user:', userDoc);
-          // Handle the existing user logic
-        }
-      } catch (error:any) {
+                if (siteDoc) {
+                  const siteurl = ['brandbuilder'];
+                  const queryParams = { site: siteDoc.publishId };
+                  this.router.navigate(siteurl, { queryParams });
+                }
+              }
+            },
+            error: (error) => {
+              //No user found here, or customers does not exist
+              alert('new user');
+              // Handle the case where the user is not found in the collection (new user)
+              this.saveCustomerData(user.uid, user.displayName, user.email);
+            },
+          });
+      } catch (error: any) {
         console.log('New user detected:', error.message);
+        alert('new user');
         // Handle the case where the user is not found in the collection (new user)
-        this.saveCustomerData(res.uid, res.user.displayName, res.user.email);
+        this.saveCustomerData(user.uid, user.displayName, user.email);
       }
     }
-    
 
     //To do: timeout is needed otherwise the next time after logging in, it fails to navigate
     setTimeout(() => {
       console.log('redirecting...');
-      this.router.navigate(['dashboard']);
+      //this.router.navigate(['dashboard']);
     });
   }
 
-  private async saveCustomerData(userId: string, name: string | null, email: string | null) {
+  private async saveCustomerData(
+    userId: string,
+    name: string | null,
+    email: string | null
+  ) {
     if (!this.vendorId) {
       console.error('Vendor ID is missing');
       return;
     }
-  
+
     const customerData = {
       createdAt: new Date(),
       userId: userId,
       name: name,
-      email: email
+      email: email,
     };
-  
+
     this.service.firestore
-      .createDocument(['users', this.vendorId, 'sites', this.siteId, 'customers'], customerData, userId)
+      .createDocument(
+        ['users', this.vendorId, 'sites', this.siteId, 'customers'],
+        customerData,
+        userId
+      )
       .then(() => {
         console.log('Customer data saved successfully!');
       })
