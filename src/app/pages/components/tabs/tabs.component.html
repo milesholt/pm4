@@ -1,0 +1,24 @@
+<h1>Tab Component</h1>
+
+<ion-segment [(ngModel)]="selectedTab">
+  <ion-segment-button
+    *ngFor="let tab of tabs; let i = index"
+    (click)="selectedTab = i"
+  >
+    {{ tab.title }}
+  </ion-segment-button>
+</ion-segment>
+
+<ng-container *ngIf="tabs[selectedTab]">
+  <app-dynamic-wrapper
+    [component]="tabs[selectedTab].component"
+    [params]="tabs[selectedTab].params"
+    (callback)="handleCallback($event)"
+  ></app-dynamic-wrapper>
+</ng-container>
+
+<ion-button expand="full" (click)="submit()">Submit</ion-button>
+
+<div style="display: none">
+  <ng-template #dynamicComponentContainer></ng-template>
+</div>

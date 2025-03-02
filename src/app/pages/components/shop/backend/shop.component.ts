@@ -15,6 +15,10 @@ import { Library } from '../../../../app.library';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 //import { ProductComponent } from './product/product.component';
 
+import { TabsComponent } from '../../tabs/tabs.component';
+import { FormComponent } from '../../form/form.component';
+import { ImageComponent } from '../../image/image.component';
+
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
 
@@ -35,6 +39,7 @@ export class ShopComponentBackend implements OnInit {
   vendor: any;
   message: string = '';
   products: any = [];
+  productTabs: any = [];
   @ViewChild('productTemplate') productTemplate!: TemplateRef<any>;
 
   constructor(
@@ -82,17 +87,54 @@ export class ShopComponentBackend implements OnInit {
   }
 
   async addProduct() {
-    const data = {
-      title: 'Product title',
-    };
+    /*{
+      id: null,
+      title: null,
+      description: null,
+      meta: null,
+      tags: null,
+      alias: null,
+      images: [],
+      productType: null,
+      featuredImage: null,
+      price: 0,
+      currency: null,
+      url: null,
+      variants: [],
+    }*/
 
-    const result = await this.service.modal.openModal(
-      this.productTemplate,
-      data
-    );
+    this.productTabs = [
+      {
+        title: 'Product Details',
+        component: FormComponent,
+        params: { fields: ['title', 'description', 'tags'] },
+      },
+      {
+        title: 'Product Images',
+        component: ImageComponent,
+        params: { multiple: true, type: 'upload' },
+      },
+      {
+        title: 'Variants',
+        component: FormComponent,
+        params: { fields: ['variants'] },
+      },
+      {
+        title: 'Pricing & Rates',
+        component: FormComponent,
+        params: { fields: ['price', 'currency'] },
+      },
+    ];
+
+    const result = await this.service.modal.openModal(this.productTemplate, {});
 
     if (result) {
+      console.log('Collected Product Data:', result);
       alert('Product added');
     }
+  }
+
+  closeModal(modal: any, data: any) {
+    modal.dismiss(data); // Pass collected data back when closing
   }
 }

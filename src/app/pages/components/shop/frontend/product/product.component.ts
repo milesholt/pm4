@@ -7,8 +7,8 @@ import {
   ViewChild,
   ElementRef,
 } from '@angular/core';
-import { CoreService } from '../../../services/core.service';
-import { Library } from '../../../app.library';
+import { CoreService } from '../../../../../services/core.service';
+import { Library } from '../../../../../app.library';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
@@ -37,6 +37,7 @@ export class ProductComponent implements OnInit {
     url: null,
     variants: [],
   };
+
   //productDesc: any = 'test';
   id: any = null;
   alias: string = '';
@@ -51,7 +52,7 @@ export class ProductComponent implements OnInit {
     public router: Router,
     private route: ActivatedRoute,
     public library: Library,
-    public service: CoreService,
+    public service: CoreService
   ) {
     this.cartSubscription = this.service.shop.cart$.subscribe(async (cart) => {
       if (this.products.length) await this.getProduct();
@@ -76,7 +77,7 @@ export class ProductComponent implements OnInit {
 
   async getProducts() {
     this.products = await this.service.shop.getProducts(
-      this.service.shop.client,
+      this.service.shop.client
     );
   }
 
@@ -86,7 +87,7 @@ export class ProductComponent implements OnInit {
       .filter(
         (product: any) =>
           product.productType == this.product.productType &&
-          product.id !== this.product.id,
+          product.id !== this.product.id
       )
       .slice(0, limitCount);
   }
@@ -111,7 +112,7 @@ export class ProductComponent implements OnInit {
     const meta = {
       title: this.product.title,
       description: this.service.seo.getMetaDescription(
-        this.product.description,
+        this.product.description
       ),
       image: this.product.images[0].src,
       keywords:

@@ -19,6 +19,8 @@ import { DriveModule } from '../drive/drive.brandbuilder.module';
 import { ImageModule } from 'src/app/pages/components/image/image.module';
 import { LinkModule } from '../link/link.brandbuilder.module';
 
+import { DynamicWrapperComponentModule } from 'src/app/pages/components/dynamic/dynamic.module';
+
 @NgModule({
   imports: [
     IonicModule,
@@ -32,8 +34,9 @@ import { LinkModule } from '../link/link.brandbuilder.module';
     DriveModule,
     ImageModule,
     LinkModule,
+    DynamicWrapperComponentModule,
   ],
-  declarations: [ModulesComponent, DynamicWrapperComponent],
+  declarations: [ModulesComponent],
   exports: [ModulesComponent],
 })
 export class ModulesModule {}

@@ -17,6 +17,7 @@ import { AccordionModule } from '../../../components/accordion/accordion.module'
 import { FooterModule } from '../../../components/footer/footer.module';
 
 import { RefresherModule } from '../../../components/refresher/refresher.module';
+import { TabsComponentModule } from '../../tabs/tabs.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -31,6 +32,7 @@ import { RefresherModule } from '../../../components/refresher/refresher.module'
     AccordionModule,
     FooterModule,
     RefresherModule,
+    TabsComponentModule,
   ],
   declarations: [ShopComponentBackend],
   exports: [ShopComponentBackend],

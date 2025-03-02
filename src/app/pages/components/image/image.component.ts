@@ -92,6 +92,7 @@ export class ImageComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    alert('image');
     this.showCustom = false;
     this.showGallery = true;
     //this.params = { ...this.defaultProperties, ...this.params };

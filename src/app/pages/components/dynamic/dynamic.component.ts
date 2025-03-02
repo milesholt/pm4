@@ -4,6 +4,8 @@ import {
   Output,
   EventEmitter,
   OnInit,
+  OnChanges,
+  SimpleChanges,
   ViewChild,
   ViewContainerRef,
   ChangeDetectorRef,
@@ -28,6 +30,12 @@ export class DynamicWrapperComponent implements OnInit {
 
   ngOnInit() {
     this.createComponent();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['component'] || changes['params']) {
+      this.createComponent();
+    }
   }
 
   createComponent() {
@@ -58,6 +66,8 @@ export class DynamicWrapperComponent implements OnInit {
         this.callback.emit(data); // Emit the event back to the parent component
       });
     }
+
+    this.cdr.detectChanges();
 
     return this.componentRef;
   }

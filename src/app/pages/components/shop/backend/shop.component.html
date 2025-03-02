@@ -16,7 +16,14 @@
 
 <ion-button (click)="addProduct()">Add product</ion-button>
 
-<ng-template #productTemplate let-data="context">
+<!--<ng-template #productTemplate let-data="context">
   <p>Product Template</p>
   {{ data | json }}
+</ng-template>-->
+
+<ng-template #productTemplate let-modal>
+  <app-tabs
+    [tabs]="productTabs"
+    (onSubmit)="closeModal(modal, $event)"
+  ></app-tabs>
 </ng-template>
