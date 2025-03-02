@@ -12,6 +12,11 @@
   >
 </ion-select>
 
-{{ message }}
+{{ message }}<br />
 
 <ion-button (click)="addProduct()">Add product</ion-button>
+
+<ng-template #productTemplate let-data="context">
+  <p>Product Template</p>
+  {{ data | json }}
+</ng-template>

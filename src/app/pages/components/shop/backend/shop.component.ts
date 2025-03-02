@@ -7,6 +7,7 @@ import {
   ChangeDetectorRef,
   ElementRef,
   ViewChildren,
+  TemplateRef,
   QueryList,
 } from '@angular/core';
 import { CoreService } from '../../../../services/core.service';
@@ -34,6 +35,7 @@ export class ShopComponentBackend implements OnInit {
   vendor: any;
   message: string = '';
   products: any = [];
+  @ViewChild('productTemplate') productTemplate!: TemplateRef<any>;
 
   constructor(
     public service: CoreService,
@@ -79,5 +81,18 @@ export class ShopComponentBackend implements OnInit {
       });
   }
 
-  addProduct() {}
+  async addProduct() {
+    const data = {
+      title: 'Product title',
+    };
+
+    const result = await this.service.modal.openModal(
+      this.productTemplate,
+      data
+    );
+
+    if (result) {
+      alert('Product added');
+    }
+  }
 }
