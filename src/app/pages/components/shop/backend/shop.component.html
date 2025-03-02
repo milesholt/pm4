@@ -1,0 +1,17 @@
+<h1>Stores</h1>
+
+<ion-content>
+  <app-refresher></app-refresher>
+</ion-content>
+
+<ion-select [(ngModel)]="filterSite" (ngModelChange)="getProducts()">
+  <ion-select-option
+    [value]="site"
+    *ngFor="let site of sites; let sidx = index"
+    >{{ site.name }}</ion-select-option
+  >
+</ion-select>
+
+{{ message }}
+
+<ion-button (click)="addProduct()">Add product</ion-button>

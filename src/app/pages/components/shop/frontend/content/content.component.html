@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>  
+    <ion-title>Content</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="mainContent">
+
+    <h1>{{pages[alias].title}}</h1>
+    <div id="contentSection" [innerHtml]="pageContent"></div>
+
+    <div *ngIf="pages[alias].components.includes('app-contactform-comp')">
+      <app-contactform-comp></app-contactform-comp>
+    </div>
+
+  </div>
+  
+  <app-footer></app-footer>
+</ion-content>
+
+

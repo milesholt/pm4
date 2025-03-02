@@ -27,8 +27,13 @@
             </ion-button>
 
             <ion-button (click)="showSection('users')" expand="block">
-              <ion-icon slot="start" name="document"></ion-icon>
+              <ion-icon slot="start" name="person"></ion-icon>
               <ion-label>Users</ion-label>
+            </ion-button>
+
+            <ion-button (click)="showSection('stores')" expand="block">
+              <ion-icon slot="start" name="cart"></ion-icon>
+              <ion-label>Stores</ion-label>
             </ion-button>
 
             <ion-button expand="block" [disabled]="true">
@@ -280,9 +285,13 @@
         </div>
         <!--sites-->
 
-        <!-- Sites -->
+        <!-- Stores -->
+        <div *ngIf="showStores">
+          <app-shop-back [sites]="sites"></app-shop-back>
+        </div>
+
+        <!-- Users -->
         <div *ngIf="showUsers">
-          {{ user.uid }}
           <app-users-back [sites]="sites"></app-users-back>
         </div>
       </div>

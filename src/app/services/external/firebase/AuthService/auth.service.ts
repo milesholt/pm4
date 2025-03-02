@@ -7,7 +7,7 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-@Injectable({ 
+@Injectable({
   providedIn: 'root',
 })
 export class AuthService {
@@ -40,7 +40,6 @@ export class AuthService {
         this.afAuth.authState.subscribe((user) => {
           if (user) {
             //this.router.navigate(['dashboard']);
-            
           }
         });
       })
@@ -48,30 +47,27 @@ export class AuthService {
         window.alert(error.message);
       });
   }
-  
+
   async doLogin(email: string, password: string) {
-    return new Promise<any>((resolve,reject) => {
-      
+    return new Promise<any>((resolve, reject) => {
       this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.SetUserData(result.user);
-        this.afAuth.authState.subscribe((user) => {
-          if (user) {
-            resolve(result)
-            //this.router.navigate(['dashboard']);
-            
-          }
-        });
-      })
-      .catch((error) => {
+        .signInWithEmailAndPassword(email, password)
+        .then((result) => {
+          this.SetUserData(result.user);
+          this.afAuth.authState.subscribe((user) => {
+            if (user) {
+              resolve(result);
+              //this.router.navigate(['dashboard']);
+            }
+          });
+        })
+        .catch((error) => {
           window.alert(error.message);
-          reject(error)
-      });
-      
-      })
+          reject(error);
+        });
+    });
   }
-  
+
   /*doLoginOld(value){
    return new Promise<any>((resolve, reject) => {
      firebase.auth().signInWithEmailAndPassword(value.email, value.password)
@@ -80,9 +76,7 @@ export class AuthService {
      }, err => reject(err))
    })
   }*/
-  
-  
-  
+
   // Sign up with email/password
   async SignUp(email: string, password: string) {
     return this.afAuth
@@ -152,6 +146,8 @@ export class AuthService {
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
+      group: 0,
+      type: 'vendor',
     };
     return userRef.set(userData, {
       merge: true,

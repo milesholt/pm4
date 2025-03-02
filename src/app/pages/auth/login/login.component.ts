@@ -129,7 +129,7 @@ export class LoginComponent implements OnInit {
         this.vendorId,
         'sites',
         this.siteId,
-        'customers',
+        'users',
       ];
       const pathSegments2 = ['users', this.vendorId, 'sites'];
 
@@ -142,38 +142,50 @@ export class LoginComponent implements OnInit {
               //userid exists in vendor's site
               //continue to vendor site or customer dashboard
               if (this.siteId) {
+                //if navigating to vendor site
                 const siteDoc = await this.service.firestore.getDocumentPromise(
                   ['users', this.vendorId, 'sites'],
                   this.siteId
                 );
 
-                if (siteDoc) {
+                /*if (siteDoc) {
                   const siteurl = ['brandbuilder'];
                   const queryParams = { site: siteDoc.publishId };
                   this.router.navigate(siteurl, { queryParams });
-                }
+                }*/
+
+                //if navigating to customer dashboard
+                setTimeout(() => {
+                  console.log('redirecting...');
+                  const queryParams = {
+                    publishSiteId: siteDoc.publishId,
+                    siteId: this.siteId,
+                    userId: res.user.uid,
+                    vendorId: this.vendorId,
+                  };
+                  this.router.navigate(['users'], { queryParams });
+                });
+                //
               }
             },
             error: (error) => {
               //No user found here, or customers does not exist
-              alert('new user');
               // Handle the case where the user is not found in the collection (new user)
               this.saveCustomerData(user.uid, user.displayName, user.email);
             },
           });
       } catch (error: any) {
         console.log('New user detected:', error.message);
-        alert('new user');
         // Handle the case where the user is not found in the collection (new user)
         this.saveCustomerData(user.uid, user.displayName, user.email);
       }
+    } else {
+      //To do: timeout is needed otherwise the next time after logging in, it fails to navigate
+      setTimeout(() => {
+        console.log('redirecting...');
+        this.router.navigate(['dashboard']);
+      });
     }
-
-    //To do: timeout is needed otherwise the next time after logging in, it fails to navigate
-    setTimeout(() => {
-      console.log('redirecting...');
-      //this.router.navigate(['dashboard']);
-    });
   }
 
   private async saveCustomerData(
@@ -191,11 +203,13 @@ export class LoginComponent implements OnInit {
       userId: userId,
       name: name,
       email: email,
+      type: 'customer',
+      group: 1,
     };
 
     this.service.firestore
       .createDocument(
-        ['users', this.vendorId, 'sites', this.siteId, 'customers'],
+        ['users', this.vendorId, 'sites', this.siteId, 'users'],
         customerData,
         userId
       )

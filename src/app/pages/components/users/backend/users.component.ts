@@ -21,7 +21,7 @@ export class UsersBackendComponent implements OnInit {
   message: any = '';
   isLoading: boolean = false;
   users: any = [];
-  filterSite:string = 'All';
+  filterSite: string = 'All';
   @Input() sites: any = null;
 
   constructor(
@@ -43,7 +43,6 @@ export class UsersBackendComponent implements OnInit {
     this.isLoading = true;
     this.message = '';
 
-
     let allUsers: any[] = []; // Store users as an array
 
     const promises = this.sites.map(async (site: any) => {
@@ -52,23 +51,25 @@ export class UsersBackendComponent implements OnInit {
         this.vendor.uid,
         'sites',
         site.id,
-        'customers',
+        'users',
       ];
       const data = await this.service.firestore.getDocumentsPromise(
         pathSegments
       );
 
-      const usersArray = Object.keys(data).map((userId:any) => {
+      const usersArray = Object.keys(data).map((userId: any) => {
         const user = data[userId];
-  
+
         return {
           ...user,
           id: userId,
           siteId: site.id,
           siteName: site.name,
-          createdAt: user.createdAt ? this.formatTimestamp(user.createdAt) : null, // Convert timestamp
+          createdAt: user.createdAt
+            ? this.formatTimestamp(user.createdAt)
+            : null, // Convert timestamp
         };
-      });  
+      });
 
       return usersArray;
     });

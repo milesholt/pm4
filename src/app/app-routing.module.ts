@@ -37,6 +37,9 @@ import { AuthGuard } from './services/shared/guard/auth.guard';
 // payment
 import { ResponsePaymentComponent } from './pages/components/payment/response/response.payment.component';
 
+//Users
+import { UsersFrontendComponent } from './pages/components/users/frontend/users.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -78,6 +81,15 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/user/dashboard/dashboard.module').then(
         (m) => m.DashboardModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'users',
+    component: UsersFrontendComponent,
+    loadChildren: () =>
+      import('./pages/components/users/frontend/users.module').then(
+        (m) => m.UsersFrontendComponentModule
       ),
     canActivate: [AuthGuard],
   },

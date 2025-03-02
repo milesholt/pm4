@@ -1,0 +1,5 @@
+<ion-item>
+<ion-select label="Sort by" label-placement="stacked" [(ngModel)]="sort" (ngModelChange)="sortFeed(feed)">
+  <ion-select-option [value]="opt" *ngFor="let opt of sort_options">{{opt.value}}</ion-select-option>
+</ion-select>
+</ion-item>

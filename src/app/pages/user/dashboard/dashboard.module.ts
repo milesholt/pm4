@@ -10,6 +10,7 @@ import { SubscriptionComponentModule } from '../../components/payment/subscripti
 import { CardPaymentModule } from '../../components/payment/card/card.payment.module';
 
 import { UsersBackendComponentModule } from '../../components/users/backend/users.module';
+import { ShopComponentBackendModule } from '../../components/shop/backend/shop.module';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { UsersBackendComponentModule } from '../../components/users/backend/user
     SubscriptionComponentModule,
     CardPaymentModule,
     UsersBackendComponentModule,
+    ShopComponentBackendModule,
   ],
   declarations: [DashboardComponent],
 })
