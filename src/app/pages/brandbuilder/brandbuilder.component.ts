@@ -76,7 +76,7 @@ export class BrandBuilderComponent
   currentStage: number = 1;
 
   siteId: any = false;
-  vendorId:any = false;
+  vendorId: any = false;
 
   isCreating: boolean = true;
   isEditing: boolean = false;
@@ -1427,22 +1427,33 @@ export class BrandBuilderComponent
   ): Promise<any> {
     return new Promise(async (resolve, reject) => {
       const genAI = new GoogleGenerativeAI(environment.ai.gemini.API_KEY);
+
       const generationConfig = {
         safetySettings: [
           {
             category: HarmCategory.HARM_CATEGORY_HARASSMENT,
             threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
           },
+          {
+            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold: HarmBlockThreshold.BLOCK_NONE,
+          },
         ],
         maxOutputTokens: 100,
       };
       const model = genAI.getGenerativeModel({
-        model: 'gemini-pro',
+        model: 'gemini-2.0-flash',
         ...generationConfig,
       });
 
       const result = await model.generateContent(prompt);
+
       const response = await result.response;
+
+      //console.log(response);
+
+      //this.message = JSON.stringify(response);
+      //reject(false);
 
       let res = await this.cleanJsonResponse(
         response.candidates?.[0].content.parts[0].text || response.text()
@@ -1524,22 +1535,35 @@ export class BrandBuilderComponent
   }
 
   async cleanJsonResponse(response: any) {
+    console.log('cleaning json resopnse');
+
     try {
       // Remove any extra quotes around the JSON
-      let cleanedResponse = response.replace(/^"|"$/g, '');
+      //let cleanedResponse = response.replace(/^"|"$/g, '');
 
       // Remove any unnecessary newlines and trim the string
-      cleanedResponse = response.replace(/\n/g, '').trim();
+      //cleanedResponse = response.replace(/\n/g, '').trim();
 
       // Remove any leading and trailing quotes
-      cleanedResponse = cleanedResponse.replace(/^"|"$/g, '');
+      //cleanedResponse = cleanedResponse.replace(/^"|"$/g, '');
 
-      cleanedResponse = cleanedResponse.replace('```', '');
+      //cleanedResponse = cleanedResponse.replace('```', '');
+
+      let cleanedResponse = response
+        .replace(/\n/g, '')
+        .replace('```json', '')
+        .replace('```', '')
+        .trim();
+
+      //this.message = cleanedResponse;
+
+      console.log(JSON.parse(cleanedResponse));
 
       // Parse the JSON to remove extra spaces
 
       let parsedJson = JSON.parse(cleanedResponse);
-      //console.log(parsedJson);
+      console.log('response:');
+      console.log(parsedJson);
       // Convert back to JSON string with standard formatting
 
       //return JSON.stringify(parsedJson);

@@ -7,5 +7,7 @@
   {{ userId }}<br />
   {{ vendorId }}
 
-  {{ user | json }}
+  {{ userForm | json }}
+
+  <app-form-comp [el]="userForm"></app-form-comp>
 </ion-content>

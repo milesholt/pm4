@@ -439,13 +439,12 @@ export class FormComponent implements OnInit, AfterViewInit {
     }
   }
 
-  doForm(e: any = '', k: any = false) {
+  doForm(e: any = '', k: any = false, t: any = false) {
     e = typeof e === 'string' ? e : e.target.value;
-    if (k !== 'message') e = e.trim();
+    if (k !== 'message' && t !== 'textarea') e = e.trim();
     if (k == 'email' || k == 'email2') e = e.toLowerCase();
     if (k == 'postcode') e = e.trim().toUpperCase();
     if (!!k) this.form[k] = e;
-    // console.log(this.form);
   }
 
   emit(params: any) {

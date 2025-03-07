@@ -22,7 +22,54 @@ export class UsersFrontendComponent implements OnInit {
   @Input() vendorId: string | null = null;
   user: any;
   routeParams: any;
-  //
+  userForm: any = {
+    action: 'returnform',
+    classes: 'nocol',
+    fields: [
+      {
+        key: 'name',
+        name: 'Full Name',
+        value: '',
+        type: 'text',
+        placeholder: 'Enter your full name',
+      },
+      {
+        key: 'dob',
+        name: 'Date of Birth',
+        value: '',
+        type: 'date',
+        placeholder: 'Enter your date of birth (optional)',
+      },
+      {
+        key: 'bio',
+        name: 'Bio',
+        placeholder: 'Enter a brief description about yourself',
+        value: '',
+        type: 'textarea',
+        classes: 'nocol',
+        required: true,
+        autocomplete: true,
+        prefix: '',
+        suffix: '',
+        counter: true,
+        maxlength: 500,
+        autogrow: true,
+        options: [],
+      },
+      {
+        key: 'interests',
+        name: 'Interests',
+        value: '',
+        type: 'text',
+        placeholder: 'Enter your interests',
+      },
+      {
+        key: 'submit',
+        name: 'Apply',
+        type: 'submit',
+      },
+    ],
+  };
 
   constructor(
     public service: CoreService,
