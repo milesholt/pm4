@@ -1,4 +1,12 @@
-import { Input, Output, Component, OnInit } from '@angular/core';
+import {
+  Input,
+  Output,
+  Component,
+  OnInit,
+  ViewChild,
+  ViewChildren,
+  TemplateRef,
+} from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -20,6 +28,8 @@ export class UsersFrontendComponent implements OnInit {
   @Input() userId: string | null = null;
   @Input() siteId: string | null = null;
   @Input() vendorId: string | null = null;
+  @ViewChild('imageTemplate') imageTemplate!: TemplateRef<any>;
+
   user: any;
   routeParams: any;
   userForm: any = {
@@ -108,5 +118,23 @@ export class UsersFrontendComponent implements OnInit {
       .catch((e: any) => {
         console.log('error getting user');
       });
+  }
+
+  async addImages() {
+    const result = await this.service.modal.openModal(this.imageTemplate, {});
+
+    if (result) {
+      console.log('Collected iage data:', result);
+      console.log('Image added');
+      let imageUrl = result.url;
+      if (imageUrl) (this.user.userData ??= {}).images ??= [];
+      this.user.userData.images.push(imageUrl);
+
+      //Store images on userData
+    }
+  }
+
+  closeModal(modal: any, data: any) {
+    modal.dismiss(data); // Pass collected data back when closing
   }
 }

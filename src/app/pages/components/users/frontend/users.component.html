@@ -1,13 +1,24 @@
 <ion-content>
   <h1>Users Frontend Dashboard</h1>
 
-  <p>User profile data here:</p>
-
-  {{ siteId }}<br />
-  {{ userId }}<br />
-  {{ vendorId }}
-
-  {{ userForm | json }}
-
   <app-form-comp [el]="userForm"></app-form-comp>
+
+  <ion-button (click)="addImages()">Add Images</ion-button>
+
+  <app-gallery-comp></app-gallery-comp>
 </ion-content>
+
+<ng-template #imageTemplate let-modal>
+  <p>Image Component</p>
+
+  <app-image
+    [setParams]="{ type: 'upload' }"
+    [isUpload]="true"
+    [uploadPath]="
+      vendorId + '/sites/' + siteId + '/users/' + userId + '/assets/images/'
+    "
+    (onSubmit)="closeModal(modal, $event)"
+  ></app-image>
+
+  <!--<app-modules-comp [name]="'image'"></app-modules-comp>-->
+</ng-template>

@@ -34,6 +34,10 @@ export class ImageComponent implements OnInit {
   @ViewChild('iniTemplate') iniTemplate!: TemplateRef<any>;
 
   @Input() isEditing: boolean = false;
+  @Input() isUpload: boolean = false;
+  @Input() uploadPath: string | null = null;
+
+  @Input() setParams: any = null;
 
   @Input() params: any = {
     type: 'default',
@@ -96,8 +100,23 @@ export class ImageComponent implements OnInit {
     this.showCustom = false;
     this.showGallery = true;
     //this.params = { ...this.defaultProperties, ...this.params };
-
+    await this.doParams();
     await this.doForm();
+    if (this.isUpload) {
+      this.params.type = 'upload';
+      this.iniModule();
+    }
+  }
+
+  async doParams() {
+    //configure any set params, otherwise use default params
+    this.params =
+      this.setParams !== null && !this.lib.isEmpty(this.setParams)
+        ? { ...this.params, ...this.setParams }
+        : this.lib.deepCopy(this.params || {});
+
+    console.log('doParams:');
+    console.log(this.params);
   }
 
   async edit() {
@@ -113,6 +132,9 @@ export class ImageComponent implements OnInit {
     this.params = params;
     console.log('ini image mod');
     console.log(this.params.type);
+    console.log('uploadPath:');
+    console.log(this.uploadPath);
+
     switch (this.params.type) {
       case 'googledrive':
         this.doGoogleDrive();
@@ -168,18 +190,20 @@ export class ImageComponent implements OnInit {
   }
 
   async loadModal(params: any = this.params) {
-    console.log('load modal');
-    console.log(this.params.media.photoData);
-    console.log(this.iniTemplate);
+    let mediaData: any = {};
+    if (this.lib.isProperty(this.params, 'media'))
+      mediaData = this.params.media.photoData;
+
+    console.log(mediaData);
+
     if (!this.iniTemplate) {
-      console.log('no template found');
       await new Promise((resolve) => setTimeout(resolve, 50));
     }
 
     if (this.iniTemplate) {
       const data = await this.service.modal.openModal(
         this.iniTemplate,
-        this.params.media.photoData
+        mediaData
       );
 
       if (data) {
@@ -273,7 +297,19 @@ export class ImageComponent implements OnInit {
     let fileName = this.params.id + `.webp`;
 
     //let fileName = 'logo.webp';
-    const folderPath = `${this.service.auth.getUser().uid}/images/`;
+    let folderPath: string | null = null;
+    if (this.uploadPath) {
+      folderPath = this.uploadPath;
+    } else {
+      folderPath = `${this.service.auth.getUser().uid}/images/`;
+    }
+
+    if (!folderPath) {
+      console.log('No folder path');
+      return;
+    }
+
+    console.log('folderPath', folderPath);
 
     const extension = this.service.drive.getExtensionFromMimeType(fileType);
 

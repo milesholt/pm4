@@ -25,6 +25,7 @@
 
   <div *ngIf="showUpload">
     <p>Upload an image</p>
+    {{ uploadPath }}
     <input
       type="file"
       (change)="onFileSelected($event)"
@@ -71,4 +72,8 @@
     [src]="params['url']"
     style="display: block; width: 100%; height: auto"
   />
+
+  <ion-button *ngIf="isUpload" (click)="selectImage(params['url'])"
+    >Done</ion-button
+  >
 </div>
