@@ -294,7 +294,9 @@ export class ImageComponent implements OnInit {
     let uploadBlob: Blob | null = null; // Initialize with null
     //const folderPath = 'images/';
     //const fileName = `${new Date().getTime()}_${file.name}.webp`;
-    let fileName = this.params.id + `.webp`;
+    let fileNameString = this.params.id ? this.params.id : new Date().getTime();
+
+    let fileName = fileNameString + `.webp`;
 
     //let fileName = 'logo.webp';
     let folderPath: string | null = null;
@@ -350,7 +352,7 @@ export class ImageComponent implements OnInit {
 
         for (let index = 0; index < targetWidths.length; index++) {
           const width = targetWidths[index];
-          fileName = this.params.id + `_${width}.webp`; // Name with width suffix
+          fileName = fileNameString + `_${width}.webp`; // Name with width suffix
 
           //make sure blob data is formatted correctly
           const blobData = compressedBlobs[index].blob;
@@ -365,7 +367,7 @@ export class ImageComponent implements OnInit {
         }
       } else if (fileType === 'image/svg+xml') {
         uploadBlob = file; // No compression for SVG
-        fileName = this.params.id + '.svg';
+        fileName = fileNameString + '.svg';
       } else {
         alert('Unsupported file format. Only JPG, PNG, and SVG are allowed.');
         return;
