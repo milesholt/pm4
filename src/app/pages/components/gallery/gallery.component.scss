@@ -1,0 +1,63 @@
+ion-card {
+    overflow: hidden;
+    position: relative;
+    --border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  ion-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  /*ion-modal {
+    
+    .modal-wrapper {
+      background-color: #000;
+    }
+  
+    ion-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      margin: auto;
+    }
+  }*/
+  
+  ion-searchbar {
+    margin: 10px;
+  }
+
+  ion-modal {
+    --min-width: 50%; /* Control the minimum width */
+    --max-width: 80%; /* Control the maximum width */
+    --min-height: 50%; /* Control the minimum height */
+    --max-height: 80%; /* Control the maximum height */
+    --border-radius: 20px; /* Optional, to give the modal rounded corners */
+  }
+  
+  .modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  ion-img {
+    width: 100%;
+    max-width: 500px; /* Limit the max width of the image */
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 10px; /* Space between image and close button */
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+  }
+  

@@ -127,8 +127,18 @@ export class UsersFrontendComponent implements OnInit {
       console.log('Collected iage data:', result);
       console.log('Image added');
       let imageUrl = result.url;
+      let imageData = {
+        url: result.url,
+        tags: [],
+        alt: '',
+        caption: '',
+        description: '',
+        title: '',
+        created: new Date(),
+        modified: new Date(),
+      };
       if (imageUrl) (this.user.userData ??= {}).images ??= [];
-      this.user.userData.images.push(imageUrl);
+      this.user.userData.images.push(imageData);
 
       let userData = {
         userData: this.user.userData,

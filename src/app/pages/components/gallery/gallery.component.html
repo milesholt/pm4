@@ -1,6 +1,6 @@
 <h3>Gallery</h3>
 
-<ion-content>
+<!--<ion-content>
   <ion-grid>
     <ion-row>
       <ion-col size="6" *ngFor="let image of images">
@@ -8,4 +8,48 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+</ion-content>-->
+
+<ion-content>
+  <ion-searchbar
+    [(ngModel)]="searchQuery"
+    debounce="500"
+    placeholder="Search images..."
+    showClearButton="focus"
+  ></ion-searchbar>
+
+  {{ filteredImages() | json }}
+
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        *ngFor="let image of filteredImages()"
+        size="6"
+        size-md="4"
+        size-lg="3"
+      >
+        <ion-card (click)="openLightbox(image)">
+          <img [src]="image.url" [alt]="image.alt" lazy-load />
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!--<ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreImages($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="crescent"
+      loadingText="Loading more images..."
+    ></ion-infinite-scroll-content>
+  </ion-infinite-scroll>-->
+
+  <ion-modal [isOpen]="lightboxOpen" (didDismiss)="closeLightbox()">
+    <ng-template>
+      <div class="modal-content">
+        <!--<ion-button class="close-button" (click)="closeLightbox()"
+          >Close</ion-button
+        >-->
+        <ion-img [src]="currentImage?.url" [alt]="currentImage?.alt"></ion-img>
+      </div>
+    </ng-template>
+  </ion-modal>
 </ion-content>
