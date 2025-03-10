@@ -5,7 +5,11 @@
 
   <ion-button (click)="addImages()">Add Images</ion-button>
 
-  <app-gallery-comp></app-gallery-comp>
+
+  <app-gallery-comp
+    *ngIf="user?.userData?.images"
+    [images]="user.userData.images"
+  ></app-gallery-comp>
 </ion-content>
 
 <ng-template #imageTemplate let-modal>

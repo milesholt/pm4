@@ -130,7 +130,25 @@ export class UsersFrontendComponent implements OnInit {
       if (imageUrl) (this.user.userData ??= {}).images ??= [];
       this.user.userData.images.push(imageUrl);
 
+      let userData = {
+        userData: this.user.userData,
+      };
+
       //Store images on userData
+      const pathSegments = [
+        'users',
+        this.vendorId,
+        'sites',
+        this.siteId,
+        'users',
+      ];
+
+      if (this.userId)
+        await this.service.firestore.updateDocument(
+          pathSegments,
+          this.userId,
+          userData
+        );
     }
   }
 

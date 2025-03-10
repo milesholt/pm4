@@ -22,11 +22,9 @@ import { CoreService } from '../../../services/core.service';
   //imports:[IonicModule]
 })
 export class GalleryComponent implements OnInit {
-  images: string[] = [];
-
+  @Input() images: string[] = [];
   @Input() type: any;
   @Input() username: any;
-
   @Input() params: any = {};
 
   constructor(
@@ -45,8 +43,13 @@ export class GalleryComponent implements OnInit {
       case 'instagram':
         this.loadInstagram();
         break;
+      case 'default':
+        this.loadDefault();
+        break;
     }
   }
+
+  loadDefault() {}
 
   loadInstagram() {
     /*this.service.instagram.getImages(this.username).subscribe(
