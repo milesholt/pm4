@@ -8,6 +8,7 @@ import { FormModule } from '../../form/form.module';
 import { GalleryModule } from '../../gallery/gallery.module';
 import { ImageModule } from '../../image/image.module';
 import { ModulesModule } from 'src/app/pages/brandbuilder/components/modules/modules.brandbuilder.module';
+import {TabsComponentModule} from '../../tabs/tabs.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { ModulesModule } from 'src/app/pages/brandbuilder/components/modules/mod
     GalleryModule,
     ImageModule,
     ModulesModule,
+    TabsComponentModule
   ],
   declarations: [UsersFrontendComponent],
 })

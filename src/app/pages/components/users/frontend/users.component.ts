@@ -3,9 +3,11 @@ import {
   Output,
   Component,
   OnInit,
+  AfterViewInit,
   ViewChild,
   ViewChildren,
   TemplateRef,
+  ChangeDetectorRef
 } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
@@ -15,20 +17,25 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Library } from '../../../../app.library';
 import { CoreService } from '../../../../services/core.service';
 
+
 @Component({
   //standalone: true,
   selector: 'app-users-front',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
   providers: [CoreService, Library],
-  //imports:[IonicModule]
 })
-export class UsersFrontendComponent implements OnInit {
+export class UsersFrontendComponent implements OnInit, AfterViewInit {
   localUser: any;
   @Input() userId: string | null = null;
   @Input() siteId: string | null = null;
   @Input() vendorId: string | null = null;
   @ViewChild('imageTemplate') imageTemplate!: TemplateRef<any>;
+
+  @ViewChild('profileTab', { static: true }) profileTab!: TemplateRef<any>;
+  @ViewChild('photosTab', { static: true }) photosTab!: TemplateRef<any>;
+
+  tabs: any[] = [];
 
   user: any;
   routeParams: any;
@@ -86,7 +93,8 @@ export class UsersFrontendComponent implements OnInit {
     public navCtrl: NavController,
     public router: Router,
     public lib: Library,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) {
     // Get vendorId from route/query params
     this.route.queryParams.subscribe((params) => {
@@ -97,7 +105,28 @@ export class UsersFrontendComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.tabs = [
+        { title: 'Profile', template: this.profileTab },
+        { title: 'Photos', template: this.photosTab },
+      ];
+      // Trigger change detection manually
+      this.cdr.detectChanges();
+    });
+  }
+
   ngOnInit() {
+    this.tabs = [
+      {
+        title: 'Profile',
+        template: this.profileTab,
+      },
+      {
+        title: 'Photos',
+        template: this.photosTab,
+      }
+    ];
     this.getUser();
   }
 
@@ -118,6 +147,11 @@ export class UsersFrontendComponent implements OnInit {
       .catch((e: any) => {
         console.log('error getting user');
       });
+  }
+
+  getUserFields(){
+    let fields = this.userForm.fields.filter((field:any)=> field.type !== 'submit');
+    return fields;
   }
 
   async addImages() {
@@ -165,4 +199,5 @@ export class UsersFrontendComponent implements OnInit {
   closeModal(modal: any, data: any) {
     modal.dismiss(data); // Pass collected data back when closing
   }
+
 }

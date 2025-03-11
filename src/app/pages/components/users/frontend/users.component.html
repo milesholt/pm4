@@ -1,16 +1,37 @@
+
+
 <ion-content>
   <h1>Users Frontend Dashboard</h1>
 
-  <app-form-comp [el]="userForm"></app-form-comp>
 
-  <ion-button (click)="addImages()">Add Images</ion-button>
+  <h2>Profile details</h2>
 
 
-  <app-gallery-comp
-    *ngIf="user?.userData?.images"
-    [images]="user.userData.images"
-  ></app-gallery-comp>
+  <app-tabs [tabs]="tabs">
+  </app-tabs>
+
+  
+  
+  <ng-template #profileTab>
+    <ion-list>
+      <ion-item *ngFor="let detail of getUserFields()">{{detail.name}} : {{detail.value}}</ion-item>
+    </ion-list>
+  </ng-template>
+
+  
+  <ng-template #photosTab>
+    <ion-button (click)="addImages()">Add Images</ion-button>
+    <app-gallery-comp
+      *ngIf="user?.userData?.images"
+      [images]="user.userData.images"
+    ></app-gallery-comp>
+  </ng-template>
+
 </ion-content>
+
+<ng-template #settingsTemplate let-modal>
+  <app-form-comp [el]="userForm"></app-form-comp>
+</ng-template>
 
 <ng-template #imageTemplate let-modal>
   <p>Image Component</p>

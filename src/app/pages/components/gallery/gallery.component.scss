@@ -37,27 +37,74 @@ ion-card {
     --border-radius: 20px; /* Optional, to give the modal rounded corners */
   }
   
-  .modal-content {
+  /*.modal-content {
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 10px;
-  }
+  }*/
   
-  ion-img {
+  /*ion-img {
     width: 100%;
-    max-width: 500px; /* Limit the max width of the image */
+    max-width: 500px; 
     height: auto;
     object-fit: contain;
-    margin-bottom: 10px; /* Space between image and close button */
-  }
+    margin-bottom: 10px;
+  }*/
   
   .close-button {
     position: absolute;
     top: 10px;
     right: 10px;
     z-index: 10;
+  }
+  
+
+  .modal-content {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.9); /* Dark background */
+  }
+  
+  ion-img {
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    color: white;
+    background: rgba(0, 0, 0, 0.6);
+  }
+  
+  .nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    min-width:0px!important;
+  }
+  
+  .left {
+    left: 0px;
+  }
+  
+  .right {
+    right: 0px;
+  }
+  
+  .nav-button ion-icon {
+    font-size: 2rem;
   }
   

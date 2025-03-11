@@ -1,6 +1,5 @@
-<h1>Tab Component</h1>
 
-<ion-segment [(ngModel)]="selectedTab">
+<!--<ion-segment [(ngModel)]="selectedTab">
   <ion-segment-button
     *ngFor="let tab of tabs; let i = index"
     (click)="selectedTab = i"
@@ -16,6 +15,40 @@
     (callback)="handleCallback($event)"
   ></app-dynamic-wrapper>
 </ng-container>
+
+<ion-button expand="full" (click)="submit()">Submit</ion-button>
+
+<div style="display: none">
+  <ng-template #dynamicComponentContainer></ng-template>
+</div>
+-->
+<h1>Tab Component</h1>
+
+<ion-segment [(ngModel)]="selectedTab">
+  <ion-segment-button
+    *ngFor="let tab of tabs; let i = index"
+    (click)="onTabClick(i)"
+  >
+    {{ tab.title || 'Tab ' + (i + 1) }}
+  </ion-segment-button>
+</ion-segment>
+
+<!-- Render content for the selected tab -->
+<!--<ng-container *ngIf="tabs[selectedTab]">
+  <app-dynamic-wrapper
+    *ngIf="tabs[selectedTab]?.component"
+    [component]="tabs[selectedTab].component"
+    [params]="tabs[selectedTab].params"
+    (callback)="handleCallback($event)"
+  ></app-dynamic-wrapper>
+
+  <ng-container *ngIf="tabs[selectedTab]?.template">
+    <ng-container *ngTemplateOutlet="tabs[selectedTab].template"></ng-container>
+  </ng-container>
+</ng-container>-->
+
+<!-- Dynamically load component or template for the selected tab -->
+<div #dynamicComponentContainer></div>
 
 <ion-button expand="full" (click)="submit()">Submit</ion-button>
 

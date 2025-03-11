@@ -4,6 +4,7 @@ import {
   Input,
   Output,
   ChangeDetectorRef,
+  HostListener,
 } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
@@ -32,7 +33,8 @@ export class GalleryComponent implements OnInit {
   searchQuery: string = '';
   filteredImagesList: any[] = [];
   lightboxOpen: boolean = false;
-  currentImage: any = null;
+  //currentImage: any = null;
+  currentIndex: number = 0;
 
   constructor(
     public service: CoreService,
@@ -93,12 +95,42 @@ export class GalleryComponent implements OnInit {
   }
 
   openLightbox(image: any) {
-    this.currentImage = image;
+    this.currentIndex = this.images.findIndex((img) => img.src === image.src);
     this.lightboxOpen = true;
   }
 
   closeLightbox() {
     this.lightboxOpen = false;
-    this.currentImage = null;
+  }
+
+  nextImage() {
+    if (this.currentIndex < this.images.length - 1) {
+      this.currentIndex++;
+    } else {
+      this.currentIndex = 0; // Loop back to first image
+    }
+  }
+
+  prevImage() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    } else {
+      this.currentIndex = this.images.length - 1; // Loop back to last image
+    }
+  }
+
+  get currentImage() {
+    return this.images[this.currentIndex] || null;
+  }
+
+  // Keyboard navigation
+  @HostListener('document:keydown.arrowRight', ['$event'])
+  handleRightArrow(event: KeyboardEvent) {
+    this.nextImage();
+  }
+
+  @HostListener('document:keydown.arrowLeft', ['$event'])
+  handleLeftArrow(event: KeyboardEvent) {
+    this.prevImage();
   }
 }

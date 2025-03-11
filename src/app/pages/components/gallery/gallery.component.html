@@ -43,10 +43,33 @@
   <ion-modal [isOpen]="lightboxOpen" (didDismiss)="closeLightbox()">
     <ng-template>
       <div class="modal-content">
-        <!--<ion-button class="close-button" (click)="closeLightbox()"
-          >Close</ion-button
-        >-->
-        <ion-img [src]="currentImage?.url" [alt]="currentImage?.alt"></ion-img>
+        <!--<ion-button class="close-button" (click)="closeLightbox()">Close</ion-button>-->
+
+        <!-- Left Navigation Button -->
+        <ion-button
+          *ngIf="images.length > 1"
+          class="nav-button left"
+          (click)="prevImage()"
+        >
+          <ion-icon name="chevron-back"></ion-icon>
+        </ion-button>
+
+        <!-- Image Display -->
+        <ion-img
+          [src]="currentImage?.url"
+          [alt]="currentImage?.alt"
+          (swipeleft)="nextImage()"
+          (swiperight)="prevImage()"
+        ></ion-img>
+
+        <!-- Right Navigation Button -->
+        <ion-button
+          *ngIf="images.length > 1"
+          class="nav-button right"
+          (click)="nextImage()"
+        >
+          <ion-icon name="chevron-forward"></ion-icon>
+        </ion-button>
       </div>
     </ng-template>
   </ion-modal>
