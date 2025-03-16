@@ -162,6 +162,7 @@ export class BrandBuilderComponent
       instagram: [],
     },
   };
+  options: any = {};
 
   themeStructure: any = {
     colours: [
@@ -704,6 +705,7 @@ export class BrandBuilderComponent
     this.companyProducts = d.details.companyInfo.companyProducts;
     this.photos = d.media.photoData;
     this.media = d.media;
+    this.options = d.options;
     this.activeIndex = 0;
     this.activePage = this.generated[0];
     this.activePageTitle = this.generated[0].title;
@@ -1591,6 +1593,7 @@ export class BrandBuilderComponent
       details: {
         companyInfo: companyInfo,
       },
+      options: this.options,
       media: {
         photoData: this.photos,
         social: {
@@ -1633,6 +1636,7 @@ export class BrandBuilderComponent
       details: {
         companyInfo: companyInfo,
       },
+      options: this.options,
       media: {
         photoData: this.photos,
         social: {
@@ -1730,6 +1734,11 @@ export class BrandBuilderComponent
   deleteRow(index: number) {
     const rows = this.activePage.layout;
     rows.splice(index, 1);
+    this.recordChange();
+  }
+
+  deleteIntro() {
+    this.activePage.content = '';
     this.recordChange();
   }
 

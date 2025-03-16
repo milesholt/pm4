@@ -40,16 +40,12 @@
 </div>
 -->
 
-
 <ion-content padding>
-
-  <p>vendorId: {{vendorId}}</p>
-  <p>siteId: {{siteId}}</p>
-
-  
-  
-  <form class="form" [formGroup]="loginForm" (ngSubmit)="emailLogin(loginForm.value)">
-
+  <form
+    class="form"
+    [formGroup]="loginForm"
+    (ngSubmit)="emailLogin(loginForm.value)"
+  >
     <ion-item>
       <ion-label floating>Email</ion-label>
       <ion-input label="Email" type="text" formControlName="email"></ion-input>
@@ -57,67 +53,53 @@
 
     <ion-item>
       <ion-label floating>Password</ion-label>
-      <ion-input label="Password" type="password" formControlName="password"></ion-input>
+      <ion-input
+        label="Password"
+        type="password"
+        formControlName="password"
+      ></ion-input>
     </ion-item>
 
-    <ion-button full class="submit-button" type="submit">
-      Login
-    </ion-button>
-    
-
+    <ion-button full class="submit-button" type="submit"> Login </ion-button>
   </form>
-  
-  
+
   <!-- Social Login -->
-  
-   <ion-item>
-      <label>Or sign in with </label>
-      
-      <ion-buttons>
-      
+
+  <ion-item>
+    <label>Or sign in with </label>
+
+    <ion-buttons>
       <ion-button (click)="socialLogin('Google')">
-          <ion-icon slot="start" name="logo-google"></ion-icon> Google
+        <ion-icon slot="start" name="logo-google"></ion-icon> Google
       </ion-button>
-      
-      
+
       <ion-button (click)="socialLogin('Facebook')">
-          <ion-icon slot="start" name="logo-facebook"></ion-icon> Facebook
+        <ion-icon slot="start" name="logo-facebook"></ion-icon> Facebook
       </ion-button>
-      
-      
-      </ion-buttons>
-      
-     
-    </ion-item>
-    
-    
-    <!-- Other Options -->
-    
-    <div class="options-wrap">
-    
-     <div class="option forgot-password">
+    </ion-buttons>
+  </ion-item>
+
+  <!-- Other Options -->
+
+  <div class="options-wrap">
+    <div class="option forgot-password">
       Forgot Password? <a routerLink="/forgot-password">Click here</a>
-      </div>
-    <br>
+    </div>
+    <br />
     <div class="option no-account">
       No account yet? <a routerLink="/register">Sign Up</a>
     </div>
-    <br>
-   
-    </div>
-    
-    <!-- Error -->
-    
-    <div class="error-wrap">
-       <label class="error-message">{{errorMessage}}</label>
-    </div>
- 
-    
-      
-<!--
+    <br />
+  </div>
+
+  <!-- Error -->
+
+  <div class="error-wrap">
+    <label class="error-message">{{ errorMessage }}</label>
+  </div>
+
+  <!--
 <ion-button full type="submit" class="primary facebook-button" (click)="socialLogin('Facebook')">Facebook Login</ion-button><br />
 <ion-button full type="submit" class="google-button"  (click)="socialLogin('Google')">Google Login</ion-button>
 -->
-
-
 </ion-content>

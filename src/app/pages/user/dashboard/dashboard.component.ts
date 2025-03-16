@@ -663,46 +663,73 @@ export class DashboardComponent implements OnInit, OnDestroy {
         name: 'Website Domain',
         value: siteData.details.companyInfo.website ?? '',
         placeholder: 'eg. www.yourdomain.com',
+        type: 'text',
       },
       email: {
         name: 'Email',
         value: siteData.details.companyInfo.email ?? '',
         placeholder: 'eg. name@yourdomain.com',
+        type: 'text',
       },
       phone: {
         name: 'Phone',
         value: siteData.details.companyInfo.phone ?? '',
         placeholder: '+1 1234 5678',
+        type: 'text',
       },
       address: {
         name: 'Address',
         value: siteData.details.companyInfo.address ?? '',
         placeholder: "Enter your site's address here",
+        type: 'text',
       },
       instagram: {
         name: 'Instagram',
         value: siteData.details.companyInfo.social.instagram ?? '',
         placeholder: 'Enter your Instagram username here',
+        type: 'text',
       },
       facebook: {
         name: 'Facebook',
         value: siteData.details.companyInfo.social.facebook ?? '',
         placeholder: 'Enter your Facebook username here',
+        type: 'text',
       },
       x: {
         name: 'X',
         value: siteData.details.companyInfo.social.x ?? '',
         placeholder: 'Enter your X username here',
+        type: 'text',
       },
       youtube: {
         name: 'Youtube',
         value: siteData.details.companyInfo.social.youtube ?? '',
         placeholder: 'Enter your Youtube channel url here',
+        type: 'text',
       },
       linkedin: {
         name: 'LinkedIn',
         value: siteData.details.companyInfo.social.linkedin ?? '',
         placeholder: 'Enter your LinkedIn profile url here',
+        type: 'text',
+      },
+      showMenu: {
+        name: 'Show Menu',
+        description: 'Show the main menu in the header',
+        value: siteData.options.showMenu ?? true,
+        type: 'boolean',
+      },
+      showHeader: {
+        name: 'Show Header',
+        description: 'Make the header visible',
+        value: siteData.options.showHeader ?? true,
+        type: 'boolean',
+      },
+      showHolding: {
+        name: 'Show Holding Page',
+        description: 'Make your site offline and display a holding Page',
+        value: siteData.options.showHolding ?? false,
+        type: 'boolean',
       },
     };
 
@@ -735,6 +762,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
         siteData.details.companyInfo.social.x = formData.x.value;
         siteData.details.companyInfo.social.youtube = formData.youtube.value;
         siteData.details.companyInfo.social.linkedin = formData.linkedin.value;
+
+        if (!siteData.options) siteData.options = {};
+
+        siteData.options.showMenu = formData.showMenu.value;
+        siteData.options.showHeader = formData.showHeader.value;
+        siteData.options.showHolding = formData.showHolding.value;
 
         site.data = JSON.stringify(siteData);
         this.updateSite(site);

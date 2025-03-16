@@ -63,6 +63,7 @@ export class ModulesComponent implements OnInit {
   @Input() params: any | null = null;
   @Input() photos: any | null = null;
   @Input() media: any | null = null;
+  @Input() mod: any = null;
 
   @Output() callback = new EventEmitter();
 
@@ -239,8 +240,13 @@ export class ModulesComponent implements OnInit {
   }
 
   loadActiveModule(name: string | null = this.name) {
+
+    console.log(name);
+    
     if (name == 'new') {
-      this.openLibrary();
+      if(this.params.action){
+        if(this.params.action == 'new') this.openLibrary();
+      }     
       return;
     }
     if (name == null) return;

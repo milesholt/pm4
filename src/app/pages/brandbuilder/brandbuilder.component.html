@@ -299,14 +299,18 @@
         <!-- main content-->
         <div class="ion-page" id="main-page">
           <!--page header-->
-          <ion-header>
+
+          <ion-header *ngIf="options.showHeader">
             <ion-toolbar>
               <!--<ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
           </ion-buttons>-->
 
               <ion-buttons slot="start">
-                <ion-menu-button menu="builderMain"></ion-menu-button>
+                <ion-menu-button
+                  menu="builderMain"
+                  *ngIf="options.showMenu"
+                ></ion-menu-button>
               </ion-buttons>
 
               {{ companyName }}
@@ -332,17 +336,11 @@
 
               <!--users-->
 
-              <ion-buttons slot="end">
-
-                {{vendorId}}
-
-                {{siteId}}
-                
-                  
+              <!--<ion-buttons slot="end">
                 <ion-item
                   routerDirection="root"
                   [routerLink]="'/login'"
-                  [queryParams]="{'vendorId': vendorId, 'siteId': siteId}"
+                  [queryParams]="{ vendorId: vendorId, siteId: siteId }"
                   lines="none"
                   detail="false"
                 >
@@ -352,7 +350,7 @@
                     [md]="'person-sharp'"
                   ></ion-icon>
                 </ion-item>
-              </ion-buttons>
+              </ion-buttons>-->
             </ion-toolbar>
           </ion-header>
           <!--page content-->
@@ -394,12 +392,29 @@
             </div>
 
             <div id="main-content">
-              <div class="container">
+              <div class="container" *ngIf="activePage.content !== ''">
                 <div class="col-1">
-                  <div class="row">
+                  <div class="row intro">
                     <div
+                      *ngIf="isEditing"
+                      class="editor-panel editor-panel-row"
+                    >
+                      <ion-button (click)="deleteIntro()"
+                        ><ion-icon name="close-outline"></ion-icon
+                      ></ion-button>
+                    </div>
+
+                    <!--<div
                       class="page-content col"
                       [(contenteditableModel)]="activePage.content"
+                      [attr.contenteditable]="isEditing"
+                      data-text="Enter some content here"
+                      (input)="recordChange()"
+                      [innerHTML]="activePage.content"
+                    ></div>-->
+
+                    <div
+                      class="page-content col"
                       [attr.contenteditable]="isEditing"
                       data-text="Enter some content here"
                       (input)="recordChange()"
@@ -512,6 +527,7 @@
                             "
                             [params]="mod.params"
                             [media]="media"
+                            [mod]="mod"
                             (callback)="
                               onModuleCallback($event, mod, lidx, cidx, midx)
                             "
@@ -523,7 +539,9 @@
 
                       <ion-button
                         *ngIf="isEditing"
-                        (click)="col.push({ module: 'new', params: {} })"
+                        (click)="
+                          col.push({ module: 'new', params: { action: 'new' } })
+                        "
                         size="small"
                         class="center"
                         ><ion-icon name="add-circle-outline"></ion-icon> Add

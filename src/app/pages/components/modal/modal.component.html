@@ -14,10 +14,20 @@
     <ion-item *ngFor="let f of formatData(); let idx = index">
       <ion-label>{{ data.form[f].name }}</ion-label>
       <ion-input
+        *ngIf="data.form[f].type == 'text'"
         [(ngModel)]="data.form[f].value"
         [name]="data.form[f].name"
         [placeholder]="data.form[f].placeholder"
       ></ion-input>
+
+      <ion-toggle
+        *ngIf="data.form[f].type == 'boolean'"
+        [(ngModel)]="data.form[f].value"
+        [name]="data.form[f].name"
+        [checked]="data.form[f].value"
+      >
+        <ion-label>{{ data.form[f].description }}</ion-label>
+      </ion-toggle>
     </ion-item>
 
     <ion-button class="center" type="submit">Save</ion-button>

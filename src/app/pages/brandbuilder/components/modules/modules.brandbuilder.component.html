@@ -1,4 +1,5 @@
 <!--Load module if one is active-->
+
 <div *ngIf="activeModule.name == 'new'" class="ion-padding">
   <div *ngIf="isEditing" class="admin-panel">
     <ion-button size="small" (click)="openLibrary()">
@@ -9,6 +10,7 @@
 </div>
 
 <div *ngIf="isActiveModule && !isSettings" class="ion-padding">
+  
   <div
     *ngFor="let module of modules; let midx = index"
     class="module-container"
@@ -33,7 +35,7 @@
           Delete</ion-button
         >
       </div>
-
+  
       <app-dynamic-wrapper
         #dynamicMod
         [component]="module.component"
