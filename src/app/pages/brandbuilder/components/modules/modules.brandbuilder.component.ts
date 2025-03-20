@@ -64,6 +64,7 @@ export class ModulesComponent implements OnInit {
   @Input() photos: any | null = null;
   @Input() media: any | null = null;
   @Input() mod: any = null;
+  @Input() siteId: any = null;
 
   @Output() callback = new EventEmitter();
 
@@ -229,6 +230,7 @@ export class ModulesComponent implements OnInit {
       module.params = { ...module.params, ...modParams };
       module.params.id = this.id;
       module.params.media = this.media;
+      module.params.siteId = this.siteId;
       //module.params.media = [];
 
       //console.log('mod should have params');
@@ -240,13 +242,12 @@ export class ModulesComponent implements OnInit {
   }
 
   loadActiveModule(name: string | null = this.name) {
-
     console.log(name);
-    
+
     if (name == 'new') {
-      if(this.params.action){
-        if(this.params.action == 'new') this.openLibrary();
-      }     
+      if (this.params.action) {
+        if (this.params.action == 'new') this.openLibrary();
+      }
       return;
     }
     if (name == null) return;

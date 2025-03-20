@@ -1,24 +1,21 @@
-
-
 <ion-content>
-  <h1>Users Frontend Dashboard</h1>
+  <h1>Hi, {{ user?.name }}</h1>
+
+  <h2>Your Profile</h2>
 
 
-  <h2>Profile details</h2>
+  <ion-button (click)="editProfile()">Edit Profile</ion-button>
 
+  <app-tabs [tabs]="tabs"> </app-tabs>
 
-  <app-tabs [tabs]="tabs">
-  </app-tabs>
-
-  
-  
   <ng-template #profileTab>
     <ion-list>
-      <ion-item *ngFor="let detail of getUserFields()">{{detail.name}} : {{detail.value}}</ion-item>
+      <ion-item *ngFor="let detail of getUserFields()"
+        >{{ detail.name }} : {{ detail.value }}</ion-item
+      >
     </ion-list>
   </ng-template>
 
-  
   <ng-template #photosTab>
     <ion-button (click)="addImages()">Add Images</ion-button>
     <app-gallery-comp
@@ -26,7 +23,6 @@
       [images]="user.userData.images"
     ></app-gallery-comp>
   </ng-template>
-
 </ion-content>
 
 <ng-template #settingsTemplate let-modal>

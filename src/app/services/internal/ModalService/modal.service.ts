@@ -1,7 +1,9 @@
 // modal.service.ts
+import { ModalDynamicComponent } from 'src/app/pages/components/modal/modal-dynamic.component';
+import { ModalComponent } from 'src/app/pages/components/modal/modal.component';
+
 import { Injectable } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { ModalDynamicComponent } from 'src/app/pages/components/modal/modal-dynamic.component';
 import { TemplateRef } from '@angular/core';
 
 @Injectable({
@@ -10,11 +12,10 @@ import { TemplateRef } from '@angular/core';
 export class ModalService {
   constructor(private modalController: ModalController) {}
 
-  async openModal(template: TemplateRef<any>, context: any) {
+  /*async openModal(template: TemplateRef<any> | null, context: any) {
     try {
-      if (!template || !context) {
-        console.error('Template or data is missing');
-        console.log(template);
+      if (!context) {
+        console.error('Context is missing');
         console.log(context);
         return;
       }
@@ -36,11 +37,40 @@ export class ModalService {
         },
       });
 
-      /*modal.onDidDismiss().then((res: any) => {
-        if (res) {
-          console.log(res);
-        }
-      });*/
+      await modal.present();
+
+      const { data } = await modal.onDidDismiss(); // Wait for the modal to be dismissed
+      return data; // Return the data to the caller
+    } catch (error) {
+      console.error('Error creating modal:', error);
+    }
+  }*/
+
+  async openModal(template: TemplateRef<any> | null, context: any) {
+    try {
+      if (!context) {
+        console.error('Context is missing');
+        console.log(context);
+        return;
+      }
+
+      console.log(context);
+
+      // Check for open modal, dismiss any, and wait for it to complete
+      const topModal = await this.modalController.getTop();
+      if (topModal) {
+        await this.modalController.dismiss();
+      }
+
+      // If no template is provided, use ModalComponent instead
+      const component = template ? ModalDynamicComponent : ModalComponent;
+
+      const modal = await this.modalController.create({
+        component: component,
+        componentProps: template
+          ? { template: template, context: { context }, isModal: true }
+          : { data: context }, // Pass context as data for ModalComponent
+      });
 
       await modal.present();
 
@@ -51,8 +81,18 @@ export class ModalService {
     }
   }
 
-  dismiss(returnData?: any) {
+  async dismiss(returnData?: any) {
+    const topModal = await this.modalController.getTop();
+    if (!topModal) return;
     this.modalController.dismiss(returnData);
+  }
+
+  async isModal() {
+    const topModal = await this.modalController.getTop();
+    if (topModal) {
+      return true;
+    }
+    return false;
   }
 
   async dismissAllExceptTop() {

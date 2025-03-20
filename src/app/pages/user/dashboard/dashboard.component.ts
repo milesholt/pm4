@@ -725,10 +725,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
         value: siteData.options.showHeader ?? true,
         type: 'boolean',
       },
+      showFooter: {
+        name: 'Show Footer',
+        description: 'Make the footer visible',
+        value: siteData.options.showFooter ?? true,
+        type: 'boolean',
+      },
       showHolding: {
         name: 'Show Holding Page',
         description: 'Make your site offline and display a holding Page',
         value: siteData.options.showHolding ?? false,
+        type: 'boolean',
+      },
+      userSystem: {
+        name: 'Enable Users',
+        description: 'Allow user to register on this site',
+        value: siteData.options.userSystem ?? false,
+        type: 'boolean',
+      },
+      shopSystem: {
+        name: 'Enable Shop',
+        description: 'Turn site into an online shop',
+        value: siteData.options.shopSystem ?? false,
         type: 'boolean',
       },
     };
@@ -768,7 +786,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         siteData.options.showMenu = formData.showMenu.value;
         siteData.options.showHeader = formData.showHeader.value;
         siteData.options.showHolding = formData.showHolding.value;
+        siteData.options.showFooter = formData.showFooter.value;
+        siteData.options.userSystem = formData.userSystem.value;
+        siteData.options.shopSystem = formData.shopSystem.value;
 
+        
         site.data = JSON.stringify(siteData);
         this.updateSite(site);
 

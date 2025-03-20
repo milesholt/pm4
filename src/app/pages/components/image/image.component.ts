@@ -164,6 +164,7 @@ export class ImageComponent implements OnInit {
         let allImages = this.params['media']['photoData'];
         let imageUrl = allImages[this.lib.selectRandom(allImages)].src.large;
         this.params['url'] = await this.loadImage(imageUrl);
+        this.selectImage(this.params.url);
       }
     }
   }
@@ -303,7 +304,8 @@ export class ImageComponent implements OnInit {
     if (this.uploadPath) {
       folderPath = this.uploadPath;
     } else {
-      folderPath = `${this.service.auth.getUser().uid}/images/`;
+      let siteId = this.params.siteId ? '/' + this.params.siteId + '/' : '';
+      folderPath = `${this.service.auth.getUser().uid}${siteId}/images/`;
     }
 
     if (!folderPath) {

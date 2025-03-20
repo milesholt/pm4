@@ -1,4 +1,3 @@
-
 <!--<ion-segment [(ngModel)]="selectedTab">
   <ion-segment-button
     *ngFor="let tab of tabs; let i = index"
@@ -22,14 +21,13 @@
   <ng-template #dynamicComponentContainer></ng-template>
 </div>
 -->
-<h1>Tab Component</h1>
 
 <ion-segment [(ngModel)]="selectedTab">
   <ion-segment-button
     *ngFor="let tab of tabs; let i = index"
     (click)="onTabClick(i)"
   >
-    {{ tab.title || 'Tab ' + (i + 1) }}
+    {{ tab.title || "Tab " + (i + 1) }}
   </ion-segment-button>
 </ion-segment>
 

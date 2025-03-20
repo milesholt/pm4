@@ -488,14 +488,54 @@ form h2{
   text-align:center;
 } 
 
+
+/* Header */
+
+#main-page ion-header {
+  transition: height 0.3s ease-in-out;
+  height: 60px; // Default height
+
+  &.shrink {
+    height: 40px; // Smaller height when scrolled
+
+    .logo{
+      max-width:60px;
+      max-height:40px;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  ion-toolbar {
+    transition: padding 0.3s ease-in-out;
+    padding: 10px;
+
+    .shrink & {
+      padding: 5px;
+    }
+  }
+}
+
+#main-page ion-content {
+  
+  top:100px;
+  transition: all 0.3s ease-in-out;
+
+  &.shrink {
+    top:0px;
+  }
+} 
+
 /* Logo */
 
 .logo{
   max-width:150px;
-  height:50px;
+  width:100%;
+  height:auto;
+  max-height:150px;
   overflow:hidden;
   padding:5px;
-  display:block;
+  display:table;
+  transition: all 0.3s ease-in-out;
 }
 
 

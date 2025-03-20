@@ -7,7 +7,7 @@ import {
   ViewChild,
   ViewChildren,
   TemplateRef,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
@@ -16,7 +16,6 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 import { Library } from '../../../../app.library';
 import { CoreService } from '../../../../services/core.service';
-
 
 @Component({
   //standalone: true,
@@ -125,7 +124,7 @@ export class UsersFrontendComponent implements OnInit, AfterViewInit {
       {
         title: 'Photos',
         template: this.photosTab,
-      }
+      },
     ];
     this.getUser();
   }
@@ -149,8 +148,14 @@ export class UsersFrontendComponent implements OnInit, AfterViewInit {
       });
   }
 
-  getUserFields(){
-    let fields = this.userForm.fields.filter((field:any)=> field.type !== 'submit');
+  getUserFields() {
+    let fieldData = this.userForm.fields;
+    if(this.user?.userData?.profile?.length){
+      fieldData = this.user.userData.profile;
+    }
+    let fields = fieldData.filter(
+      (field: any) => field.type !== 'submit'
+    );
     return fields;
   }
 
@@ -198,6 +203,43 @@ export class UsersFrontendComponent implements OnInit, AfterViewInit {
 
   closeModal(modal: any, data: any) {
     modal.dismiss(data); // Pass collected data back when closing
+    console.log('handle updated data passed back');
   }
 
+  async editProfile() {
+    const result = await this.service.modal.openModal(
+      null,
+      this.getUserFields()
+    );
+    console.log('data returned');
+    console.log(result);
+    //update data
+
+    if(result){
+
+      let profileData = result.data.fields;
+      this.user.userData.profile = profileData;
+
+      let userData = {
+        userData: this.user.userData,
+      };
+
+      //Store images on userData
+      const pathSegments = [
+        'users',
+        this.vendorId,
+        'sites',
+        this.siteId,
+        'users',
+      ];
+
+      if (this.userId)
+        await this.service.firestore.updateDocument(
+          pathSegments,
+          this.userId,
+          userData
+        );
+    }
+
+  }
 }

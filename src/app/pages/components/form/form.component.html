@@ -210,13 +210,14 @@
         [required]="field.required"
         placeholder="{{ field.placeholder }}"
         class="placeholder-primary {{ field.classes }}"
-        [(ngModel)]="form[field.key]"
+        value="{{ field.value }}"
         (keyup)="doForm($event, field.key, field.type)"
         (change)="doForm($event, field.key, field.type)"
         (click)="doForm($event, field.key, field.type)"
         [counter]="field.counter"
         maxlength="{{ field.maxlength }}"
         [autoGrow]="field.autogrow"
+        [(ngModel)]="form[field.key] ? form[field.key] : field.value"
       ></ion-textarea>
     </ion-item>
 
@@ -301,13 +302,14 @@
       <ion-input
         label="{{ field.name }}"
         type="date"
+        value="{{ field.value }}"
         class="form-control {{ field.classes }}"
         id="fld-{{ field.name | alias }}"
         name="{{ field.name }}"
         [required]="field.required"
         placeholder="{{ field.placeholder }}"
         class="text-primary"
-        [(ngModel)]="form[field.key]"
+        [(ngModel)]="form[field.key] ? form[field.key] : field.value"
       ></ion-input>
     </ion-item>
     <ion-item *ngSwitchCase="'time'">

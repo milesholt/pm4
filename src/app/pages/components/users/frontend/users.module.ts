@@ -9,6 +9,7 @@ import { GalleryModule } from '../../gallery/gallery.module';
 import { ImageModule } from '../../image/image.module';
 import { ModulesModule } from 'src/app/pages/brandbuilder/components/modules/modules.brandbuilder.module';
 import {TabsComponentModule} from '../../tabs/tabs.module';
+import { ModalComponentModule} from '../../modal/modal.module';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import {TabsComponentModule} from '../../tabs/tabs.module';
     GalleryModule,
     ImageModule,
     ModulesModule,
-    TabsComponentModule
+    TabsComponentModule,
+    ModalComponentModule
   ],
   declarations: [UsersFrontendComponent],
 })

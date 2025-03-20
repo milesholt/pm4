@@ -10,26 +10,28 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="submitForm()">
+  <!--<form (ngSubmit)="submitForm()">
     <ion-item *ngFor="let f of formatData(); let idx = index">
-      <ion-label>{{ data.form[f].name }}</ion-label>
+      <ion-label >{{ fields[f].name }}</ion-label>
       <ion-input
-        *ngIf="data.form[f].type == 'text'"
-        [(ngModel)]="data.form[f].value"
-        [name]="data.form[f].name"
-        [placeholder]="data.form[f].placeholder"
+        *ngIf="fields[f].type == 'text'"
+        [(ngModel)]="fields[f].value"
+        [name]="fields[f].name"
+        [placeholder]="fields[f].placeholder"
       ></ion-input>
 
       <ion-toggle
-        *ngIf="data.form[f].type == 'boolean'"
-        [(ngModel)]="data.form[f].value"
-        [name]="data.form[f].name"
-        [checked]="data.form[f].value"
+        *ngIf="fields[f].type == 'boolean'"
+        [(ngModel)]="fields[f].value"
+        [name]="fields[f].name"
+        [checked]="fields[f].value"
       >
-        <ion-label>{{ data.form[f].description }}</ion-label>
+        <ion-label>{{ fields[f].description }}</ion-label>
       </ion-toggle>
     </ion-item>
 
     <ion-button class="center" type="submit">Save</ion-button>
-  </form>
+  </form>-->
+
+  <app-form-comp *ngIf="fields.length" (callback)="dismiss($event)" [el]="{action: 'returnform', fields: fields}"></app-form-comp>
 </ion-content>

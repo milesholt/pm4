@@ -525,6 +525,10 @@ export class BrandBuilderComponent
 
   currentYear: number;
 
+  
+
+  isShrunk = false;
+
   private observer: IntersectionObserver | undefined;
 
   constructor(
@@ -537,6 +541,11 @@ export class BrandBuilderComponent
     private modalController: ModalController
   ) {
     this.currentYear = new Date().getFullYear();
+  }
+
+  onScroll(event: any) {
+    const scrollTop = event.detail.scrollTop;
+    this.isShrunk = scrollTop > 50; // Adjust the value as needed
   }
 
   ngOnInit(): void {
@@ -1741,6 +1750,8 @@ export class BrandBuilderComponent
     this.activePage.content = '';
     this.recordChange();
   }
+
+  //
 
   copyRow(index: number) {
     let rows = this.activePage.layout;
