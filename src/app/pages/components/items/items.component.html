@@ -1,14 +1,79 @@
 <p>Items Component</p>
 
 <ion-content>
-  <ion-list *ngFor="let item of items; let idx = index">
-  <ion-item>
-    <ion-buttons slot="end">
-      <ion-button (click)="editItem()"><ion-icon name="pencil"></ion-icon></ion-button>
-      <ion-button (click)="deleteItem()"><ion-icon name="trash"></ion-icon></ion-button>
-    </ion-buttons>
-  </ion-item>
-</ion-list>
+  <ion-list>
+    <ion-reorder-group
+      (ionItemReorder)="reorderItems($event)"
+      [disabled]="false"
+    >
+      <ion-item-sliding *ngFor="let item of items; let idx = index">
+        <ion-item>
+          <ion-reorder slot="start">
+            <ion-icon name="reorder-four"></ion-icon>
+          </ion-reorder>
+          <ion-label>
+            <h2>{{ item.name }}</h2>
+            <p>Key: {{ item.key }}, Type: {{ item.type }}</p>
+          </ion-label>
+        </ion-item>
 
-<ion-button (click)="addItem()">Add item</ion-button>
+        <ion-item-options side="end">
+          <ion-item-option color="primary" (click)="editItem(idx)">
+            <ion-icon name="pencil"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="secondary" (click)="duplicateItem(idx)">
+            <ion-icon name="copy"></ion-icon> 
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="deleteItem(idx)">
+            <ion-icon name="trash"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-reorder-group>
+  </ion-list>
+
+  <ion-card>
+    <ion-card-header>{{
+      editingIndex === null ? "Add Item" : "Edit Item"
+    }}</ion-card-header>
+    <ion-card-content>
+      
+      <form [formGroup]="itemForm">
+        <ion-item>
+          <ion-label position="floating">Name</ion-label>
+          <ion-input formControlName="name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Key</ion-label>
+          <ion-input formControlName="key"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Type</ion-label>
+          <ion-select formControlName="type">
+            <ion-select-option value="text">Text</ion-select-option>
+            <ion-select-option value="number">Number</ion-select-option>
+            <ion-select-option value="boolean">Boolean</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Value</ion-label>
+          <ion-input formControlName="value"></ion-input>
+        </ion-item>
+      </form>
+
+      <ion-button
+        expand="full"
+        *ngIf="editingIndex === null"
+        (click)="addItem()"
+        >Add Item</ion-button
+      >
+      <ion-button
+        expand="full"
+        color="success"
+        *ngIf="editingIndex !== null"
+        (click)="updateItem()"
+        >Update Item</ion-button
+      >
+    </ion-card-content>
+  </ion-card>
 </ion-content>
