@@ -57,7 +57,10 @@ export class FormComponent implements OnInit, AfterViewInit {
           {
             key: 'to',
             name: 'To',
-            value: this.service.auth.getUser() !== null ? this.service.auth.getUser().email : '',
+            value:
+              this.service.auth.getUser() !== null
+                ? this.service.auth.getUser().email
+                : '',
             type: 'text',
             placeholder: 'Enter your recipient address',
           },
@@ -77,6 +80,8 @@ export class FormComponent implements OnInit, AfterViewInit {
       },
     },
   };
+
+  //
 
   @Input() el: any = {
     action: 'submitcontact',

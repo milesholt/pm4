@@ -18,6 +18,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { TabsComponent } from '../../tabs/tabs.component';
 import { FormComponent } from '../../form/form.component';
 import { ImageComponent } from '../../image/image.component';
+import { ItemsComponent } from '../../items/items.component';
 
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
@@ -107,7 +108,53 @@ export class ShopComponentBackend implements OnInit {
       {
         title: 'Product Details',
         component: FormComponent,
-        params: { fields: ['title', 'description', 'tags'] },
+        el: {
+          fields: [
+            {
+              name: 'Title',
+              key: 'title',
+              type: 'text',
+              value: '',
+              placeholder: 'Enter your product title',
+            },
+            {
+              name: 'Description',
+              key: 'description',
+              type: 'textarea',
+              value: '',
+              placeholder: 'Enter your product description',
+            },
+            {
+              name: 'Alias',
+              key: 'alias',
+              type: 'text',
+              value: '',
+              placeholder: 'Enter an alias for your product',
+            },
+            {
+              name: 'Tags',
+              key: 'tags',
+              type: 'text',
+              value: '',
+              placeholder: 'Enter up to 5 tags for your product',
+            },
+            {
+              name: 'Price',
+              key: 'price',
+              type: 'text',
+              value: '',
+              placeholder: 'Enter your product price',
+            },
+            {
+              name: 'Currency',
+              key: 'currency',
+              type: 'text',
+              value: '',
+              placeholder: 'Enter a specific currency (optional)',
+            },
+            
+          ],
+        },
       },
       {
         title: 'Product Images',
@@ -116,11 +163,56 @@ export class ShopComponentBackend implements OnInit {
       },
       {
         title: 'Variants',
-        component: FormComponent,
-        params: { fields: ['variants'] },
+        component: ItemsComponent,
+        el: { 
+          fields: [
+          {
+            name: 'Variant Title',
+            key: 'title',
+            type: 'text',
+            value: '',
+            placeholder: 'Enter your product title',
+          },
+          {
+            name: 'Variant Description',
+            key: 'description',
+            type: 'textarea',
+            value: '',
+            placeholder: 'Enter your product description',
+          },
+          {
+            name: 'Variant Alias',
+            key: 'alias',
+            type: 'text',
+            value: '',
+            placeholder: 'Enter an alias for your product',
+          },
+          {
+            name: 'Variant Tags',
+            key: 'tags',
+            type: 'text',
+            value: '',
+            placeholder: 'Enter up to 5 tags for the variant',
+          },
+          {
+            name: 'Price',
+            key: 'price',
+            type: 'text',
+            value: '',
+            placeholder: 'Enter variant price',
+          },
+          {
+            name: 'Currency',
+            key: 'currency',
+            type: 'text',
+            value: '',
+            placeholder: 'Enter a specific currency (optional)',
+          },
+        ] 
+      },
       },
       {
-        title: 'Pricing & Rates',
+        title: 'Shipping & Delivery',
         component: FormComponent,
         params: { fields: ['price', 'currency'] },
       },

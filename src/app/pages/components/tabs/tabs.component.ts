@@ -46,12 +46,18 @@ export class TabsComponent implements OnInit {
 
     // If there's a component to load, render it dynamically
     if (currentTab.component) {
-      const componentRef = this.dynamicComponentContainer.createComponent(currentTab.component);
+      const componentRef = this.dynamicComponentContainer.createComponent(
+        currentTab.component
+      );
       const componentInstance = componentRef.instance as any; // Can be more specific if needed
 
       // Pass params if available
       if (currentTab.params) {
         componentInstance['params'] = currentTab.params;
+      }
+
+      if (currentTab.el) {
+        componentInstance['el'] = currentTab.el;
       }
 
       // Listen for the callback event from the dynamic component

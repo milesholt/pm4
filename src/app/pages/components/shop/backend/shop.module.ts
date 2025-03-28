@@ -18,6 +18,7 @@ import { FooterModule } from '../../../components/footer/footer.module';
 
 import { RefresherModule } from '../../../components/refresher/refresher.module';
 import { TabsComponentModule } from '../../tabs/tabs.module';
+import { ItemsComponentModule} from '../../items/items.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -33,6 +34,7 @@ import { TabsComponentModule } from '../../tabs/tabs.module';
     FooterModule,
     RefresherModule,
     TabsComponentModule,
+    ItemsComponentModule
   ],
   declarations: [ShopComponentBackend],
   exports: [ShopComponentBackend],

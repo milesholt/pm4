@@ -1,0 +1,14 @@
+<p>Items Component</p>
+
+<ion-content>
+  <ion-list *ngFor="let item of items; let idx = index">
+  <ion-item>
+    <ion-buttons slot="end">
+      <ion-button (click)="editItem()"><ion-icon name="pencil"></ion-icon></ion-button>
+      <ion-button (click)="deleteItem()"><ion-icon name="trash"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-item>
+</ion-list>
+
+<ion-button (click)="addItem()">Add item</ion-button>
+</ion-content>
