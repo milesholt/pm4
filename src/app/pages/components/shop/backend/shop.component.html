@@ -21,6 +21,14 @@
   {{ data | json }}
 </ng-template>-->
 
+<!--<ng-template #photosTab>
+  <ion-button (click)="addImages()">Add Images</ion-button>
+  <app-gallery-comp
+    *ngIf="user?.userData?.images"
+    [images]="user.userData.images"
+  ></app-gallery-comp>
+</ng-template>-->
+
 <ng-template #productTemplate let-modal>
   <app-tabs
     [tabs]="productTabs"

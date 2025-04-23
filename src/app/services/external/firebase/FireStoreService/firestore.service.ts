@@ -212,7 +212,7 @@ export class FirestoreService {
 
   getDocumentPromise(pathSegments: any[], documentId: string): Promise<any> {
     const docRef = this.buildDocumentReference(pathSegments, documentId);
-  
+
     return docRef
       .get()
       .toPromise()
@@ -227,7 +227,6 @@ export class FirestoreService {
         throw new Error('Error retrieving document, please try again later.');
       });
   }
-  
 
   // Generic method to update a document
   updateDocument(
@@ -254,6 +253,36 @@ export class FirestoreService {
   private buildDocumentReference(pathSegments: string[], documentId: string) {
     const collectionRef = this.buildCollectionReference(pathSegments);
     return collectionRef.doc(documentId);
+  }
+
+  //Firebase Storage
+
+  getFiles(path: string): Promise<any[]> {
+    const storageRef = this.storage.ref(path);
+    return storageRef
+      .listAll()
+      .toPromise()
+      .then((res) => {
+        const files = res!.items.map((itemRef) => ({
+          name: itemRef.name,
+          fullPath: itemRef.fullPath,
+          isFolder: false,
+          ref: itemRef,
+        }));
+
+        const folders = res!.prefixes.map((folderRef) => ({
+          name: folderRef.name,
+          fullPath: folderRef.fullPath,
+          isFolder: true,
+          ref: folderRef,
+        }));
+
+        return [...folders, ...files];
+      })
+      .catch((err) => {
+        console.error('Error getting storage files:', err);
+        throw new Error('Error getting files/folders from storage.');
+      });
   }
 
   uploadToStorage(

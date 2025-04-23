@@ -16,6 +16,8 @@ import { HttpService } from './internal/HttpService/http.service';
 //connect to external services
 import { AuthService } from './external/firebase/AuthService/auth.capacitor.service';
 import { FirestoreService } from './external/firebase/FireStoreService/firestore.service';
+import { FirebaseStorageService } from './external/firebase/StorageService/storage.service';
+
 //import { UserService } from './external/firebase/UserService/user.service';
 //import { DatabaseService } from './external/firebase/DatabaseService/database.service';
 //import { NotificationServiceExt } from './external/firebase/NotificationService/notification.service';
@@ -58,6 +60,7 @@ export class CoreService {
   constructor(
     public auth: AuthService,
     public firestore: FirestoreService,
+    public firebase: FirebaseStorageService,
     public shop: ShopService,
     public http: HttpService,
     public seo: SeoService,

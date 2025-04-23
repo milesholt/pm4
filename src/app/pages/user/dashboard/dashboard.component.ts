@@ -658,103 +658,142 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const siteData = JSON.parse(site.data);
     console.log(siteData);
 
-    const form = {
-      website: {
+    const form = [
+      {
+        key: 'website',
         name: 'Website Domain',
         value: siteData.details.companyInfo.website ?? '',
         placeholder: 'eg. www.yourdomain.com',
         type: 'text',
+        groups: ['details.companyInfo'],
       },
-      email: {
+      {
+        key: 'email',
         name: 'Email',
         value: siteData.details.companyInfo.email ?? '',
         placeholder: 'eg. name@yourdomain.com',
         type: 'text',
+        groups: ['details.companyInfo'],
       },
-      phone: {
+      {
+        key: 'phone',
         name: 'Phone',
         value: siteData.details.companyInfo.phone ?? '',
         placeholder: '+1 1234 5678',
         type: 'text',
+        groups: ['details.companyInfo'],
       },
-      address: {
+      {
+        key: 'address',
         name: 'Address',
         value: siteData.details.companyInfo.address ?? '',
         placeholder: "Enter your site's address here",
         type: 'text',
+        groups: ['details.companyInfo'],
       },
-      instagram: {
+      {
+        key: 'instagram',
         name: 'Instagram',
         value: siteData.details.companyInfo.social.instagram ?? '',
         placeholder: 'Enter your Instagram username here',
         type: 'text',
+        groups: ['details.companyInfo'],
       },
-      facebook: {
+      {
+        key: 'facebook',
         name: 'Facebook',
         value: siteData.details.companyInfo.social.facebook ?? '',
         placeholder: 'Enter your Facebook username here',
         type: 'text',
+        groups: ['details.companyInfo'],
       },
-      x: {
+      {
+        key: 'x',
         name: 'X',
         value: siteData.details.companyInfo.social.x ?? '',
         placeholder: 'Enter your X username here',
         type: 'text',
+        groups: ['details.companyInfo'],
       },
-      youtube: {
+      {
+        key: 'youtube',
         name: 'Youtube',
         value: siteData.details.companyInfo.social.youtube ?? '',
         placeholder: 'Enter your Youtube channel url here',
         type: 'text',
+        groups: ['details.companyInfo'],
       },
-      linkedin: {
+      {
+        key: 'linkedin',
         name: 'LinkedIn',
         value: siteData.details.companyInfo.social.linkedin ?? '',
         placeholder: 'Enter your LinkedIn profile url here',
         type: 'text',
+        groups: ['details.companyInfo'],
       },
-      showMenu: {
+      {
+        key: 'showMenu',
         name: 'Show Menu',
-        description: 'Show the main menu in the header',
-        value: siteData.options.showMenu ?? true,
+        label: 'Show the main menu in the header',
+        value: siteData?.options?.showMenu ?? true,
         type: 'boolean',
+        groups: ['options'],
       },
-      showHeader: {
+      {
+        key: 'showHeader',
         name: 'Show Header',
-        description: 'Make the header visible',
-        value: siteData.options.showHeader ?? true,
+        label: 'Make the header visible',
+        value: siteData?.options?.showHeader ?? true,
         type: 'boolean',
+        groups: ['options'],
       },
-      showFooter: {
+      {
+        key: 'showFooter',
         name: 'Show Footer',
-        description: 'Make the footer visible',
-        value: siteData.options.showFooter ?? true,
+        label: 'Make the footer visible',
+        value: siteData?.options?.showFooter ?? true,
         type: 'boolean',
+        groups: ['options'],
       },
-      showHolding: {
+      {
+        key: 'showHolding',
         name: 'Show Holding Page',
-        description: 'Make your site offline and display a holding Page',
-        value: siteData.options.showHolding ?? false,
+        label: 'Make your site offline and display a holding Page',
+        value: siteData?.options?.showHolding ?? false,
         type: 'boolean',
+        groups: ['options'],
       },
-      userSystem: {
+      {
+        key: 'userSystem',
         name: 'Enable Users',
-        description: 'Allow user to register on this site',
-        value: siteData.options.userSystem ?? false,
+        label: 'Allow user to register on this site',
+        value: siteData?.options?.userSystem ?? false,
         type: 'boolean',
+        groups: ['options'],
       },
-      shopSystem: {
+      {
+        key: 'shopSystem',
         name: 'Enable Shop',
-        description: 'Turn site into an online shop',
-        value: siteData.options.shopSystem ?? false,
+        label: 'Turn site into an online shop',
+        value: siteData?.options?.shopSystem ?? false,
         type: 'boolean',
+        groups: ['options'],
       },
-    };
+    ];
+
+    console.log('form', form);
 
     const data = {
       title: 'Website Settings',
       form: form,
     };
+
+    /*const result = await this.service.modal.openModal(this.productTemplate, {});
+
+    if (result) {
+      console.log('Collected Product Data:', result);
+      alert('Product added');
+    }*/
 
     const modal = await this.modalController.create({
       component: ModalComponent,
@@ -764,13 +803,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
     modal.onDidDismiss().then((data) => {
       if (data.data) {
         // Handle the updated site object here
-        console.log('Updated site:', data.data);
+        console.log('Updated site:', data.data.data);
 
         console.log(siteData);
 
-        const formData = data.data.form;
+        const formData = data.data.data.fields;
 
-        siteData.details.companyInfo.email = formData.email.value;
+        console.log('formData', formData);
+
+        formData.forEach((field: any) => {
+          //dynamically create like below
+          if (field?.groups.find((g: any) => g == 'details.companyInfo')) {
+            siteData.details.companyInfo[field.key] = field.value;
+          }
+          if (!siteData.options) siteData.options = {};
+          if (field?.groups.find((g: any) => g == 'options')) {
+            siteData.options[field.key] = field.value;
+          }
+        });
+
+        console.log('siteData', siteData);
+        //
+
+        /*siteData.details.companyInfo.email = formData.email.value;
         siteData.details.companyInfo.phone = formData.phone.value;
         siteData.details.companyInfo.address = formData.address.value;
         siteData.details.companyInfo.website = formData.website.value;
@@ -779,22 +834,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
         siteData.details.companyInfo.social.facebook = formData.facebook.value;
         siteData.details.companyInfo.social.x = formData.x.value;
         siteData.details.companyInfo.social.youtube = formData.youtube.value;
-        siteData.details.companyInfo.social.linkedin = formData.linkedin.value;
+        siteData.details.companyInfo.social.linkedin = formData.linkedin.value;*/
 
-        if (!siteData.options) siteData.options = {};
-
-        siteData.options.showMenu = formData.showMenu.value;
+        /*siteData.options.showMenu = formData.showMenu.value;
         siteData.options.showHeader = formData.showHeader.value;
         siteData.options.showHolding = formData.showHolding.value;
         siteData.options.showFooter = formData.showFooter.value;
         siteData.options.userSystem = formData.userSystem.value;
-        siteData.options.shopSystem = formData.shopSystem.value;
+        siteData.options.shopSystem = formData.shopSystem.value;*/
 
-        
         site.data = JSON.stringify(siteData);
         this.updateSite(site);
 
-        if (formData.website.value !== '') {
+        /*if (formData.website.value !== '') {
           let hostName = formData.website.value;
           //Add/update custom domain on Cloudflare
           console.log('adding custom hostname');
@@ -812,7 +864,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
               console.error(error);
             }
           );
-        }
+        }*/
 
         // Save the updated site object or perform any necessary actions
       }

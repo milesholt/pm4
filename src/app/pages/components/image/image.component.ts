@@ -36,6 +36,7 @@ export class ImageComponent implements OnInit {
   @Input() isEditing: boolean = false;
   @Input() isUpload: boolean = false;
   @Input() uploadPath: string | null = null;
+  libraryPath: string | null = null;
 
   @Input() setParams: any = null;
 
@@ -81,7 +82,8 @@ export class ImageComponent implements OnInit {
   };
 
   showCustom: boolean = false;
-  showGallery: boolean = true;
+  showGallery: boolean = false;
+  showLibrary: boolean = true;
   showUpload: boolean = false;
   selectedItem: any = null;
 
@@ -99,28 +101,40 @@ export class ImageComponent implements OnInit {
     //alert('image');
     this.showCustom = false;
     this.showGallery = true;
+    this.showLibrary = false;
     //this.params = { ...this.defaultProperties, ...this.params };
     await this.doParams();
     await this.doForm();
-    if (this.isUpload) {
+    if (this.isUpload || this.params?.isUpload || this.params?.doUpload) {
       this.params.type = 'upload';
       this.iniModule();
     }
+
+    if (this.params?.type == 'library') this.iniModule();
+
+    //if (this.params?.doUpload) this.doUpload();
+
+    if (this.params?.uploadPath) this.uploadPath = this.params.uploadPath;
+
+    let siteId = this.params.siteId ? '/' + this.params.siteId + '/' : '';
+    this.libraryPath = `${this.service.auth.getUser().uid}${siteId}/images/`;
   }
 
   async doParams() {
+    console.log('doParams:');
+    console.log(this.params);
+
     //configure any set params, otherwise use default params
     this.params =
       this.setParams !== null && !this.lib.isEmpty(this.setParams)
         ? { ...this.params, ...this.setParams }
         : this.lib.deepCopy(this.params || {});
 
-    console.log('doParams:');
     console.log(this.params);
   }
 
-  async edit() {
-    this.iniModule();
+  async edit(params: any = this.params) {
+    this.iniModule(params);
   }
 
   async load(params: any = this.params) {
@@ -141,6 +155,11 @@ export class ImageComponent implements OnInit {
         break;
       case 'upload':
         this.doUpload();
+        await this.loadModal(params);
+        break;
+      case 'library':
+        console.log('showing library');
+        this.doLibrary();
         await this.loadModal(params);
         break;
       case 'default':
@@ -191,11 +210,12 @@ export class ImageComponent implements OnInit {
   }
 
   async loadModal(params: any = this.params) {
-    let mediaData: any = {};
-    if (this.lib.isProperty(this.params, 'media'))
-      mediaData = this.params.media.photoData;
+    let modalData: any = { media: [], library: [] };
 
-    console.log(mediaData);
+    if (this.lib.isProperty(this.params, 'media')) {
+      modalData.media = this.params.media?.photoData ?? [];
+      modalData.library = this.params.media?.libraryData ?? [];
+    }
 
     if (!this.iniTemplate) {
       await new Promise((resolve) => setTimeout(resolve, 50));
@@ -204,7 +224,9 @@ export class ImageComponent implements OnInit {
     if (this.iniTemplate) {
       const data = await this.service.modal.openModal(
         this.iniTemplate,
-        mediaData
+        modalData,
+        false,
+        false
       );
 
       if (data) {
@@ -220,18 +242,28 @@ export class ImageComponent implements OnInit {
   }
 
   async doCustom() {
+    this.showLibrary = false;
     this.showGallery = false;
     this.showUpload = false;
     this.showCustom = true;
   }
 
   doGallery() {
+    this.showLibrary = false;
     this.showGallery = true;
     this.showCustom = false;
     this.showUpload = false;
   }
 
+  doLibrary() {
+    this.showLibrary = true;
+    this.showGallery = false;
+    this.showCustom = false;
+    this.showUpload = false;
+  }
+
   doUpload() {
+    this.showLibrary = false;
     this.showGallery = false;
     this.showCustom = false;
     this.showUpload = true;
@@ -247,6 +279,11 @@ export class ImageComponent implements OnInit {
   }
 
   onImageChange(e: any) {}
+
+  async doLibrarySelect(file: any) {
+    //Do any checks for file selected from library here
+    if (file?.url) this.selectImage(file.url);
+  }
 
   selectImage(image: any) {
     console.log('selecting image');
@@ -265,7 +302,7 @@ export class ImageComponent implements OnInit {
 
     console.log('emitting');
     this.emit(this.params);
-    this.service.modal.dismiss(this.params);
+    this.service.modal.dismissTop(this.params);
 
     //this.loadImage2(this.params['url']);
   }

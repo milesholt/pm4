@@ -19,7 +19,7 @@ import { Library } from '../../../app.library';
 })
 export class TabsComponent implements OnInit {
   @Input() tabs: any[] = [];
-  @Output() onSubmit = new EventEmitter<any>();
+  @Output() callback = new EventEmitter<any>();
 
   @ViewChild('dynamicComponentContainer', {
     read: ViewContainerRef,
@@ -34,11 +34,11 @@ export class TabsComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedTab = 0;
-    this.reloadSelectedTab(); // Reload content when tab is clicked
+    this.reloadSelectedTab(0); // Reload content when tab is clicked
   }
 
   // Triggered when switching tabs
-  reloadSelectedTab() {
+  reloadSelectedTab(index: number = 0) {
     const currentTab = this.tabs[this.selectedTab];
 
     // Clear the previous content
@@ -53,17 +53,33 @@ export class TabsComponent implements OnInit {
 
       // Pass params if available
       if (currentTab.params) {
-        componentInstance['params'] = currentTab.params;
+        console.log(currentTab.params);
+        //componentInstance['params'] = currentTab.params;
+        const compParams = componentInstance.params ?? {};
+        // Assign set params to existing component params
+        componentInstance['params'] = { ...compParams, ...currentTab.params };
+        console.log('new params');
+        console.log(componentInstance['params']);
       }
 
       if (currentTab.el) {
         componentInstance['el'] = currentTab.el;
       }
 
+      if (currentTab.data) {
+        componentInstance['data'] = currentTab.data;
+      }
+
       // Listen for the callback event from the dynamic component
       if (componentInstance.callback) {
         componentInstance.callback.subscribe((data: any) => {
-          this.handleCallback(data);
+          this.handleCallback(data, index);
+        });
+      }
+
+      if (componentInstance.changes) {
+        componentInstance.changes.subscribe((data: any) => {
+          this.handleChanges(data, index);
         });
       }
     }
@@ -76,16 +92,21 @@ export class TabsComponent implements OnInit {
   }
 
   // Tab click handler
-  onTabClick(index: number) {
+  async onTabClick(index: number) {
     this.selectedTab = index;
-    this.reloadSelectedTab(); // Reload content when tab is clicked
+    this.reloadSelectedTab(index); // Reload content when tab is clicked
   }
 
-  handleCallback(data: any) {
-    this.collectedData = { ...this.collectedData, ...data };
+  handleCallback(data: any, tabIdx: number) {
+    this.tabs[tabIdx].data = data;
+  }
+
+  handleChanges(changeData: any, tabIdx: number) {
+    this.tabs[tabIdx].data = this.collectedData;
+    this.tabs[tabIdx].el = changeData.el;
   }
 
   submit() {
-    this.onSubmit.emit(this.collectedData);
+    this.callback.emit(this.collectedData);
   }
 }

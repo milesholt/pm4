@@ -65,19 +65,23 @@ export class ModalComponent implements OnInit {
   }
 
   formatData() {
+    console.log('format data', this.data);
+
     if (this.data?.form) {
       this.fields = this.data.form;
+      console.log('fields', this.fields);
       return Object.keys(this.data.form);
     }
     if (this.data.length) {
-      let d = this.data.filter((f:any) => f?.type !== 'submit');
+      console.log('here');
+      let d = this.data.filter((f: any) => f?.type !== 'submit');
       this.fields = d;
       return Object.keys(d);
     }
     return [];
   }
 
-  dismiss(data:any = null) {
+  dismiss(data: any = null) {
     console.log('dismissing modal');
     this.modalController.dismiss(data);
   }

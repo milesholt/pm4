@@ -1,0 +1,51 @@
+.breadcrumbs {
+    padding: 10px;
+    a {
+      margin-right: 5px;
+      cursor: pointer;
+      color: blue;
+    }
+  }
+  
+  .empty-msg {
+    text-align: center;
+    padding: 2em;
+  }
+  
+  .file-container.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .file-container.list {
+    display: block;
+    padding: 10px;
+  }
+  
+  .file-card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+  }
+  
+  .file-card img, .file-card video {
+    max-width: 100%;
+    max-height: 100px;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+
+  ion-button {
+    color: white!important;
+  }

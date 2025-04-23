@@ -33,5 +33,9 @@
     <ion-button class="center" type="submit">Save</ion-button>
   </form>-->
 
-  <app-form-comp *ngIf="fields.length" (callback)="dismiss($event)" [el]="{action: 'returnform', fields: fields}"></app-form-comp>
+  <app-form-comp
+    *ngIf="fields.length"
+    (callback)="dismiss($event)"
+    [el]="{ action: 'returnform', fields: fields }"
+  ></app-form-comp>
 </ion-content>

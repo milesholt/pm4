@@ -18,6 +18,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { TabsComponent } from '../../tabs/tabs.component';
 import { FormComponent } from '../../form/form.component';
 import { ImageComponent } from '../../image/image.component';
+import { GalleryComponent } from '../../gallery/gallery.component';
 import { ItemsComponent } from '../../items/items.component';
 
 import { environment } from 'src/environments/environment';
@@ -108,6 +109,8 @@ export class ShopComponentBackend implements OnInit {
       {
         title: 'Product Details',
         component: FormComponent,
+        params: {},
+        data: [],
         el: {
           fields: [
             {
@@ -152,64 +155,66 @@ export class ShopComponentBackend implements OnInit {
               value: '',
               placeholder: 'Enter a specific currency (optional)',
             },
-            
           ],
         },
       },
       {
         title: 'Product Images',
-        component: ImageComponent,
-        params: { multiple: true, type: 'upload' },
+        component: GalleryComponent,
+        params: { isEditable: true, siteId: this.filterSite.id },
+        data: []
       },
       {
         title: 'Variants',
         component: ItemsComponent,
-        el: { 
+        params: { itemLabel: 'title' },
+        data: [],
+        el: {
           fields: [
-          {
-            name: 'Variant Title',
-            key: 'title',
-            type: 'text',
-            value: '',
-            placeholder: 'Enter your product title',
-          },
-          {
-            name: 'Variant Description',
-            key: 'description',
-            type: 'textarea',
-            value: '',
-            placeholder: 'Enter your product description',
-          },
-          {
-            name: 'Variant Alias',
-            key: 'alias',
-            type: 'text',
-            value: '',
-            placeholder: 'Enter an alias for your product',
-          },
-          {
-            name: 'Variant Tags',
-            key: 'tags',
-            type: 'text',
-            value: '',
-            placeholder: 'Enter up to 5 tags for the variant',
-          },
-          {
-            name: 'Price',
-            key: 'price',
-            type: 'text',
-            value: '',
-            placeholder: 'Enter variant price',
-          },
-          {
-            name: 'Currency',
-            key: 'currency',
-            type: 'text',
-            value: '',
-            placeholder: 'Enter a specific currency (optional)',
-          },
-        ] 
-      },
+            {
+              name: 'Variant Title',
+              key: 'title',
+              type: 'text',
+              value: '',
+              placeholder: 'Enter your product title',
+            },
+            {
+              name: 'Variant Description',
+              key: 'description',
+              type: 'textarea',
+              value: '',
+              placeholder: 'Enter your product description',
+            },
+            {
+              name: 'Variant Alias',
+              key: 'alias',
+              type: 'text',
+              value: '',
+              placeholder: 'Enter an alias for your product',
+            },
+            {
+              name: 'Variant Tags',
+              key: 'tags',
+              type: 'text',
+              value: '',
+              placeholder: 'Enter up to 5 tags for the variant',
+            },
+            {
+              name: 'Price',
+              key: 'price',
+              type: 'text',
+              value: '',
+              placeholder: 'Enter variant price',
+            },
+            {
+              name: 'Currency',
+              key: 'currency',
+              type: 'text',
+              value: '',
+              placeholder: 'Enter a specific currency (optional)',
+            },
+          ],
+        },
       },
       {
         title: 'Shipping & Delivery',

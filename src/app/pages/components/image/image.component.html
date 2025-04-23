@@ -1,19 +1,21 @@
+<p>Image Comp</p>
 <ng-template #iniTemplate let-data="context">
   <p>Choose an image from the following options</p>
 
   <ion-buttons>
-    <ion-button (click)="doGallery()">Pexels Gallery</ion-button>
+    <ion-button (click)="doLibrary()">Your Library</ion-button>
+    <ion-button (click)="doGallery()">Pexels</ion-button>
     <ion-button (click)="doUpload()">Upload Image</ion-button>
     <!--<ion-button (click)="doGoogleDrive()">Google Drive</ion-button>-->
     <ion-button (click)="doCustom()">Custom Url</ion-button>
   </ion-buttons>
 
-  <ion-grid *ngIf="showGallery">
+  <ion-grid *ngIf="showLibrary">
     <ion-row>
       <ion-col
         size="6"
         size-md="3"
-        *ngFor="let image of data"
+        *ngFor="let image of data.library"
         (click)="selectImage(image)"
       >
         <ion-thumbnail class="image-thumbnail">
@@ -23,8 +25,17 @@
     </ion-row>
   </ion-grid>
 
+  <div *ngIf="showLibrary">
+    <app-library-comp
+      [params]="{ rootPath: libraryPath }"
+      [data]="data.library"
+      (callback)="doLibrarySelect($event)"
+    ></app-library-comp>
+  </div>
+
   <div *ngIf="showUpload">
     <p>Upload an image</p>
+
     {{ uploadPath }}
     <input
       type="file"

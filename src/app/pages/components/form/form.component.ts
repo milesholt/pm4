@@ -187,6 +187,7 @@ export class FormComponent implements OnInit, AfterViewInit {
     ],
   };
   @Output() callback = new EventEmitter();
+  @Output() changes = new EventEmitter<any>();
 
   @ViewChild('modalTemplate') modalTemplate!: TemplateRef<any>;
   @ViewChild('formTemplate') formTemplate!: TemplateRef<any>;
@@ -195,6 +196,8 @@ export class FormComponent implements OnInit, AfterViewInit {
   @ViewChild('selectOptionRef') selectOptionRef: any;
 
   form: any = {};
+  formValues: { [key: string]: any } = {};
+
   sent: boolean | null = null;
   data: any;
   url: string = window.location.href;
@@ -426,11 +429,18 @@ export class FormComponent implements OnInit, AfterViewInit {
 
         for (let i = 0, len = nofields; i < nofields; i++) {
           let el = target.elements[i];
-          console.log(el.value);
-          f[i].value = el.value;
+          if (f[i].type == 'boolean') {
+            f[i].value = el.value == 'on';
+          } else {
+            f[i].value = el.value;
+          }
+          console.log(f[i].value);
         }
 
         console.log(this.el);
+
+        //remove submit button
+        this.el.fields = this.el.fields.filter((f: any) => f.type !== 'submit');
 
         params = { action: 'returnform', data: this.el, event: event };
         console.log(params);
@@ -449,11 +459,33 @@ export class FormComponent implements OnInit, AfterViewInit {
     if (k !== 'message' && t !== 'textarea') e = e.trim();
     if (k == 'email' || k == 'email2') e = e.toLowerCase();
     if (k == 'postcode') e = e.trim().toUpperCase();
-    if (!!k) this.form[k] = e;
+
+    if (!!k) {
+      this.form[k] = e;
+
+      this.el.fields.forEach((field: any) => {
+        if (field.key == k) field.value = e;
+      });
+
+      //on changes do callback for parent components
+      let changeData = {
+        el: this.el,
+        data: this.form,
+      };
+      this.changes.emit(changeData);
+    }
   }
+
+  /*onInputChange(fieldName: string, value: any) {
+    this.formValues[fieldName] = value;
+    this.formChanged.emit(this.formValues);
+  }*/
 
   emit(params: any) {
     this.callback.emit(params);
+    if (this.el.action == 'returnform') {
+      this.service.modal.dismiss(params);
+    }
   }
 
   verify(input: any, validation: any) {

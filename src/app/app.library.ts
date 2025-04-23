@@ -107,7 +107,7 @@ export class Library {
     return array.splice(index, 1);
   }
 
-  //in case the above don't work, this is the solution for a deep copy, but is apparently quite slow?
+  //More complex deep Copying for large objects, slower
   deepCopy(origObj: any) {
     var newObj = origObj;
     if (origObj && typeof origObj === 'object') {
@@ -120,8 +120,14 @@ export class Library {
     return newObj;
   }
 
+  //Fast deep copying for simpler objects
   deepCopy2(obj: any): any {
     return JSON.parse(JSON.stringify(obj));
+  }
+
+  //Shallow copying for basic copying
+  shallowCopy(obj: any) {
+    return obj.map((field: any) => ({ ...field }));
   }
 
   //returns true if it is an array

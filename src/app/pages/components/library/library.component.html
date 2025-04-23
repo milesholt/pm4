@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button color="white" (click)="toggleView()">Toggle View</ion-button>
+      <ion-button color="white" (click)="createFolder()">New Folder</ion-button>
+      <input type="file" hidden #fileInput (change)="uploadFile($event)" />
+      <ion-button color="white" (click)="fileInput.click()">Upload</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content
+  [fullscreen]="true"
+  (drop)="handleDrop($event)"
+  (dragover)="allowDrop($event)"
+>
+  <!--<ion-chip *ngFor="let crumb of breadcrumbs; let i = index" (click)="breadcrumbClick(i)">
+      {{ crumb }}
+    </ion-chip>-->
+
+  <ion-breadcrumbs>
+    <ion-breadcrumb
+      *ngFor="let crumb of breadcrumbs; let i = index"
+      (click)="breadcrumbClick(i)"
+    >
+      {{ crumb.name }}
+    </ion-breadcrumb>
+  </ion-breadcrumbs>
+
+  {{params.rootPath}}
+
+  <ion-grid>
+    <ion-row *ngIf="isGridView" class="grid-view">
+      <ion-col size="6" size-md="3" *ngFor="let item of files">
+        <ion-card
+          (click)="item.isFolder ? navigateToFolder(item) : selectFile(item)"
+        >
+          <ion-card-header>
+            <ion-card-title>
+              <ion-icon [name]="item.isFolder ? 'folder' : 'image'"></ion-icon>
+              {{ item.name }}
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content *ngIf="!item.isFolder">
+            <ion-thumbnail>
+              <img [src]="item.url" *ngIf="item.url" />
+            </ion-thumbnail>
+          </ion-card-content>
+          <ion-button fill="clear" color="danger" (click)="delete(item)"
+            >Delete</ion-button
+          >
+          <ion-button fill="clear" color="medium" (click)="rename(item)"
+            >Rename</ion-button
+          >
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-list *ngIf="!isGridView">
+      <ion-item
+        *ngFor="let item of files"
+        (click)="item.isFolder ? navigateToFolder(item) : selectFile(item)"
+      >
+        <ion-icon
+          [name]="item.isFolder ? 'folder' : 'document'"
+          slot="start"
+        ></ion-icon>
+        <ion-label>{{ item.name }}</ion-label>
+        <ion-button fill="clear" color="danger" (click)="delete(item)"
+          >Delete</ion-button
+        >
+        <ion-button fill="clear" color="medium" (click)="rename(item)"
+          >Rename</ion-button
+        >
+      </ion-item>
+    </ion-list>
+  </ion-grid>
+</ion-content>

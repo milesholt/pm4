@@ -6,8 +6,10 @@ import { FormsModule } from '@angular/forms';
 import { GalleryComponent } from './gallery.component';
 
 
+import { ImageModule } from '../image/image.module';
+
 @NgModule({
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [IonicModule, CommonModule, FormsModule, ImageModule],
   declarations: [GalleryComponent],
   exports: [GalleryComponent]
 })

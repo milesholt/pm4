@@ -1,7 +1,7 @@
-import { Input, Output, Component, EventEmitter, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { FormComponent } from '../form/form.component';
+import { IonItemSliding } from '@ionic/angular';
 
 import { Library } from '../../../app.library';
 import { CoreService } from '../../../services/core.service';
@@ -12,97 +12,129 @@ import { CoreService } from '../../../services/core.service';
   styleUrls: ['./items.component.scss'],
   providers: [CoreService, Library],
 })
-export class ItemsComponent implements OnInit {
-  @Input() el: any = null;
-  @Input() params: any = null;
-  @Output() itemsChange = new EventEmitter<any[]>();
-
-  items: any[] = [];
-  itemForm: FormGroup;
-  editingIndex: number | null = null;
+export class ItemsComponent {
+  @Output() callback = new EventEmitter();
+  @Input() el: any;
+  @Input() params: any = {
+    itemLabel: 'name',
+  };
+  @Input() data: any[] = [];
 
   constructor(
+    private modalCtrl: ModalController,
     public service: CoreService,
-    public navCtrl: NavController,
-    public router: Router,
-    public lib: Library,
-    private fb: FormBuilder
-  ) {
-    this.itemForm = this.fb.group({
-      name: new FormControl(''),
-      key: new FormControl(''),
-      type: new FormControl(''),
-      value: new FormControl(''),
-    });
+    public lib: Library
+  ) {}
+
+  ngOnInit() {
+    this.initializeItems();
   }
 
-  ngOnInit() {}
-
-  generateUniqueKey(): string {
-    let index = this.items.length + 1;
-    let newKey = `item${index}`;
-
-    while (this.items.some((item) => item.key === newKey)) {
-      index++;
-      newKey = `item${index}`;
-    }
-    return newKey;
+  initializeItems() {
+    const defaultFields = [
+      {
+        name: 'Name',
+        key: 'name',
+        value: '',
+        type: 'text',
+        placeholder: 'Enter name',
+      },
+    ];
+    //this.data = [];
   }
 
-  generateUUID(): string {
-    return crypto.randomUUID(); // Generate a unique identifier
-  }
+  async openFormModal(item: any = null) {
+    console.log(item);
 
-  addItem() {
-    const newItem = {
-      id: this.generateUUID(), // Unique identifier for drag tracking
-      key: this.generateUniqueKey(),
-      ...this.itemForm.value,
-      fields: [],
-      params: [],
+    const formData = {
+      el: {
+        action: 'returnform',
+        fields: item ? [...item.fields] : [...this.el.fields], // Pass existing or new fields
+      },
     };
 
-    this.items.push(newItem);
-    this.itemsChange.emit(this.items);
-    this.itemForm.reset();
-  }
+    const result = await this.service.modal.openModal(
+      null,
+      formData,
+      FormComponent,
+      false
+    );
 
-  editItem(index: number) {
-    this.editingIndex = index;
-    this.itemForm.patchValue(this.items[index]);
-  }
-
-  updateItem() {
-    if (this.editingIndex !== null) {
-      this.items[this.editingIndex] = {
-        ...this.items[this.editingIndex], // Preserve ID
-        ...this.itemForm.value,
-      };
-
-      this.itemsChange.emit(this.items);
-      this.editingIndex = null;
-      this.itemForm.reset();
+    if (result.data) {
+      if (item) {
+        this.updateItem(result.data.fields, item);
+      } else {
+        this.addItem(result.data.fields);
+      }
     }
   }
 
-  deleteItem(index: number) {
-    this.items.splice(index, 1);
-    this.itemsChange.emit(this.items);
+  addItem(fields: any) {
+    this.data.push({ id: Date.now(), fields });
+    this.emit(this.data);
   }
 
-  duplicateItem(index: number) {
-    const duplicate = JSON.parse(JSON.stringify(this.items[index])); // Deep clone
-    duplicate.id = this.generateUUID(); // Ensure unique ID
-    duplicate.key = this.generateUniqueKey();
+  getItemLabel(item: any) {
+    return (
+      item.fields.find((f: any) => f.key === this.params.itemLabel)?.value ||
+      'Untitled Item'
+    );
+  }
 
-    this.items.splice(index + 1, 0, duplicate);
-    this.itemsChange.emit(this.items);
+  updateItem(updatedFields: any, item: any) {
+    const index = this.data.findIndex((i) => i.id === item.id);
+    if (index !== -1) {
+      this.data[index].fields = updatedFields;
+    }
+    this.emit(this.data);
+  }
+
+  duplicateItem(item: any) {
+    const clonedFields = this.lib.shallowCopy(item.fields);
+    this.data.push({ id: Date.now(), fields: clonedFields });
+    this.emit(this.data);
+  }
+
+  deleteItem(item: any) {
+    this.data = this.data.filter((i) => i.id !== item.id);
+    this.emit(this.data);
   }
 
   reorderItems(event: any) {
-    const itemToMove = this.items.splice(event.detail.from, 1)[0]; // Remove from old position
-    this.items.splice(event.detail.to, 0, itemToMove); // Insert at new position
-    event.detail.complete(); // Mark reorder complete
-    this.itemsChange.emit(this.items);
+    const movedItem = this.data.splice(event.detail.from, 1)[0];
+    this.data.splice(event.detail.to, 0, movedItem);
+    event.detail.complete();
+    this.emit(this.data);
+  }
+
+  showItemOptions(item: IonItemSliding) {
+    item.open('end');
+  }
+
+  formatData(items: any) {
+    const formattedData: any = [];
+
+    console.log('formatting data');
+    console.log(items);
+
+    // Loop through fields and extract key-value pairs (excluding 'submit' type)
+    items.forEach((item: any, idx: number) => {
+      let itm: any = { data: {} };
+      item.fields.forEach((field: any) => {
+        if (field.type !== 'submit') {
+          itm.data[field.key] = field.value;
+        }
+      });
+      itm.id = item.id;
+      itm.fields = item.fields;
+      formattedData.push(itm);
+    });
+
+    return formattedData;
+  }
+
+  emit(data: any) {
+    let postData: any = this.formatData(data);
+    this.callback.emit(postData);
   }
 }

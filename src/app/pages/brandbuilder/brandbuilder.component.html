@@ -301,7 +301,7 @@
           <!--page header-->
 
           <ion-header
-            *ngIf="options.showHeader"
+            *ngIf="options?.showHeader"
             [ngClass]="{ shrink: isShrunk }"
           >
             <ion-toolbar>
@@ -312,7 +312,7 @@
               <ion-buttons slot="start">
                 <ion-menu-button
                   menu="builderMain"
-                  *ngIf="options.showMenu"
+                  *ngIf="options?.showMenu"
                 ></ion-menu-button>
               </ion-buttons>
 
@@ -340,11 +340,11 @@
 
               <!--users-->
 
-              {{ options | json }}
-
               <ion-buttons slot="end">
                 <ion-item
-                  *ngIf="options.userSystem || !!vendorId"
+                  *ngIf="
+                    options?.userSystem || (!!vendorId && options?.userSystem)
+                  "
                   routerDirection="root"
                   [routerLink]="'/login'"
                   [queryParams]="{ vendorId: vendorId, siteId: siteId }"
@@ -605,7 +605,7 @@
             <!--main content-->
 
             <!-- footer-->
-            <div id="footer" *ngIf="options.showFooter">
+            <div id="footer" *ngIf="options?.showFooter == true">
               <div id="footer-wrap">
                 <ion-row>
                   <ion-col size="9">

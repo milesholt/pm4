@@ -215,8 +215,8 @@
         (change)="doForm($event, field.key, field.type)"
         (click)="doForm($event, field.key, field.type)"
         [counter]="field.counter"
-        maxlength="{{ field.maxlength }}"
-        [autoGrow]="field.autogrow"
+        [maxlength]="field?.maxlength ?? null"
+        [autoGrow]="field.autogrow ?? true"
         [(ngModel)]="form[field.key] ? form[field.key] : field.value"
       ></ion-textarea>
     </ion-item>
@@ -339,6 +339,12 @@
         </ion-item>
       </ion-list>
     </ion-item>
+    <ion-item *ngSwitchCase="'boolean'">
+      <ion-toggle [checked]="field.value" [name]="field.name">
+        <ion-label>{{ field.label }}</ion-label>
+      </ion-toggle>
+    </ion-item>
+
     <ion-item *ngSwitchCase="'radio'">
       <ion-radio-group
         class="form-control {{ field.classes }}"

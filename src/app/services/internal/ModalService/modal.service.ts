@@ -46,7 +46,12 @@ export class ModalService {
     }
   }*/
 
-  async openModal(template: TemplateRef<any> | null, context: any) {
+  async openModal(
+    template: TemplateRef<any> | null,
+    context: any,
+    component: any = false,
+    dismissTop: boolean = true
+  ) {
     try {
       if (!context) {
         console.error('Context is missing');
@@ -56,26 +61,36 @@ export class ModalService {
 
       console.log(context);
 
-      // Check for open modal, dismiss any, and wait for it to complete
-      const topModal = await this.modalController.getTop();
-      if (topModal) {
-        await this.modalController.dismiss();
-      }
+      //dimiss top modal condition
+      if (!!dismissTop) this.dismissTop();
 
       // If no template is provided, use ModalComponent instead
-      const component = template ? ModalDynamicComponent : ModalComponent;
+
+      //Set default data structure for ModalComponent
+      let modalData = { data: context };
+
+      if (component == false) {
+        component = template ? ModalDynamicComponent : ModalComponent;
+      } else {
+        //pass data as is for any component
+        modalData = context;
+      }
 
       const modal = await this.modalController.create({
         component: component,
         componentProps: template
           ? { template: template, context: { context }, isModal: true }
-          : { data: context }, // Pass context as data for ModalComponent
+          : modalData, // Pass context as data for ModalComponent or other Component
       });
 
       await modal.present();
 
-      const { data } = await modal.onDidDismiss(); // Wait for the modal to be dismissed
-      return data; // Return the data to the caller
+      //const { data } = await modal.onDidDismiss(); // Wait for the modal to be dismissed
+      //return data; // Return the data to the caller
+
+      // Listen for data from the modal
+      const { data } = await modal.onWillDismiss();
+      if (data) return data;
     } catch (error) {
       console.error('Error creating modal:', error);
     }
@@ -87,6 +102,15 @@ export class ModalService {
     this.modalController.dismiss(returnData);
   }
 
+  async dismissTop(returnData?: any) {
+    console.log('dismissing top modal');
+    console.log(returnData);
+    const topModal = await this.modalController.getTop();
+    if (topModal) {
+      await topModal.dismiss(returnData); // Dismiss only the form modal
+    }
+  }
+
   async isModal() {
     const topModal = await this.modalController.getTop();
     if (topModal) {
@@ -95,7 +119,7 @@ export class ModalService {
     return false;
   }
 
-  async dismissAllExceptTop() {
+  async dismissAllExceptTop(returnData?: any) {
     console.log('dismissAllExceptTop');
     try {
       let topModal: any | null = await this.modalController.getTop();
@@ -103,7 +127,7 @@ export class ModalService {
       // Dismiss all modals until only the top one remains
       while (topModal) {
         // Dismiss the current top modal
-        await this.modalController.dismiss();
+        await this.modalController.dismiss(returnData);
         // Update topModal to the next modal in the stack
         topModal = await this.modalController.getTop();
       }

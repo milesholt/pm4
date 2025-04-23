@@ -5,6 +5,8 @@ import {
   Output,
   ChangeDetectorRef,
   HostListener,
+  ViewChild,
+  TemplateRef,
 } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
@@ -25,6 +27,7 @@ import { ModalController } from '@ionic/angular';
   //imports:[IonicModule]
 })
 export class GalleryComponent implements OnInit {
+  @ViewChild('imageTemplate') imageTemplate!: TemplateRef<any>;
   @Input() images: any[] = [];
   @Input() type: any;
   @Input() username: any;
@@ -121,6 +124,86 @@ export class GalleryComponent implements OnInit {
 
   get currentImage() {
     return this.images[this.currentIndex] || null;
+  }
+
+  handleSelectImage(result: any) {
+    /*console.log('handling select image callback');
+    console.log(data);
+    console.log(modal);
+    setTimeout(()=>{
+      this.service.modal.dismissTop(data);
+    },);*/
+
+    let imageUrl = result.url;
+    let imageData = {
+      url: result.url,
+      tags: [],
+      alt: '',
+      caption: '',
+      description: '',
+      title: '',
+      created: new Date(),
+      modified: new Date(),
+    };
+    //if (imageUrl) (this.user.userData ??= {}).images ??= [];
+
+    this.images.push(imageData);
+  }
+
+  async addImages() {
+    const result = await this.service.modal.openModal(
+      this.imageTemplate,
+      {},
+      false,
+      false
+    );
+
+    if (result) {
+      console.log('Collected image data:', result);
+      console.log('Image added');
+      let imageUrl = result.url;
+      let imageData = {
+        url: result.url,
+        tags: [],
+        alt: '',
+        caption: '',
+        description: '',
+        title: '',
+        created: new Date(),
+        modified: new Date(),
+      };
+      //
+      //if (imageUrl) (this.user.userData ??= {}).images ??= [];
+
+      this.images.push(imageData);
+
+      /*this.user.userData.images.push(imageData);
+
+      let userData = {
+        userData: this.user.userData,
+      };
+
+      //Store images on userData
+      const pathSegments = [
+        'users',
+        this.vendorId,
+        'sites',
+        this.siteId,
+        'users',
+      ];
+
+      if (this.userId)
+        await this.service.firestore.updateDocument(
+          pathSegments,
+          this.userId,
+          userData
+        );*/
+    }
+  }
+
+  closeModal(modal: any, data: any) {
+    modal.dismiss(data); // Pass collected data back when closing
+    console.log('handle updated data passed back');
   }
 
   // Keyboard navigation

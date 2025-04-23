@@ -211,7 +211,7 @@ export class ModulesComponent implements OnInit {
   ngAfterViewInit() {}
 
   loadParams() {
-    //console.log('loading params');
+    console.log('loading params');
 
     this.modules.forEach((module: any) => {
       if (module.component == null) return;
@@ -243,6 +243,8 @@ export class ModulesComponent implements OnInit {
 
   loadActiveModule(name: string | null = this.name) {
     console.log(name);
+    console.log('loading active module');
+    console.log(this.params);
 
     if (name == 'new') {
       if (this.params.action) {

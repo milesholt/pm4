@@ -10,6 +10,10 @@
   </ion-grid>
 </ion-content>-->
 
+<ion-button *ngIf="params.isEditable" (click)="addImages()"
+  >Add Images</ion-button
+>
+
 <ion-content>
   <ion-searchbar
     [(ngModel)]="searchQuery"
@@ -74,3 +78,14 @@
     </ng-template>
   </ion-modal>
 </ion-content>
+
+<ng-template #imageTemplate let-modal>
+  <p>Image Component</p>
+
+  <app-image
+    [setParams]="{ type: 'library', siteId: params?.siteId }"
+    (callback)="handleSelectImage($event)"
+  ></app-image>
+
+  <ion-button (click)="service.modal.dismissTop()">Done</ion-button>
+</ng-template>
