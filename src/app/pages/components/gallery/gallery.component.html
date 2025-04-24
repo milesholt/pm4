@@ -84,7 +84,6 @@
 
   <app-image
     [setParams]="{ type: 'library', siteId: params?.siteId }"
-    (callback)="handleSelectImage($event)"
   ></app-image>
 
   <ion-button (click)="service.modal.dismissTop()">Done</ion-button>

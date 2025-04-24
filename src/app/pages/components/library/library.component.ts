@@ -7,6 +7,7 @@ import { CoreService } from '../../../services/core.service';
   selector: 'app-library-comp',
   templateUrl: './library.component.html',
   styleUrls: ['./library.component.scss'],
+  providers: [CoreService],
 })
 export class LibraryComponent implements OnInit {
   @Input() params: any = [];
@@ -120,8 +121,10 @@ export class LibraryComponent implements OnInit {
     this.isGridView = !this.isGridView;
   }
 
-  selectFile(file: any) {
+  async selectFile(file: any) {
     this.callback.emit(file);
+    const isModal = await this.service.modal.isModal();
+    if (isModal === true) this.service.modal.dismissTop(file);
   }
 
   allowDrop(event: DragEvent) {

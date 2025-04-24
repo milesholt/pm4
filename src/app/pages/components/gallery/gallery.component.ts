@@ -17,6 +17,8 @@ import { Library } from '../../../app.library';
 import { CoreService } from '../../../services/core.service';
 
 import { ModalController } from '@ionic/angular';
+import { LibraryComponent } from '../library/library.component';
+import { ImageComponent } from '../image/image.component';
 
 @Component({
   //standalone: true,
@@ -127,8 +129,9 @@ export class GalleryComponent implements OnInit {
   }
 
   handleSelectImage(result: any) {
-    /*console.log('handling select image callback');
-    console.log(data);
+    console.log('handling select image callback');
+
+    /*console.log(data);
     console.log(modal);
     setTimeout(()=>{
       this.service.modal.dismissTop(data);
@@ -150,11 +153,22 @@ export class GalleryComponent implements OnInit {
     this.images.push(imageData);
   }
 
-  async addImages() {
+  //
+  async addImages(data: any = null) {
+    console.log(LibraryComponent);
+
+    const modalData = {
+      setParams: {
+        type: 'library',
+        siteId: this.params?.siteId,
+        isSelect: true,
+      },
+    };
+
     const result = await this.service.modal.openModal(
-      this.imageTemplate,
-      {},
-      false,
+      null,
+      modalData,
+      ImageComponent,
       false
     );
 
@@ -172,12 +186,38 @@ export class GalleryComponent implements OnInit {
         created: new Date(),
         modified: new Date(),
       };
-      //
-      //if (imageUrl) (this.user.userData ??= {}).images ??= [];
 
       this.images.push(imageData);
+    }
 
-      /*this.user.userData.images.push(imageData);
+    /*if (data == null) {
+      console.log(LibraryComponent);
+      const result = await this.service.modal.openModal(
+        null,
+        {},
+        LibraryComponent
+      );
+
+      if (result) {
+        console.log('Collected image data:', result);
+        console.log('Image added');
+        let imageUrl = result.url;
+        let imageData = {
+          url: result.url,
+          tags: [],
+          alt: '',
+          caption: '',
+          description: '',
+          title: '',
+          created: new Date(),
+          modified: new Date(),
+        };
+        //
+        //if (imageUrl) (this.user.userData ??= {}).images ??= [];
+
+        this.images.push(imageData);
+
+        this.user.userData.images.push(imageData);
 
       let userData = {
         userData: this.user.userData,
@@ -197,8 +237,18 @@ export class GalleryComponent implements OnInit {
           pathSegments,
           this.userId,
           userData
-        );*/
-    }
+        );
+      } else {
+        console.log('Add images callback,  but no data');
+      }
+    }*/
+
+    /*if (data) {
+      console.log('Add images - data passed back');
+      this.service.modal.dismissTop();
+      this.service.modal.dismissTop();
+      this.service.modal.dismissTop();
+    }*/
   }
 
   closeModal(modal: any, data: any) {

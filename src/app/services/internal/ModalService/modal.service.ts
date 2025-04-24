@@ -76,6 +76,10 @@ export class ModalService {
         modalData = context;
       }
 
+      console.log('creating modal');
+      console.log(component);
+      console.log(modalData);
+
       const modal = await this.modalController.create({
         component: component,
         componentProps: template
@@ -90,7 +94,13 @@ export class ModalService {
 
       // Listen for data from the modal
       const { data } = await modal.onWillDismiss();
-      if (data) return data;
+      if (data) {
+        console.log('modal has data');
+        return data;
+      } else {
+        console.log('no modal data');
+        return [];
+      }
     } catch (error) {
       console.error('Error creating modal:', error);
     }
@@ -106,8 +116,12 @@ export class ModalService {
     console.log('dismissing top modal');
     console.log(returnData);
     const topModal = await this.modalController.getTop();
-    if (topModal) {
+    /*if (topModal) {
       await topModal.dismiss(returnData); // Dismiss only the form modal
+    }*/
+
+    if (topModal) {
+      setTimeout(() => topModal.dismiss(returnData), 50); // small delay
     }
   }
 

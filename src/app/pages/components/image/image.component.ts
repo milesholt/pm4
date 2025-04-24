@@ -232,6 +232,8 @@ export class ImageComponent implements OnInit {
       if (data) {
         //handle selected data
         console.log('image modal dismissed with data');
+        await this.service.modal.dismissTop(data);
+        return data;
       } else {
         //handle no data
         console.log('image modal dismissed with no data');

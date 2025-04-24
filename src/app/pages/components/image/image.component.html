@@ -84,7 +84,9 @@
     style="display: block; width: 100%; height: auto"
   />
 
-  <ion-button *ngIf="isUpload" (click)="selectImage(params['url'])"
+  <ion-button
+    *ngIf="isUpload || params.isSelect"
+    (click)="selectImage(params['url'])"
     >Done</ion-button
   >
 </div>
