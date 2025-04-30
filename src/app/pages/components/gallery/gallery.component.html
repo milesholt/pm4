@@ -51,7 +51,7 @@
 
         <!-- Left Navigation Button -->
         <ion-button
-          *ngIf="images.length > 1"
+          *ngIf="data.length > 1"
           class="nav-button left"
           (click)="prevImage()"
         >
@@ -68,7 +68,7 @@
 
         <!-- Right Navigation Button -->
         <ion-button
-          *ngIf="images.length > 1"
+          *ngIf="data.length > 1"
           class="nav-button right"
           (click)="nextImage()"
         >

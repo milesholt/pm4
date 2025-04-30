@@ -7,6 +7,7 @@ import {
   HostListener,
   ViewChild,
   TemplateRef,
+  EventEmitter,
 } from '@angular/core';
 //import { IonicModule } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
@@ -30,10 +31,11 @@ import { ImageComponent } from '../image/image.component';
 })
 export class GalleryComponent implements OnInit {
   @ViewChild('imageTemplate') imageTemplate!: TemplateRef<any>;
-  @Input() images: any[] = [];
+  @Input() data: any[] = [];
   @Input() type: any;
   @Input() username: any;
   @Input() params: any = {};
+  @Output() callback = new EventEmitter<any>();
 
   searchQuery: string = '';
   filteredImagesList: any[] = [];
@@ -54,7 +56,7 @@ export class GalleryComponent implements OnInit {
   }
 
   loadImages() {
-    this.filteredImagesList = [...this.images];
+    this.filteredImagesList = [...this.data];
 
     switch (this.type) {
       case 'instagram':
@@ -78,9 +80,9 @@ export class GalleryComponent implements OnInit {
 
   filteredImages() {
     if (!this.searchQuery) {
-      return this.images;
+      return this.data;
     }
-    return this.images.filter((image) =>
+    return this.data.filter((image) =>
       image.alt.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
   }
@@ -93,14 +95,14 @@ export class GalleryComponent implements OnInit {
         { src: 'https://example.com/img5.jpg', alt: 'Image 5' },
       ];
 
-      this.images.push(...moreImages);
+      this.data.push(...moreImages);
       this.filteredImagesList = this.filteredImages(); // Re-filter the images after loading more
       event.target.complete();
     }, 1000);
   }
 
   openLightbox(image: any) {
-    this.currentIndex = this.images.findIndex((img) => img.src === image.src);
+    this.currentIndex = this.data.findIndex((img) => img.src === image.src);
     this.lightboxOpen = true;
   }
 
@@ -109,7 +111,7 @@ export class GalleryComponent implements OnInit {
   }
 
   nextImage() {
-    if (this.currentIndex < this.images.length - 1) {
+    if (this.currentIndex < this.data.length - 1) {
       this.currentIndex++;
     } else {
       this.currentIndex = 0; // Loop back to first image
@@ -120,40 +122,16 @@ export class GalleryComponent implements OnInit {
     if (this.currentIndex > 0) {
       this.currentIndex--;
     } else {
-      this.currentIndex = this.images.length - 1; // Loop back to last image
+      this.currentIndex = this.data.length - 1; // Loop back to last image
     }
   }
 
   get currentImage() {
-    return this.images[this.currentIndex] || null;
+    return this.data[this.currentIndex] || null;
   }
 
-  handleSelectImage(result: any) {
-    console.log('handling select image callback');
+  handleSelectImage(result: any) {}
 
-    /*console.log(data);
-    console.log(modal);
-    setTimeout(()=>{
-      this.service.modal.dismissTop(data);
-    },);*/
-
-    let imageUrl = result.url;
-    let imageData = {
-      url: result.url,
-      tags: [],
-      alt: '',
-      caption: '',
-      description: '',
-      title: '',
-      created: new Date(),
-      modified: new Date(),
-    };
-    //if (imageUrl) (this.user.userData ??= {}).images ??= [];
-
-    this.images.push(imageData);
-  }
-
-  //
   async addImages(data: any = null) {
     console.log(LibraryComponent);
 
@@ -187,68 +165,10 @@ export class GalleryComponent implements OnInit {
         modified: new Date(),
       };
 
-      this.images.push(imageData);
+      this.data.push(imageData);
+      //callback data to parent component
+      this.callback.emit(this.data);
     }
-
-    /*if (data == null) {
-      console.log(LibraryComponent);
-      const result = await this.service.modal.openModal(
-        null,
-        {},
-        LibraryComponent
-      );
-
-      if (result) {
-        console.log('Collected image data:', result);
-        console.log('Image added');
-        let imageUrl = result.url;
-        let imageData = {
-          url: result.url,
-          tags: [],
-          alt: '',
-          caption: '',
-          description: '',
-          title: '',
-          created: new Date(),
-          modified: new Date(),
-        };
-        //
-        //if (imageUrl) (this.user.userData ??= {}).images ??= [];
-
-        this.images.push(imageData);
-
-        this.user.userData.images.push(imageData);
-
-      let userData = {
-        userData: this.user.userData,
-      };
-
-      //Store images on userData
-      const pathSegments = [
-        'users',
-        this.vendorId,
-        'sites',
-        this.siteId,
-        'users',
-      ];
-
-      if (this.userId)
-        await this.service.firestore.updateDocument(
-          pathSegments,
-          this.userId,
-          userData
-        );
-      } else {
-        console.log('Add images callback,  but no data');
-      }
-    }*/
-
-    /*if (data) {
-      console.log('Add images - data passed back');
-      this.service.modal.dismissTop();
-      this.service.modal.dismissTop();
-      this.service.modal.dismissTop();
-    }*/
   }
 
   closeModal(modal: any, data: any) {

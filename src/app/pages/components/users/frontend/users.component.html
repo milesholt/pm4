@@ -3,7 +3,6 @@
 
   <h2>Your Profile</h2>
 
-
   <ion-button (click)="editProfile()">Edit Profile</ion-button>
 
   <app-tabs [tabs]="tabs"> </app-tabs>
@@ -20,7 +19,7 @@
     <ion-button (click)="addImages()">Add Images</ion-button>
     <app-gallery-comp
       *ngIf="user?.userData?.images"
-      [images]="user.userData.images"
+      [data]="user.userData.images"
     ></app-gallery-comp>
   </ng-template>
 </ion-content>

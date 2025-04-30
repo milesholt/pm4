@@ -98,10 +98,14 @@ export class TabsComponent implements OnInit {
   }
 
   handleCallback(data: any, tabIdx: number) {
+    console.log('tab callback');
+    console.log(data);
+    console.log(tabIdx);
     this.tabs[tabIdx].data = data;
   }
 
   handleChanges(changeData: any, tabIdx: number) {
+    console.log('tab change');
     this.tabs[tabIdx].data = this.collectedData;
     this.tabs[tabIdx].el = changeData.el;
   }
